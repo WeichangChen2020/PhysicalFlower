@@ -1,0 +1,17 @@
+{
+	"description": "物里看花",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true,
+		"nodeModules": true,
+		"autoAudits": false
+	},
+	"compileType": "miniprogram",
+	"appid": "wx9061828744e52511",
+	"projectname": "wlkh",
+	"miniprogramRoot": "dist/",
+	"condition": {}
+}
