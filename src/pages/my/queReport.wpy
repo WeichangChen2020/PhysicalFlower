@@ -1,39 +1,44 @@
 <style lang="less">
-  
+page {
+  background-color: #f2f2f2;
+}
+
+.butyText {
+  value: '请输入您要反馈的问题';
+  maxlength: 200;
+  auto-focus: true;
+}
 </style>
 <template>
- 
+ <view class="weui-cell__bd">
+  <textarea bindinput='input' class="weui-textarea" placeholder="请输入问题" style="auto-height: true" />
+     <view class="weui-textarea-counter">{{length}}/200</view>
+  </view>
+<view class="button-sp-area">
+   <button class="weui-btn" type="default" disabled="true" plain="true">提交问题</button>
+</view>
 </template>
 
 <script>
-  import wepy from 'wepy'
- 
+import wepy from 'wepy'
 
-  export default class Index extends wepy.page {
-    config = {
-      navigationBarTitleText: '问题反馈'
-    }
-    components = {
-      
-    }
-
-
-    data = {
-      
-    }
-
-    computed = {
-     
-    }
-
-    methods = {
-        }
-
-    events = {
-  
-    }
-
-    onLoad() {
-    }
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的反馈'
   }
+
+  input(e) {
+    var length = e.detail.value.length
+    this.length = length
+  }
+  data = {
+    'length': 0
+  }
+
+  computed = {}
+
+  methods = {}
+
+  events = {}
+}
 </script>
