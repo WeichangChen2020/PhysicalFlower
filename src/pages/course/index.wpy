@@ -70,5 +70,8 @@ export default class Index extends wepy.page {
   onLoad() {
     console.log('onLoad')
   }
+  onSHow() {
+    // 如果未加入课程,跳转到join页面
+  }
 }
 </script>

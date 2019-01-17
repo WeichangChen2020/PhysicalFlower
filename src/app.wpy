@@ -12,10 +12,13 @@ setStore(store)
 
 export default class extends wepy.app {
   config = {
+    // 最后需要对这些页面的顺序进行调整
     pages: [
       'pages/course/index',
       'pages/course/signin/list',
+      'pages/course/signin/detail',
       'pages/course/homework/list',
+      'pages/course/homework/detail',
       'pages/my/my',
       'pages/tea/tea',
       'pages/my/myInfo',
