@@ -71,7 +71,6 @@ page {
     <open-data class="userAvatar" type="userAvatarUrl"></open-data>
     <view class="userText">
       <open-data class="userNickname" type="userNickName"></open-data>
-      <!--<text class='userLabel'>点击头像更改个人信息</text>-->
     </view>
   </view>
   <view
@@ -104,11 +103,12 @@ export default class my extends wepy.page {
     bottonClr: ['white', 'white', 'white', 'white', 'white', 'white', 'white'],
     setArr: [
       { id: '1', name: '我的信息', img: '', margin: '0' },
-      { id: '2', name: '我的班级', img: '', margin: '0' },
+      { id: '2', name: '我的课程', img: '', margin: '0' },
       { id: '3', name: '使用帮助', img: '', margin: '0' },
-      { id: '4', name: '关于', img: '', margin: '0' }
+      { id: '4', name: '联系我们', img: '', margin: '0' },
+      { id: '5', name: '问题反馈', img: '', margin: '0' }
     ]
-  }
+  };
   // 事件处理函数(集中保存在methods对象中)
   methods = {
     tap: function(e) {
@@ -117,10 +117,19 @@ export default class my extends wepy.page {
         case '1':
           wx.navigateTo({ url: '../my/myInfo' })
           break
+        case '2':
+          wx.navigateTo({ url: '../my/myClass' })
+          break
+        case '3':
+          wx.navigateTo({ url: '../my/useHelp' })
+          break
+        case '4':
+          wx.navigateTo({ url: '../my/connectUs' })
+          break
+        case'5':
+          wx.navigateTo({url:'../my/queReport'})
       }
     }
-
-
-  }
+  };
 }
 </script>

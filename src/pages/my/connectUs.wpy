@@ -1,0 +1,39 @@
+<style lang="less">
+  
+</style>
+<template>
+ <text>Todo(放入二维码)</text>
+</template>
+
+<script>
+  import wepy from 'wepy'
+ 
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: 'test'
+    }
+    components = {
+      
+    }
+
+
+    data = {
+      
+    }
+
+    computed = {
+     
+    }
+
+    methods = {
+        }
+
+    events = {
+  
+    }
+
+    onLoad() {
+    }
+  }
+</script>
