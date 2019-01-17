@@ -1,9 +1,17 @@
 <style type="less">
 </style>
 <template>
-	<view>
-		homework
-	</view>
+  <!-- 只显示10条数据,下拉加载更多 -->
+  <view class="weui-cells weui-cells_after-title">
+    <view @tap='tap' class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">homework1</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </view>
+    <view @tap='tap' class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">homework2</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </view>
+  </view>
 </template>
 <script>
   import wepy from 'wepy'
@@ -16,8 +24,8 @@
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      bindViewTap () {
-        console.log('button clicked')
+      tap () {
+        console.log('点击')
       }
     };
 
