@@ -42,7 +42,7 @@ export default class Index extends wepy.page {
           wx.navigateTo({url: './signin/list'})
           break
         case '2':
-          wx.navigateTo({url: './homework'})
+          wx.navigateTo({url: './homework/list'})
           break
         case '3':
           wx.navigateTo({url: './test'})

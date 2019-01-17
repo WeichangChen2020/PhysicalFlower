@@ -2,14 +2,14 @@
 </style>
 <template>
 	<view>
-		<button>aaaa</button>
+		homework
 	</view>
 </template>
 <script>
   import wepy from 'wepy'
 
   // 通过继承自wepy.page的类创建页面逻辑
-  export default class Tea extends wepy.page {
+  export default class List extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
     };

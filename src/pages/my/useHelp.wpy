@@ -1,0 +1,26 @@
+<style lang="less">
+</style>
+<template>
+ <text>物里看花是一款辅助大物教学的小程序......</text>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '使用帮助'
+  }
+  components = {};
+
+  data = {};
+
+  computed = {};
+
+  methods = {};
+
+  events = {};
+
+  onLoad() {}
+}
+</script>

@@ -1,0 +1,29 @@
+<style lang="less">
+page {
+  background-color: #f2f2f2;
+}
+</style>
+<template>
+ <text>Todo(放入二维码)</text>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '联系我们'
+  };
+  components = {};
+
+  data = {};
+
+  computed = {};
+
+  methods = {};
+
+  events = {};
+
+  onLoad() {}
+}
+</script>
