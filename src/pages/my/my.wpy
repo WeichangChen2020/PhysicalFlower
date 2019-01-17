@@ -83,28 +83,31 @@ page {
       <view class="listInfo">{{i.name}}</view>
     </botton>
   </view>
+  <view class="weui-footer weui-footer_fixed-bottom">
+      <view class="weui-footer__text">Copyright © 2008-2019 xd435</view>
+  </view>
 </template>
 <script>
-import wepy from 'wepy'
+import wepy from 'wepy';
 
 // 通过继承自wepy.page的类创建页面逻辑
 export default class my extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的'
+  };
   // 可用于页面模板绑定的数据
   data = {
-    bottonClr: [
-      'white','white','white','white','white','white','white'
-    ],
+    bottonClr: ['white', 'white', 'white', 'white', 'white', 'white', 'white'],
     setArr: [
-      { id: '1', name: '姓名', img: '', margin: '0' },
-      { id: '2', name: '班级', img: '', margin: '0' },
-      { id: '3', name: '学号', img: '', margin: '0' },
-      { id: '4', name: '平时成绩', img: '', margin: '0' },
-      { id: '5', name: '老师信息', img: '', margin: '0' }
+      { id: '1', name: '我的信息', img: '', margin: '0' },
+      { id: '2', name: '我的班级', img: '', margin: '0' },
+      { id: '3', name: '使用帮助', img: '', margin: '0' },
+      { id: '4', name: '关于', img: '', margin: '0' }
     ]
-  }
+  };
 
   // 事件处理函数(集中保存在methods对象中)
-  methods = {}
+  methods = {};
 
   // 页面的生命周期函数
   onLoad() {}
