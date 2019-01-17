@@ -2,4 +2,8 @@ node_modules
 dist
 .DS_Store
 .wepycache
+<<<<<<< HEAD
 .vscode/
+=======
+.vscode
+>>>>>>> 020559da400769cb2c70173207bfb08510704739

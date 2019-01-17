@@ -3,42 +3,98 @@ page {
   background-color: #f2f2f2;
 }
 
-.butyText {
-  value: '请输入您要反馈的问题';
-  maxlength: 200;
-  auto-focus: true;
+.container1 {
+  background-color: white;
+}
+
+.input {
+  margin-top: 30rpx;
+  border-bottom: #ddd solid 2rpx;
+}
+
+.border {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-width: 4rpx 0 4rpx 0;
+  border-style: solid;
+  border-color: #eee;
+  font-size: 30rpx;
+  line-height: 60rpx;
+  color: #b95;
+  padding: 20rpx 20rpx 40rpx 20rpx;
 }
 </style>
 <template>
- <view class="weui-cell__bd">
-  <textarea bindinput='input' class="weui-textarea" placeholder="请输入问题" style="auto-height: true" />
-     <view class="weui-textarea-counter">{{length}}/200</view>
+<view class='border'>
+  <view>输入问题</view>
+  <input class='input' disabled='{{isChecked<1}}' placeholder='请简单描述问题' focus='{{focus}}' maxlength="30" bindinput='bindKeyInput' />
+</view>
+
+<view class='greeting'>上传截图</view>
+<view class='border'>
+  <view class="weui-uploader">
+    <view class="img_hd">
+      <view class="weui-uploader__title">图片上传</view>
+      <view class="weui-uploader__info">{{files.length}}/2</view>
+    </view>
+    <view class="weui-uploader__bd">
+      <view class="weui-uploader__files" id="uploaderFiles">
+
+        <block wx:for="{{files}}" wx:key="*this">
+          <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
+            <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+          </view>
+        </block>
+      </view>
+
+      <view class="weui-uploader__input-box">
+        <view class="weui-uploader__input" bindtap="chooseImage"></view>
+      </view>
+    </view>
   </view>
-<view class="button-sp-area">
-   <button class="weui-btn" type="default" disabled="true" plain="true">提交问题</button>
 </view>
 </template>
 
 <script>
 import wepy from 'wepy'
 
-export default class Index extends wepy.page {
+export default class queReport extends wepy.page {
   config = {
     navigationBarTitleText: '我的反馈'
+  };
+
+  data={
+    isGotLoc: 0,
+    files: [],
+    motto: 'hw',
+    userInfo: {},
+    hasLocation: false,
+    inputValue: '',
+    commomArray: {
+      address_name: 'fk',
+      new_longitude: '',
+      new_latitude: '',
+      img_path: '',
+    },
+    address_city: '',
+    address_description: '',
+    canvasWidth: '',
+    canvasHeight: ''
   }
+chooseImage=function() {
+    var that = this;
+    wx.chooseImage({
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success= function(res) {
+        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+        that.setData({
+          files: that.data.files.concat(res.tempFilePaths)
+        });
 
-  input(e) {
-    var length = e.detail.value.length
-    this.length = length
-  }
-  data = {
-    'length': 0
-  }
 
-  computed = {}
-
-  methods = {}
-
-  events = {}
+  events = {};
 }
 </script>
