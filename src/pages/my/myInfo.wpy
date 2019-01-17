@@ -1,29 +1,85 @@
 <style lang="less">
+page {
+  background-color: #f2f2f2;
+}
+
+.listInfo {
+  flex: 1;
+  font-size: 31rpx;
+  margin-top: 22rpx;
+  color: #777;
+}
+.listCont {
+  flex: 1;
+  text-align: right;
+  font-size: 31rpx;
+  margin-top: 22rpx;
+  color: #777;
+}
+
+.list {
+  border-width: 0rpx 0rpx 3rpx 0rpx;
+  border-style: solid;
+  border-color: #f6f6f6;
+  height: 100rpx;
+  display: flex;
+  flex-direction: row;
+  margin: 0rpx 40rpx 0rpx 40rpx;
+}
+
+.listImg {
+  height: 60rpx;
+  width: 60rpx;
+  margin: 15rpx 50rpx 0rpx 0rpx;
+}
 </style>
 <template>
-  
+ <view style='height:20rpx'></view>
+<view wx:for='{{setArr}}' wx:for-item="i" wx:key="name" style="background-color:{{bottonClr[i.id]}};margin-bottom:{{i.margin}}rpx">
+  <botton class='list' id="{{i.id}}" bindtouchstart="CA" bindtouchend="CB" bindtap="tap">
+    <view class='listInfo'>{{i.name}}</view>
+    <view class='listCont'>{{i.name}}</view>
+  </botton>
+</view>
+<view class="weui-footer weui-footer_fixed-bottom">
+      <view class="weui-footer__text">Copyright © 2008-2019 xd435</view>
+  </view>
 </template>
+
 <script>
-  import wepy from 'wepy'
-  export default class myInfo extends wepy.page {
-    config = {
-    }
-    components = {
-    }
+import wepy from 'wepy'
+export default class myInfo extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的信息'
+  };
+  components = {};
 
-    data = {
-    }
-
-    computed = {
-    }
-
-    methods = {
-    }
-
-    events = {
-    }
-
-    onLoad() {
-    }
+  data = {
+    bottonClr: [
+      'white',
+      'white',
+      'white',
+      'white',
+      'white',
+      'white',
+      'white',
+      'white',
+      'white',
+      'white'
+    ],
+    setArr: [
+      { id: '1', name: '姓名', img: 'option', margin: '0' },
+      { id: '2', name: '学号', img: 'medal', margin: '0' },
+      { id: '3', name: '手机号', img: 'ticket', margin: '0' }
+    ]
   }
+
+  computed = {}
+
+  methods = {}
+
+  events = {}
+
+  onLoad() {}
+}
 </script>
