@@ -19,7 +19,8 @@ export default class extends wepy.app {
       'pages/my/myInfo',
       'pages/my/myClass',
       'pages/my/useHelp',
-      'pages/my/connectUs'
+      'pages/my/connectUs',
+      'pages/my/queReport'
     ],
     window: {
       backgroundTextStyle: 'light',
