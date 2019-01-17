@@ -64,8 +64,10 @@ page {
   margin: 15rpx 50rpx 0rpx 0rpx;
 }
 </style>
+
+
 <template>
-  <view class="userinfo" id="0" bindlongtap="tap">
+  <view class="userinfo" id="0">
     <open-data class="userAvatar" type="userAvatarUrl"></open-data>
     <view class="userText">
       <open-data class="userNickname" type="userNickName"></open-data>
@@ -78,35 +80,47 @@ page {
     wx:key="name"
     style="background-color:{{bottonClr[i.id]}};margin-bottom:{{i.margin}}rpx"
   >
-    <botton class="list" id="{{i.id}}" bindtouchstart bindtouchend bindtap>
+    <botton class="list" id="{{i.id}}" bindtouchstart="CA" bindtouchend="CB" bindtap="tap">
       <image class="listImg" mode="aspectFit" src="{{sUrl}}{{i.img}}.png">
       <view class="listInfo">{{i.name}}</view>
     </botton>
   </view>
+  <view class="weui-footer weui-footer_fixed-bottom">
+      <view class="weui-footer__text">Copyright © 2008-2019 xd435</view>
+  </view>
 </template>
+
+
 <script>
 import wepy from 'wepy'
 
 // 通过继承自wepy.page的类创建页面逻辑
 export default class my extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的'
+  };
   // 可用于页面模板绑定的数据
   data = {
-    bottonClr: [
-      'white','white','white','white','white','white','white'
-    ],
+    bottonClr: ['white', 'white', 'white', 'white', 'white', 'white', 'white'],
     setArr: [
-      { id: '1', name: '姓名', img: '', margin: '0' },
-      { id: '2', name: '班级', img: '', margin: '0' },
-      { id: '3', name: '学号', img: '', margin: '0' },
-      { id: '4', name: '平时成绩', img: '', margin: '0' },
-      { id: '5', name: '老师信息', img: '', margin: '0' }
+      { id: '1', name: '我的信息', img: '', margin: '0' },
+      { id: '2', name: '我的班级', img: '', margin: '0' },
+      { id: '3', name: '使用帮助', img: '', margin: '0' },
+      { id: '4', name: '关于', img: '', margin: '0' }
     ]
   }
-
   // 事件处理函数(集中保存在methods对象中)
-  methods = {}
+  methods = {
+    tap: function(e) {
+      var btnID = e.currentTarget.id
+      switch (btnID) {
+        case '1':
+          wx.navigateTo({ url: '../my/myInfo' })
+          break
+      }
+    }
 
-  // 页面的生命周期函数
-  onLoad() {}
+
+  }
 }
 </script>
