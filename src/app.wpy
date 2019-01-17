@@ -12,11 +12,7 @@ setStore(store)
 
 export default class extends wepy.app {
   config = {
-    pages: [
-      'pages/course/index',
-      'pages/tea/tea',
-      'pages/demo'
-    ],
+    pages: ['pages/my/my', 'pages/course/index', 'pages/tea/tea', 'pages/demo'],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
@@ -24,24 +20,24 @@ export default class extends wepy.app {
       navigationBarTextStyle: 'black'
     },
     tabBar: {
-      'list': [
+      list: [
         {
-          'pagePath': 'pages/course/index',
-          'selectedIconPath': 'public/images/empty.png',
-          'iconPath': 'public/images/empty.png',
-          'text': '课程'
+          pagePath: 'pages/course/index',
+          selectedIconPath: 'public/images/empty.png',
+          iconPath: 'public/images/empty.png',
+          text: '课程'
         },
         {
-          'pagePath': 'pages/tea/tea',
-          'selectedIconPath': 'public/images/empty.png',
-          'iconPath': 'public/images/empty.png',
-          'text': '教师'
+          pagePath: 'pages/tea/tea',
+          selectedIconPath: 'public/images/empty.png',
+          iconPath: 'public/images/empty.png',
+          text: '教师'
         },
         {
-          'pagePath': 'pages/demo',
-          'selectedIconPath': 'public/images/empty.png',
-          'iconPath': 'public/images/empty.png',
-          'text': 'demo'
+          pagePath: 'pages/demo',
+          selectedIconPath: 'public/images/empty.png',
+          iconPath: 'public/images/empty.png',
+          text: 'demo'
         }
       ]
     }
@@ -51,7 +47,7 @@ export default class extends wepy.app {
     userInfo: null
   }
 
-  constructor () {
+  constructor() {
     super()
     this.use('requestfix')
   }
@@ -60,7 +56,7 @@ export default class extends wepy.app {
     this.testAsync()
   }
 
-  sleep (s) {
+  sleep(s) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve('promise resolved')
@@ -68,7 +64,7 @@ export default class extends wepy.app {
     })
   }
 
-  async testAsync () {
+  async testAsync() {
     const data = await this.sleep(3)
     console.log(data)
   }
@@ -79,7 +75,7 @@ export default class extends wepy.app {
       return this.globalData.userInfo
     }
     wepy.getUserInfo({
-      success (res) {
+      success(res) {
         that.globalData.userInfo = res.userInfo
         cb && cb(res.userInfo)
       }
