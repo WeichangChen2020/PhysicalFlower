@@ -9,7 +9,7 @@ import wepy from 'wepy'
 
 export default class Index extends wepy.page {
   config = {
-    navigationBarTitleText: '我的课程'
+    navigationBarTitleText: '联系我们'
   };
   components = {};
 

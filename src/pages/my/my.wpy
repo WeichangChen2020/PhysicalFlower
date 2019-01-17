@@ -105,8 +105,8 @@ export default class my extends wepy.page {
       { id: '1', name: '我的信息', img: '', margin: '0' },
       { id: '2', name: '我的课程', img: '', margin: '0' },
       { id: '3', name: '使用帮助', img: '', margin: '0' },
-      { id: '5', name: '联系我们', img: '', margin: '0' },
-      { id: '6', name: '问题反馈', img: '', margin: '0' }
+      { id: '4', name: '联系我们', img: '', margin: '0' },
+      { id: '5', name: '问题反馈', img: '', margin: '0' }
     ]
   };
   // 事件处理函数(集中保存在methods对象中)
@@ -120,8 +120,14 @@ export default class my extends wepy.page {
         case '2':
           wx.navigateTo({ url: '../my/myClass' })
           break
-        case'3':
-          wx.navigateTo({url:'../my/useHelp'})
+        case '3':
+          wx.navigateTo({ url: '../my/useHelp' })
+          break
+        case '4':
+          wx.navigateTo({ url: '../my/connectUs' })
+          break
+        case'5':
+          wx.navigateTo({url:'../my/queReport'})
       }
     }
   };
