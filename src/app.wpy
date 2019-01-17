@@ -12,7 +12,11 @@ setStore(store)
 
 export default class extends wepy.app {
   config = {
-    pages: ['pages/my/my', 'pages/course/index', 'pages/tea/tea', 'pages/demo'],
+    pages: [
+      'pages/course/index',
+      'pages/my/my',
+      'pages/tea/tea'
+    ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
@@ -34,10 +38,10 @@ export default class extends wepy.app {
           text: '教师'
         },
         {
-          pagePath: 'pages/demo',
+          pagePath: 'pages/my/my',
           selectedIconPath: 'public/images/empty.png',
           iconPath: 'public/images/empty.png',
-          text: 'demo'
+          text: '我的'
         }
       ]
     }
