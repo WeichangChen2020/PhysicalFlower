@@ -14,8 +14,8 @@ export default class extends wepy.app {
   config = {
     // 最后需要对这些页面的顺序进行调整
     pages: [
-      'pages/tea/classControl',
-      'pages/tea/tea',
+      'pages/teacher/classControl',
+      'pages/teacher/teacher',
       'pages/course/index',
       'pages/course/signin/list',
       'pages/course/signin/detail',
@@ -27,14 +27,14 @@ export default class extends wepy.app {
       'pages/my/useHelp',
       'pages/my/connectUs',
       'pages/my/queReport',
-      'pages/tea/classCreat',
-      'pages/tea/stuBan',
-      'pages/tea/testCreat',
-      'pages/tea/homeworkCreat',
-      'pages/tea/siginCreat',
-      'pages/tea/siginControl',
-      'pages/tea/testControl',
-      'pages/tea/homeworkControl'
+      'pages/teacher/classCreat',
+      'pages/teacher/stuBan',
+      'pages/teacher/testCreat',
+      'pages/teacher/homeworkCreat',
+      'pages/teacher/siginCreat',
+      'pages/teacher/siginControl',
+      'pages/teacher/testControl',
+      'pages/teacher/homeworkControl'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -51,7 +51,7 @@ export default class extends wepy.app {
           text: '课程'
         },
         {
-          pagePath: 'pages/tea/tea',
+          pagePath: 'pages/teacher/teacher',
           selectedIconPath: 'public/images/empty.png',
           iconPath: 'public/images/empty.png',
           text: '教师'
@@ -116,7 +116,7 @@ export default class extends wepy.app {
         var UL_DATA = {
           code: res.code
         }
-        that.request('userLogin', UL_DATA, '登录中') 
+        that.request('userLogin', UL_DATA, '登录中')
         .then((res) => {
           console.log(res)
         })
