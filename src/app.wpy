@@ -14,9 +14,12 @@ export default class extends wepy.app {
   config = {
     // 最后需要对这些页面的顺序进行调整
     pages: [
+<<<<<<< HEAD
        'pages/my/my',
       'pages/teacher/classControl',
       'pages/teacher/teacher',
+=======
+>>>>>>> 874131cd677674dc45ef9e813c70507d865bb580
       'pages/course/index',
       'pages/course/signin/list',
       'pages/course/signin/detail',
@@ -34,7 +37,9 @@ export default class extends wepy.app {
       'pages/teacher/siginCreat',
       'pages/teacher/siginControl',
       'pages/teacher/testControl',
-      'pages/teacher/homeworkControl'
+      'pages/teacher/homeworkControl',
+      'pages/teacher/classControl',
+      'pages/teacher/teacher'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -113,6 +118,7 @@ export default class extends wepy.app {
     let that = this
     wx.login({
       success: function (res) {
+        console.log('success')
         var UL_DATA = {
           code: res.code
         }
