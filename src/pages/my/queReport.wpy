@@ -12,6 +12,19 @@ page {
   border-bottom: #ddd solid 2rpx;
 }
 
+.img_hd{
+  width: 670rpx;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.greeting{
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
+
 .border {
   display: flex;
   flex-direction: column;
@@ -24,12 +37,23 @@ page {
   line-height: 60rpx;
   color: #b95;
   padding: 20rpx 20rpx 40rpx 20rpx;
+
+  .btn{
+  background-color: #f7536b;
+  border: #eee solid 2rpx;
+  border-radius: 100rpx;
+  color: white;
+  width: 295rpx;
+  margin: 20rpx 20rpx 0 20rpx;
+  font-size: 30rpx;
+  line-height: 70rpx;
+}
 }
 </style>
 <template>
 <view class='border'>
   <view>输入问题</view>
-  <input class='input' disabled='{{isChecked<1}}' placeholder='请简单描述问题' focus='{{focus}}' maxlength="30" bindinput='bindKeyInput' />
+  <textarea class='input' disabled='{{isChecked<1}}' placeholder='请简单描述问题(最多输入200字)' focus='{{focus}}' maxlength="200" bindinput='bindKeyInput' />
 </view>
 
 <view class='greeting'>上传截图</view>
@@ -53,6 +77,9 @@ page {
         <view class="weui-uploader__input" bindtap="chooseImage"></view>
       </view>
     </view>
+  <view class='border'> 
+    <button class="btn" style='width:300rpx' bindtap=''>提交问题</button>
+  </view>
   </view>
 </view>
 </template>
