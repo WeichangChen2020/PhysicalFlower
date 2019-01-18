@@ -14,18 +14,27 @@ export default class extends wepy.app {
   config = {
     // 最后需要对这些页面的顺序进行调整
     pages: [
+      'pages/tea/classControl',
+      'pages/tea/tea',
       'pages/course/index',
       'pages/course/signin/list',
       'pages/course/signin/detail',
       'pages/course/homework/list',
       'pages/course/homework/detail',
       'pages/my/my',
-      'pages/tea/tea',
       'pages/my/myInfo',
       'pages/my/myClass',
       'pages/my/useHelp',
       'pages/my/connectUs',
-      'pages/my/queReport'
+      'pages/my/queReport',
+      'pages/tea/classCreat',
+      'pages/tea/stuBan',
+      'pages/tea/testCreat',
+      'pages/tea/homeworkCreat',
+      'pages/tea/siginCreat',
+      'pages/tea/siginControl',
+      'pages/tea/testControl',
+      'pages/tea/homeworkControl'
     ],
     window: {
       backgroundTextStyle: 'light',

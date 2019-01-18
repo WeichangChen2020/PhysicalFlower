@@ -1,0 +1,59 @@
+<style type="less">
+</style>
+<template>
+	<view>
+		<text>XXXXX班级</text>
+  </view>
+    <button @tap='tap' id="1">创建签到</button>
+    <button @tap='tap' id="2">管理签到</button>
+    <button @tap='tap' id="3">发布课后作业</button>
+    <button @tap='tap' id="4">管理课后作业</button>
+    <button @tap='tap' id="5">删除学生信息</button>
+    <button @tap='tap' id="6">发布课堂测试</button>
+    <button @tap='tap' id="7">管理课堂测试</button>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  // 通过继承自wepy.page的类创建页面逻辑
+  export default class classControl extends wepy.page {
+    // 可用于页面模板绑定的数据
+    data = {
+    };
+
+    // 事件处理函数(集中保存在methods对象中)
+    methods = {
+      tap(e) {
+        let tid = e.currentTarget.id
+        switch (tid) {
+          case '1':
+            this.$navigate('./siginCreat')
+            break
+          case '2':
+            this.$navigate('./siginControl')
+            break
+          case '3':
+            this.$navigate('./homeworkCreat')
+            break
+          case '4':
+            this.$navigate('./homeworkControl')
+            break
+          case '5':
+            this.$navigate('./stuBan')
+            break
+          case '6':
+            this.$navigate('./testCreat')
+            break
+          case '7':
+            this.$navigate('./testControl')
+            break
+        }
+      }
+    };
+
+    // 页面的生命周期函数
+    onLoad() {
+      console.log('onLoad')
+    };
+  }
+</script>

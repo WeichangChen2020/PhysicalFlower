@@ -1,10 +1,29 @@
 <style type="less">
+.bjlb{
+  display: flex;
+  justify-content: center
+}
+.bj{
+  margin-bottom: 5px
+}
+.jia{
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
 </style>
 <template>
 	<view>
-		<button>aaaa</button>
+		<text class="bjlb">班级列表：</text>
+    <icon type='success' class="jia" @tap='jia'>添加班级</icon>
+    <button class="bj" @tap="banji">XXXXX班级</button>
+    <button class="bj" @tap="banji">XXXXX班级</button>
+    <button class="bj" @tap="banji">XXXXX班级</button>
+    <button class="bj" @tap="banji">XXXXX班级</button>
+    <button class="bj" @tap="banji">XXXXX班级</button>
+    <button class="bj" @tap="banji">XXXXX班级</button>
 	</view>
-</template>
+</template> 
 <script>
   import wepy from 'wepy'
 
@@ -16,9 +35,13 @@
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      bindViewTap () {
-        console.log('button clicked')
+      banji(e) {
+        this.$navigate('./classControl')
+      },
+      jia(e) {
+        this.$navigate('./classCreat')
       }
+  
     };
 
     // 页面的生命周期函数
