@@ -82,6 +82,9 @@ page {
   </view>
   </view>
 </view>
+ <view class="weui-footer weui-footer_fixed-bottom">
+      <view class="weui-footer__text">Copyright © 2008-2019 xd435</view>
+  </view>
 </template>
 
 <script>

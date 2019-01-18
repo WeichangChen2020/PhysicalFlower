@@ -14,6 +14,7 @@ export default class extends wepy.app {
   config = {
     // 最后需要对这些页面的顺序进行调整
     pages: [
+       'pages/my/my',
       'pages/teacher/classControl',
       'pages/teacher/teacher',
       'pages/course/index',
@@ -21,7 +22,6 @@ export default class extends wepy.app {
       'pages/course/signin/detail',
       'pages/course/homework/list',
       'pages/course/homework/detail',
-      'pages/my/my',
       'pages/my/myInfo',
       'pages/my/myClass',
       'pages/my/useHelp',
