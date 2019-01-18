@@ -2,7 +2,7 @@
 </style>
 <template>
 	<view>
-		<button>aaaa</button>
+		<button>创建课堂测验</button>
 	</view>
 </template>
 <script>

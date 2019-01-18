@@ -2,14 +2,14 @@
 </style>
 <template>
 	<view>
-		<button>aaaa</button>
+		<button>管理签到</button>
 	</view>
 </template>
 <script>
   import wepy from 'wepy'
 
   // 通过继承自wepy.page的类创建页面逻辑
-  export default class siginCreat extends wepy.page {
+  export default class signinControl extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
     };
