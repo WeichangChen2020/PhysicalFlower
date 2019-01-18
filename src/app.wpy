@@ -58,7 +58,7 @@ export default class extends wepy.app {
   }
 
   globalData = {
-    userInfo: null
+    userInfo: {}
   }
 
   constructor() {
@@ -67,7 +67,7 @@ export default class extends wepy.app {
   }
 
   onLaunch() {
-    this.testAsync()
+    this.login()
   }
 
   sleep(s) {
@@ -94,6 +94,98 @@ export default class extends wepy.app {
         cb && cb(res.userInfo)
       }
     })
+  }
+
+  checkLogin() {
+
+  }
+
+  login() {
+    let that = this
+    wx.login({
+      success: function (res) {
+        var UL_DATA = {
+          code: res.code
+        }
+        that.request('userLogin', UL_DATA, '登录中') 
+        .then((res) => {
+          console.log(res)
+        })
+      },
+      fail: function (res) {
+        that.modal(
+          '请检查网络状况或账号安全状况。\n您现在处于未登录状态。',
+          '登录账户失败',
+          '确定'
+        )
+        .then((res) => { console.log('wx.login失败') })
+      }
+    })
+  }
+
+  request(tag, data, loading) {
+    var promise = new Promise((resolve, reject) => {
+      // var that = this
+      // if (loading) wx.showLoading({ title: loading, mask: true }) // 无参数则不显示
+      // data = data || {}  // data 默认为空对象
+      // loading = loading || 'Requesting'  // 在调试器打印请求发送记录
+      // if (that.globalData.showLog) console.log(tag + ': ' + loading + '...')
+      // data.pf = 'wx', data.tag = tag   // 默认添加 pf 和 tag 参数
+      // wx.request({
+      //   url: config.apiUrl,
+      //   method: 'POST',
+      //   header: { 'content-type': 'application/json' },
+      //   data: data,
+      //   success: function (res) {
+      //     res.tag = tag + ': '   // 返还 tag 名字, 方便用 console 定位
+      //     wx.hideLoading()
+      //     if (res.statusCode == 200) resolve(res)
+      //     else reject(res)
+      //   },
+      //   fail: function (e) {
+      //     wx.showToast({ icon: 'none', title: '网络连接失败' })
+      //     reject('网络连接失败')   // request fail 那么网断了
+      //   }
+      // })
+    })
+    return promise
+  }
+
+  modal(content, title, confirmText, showCancel) {
+    var promise = new Promise((resolve, reject) => {
+      wx.showModal({
+        title: title || '提示',
+        content: content,
+        showCancel: showCancel || false,
+        cancelText: '',
+        cancelColor: '',
+        confirmText: confirmText || '好的',
+        confirmColor: '',
+        success: function (res) {
+          if (res.confirm) resolve(res)
+          else reject(res)
+        },
+        fail: function (res) {
+          reject(res)
+        }
+      })
+    })
+    return promise
+  }
+
+  toast(content, title, mask) {
+    var promise = new Promise((resolve, reject) => {
+      wx.showToast({
+        title: content,
+        icon: title || 'none',
+        image: '',
+        duration: 2000,
+        mask: mask || false,
+        success: function (res) { resolve(res) },
+        fail: function (res) { reject(res) }
+      })
+    })
+    return promise
   }
 }
 </script>

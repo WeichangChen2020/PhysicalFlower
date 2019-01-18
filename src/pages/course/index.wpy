@@ -69,6 +69,7 @@ export default class Index extends wepy.page {
   // 页面的生命周期函数
   onLoad() {
     console.log('onLoad')
+    console.log(this.$parent)
   }
   onSHow() {
     // 如果未加入课程,跳转到join页面
