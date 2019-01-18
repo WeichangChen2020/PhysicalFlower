@@ -113,6 +113,7 @@ export default class extends wepy.app {
     let that = this
     wx.login({
       success: function (res) {
+        console.log('success')
         var UL_DATA = {
           code: res.code
         }
