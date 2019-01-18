@@ -1,0 +1,721 @@
+<style type="less">
+@import '../../public/style/public.wxss';
+@import '../../public/style/index.wxss';
+page {
+  width: 100%;
+  height: 100%;
+}
+
+.greeting {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
+.img_hd {
+  width: 670rpx;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+.agreement {
+  color: #66e;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+.border {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-width: 4rpx 0 4rpx 0;
+  border-style: solid;
+  border-color: #eee;
+  font-size: 30rpx;
+  line-height: 60rpx;
+  color: #b95;
+  padding: 20rpx 20rpx 40rpx 20rpx;
+}
+.btn {
+  background-color: #f7536b;
+  border: #eee solid 2rpx;
+  border-radius: 100rpx;
+  color: white;
+  width: 295rpx;
+  margin: 20rpx 20rpx 0 20rpx;
+  font-size: 30rpx;
+  line-height: 70rpx;
+}
+.input {
+  margin-top: 30rpx;
+  border-bottom: #ddd solid 2rpx;
+}
+
+.flex {
+  display: flex;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.flex-col {
+  flex-direction: column;
+}
+
+/*head   search*/
+.pageContainer .search {
+  width: 737rpx;
+  height: 65rpx;
+  padding: 12.5rpx 0 12.5rpx 15rpx;
+  background: #4bbc93;
+}
+.pageContainer .search-left {
+  flex: 15;
+  background: #52cc9f;
+  text-align: left;
+}
+.pageContainer .search-left input {
+  display: inline-block;
+  height: 65rpx;
+  color: #fff;
+  font-size: 26rpx;
+}
+.search-placeholder {
+  color: #fff;
+  line-height: 26rpx;
+  padding-top: 5rpx;
+}
+.pageContainer .search .search-left image {
+  display: inline-block;
+  width: 35rpx;
+  height: 35rpx;
+  padding: 15rpx 15rpx 15rpx 20rpx;
+}
+.pageContainer .search .search-right {
+  flex: 2;
+  margin-left: 20rpx;
+}
+.pageContainer .search .search-right image {
+  width: 35rpx;
+  height: 35rpx;
+  padding: 15rpx;
+}
+/*ad*/
+.ad,
+.course-grp-item {
+  width: 700rpx;
+  margin: 20rpx 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.ad navigator:first-child image {
+  width: 700rpx;
+  height: 160rpx;
+}
+.ad image,
+.course-grp-item image {
+  margin-top: 10rpx;
+  width: 335rpx;
+  height: 160rpx;
+}
+
+.container {
+  background: #f9f9f9;
+  overflow: hidden;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 15px 0;
+}
+.container::before {
+  position: fixed;
+  top: 0;
+  left: 0;
+  content: ' ';
+  width: 100%;
+  height: 1rpx;
+  background-color: #e2e2e2;
+  z-index: 5;
+}
+.doc-title {
+  position: relative;
+  padding: 15px 0;
+  margin: 10px 15px;
+  line-height: 25px;
+  font-size: 25px;
+  color: #666;
+}
+.doc-description {
+  margin: 14px 0;
+  padding: 0 15px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #666;
+}
+
+/*  车库题目样式*/
+/* CSS Document */
+.row:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: ' ';
+  clear: both;
+  height: 0;
+}
+.row {
+  display: inline-table;
+} /* Hides from IE-mac \*/
+html .row {
+  height: 1%;
+}
+.row {
+  display: block;
+} /* End hide from IE-mac */
+.col-hg-1,
+.col-hg-2,
+.col-hg-3,
+.col-hg-4,
+.col-hg-5,
+.col-hg-6,
+.col-hg-7,
+.col-hg-8,
+.col-hg-9,
+.col-hg-10,
+.col-hg-11,
+.col-hg-12 {
+  float: left;
+  box-sizing: border-box;
+}
+.col-hg-12 {
+  width: 100%;
+}
+.col-hg-11 {
+  width: 91.6667%;
+}
+.col-hg-10 {
+  width: 83.3333%;
+}
+.col-hg-9 {
+  width: 75%;
+}
+.col-hg-8 {
+  width: 66.6667%;
+}
+.col-hg-7 {
+  width: 40%;
+}
+.col-hg-6 {
+  width: 50%;
+}
+.col-hg-5 {
+  width: 41.6667%;
+}
+.col-hg-4 {
+  width: 33.3333%;
+}
+.col-hg-3 {
+  width: 25%;
+}
+.col-hg-2 {
+  width: 16.6667%;
+}
+.col-hg-1 {
+  width: 8.33333%;
+}
+/*classify-lists*/
+.classify-exer-lists {
+  background: #fff;
+  margin-top: 10rpx;
+}
+.classify-exer-lists.first {
+  margin-top: 0;
+}
+
+.classify-exer-lists .classify-exer-list {
+  position: relative;
+  padding: 27rpx 0 27rpx 90rpx;
+  border-bottom: 1rpx solid #f6f6f6;
+  font-size: 30rpx;
+  line-height: 46rpx;
+}
+
+.classify-exer-lists .classify-exer-list .icon-exer {
+  position: absolute;
+  left: 30rpx;
+  top: 50%;
+  transform: translate3d(0, -50%, 0px);
+  -webkit-transform: translate3d(0, -50%, 0px);
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 20rpx;
+  background: #fc8f02
+    url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAWCAYAAADAQbwGAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAABWUlEQVQ4y6WVsUpjURCGvwnR1cbKgEXYaq1MHkBBCIJW1iu+irXd4mtYWW29SGzFFGqpIIqCEIslpYKfRU4gXO5JbuLfnMvM/T9m5lzmorbVa2fXb0pUB06BN2AP+KCaBC7LM0PtVgRNVS2dVSubqnqm6jVgqSLjMSLMAtUa8AQsVATuAv+ywIj4VH/OUuHUliPidd4Z1sqCal2t50yT8rWM5w/QUxslsAbQA04K8XX1YvQddgrJX+qDejsOVRspdqc2C56O6UbLZngPbAPLQFdtJkA3vbIVEc+ztEwydIAfCdQFPoGdiOjnfNnBj6BpCfRSaHMSbGKFo1kCfxkugkvgTN2YC6i2U5svDDfRXnruplzWWHbLbbWvnqsrY/GVFOurrYInf8vAAXAF7EfEYGymA2A/5Q4rVziPihUufhdI2k6h3gD/gWPg/RuwI2AVtTXnT6qoa7X9BT+zVy5f6mfUAAAAAElFTkSuQmCC')
+    no-repeat center/20rpx 22rpx;
+  overflow: hidden;
+}
+.classify-exer-lists .classify-exer-list.left {
+  border-right: 1rpx solid #f6f6f6;
+}
+
+.classify-exer-lists .classify-exer-list .special-exer-tip {
+  position: absolute;
+  left: 30rpx;
+  top: 50%;
+  transform: translate3d(0, -50%, 0px);
+  -webkit-transform: translate3d(0, -50%, 0px);
+  width: 40rpx;
+  height: 40rpx;
+  background: #73d263;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 40rpx;
+}
+.classify-exer-lists.num .classify-exer-list {
+  counter-increment: my;
+}
+.classify-exer-lists.num .classify-exer-list:after {
+  position: absolute;
+  left: 30rpx;
+  top: 50%;
+  transform: translate3d(0, -50%, 0px);
+  -webkit-transform: translate3d(0, -50%, 0px);
+  width: 40rpx;
+  height: 40rpx;
+  content: counter(my);
+  background: #0ae;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 40rpx;
+}
+.classify-exer-lists.num .classify-exer-list .classify-exam-num {
+  position: absolute;
+  right: 30rpx;
+  top: 50%;
+  transform: translate3d(0, -50%, 0px);
+  -webkit-transform: translate3d(0, -50%, 0px);
+  font-size: 24rpx;
+  color: #999;
+  vertical-align: middle;
+}
+.classify-exer-lists.num
+  .classify-exer-list
+  .classify-exam-num
+  .icon-label-class {
+  display: inline-block;
+  width: 12rpx;
+  height: 20rpx;
+  margin-left: 4rpx;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAASCAYAAABit09LAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAAA4ElEQVQoz43Rr0qEQRiF8We/9SYMgoIIFoPFC7CsxWSyaJHTDGI2LqggosUHDGtQEEyLYcU/WC0Gr8gyGtZvdn3j8GPeOWdQ79UeU6YBzoAbdXMiTPIBbABX6takG0nyCfSAC3W7Cgv+AtaBY3V3HHbGD9Ql4BnoJ7EKC14AXoDzJJdVWPBcwddJTquw4FngFbht+N90u1NWvwGDJP1amPmy8jdM04IWgXfg5Af9Sa0uA0/AUZJBa+HqCjACDpPctf6Mugo8AvtJHtre3VHXgCGwl2RYa2EGOAB2kowmFfkNyq5O87vOCYoAAAAASUVORK5CYII=')
+    no-repeat center/10rpx 18rpx;
+}
+.metadata {
+  display: table;
+  height: 300px;
+  width: 100%;
+}
+.metadata view {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  color: #999;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+}
+/**app.wxss**/
+.pageContainer {
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+</style>
+<template>
+    <canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-1000000px;top:-1000000px; "></canvas>
+
+  <view class='greeting'>填写位置名称</view>
+  <view class='border'>
+    <view>输入考勤地点</view>
+    <input class='input' disabled='{{isChecked<1}}' placeholder='输入考勤地点完整名称' focus='{{focus}}' maxlength="20" bindinput='bindKeyInput' />
+  </view>
+  <view class='greeting'>上传地点照片</view>
+  <view class='border'>
+    <view class="weui-uploader">
+      <view class="img_hd">
+        <view class="weui-uploader__title">图片上传</view>
+        <view class="weui-uploader__info">{{files.length}}/2</view>
+      </view>
+      <view class="weui-uploader__bd">
+        <view class="weui-uploader__files" id="uploaderFiles">
+          <block wx:for="{{files}}" wx:key="*this">
+            <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
+              <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+            </view>
+          </block>
+        </view>
+
+        <view class="weui-uploader__input-box">
+          <view class="weui-uploader__input" bindtap="chooseImage"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='greeting'>注册地点坐标</view>
+  <view class='border'>
+    <view>记录经纬度坐标信息</view>
+    <form bindsubmit="openLocation">
+      <view style='display: flex;flex-direction: row'>
+        <button class='btn' disabled='{{isChecked<2}}' bindtap='getLocation'>点击获取位置</button>
+        <button class="btn" type='primary' formType="submit">查看地图位置</button>
+      </view>
+      <view class="img_hd" wx:if='{{isGotLoc}}'>
+        <view class="weui-uploader__title">经度
+          <input class="weui-uploader__info" value="{{location.longitude}}°E" name="longitude" />
+        </view>
+        <view class="weui-uploader__title">纬度
+          <input class="weui-uploader__info" value="{{location.latitude}}°N" name="latitude" />
+        </view>
+      </view>
+    </form>
+
+  </view>
+
+  <view class='greeting'>上传地点信息</view>
+  <view class='border'>
+    <button class="btn" style='width:400rpx' bindtap='reg'>提交并注册位置</button>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+
+// 通过继承自wepy.page的类创建页面逻辑
+export default class signinCreat extends wepy.page {
+  // 可用于页面模板绑定的数据
+  data = {
+    isGotLoc: 0,
+    files: [],
+    motto: 'hw',
+    userInfo: {},
+    // 默认未获取地址
+    hasLocation: false,
+    inputValue: '',
+    commomArray: {
+      address_name: 'fk',
+      new_longitude: '',
+      new_latitude: '',
+      img_path: ''
+    },
+    // new_longitude: '',
+    // new_latitude: '',
+
+    address_city: '',
+    address_description: '',
+    canvasWidth: '',
+    canvasHeight: ''
+  }
+
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+    chooseImage: function() {
+      var that = this
+      wx.chooseImage({
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function(res) {
+          // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+          that.setData({
+            files: that.data.files.concat(res.tempFilePaths)
+          })
+
+          // console.log('chooseimage成功')
+          // console.log(res)
+          // console.log(canvasWidth, canvasHeight)
+
+          wx.getImageInfo({
+            src: res.tempFilePaths[0],
+            success: function(res) {
+              // console.log(photo)
+              var ctx = wx.createCanvasContext('photo_canvas')
+              var ratio = 2
+              // console.log(that)
+              that.setData({
+                canvasWidth: res.width,
+                canvasHeight: res.height
+              })
+
+              // console.log(that.data.canvasWidth, that.data.canvasHeight)
+              // 保证宽高均在200以内
+
+              while (
+                that.data.canvasWidth > 10000 ||
+                that.data.canvasHeight > 10000
+              ) {
+                // 比例取整
+                that.setData({
+                  canvasWidth: Math.trunc(res.width / ratio),
+                  canvasHeight: Math.trunc(res.height / ratio)
+                })
+                ratio++
+              }
+              console.log(that.data.canvasWidth, that.data.canvasHeight)
+
+              // this.setData({
+              //   canvasWidth: canvasWidth,
+              //   canvasHeight: canvasHeight
+              // })// 设置canvas尺寸
+
+              // console.log(canvasWidth, canvasHeight)
+              ctx.drawImage(
+                res.path,
+                0,
+                0,
+                that.data.canvasWidth,
+                that.data.canvasHeight
+              )
+              ctx.draw()
+              // var img =
+              // console.log(img)
+              // 下载canvas图片
+              // console.log(canvasWidth, canvasHeight)
+              // wx.getImageInfo({
+              //   src: res.path,
+              //   success: function (res) {
+              //     console.log('这是保存缩小后的图片信息')
+              //     console.log(res.width)
+              //     console.log(res.height)
+
+              //   },
+              // })
+
+              setTimeout(function() {
+                wx.canvasToTempFilePath({
+                  fileType: 'jpg',
+                  quality: 0.5,
+                  canvasId: 'photo_canvas',
+                  success: function(res) {
+                    console.log('下载canvas成功')
+
+                    // 转编码base64
+                    wx.getFileSystemManager().readFile({
+                      filePath: res.tempFilePath, // 选择图片返回的相对路径
+                      encoding: 'base64', // 编码格式
+                      success: res => {
+                        // 成功的回调
+                        //  console.log(res.data)
+
+                        console.log('修改成功等待调用')
+                      },
+                      fail: function(e) {
+                        console.log(e)
+                        console.log(that.data)
+                      }
+                    })
+
+                    wx.downloadFile({
+                      url: res.tempFilePath,
+                      success: function(res) {
+                        console.log(res)
+                        // 图片保存到本地
+                        wx.saveImageToPhotosAlbum({
+                          filePath: res.tempFilePath,
+                          success: function(data) {
+                            console.log('...')
+                          }
+                        })
+                      },
+
+                      fail: function(err) {
+                        console.log(err)
+                        if (
+                          err.errMsg === 'saveImageToPhotosAlbum:fail auth deny'
+                        ) {
+                          console.log('用户一开始拒绝了，我们想再次发起授权')
+                          console.log('打开设置窗口')
+                          wx.openSetting({
+                            success(settingdata) {
+                              console.log(settingdata)
+                              if (
+                                settingdata.authSetting['scope.writePhotosAlbum']
+                              ) {
+                                console.log(
+                                  '获取权限成功，给出再次点击图片保存到相册的提示。'
+                                )
+                              } else {
+                                console.log(
+                                  '获取权限失败，给出不给权限就无法正常使用的提示'
+                                )
+                              }
+                            }
+                          })
+                        }
+                        console.log('还是错误了')
+                      }
+                    })
+                  },
+                  fail: function(error) {
+                    console.log('下载canvas失败')
+                    console.log(error)
+                  }
+                })
+              }, 100)
+              console.log('that.data.img_path')
+
+              // TODO  path赋值
+            },
+            fail: function(error) {
+              console.log(error)
+            }
+          })
+        },
+        error: function(res) {
+          console.log(res)
+        }
+      })
+    },
+
+    previewImage: function(e) {
+      wx.previewImage({
+        current: e.currentTarget.id, // 当前显示图片的http链接
+        urls: this.data.files // 需要预览的图片http链接列表
+      })
+    },
+
+    // 事件处理函数
+    bindViewTap: function() {
+      wx.navigateTo({
+        url: '../logs/logs'
+      })
+    },
+    // onLoad: function() {
+    // console.log(this)
+    //   var that = this
+    //   // 调用应用实例的方法获取全局数据
+    //   wx.getUserInfo(function(userInfo) {
+    //     // 更新数据
+    //     that.setData({
+    //       userInfo: userInfo
+    //     })
+    //   })
+    // },
+
+    // 获取经纬度
+    getLocation: function(e) {
+      console.log(e)
+      var that = this
+      wx.getLocation({
+        type: 'wgs84',
+        success: function(res) {
+          console.log(res)
+          that.setData({
+            isGotLoc: 1,
+            hasLocation: true,
+            new_longitude: res.longitude,
+            new_latitude: res.latitude,
+            location: {
+              longitude: res.longitude,
+              latitude: res.latitude
+            }
+          })
+          wx.showToast({
+            title: '获取坐标成功'
+          })
+          wx.request({
+            // 百度地图API，将微信获得的经纬度传给百度，获得城市等信息
+            url:
+              'https:// api.map.baidu.com/geocoder/v2/?ak=GAKrXdS2lPhNejYKnvfalheyoiTqcnWG&location=' +
+              that.data.new_latitude +
+              ',' +
+              that.data.new_longitude +
+              '&output=json&coordtype=wgs84ll',
+            data: {},
+            header: {
+              'Content-Type': 'application/json'
+            },
+            success: function(res) {
+              console.log(res.data.result)
+              console.log(
+                res.data.result.addressComponent.city +
+                  res.data.result.addressComponent.district
+              )
+              console.log(res.data.result.sematic_description)
+              that.setData({
+                address_city:
+                  res.data.result.addressComponent.city +
+                  res.data.result.addressComponent.district,
+                address_description: res.data.result.sematic_description
+              })
+            },
+            fail: function() {
+              // fail
+            }
+          })
+        }
+      })
+    },
+    // 提交位置信息
+    reg: function(e) {
+      console.log(this.data.new_longitude, this.data.new_latitude)
+      wx.showLoading({
+        title: '上传数据中'
+      })
+      // todo
+      // wx.request ({
+      //   url: appData.apiUrl,
+      //   method: 'POST',
+      //   header: {
+      //     'content-type': 'application/json'
+      //   },
+      //   data: {
+      //     pf: 'wx',
+      //     tag: 'addLocation',
+      //     name: this.data.inputValue,
+      //     lon: this.data.new_longitude,
+      //     lat: this.data.new_latitude
+      //   },
+      //   success(res) {
+      //     wx.navigateBack({
+      //       delta: 1
+      //     })
+      //     wx.showToast({
+      //       title: '上传位置成功'
+      //     })
+      //   }
+      // })
+    },
+    // 根据经纬度在地图上显示
+    openLocation: function(e) {
+      console.log('openLocation', e)
+      var value = e.detail.value
+      wx.openLocation({
+        longitude: Number(value.longitude),
+        latitude: Number(value.latitude),
+        name: this.data.address_city, // 位置名
+        address: this.data.address_description // 地址详情说明
+      })
+    },
+
+    bindKeyInput: function(e) {
+      this.setData({
+        inputValue: e.detail.value
+      })
+      // console.log(inputValue)
+    }
+  }
+
+  // 页面的生命周期函数
+  onLoad() {
+    console.log('onLoad')
+  }
+}
+</script>

@@ -1,8 +1,12 @@
 <style type="less">
+.title{
+  display: flex;
+  justify-content: center;
+}
 </style>
 <template>
 	<view>
-		<text>XXXXX班级</text>
+		<text class="title">XXXXX班级</text>
   </view>
     <button @tap='tap' id="1">创建签到</button>
     <button @tap='tap' id="2">管理签到</button>
@@ -27,10 +31,10 @@
         let tid = e.currentTarget.id
         switch (tid) {
           case '1':
-            this.$navigate('./siginCreat')
+            this.$navigate('./signinCreat')
             break
           case '2':
-            this.$navigate('./siginControl')
+            this.$navigate('./signinControl')
             break
           case '3':
             this.$navigate('./homeworkCreat')
