@@ -1,4 +1,9 @@
-<style src='public/style/weui.wxss'></style>
+<style src='public/style/weui.wxss'>
+.btn{
+  background: linear-gradient(150deg, #d188fb, #9587f8, #558bf7); 
+}
+
+</style>
 
 <script>
 import wepy from 'wepy'
@@ -14,6 +19,7 @@ export default class extends wepy.app {
   config = {
     // 最后需要对这些页面的顺序进行调整
     pages: [
+      'pages/teacher/signinCreat',
       'pages/course/index',
       'pages/course/signin/list',
       'pages/course/signin/detail',
@@ -29,7 +35,6 @@ export default class extends wepy.app {
       'pages/teacher/stuBan',
       'pages/teacher/testCreat',
       'pages/teacher/homeworkCreat',
-      'pages/teacher/signinCreat',
       'pages/teacher/signinControl',
       'pages/teacher/testControl',
       'pages/teacher/homeworkControl',

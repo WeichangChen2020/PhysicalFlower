@@ -37,6 +37,7 @@ page {
   padding: 20rpx 20rpx 40rpx 20rpx;
 }
 .btn {
+  background: linear-gradient(150deg, #d188fb, #9587f8, #558bf7); 
   background-color: #f7536b;
   border: #eee solid 2rpx;
   border-radius: 100rpx;
@@ -344,40 +345,23 @@ html .row {
 <template>
     <canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-1000000px;top:-1000000px; "></canvas>
 
-  <view class='greeting'>填写位置名称</view>
+  <view class='greeting'>XXXXXX班级签到</view>
   <view class='border'>
-    <view>输入考勤地点</view>
-    <input class='input' disabled='{{isChecked<1}}' placeholder='输入考勤地点完整名称' focus='{{focus}}' maxlength="20" bindinput='bindKeyInput' />
+    <view>签到编号</view>
+    <text class='input'>XX日XX号签到</text>
   </view>
-  <view class='greeting'>上传地点照片</view>
-  <view class='border'>
-    <view class="weui-uploader">
-      <view class="img_hd">
-        <view class="weui-uploader__title">图片上传</view>
-        <view class="weui-uploader__info">{{files.length}}/2</view>
-      </view>
-      <view class="weui-uploader__bd">
-        <view class="weui-uploader__files" id="uploaderFiles">
-          <block wx:for="{{files}}" wx:key="*this">
-            <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
-              <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
-            </view>
-          </block>
-        </view>
 
-        <view class="weui-uploader__input-box">
-          <view class="weui-uploader__input" bindtap="chooseImage"></view>
-        </view>
-      </view>
-    </view>
-  </view>
-  <view class='greeting'>注册地点坐标</view>
+  <view class='greeting'>获取签到地点</view>
   <view class='border'>
-    <view>记录经纬度坐标信息</view>
+    <view>签到地点记录</view>
     <form bindsubmit="openLocation">
       <view style='display: flex;flex-direction: row'>
         <button class='btn' disabled='{{isChecked<2}}' bindtap='getLocation'>点击获取位置</button>
-        <button class="btn" type='primary' formType="submit">查看地图位置</button>
+      </view>
+
+        <view class='border'>
+          <view>签到精度选择</view>
+          <input class='input' disabled='{{isChecked<1}}' placeholder='输入签到精度' focus='{{focus}}' maxlength="10" bindinput='bindKeyInput' />
       </view>
       <view class="img_hd" wx:if='{{isGotLoc}}'>
         <view class="weui-uploader__title">经度
@@ -391,9 +375,9 @@ html .row {
 
   </view>
 
-  <view class='greeting'>上传地点信息</view>
+  <view class='greeting'>发布签到</view>
   <view class='border'>
-    <button class="btn" style='width:400rpx' bindtap='reg'>提交并注册位置</button>
+    <button class="btn" style='width:400rpx' bindtap='reg'>提交并发布签到</button>
   </view>
 </template>
 <script>
@@ -427,188 +411,6 @@ export default class signinCreat extends wepy.page {
 
   // 事件处理函数(集中保存在methods对象中)
   methods = {
-    chooseImage: function() {
-      var that = this
-      wx.chooseImage({
-        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-        success: function(res) {
-          // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-          that.setData({
-            files: that.data.files.concat(res.tempFilePaths)
-          })
-
-          // console.log('chooseimage成功')
-          // console.log(res)
-          // console.log(canvasWidth, canvasHeight)
-
-          wx.getImageInfo({
-            src: res.tempFilePaths[0],
-            success: function(res) {
-              // console.log(photo)
-              var ctx = wx.createCanvasContext('photo_canvas')
-              var ratio = 2
-              // console.log(that)
-              that.setData({
-                canvasWidth: res.width,
-                canvasHeight: res.height
-              })
-
-              // console.log(that.data.canvasWidth, that.data.canvasHeight)
-              // 保证宽高均在200以内
-
-              while (
-                that.data.canvasWidth > 10000 ||
-                that.data.canvasHeight > 10000
-              ) {
-                // 比例取整
-                that.setData({
-                  canvasWidth: Math.trunc(res.width / ratio),
-                  canvasHeight: Math.trunc(res.height / ratio)
-                })
-                ratio++
-              }
-              console.log(that.data.canvasWidth, that.data.canvasHeight)
-
-              // this.setData({
-              //   canvasWidth: canvasWidth,
-              //   canvasHeight: canvasHeight
-              // })// 设置canvas尺寸
-
-              // console.log(canvasWidth, canvasHeight)
-              ctx.drawImage(
-                res.path,
-                0,
-                0,
-                that.data.canvasWidth,
-                that.data.canvasHeight
-              )
-              ctx.draw()
-              // var img =
-              // console.log(img)
-              // 下载canvas图片
-              // console.log(canvasWidth, canvasHeight)
-              // wx.getImageInfo({
-              //   src: res.path,
-              //   success: function (res) {
-              //     console.log('这是保存缩小后的图片信息')
-              //     console.log(res.width)
-              //     console.log(res.height)
-
-              //   },
-              // })
-
-              setTimeout(function() {
-                wx.canvasToTempFilePath({
-                  fileType: 'jpg',
-                  quality: 0.5,
-                  canvasId: 'photo_canvas',
-                  success: function(res) {
-                    console.log('下载canvas成功')
-
-                    // 转编码base64
-                    wx.getFileSystemManager().readFile({
-                      filePath: res.tempFilePath, // 选择图片返回的相对路径
-                      encoding: 'base64', // 编码格式
-                      success: res => {
-                        // 成功的回调
-                        //  console.log(res.data)
-
-                        console.log('修改成功等待调用')
-                      },
-                      fail: function(e) {
-                        console.log(e)
-                        console.log(that.data)
-                      }
-                    })
-
-                    wx.downloadFile({
-                      url: res.tempFilePath,
-                      success: function(res) {
-                        console.log(res)
-                        // 图片保存到本地
-                        wx.saveImageToPhotosAlbum({
-                          filePath: res.tempFilePath,
-                          success: function(data) {
-                            console.log('...')
-                          }
-                        })
-                      },
-
-                      fail: function(err) {
-                        console.log(err)
-                        if (
-                          err.errMsg === 'saveImageToPhotosAlbum:fail auth deny'
-                        ) {
-                          console.log('用户一开始拒绝了，我们想再次发起授权')
-                          console.log('打开设置窗口')
-                          wx.openSetting({
-                            success(settingdata) {
-                              console.log(settingdata)
-                              if (
-                                settingdata.authSetting['scope.writePhotosAlbum']
-                              ) {
-                                console.log(
-                                  '获取权限成功，给出再次点击图片保存到相册的提示。'
-                                )
-                              } else {
-                                console.log(
-                                  '获取权限失败，给出不给权限就无法正常使用的提示'
-                                )
-                              }
-                            }
-                          })
-                        }
-                        console.log('还是错误了')
-                      }
-                    })
-                  },
-                  fail: function(error) {
-                    console.log('下载canvas失败')
-                    console.log(error)
-                  }
-                })
-              }, 100)
-              console.log('that.data.img_path')
-
-              // TODO  path赋值
-            },
-            fail: function(error) {
-              console.log(error)
-            }
-          })
-        },
-        error: function(res) {
-          console.log(res)
-        }
-      })
-    },
-
-    previewImage: function(e) {
-      wx.previewImage({
-        current: e.currentTarget.id, // 当前显示图片的http链接
-        urls: this.data.files // 需要预览的图片http链接列表
-      })
-    },
-
-    // 事件处理函数
-    bindViewTap: function() {
-      wx.navigateTo({
-        url: '../logs/logs'
-      })
-    },
-    // onLoad: function() {
-    // console.log(this)
-    //   var that = this
-    //   // 调用应用实例的方法获取全局数据
-    //   wx.getUserInfo(function(userInfo) {
-    //     // 更新数据
-    //     that.setData({
-    //       userInfo: userInfo
-    //     })
-    //   })
-    // },
-
     // 获取经纬度
     getLocation: function(e) {
       console.log(e)
