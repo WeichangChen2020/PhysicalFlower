@@ -93,7 +93,7 @@ import wepy from 'wepy'
 export default class queReport extends wepy.page {
   config = {
     navigationBarTitleText: '我的反馈'
-  }
+  };
 
   data = {
     files: [],
@@ -105,7 +105,7 @@ export default class queReport extends wepy.page {
     problem_description: '',
     canvasWidth: '',
     canvasHeight: ''
-  }
+  };
 
   methods = {
     chooseImage(e) {
@@ -116,6 +116,22 @@ export default class queReport extends wepy.page {
         sourceType: ['album', 'camera'],
         success(res) {
           // tempFilePath可以作为img标签的src属性显示图片
+          var ratio = 2
+          wx.getImageInfo({
+            src: res.tempFilePaths[0],
+            succes(res) {
+              console.log(res.width)
+              console.log(res.height)
+              while (that.data.canvasWidth > 10000 || that.data.canvasHeight > 10000) {
+                that.setData({
+                  canvasWidth: Math.trunc(res.width / ratio),
+                  canvasHeight: Math.trunc(res.height / ratio)
+                })
+                ratio++
+              }
+              console.log(that.data.canvasWidth, that.data.canvasHeight)
+            }
+          })
           that.data.files = that.data.files.concat(res.tempFilePaths)
           console.log(that.data.files)
         }
