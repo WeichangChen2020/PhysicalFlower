@@ -36,9 +36,9 @@ page {
 <template>
  <view style='height:20rpx'></view>
 <view wx:for='{{setArr}}' wx:for-item="i" wx:key="name" style="background-color:{{bottonClr[i.id]}};margin-bottom:{{i.margin}}rpx">
-  <botton class='list' id="{{i.id}}" bindtouchstart="CA" bindtouchend="CB" bindtap="tap">
+  <botton class='list' id="{{i.id}}"  bindtap="tap">
     <view class='listInfo'>{{i.name}}</view>
-    <view class='listCont'>{{i.name}}</view>
+    <view class='listCont'>{{userInfo.name}}</view>
   </botton>
 </view>
 <view class="weui-footer weui-footer_fixed-bottom">
@@ -48,13 +48,14 @@ page {
 
 <script>
 import wepy from 'wepy'
+
 export default class myInfo extends wepy.page {
   config = {
     navigationBarTitleText: '我的信息'
   };
-  components = {};
 
   data = {
+    userInfo: {},
     bottonClr: [
       'white',
       'white',
@@ -68,10 +69,36 @@ export default class myInfo extends wepy.page {
       'white'
     ],
     setArr: [
-      { id: '1', name: '姓名', img: 'option', margin: '0' },
-      { id: '2', name: '学号', img: 'medal', margin: '0' },
-      { id: '3', name: '手机号', img: 'ticket', margin: '0' }
+      {
+        id: '1',
+        name: '姓名',
+        img: 'option',
+        margin: '0',
+        type: 'name'
+      },
+      {
+        id: '2',
+        name: '学号',
+        img: 'medal',
+        margin: '0',
+        type: 'id'
+      },
+      {
+        id: '3',
+        name: '手机号',
+        img: 'ticket',
+        margin: '0',
+        type: 'tel'
+      }
     ]
-  };
+  }
+  onLoad() {
+    // this.data.userInfo = this.$parent.globalData.userInfo
+    this.data.userInfo = this.$parent.globalData.userInfo
+    console.log(this.$parent.globalData.userInfo)
+  }
+  onShow() {
+    this.data.userInfo = this.$parent.globalData.userInfo
+  }
 }
 </script>

@@ -1,4 +1,9 @@
-<style src='public/style/weui.wxss'></style>
+<style src='public/style/weui.wxss'>
+.btn{
+  background: linear-gradient(150deg, #d188fb, #9587f8, #558bf7); 
+}
+
+</style>
 
 <script>
 import wepy from 'wepy'
@@ -16,6 +21,7 @@ export default class extends wepy.app {
     pages: [
       'pages/my/my',
       'pages/teacher/teacher',
+      'pages/teacher/signinCreat',
       'pages/course/index',
       'pages/course/signin/list',
       'pages/course/signin/detail',
@@ -30,7 +36,6 @@ export default class extends wepy.app {
       'pages/teacher/stuBan',
       'pages/teacher/testCreat',
       'pages/teacher/homeworkCreat',
-      'pages/teacher/signinCreat',
       'pages/teacher/signinControl',
       'pages/teacher/homeworkControl',
       'pages/teacher/classControl'
@@ -66,7 +71,11 @@ export default class extends wepy.app {
   }
 
   globalData = {
-    userInfo: {}
+    userInfo: {
+      'name': 'sss',
+      'id': '2',
+      'tel': '33'
+    }
   }
 
   constructor() {
