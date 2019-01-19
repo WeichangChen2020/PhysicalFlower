@@ -43,7 +43,6 @@ page {
   border-radius: 100rpx;
   color: white;
   width: 295rpx;
-  margin: 20rpx 20rpx 0 20rpx;
   font-size: 30rpx;
   line-height: 70rpx;
 }
@@ -385,6 +384,14 @@ import wepy from 'wepy'
 
 // 通过继承自wepy.page的类创建页面逻辑
 export default class signinCreat extends wepy.page {
+  config ={
+   window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: '发布签到',
+      navigationBarTextStyle: 'black'
+    },
+  }
   // 可用于页面模板绑定的数据
   data = {
     isGotLoc: 0,
@@ -496,16 +503,6 @@ export default class signinCreat extends wepy.page {
       // })
     },
     // 根据经纬度在地图上显示
-    openLocation: function(e) {
-      console.log('openLocation', e)
-      var value = e.detail.value
-      wx.openLocation({
-        longitude: Number(value.longitude),
-        latitude: Number(value.latitude),
-        name: this.data.address_city, // 位置名
-        address: this.data.address_description // 地址详情说明
-      })
-    },
 
     bindKeyInput: function(e) {
       this.setData({

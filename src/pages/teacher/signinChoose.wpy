@@ -1,0 +1,189 @@
+<style type="less">
+.greeting {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
+
+.border {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-width: 4rpx 0 4rpx 0;
+  border-style: solid;
+  border-color: #eee;
+  font-size: 30rpx;
+  line-height: 60rpx;
+  color: #b95;
+  padding: 20rpx 20rpx 40rpx 20rpx;
+}
+
+.weui-flex {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.weui-cells {
+  margin-top: 0;
+  opacity: 0;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.weui-cells:after, .weui-cells:before {
+  display: none;
+}
+
+.weui-cells_show {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+}
+
+.weui-cell:before {
+  right: 15px;
+}
+
+.kind-list__item {
+  margin: 10px 0;
+  background-color: #fff;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.kind-list__item:first-child {
+  margin-top: 0;
+}
+
+.kind-list__img {
+  width: 30px;
+  height: 30px;
+}
+
+.kind-list__item-hd {
+  padding: 20px;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+}
+
+.kind-list__item-hd_show {
+  opacity: 0.4;
+}
+
+.kind-list__item-bd {
+  height: 0;
+  overflow: hidden;
+}
+
+.kind-list__item-bd_show {
+  height: auto;
+}
+
+</style>
+<template>
+  <view class="page__bd page__bd_spacing">
+      <view class="kind-list">
+          <block wx:for="{{list}}" wx:key="id">
+              <view class="kind-list__item">
+                  <view id="{{item.id}}" class="weui-flex kind-list__item-hd {{item.open ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle">
+                      <view class="weui-flex__item">{{item.name}}</view>
+                      <image class="kind-list__img" src="../../public/images/icon_nav_select.png"></image>
+                  </view>
+                  <view class="kind-list__item-bd {{item.open ? 'kind-list__item-bd_show' : ''}}">
+                      <view class="weui-cells {{item.open ? 'weui-cells_show' : ''}}">
+                          <block wx:for="{{item.pages}}" wx:for-item="page" wx:key="*this">
+                              <navigator url="{{url[item]}}" class="weui-cell weui-cell_access">
+                                  <view class="weui-cell__bd">{{page}}</view>
+                                  <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+                              </navigator>
+                          </block>
+                      </view>
+                  </view>
+              </view>
+          </block>
+      </view>
+  </view>
+
+
+</template>
+<script>
+import wepy from 'wepy'
+
+// 通过继承自wepy.page的类创建页面逻辑
+export default class signinChoose extends wepy.page {
+  config = {
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: '管理签到',
+      navigationBarTextStyle: 'black'
+    }
+  };
+  // 可用于页面模板绑定的数据
+  data = {
+    list: [
+      {
+        id: '1',
+        name: 'XXXXX班级',
+        open: false,
+        pages: ['XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到'],
+        url: ['./siginControl', './siginControl', './siginControl', './siginControl', './siginControl']
+      },
+      {
+        id: '2',
+        name: 'XXXXX班级',
+        open: false,
+        pages: ['XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到'],
+        url: ['./siginControl', './siginControl', './siginControl', './siginControl', './siginControl']
+      },
+      {
+        id: '3',
+        name: 'XXXXX班级',
+        open: false,
+        pages: ['XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到'],
+        url: ['./siginControl', './siginControl', './siginControl', './siginControl', './siginControl']
+      },
+      {
+        id: '4',
+        name: 'XXXXX班级',
+        open: false,
+        pages: ['XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到'],
+        url: ['./siginControl', './siginControl', './siginControl', './siginControl', './siginControl']
+      },
+      {
+        id: '5',
+        name: 'XXXXX班级',
+        open: false,
+        pages: ['XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到'],
+        url: ['./siginControl', './siginControl', './siginControl', './siginControl', './siginControl']
+      }
+    ]
+  };
+
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+    kindToggle(e) {
+      var id = e.currentTarget.id
+      var list = this.data.list
+      for (var i = 0, len = list.length; i < len; ++i) {
+        if (list[i].id === id) {
+          list[i].open = !list[i].open
+        } else {
+          list[i].open = false
+        }
+      }
+      this.setData({
+        list: list
+      })
+    }
+  };
+
+  // 页面的生命周期函数
+  onLoad() {
+  }
+}
+</script>

@@ -3,18 +3,23 @@
   display: flex;
   justify-content: center;
 }
+.greeting {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
 </style>
 <template>
 	<view>
 		<text class="title">XXXXX班级</text>
   </view>
-    <button @tap='tap' id="1">创建签到</button>
-    <button @tap='tap' id="2">管理签到</button>
-    <button @tap='tap' id="3">发布课后作业</button>
-    <button @tap='tap' id="4">管理课后作业</button>
-    <button @tap='tap' id="5">删除学生信息</button>
-    <button @tap='tap' id="6">发布课堂测试</button>
-    <button @tap='tap' id="7">管理课堂测试</button>
+    <button class="greeting" @tap='tap' id="1">创建签到</button>
+    <button class="greeting" @tap='tap' id="2">管理签到</button>
+    <button class="greeting" @tap='tap' id="3">发布课后作业</button>
+    <button class="greeting" @tap='tap' id="4">管理课后作业</button>
+    <button class="greeting" @tap='tap' id="5">删除学生信息</button>
+    <button class="greeting" @tap='tap' id="6">发布课堂测试</button>
+    <button class="greeting" @tap='tap' id="7">管理课堂测试</button>
 </template>
 <script>
   import wepy from 'wepy'
@@ -34,7 +39,7 @@
             this.$navigate('./signinCreat')
             break
           case '2':
-            this.$navigate('./signinControl')
+            this.$navigate('./signinChoose')
             break
           case '3':
             this.$navigate('./homeworkCreat')

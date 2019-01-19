@@ -1,8 +1,26 @@
 <style type="less">
+.greeting {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
+.border {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-width: 4rpx 0 4rpx 0;
+  border-style: solid;
+  border-color: #eee;
+  font-size: 30rpx;
+  line-height: 60rpx;
+  color: #b95;
+  padding: 20rpx 20rpx 40rpx 20rpx;
+}
 </style>
 <template>
 	<view>
-		<button>管理签到</button>
+    <button class="greeting">Xxxxx班级</button>
 	</view>
 </template>
 <script>
@@ -10,6 +28,14 @@
 
   // 通过继承自wepy.page的类创建页面逻辑
   export default class signinControl extends wepy.page {
+    config ={
+      window: {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#fff',
+        navigationBarTitleText: '管理签到',
+        navigationBarTextStyle: 'black'
+      }
+    }
     // 可用于页面模板绑定的数据
     data = {
     };
