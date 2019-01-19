@@ -96,9 +96,8 @@ export default class queReport extends wepy.page {
   }
 
   data = {
-    src: '',
-    isGotLoc: 0,
     files: [],
+    isGotLoc: 0,
     userInfo: {},
     hasLocation: false,
     inputValue: '',
@@ -117,10 +116,8 @@ export default class queReport extends wepy.page {
         sourceType: ['album', 'camera'],
         success(res) {
           // tempFilePath可以作为img标签的src属性显示图片
-          console.log(res)
-          that.setdata(
-            {src: res.tempFilePaths}
-          )
+          that.data.files = that.data.files.concat(res.tempFilePaths)
+          console.log(that.data.files)
         }
       })
     }
