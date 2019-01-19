@@ -12,14 +12,14 @@ page {
   border-bottom: #ddd solid 2rpx;
 }
 
-.img_hd{
+.img_hd {
   width: 670rpx;
   display: flex;
   flex-direction: row;
   text-align: center;
 }
 
-.greeting{
+.greeting {
   font-size: 14px;
   color: gray;
   margin: 20rpx 0 10rpx 20rpx;
@@ -38,16 +38,16 @@ page {
   color: #b95;
   padding: 20rpx 20rpx 40rpx 20rpx;
 
-  .btn{
-  background-color: #f7536b;
-  border: #eee solid 2rpx;
-  border-radius: 100rpx;
-  color: white;
-  width: 295rpx;
-  margin: 20rpx 20rpx 0 20rpx;
-  font-size: 30rpx;
-  line-height: 70rpx;
-}
+  .btn {
+    background-color: #f7536b;
+    border: #eee solid 2rpx;
+    border-radius: 100rpx;
+    color: white;
+    width: 295rpx;
+    margin: 20rpx 20rpx 0 20rpx;
+    font-size: 30rpx;
+    line-height: 70rpx;
+  }
 }
 </style>
 <template>
@@ -67,7 +67,7 @@ page {
       <view class="weui-uploader__files" id="uploaderFiles">
 
         <block wx:for="{{files}}" wx:key="*this">
-          <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
+          <view class="weui-uploader__file" bindtap="chooseImage" id="{{item}}">
             <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
           </view>
         </block>
@@ -93,25 +93,37 @@ import wepy from 'wepy'
 export default class queReport extends wepy.page {
   config = {
     navigationBarTitleText: '我的反馈'
-  };
+  }
 
-  data={
+  data = {
+    src: '',
     isGotLoc: 0,
     files: [],
-    motto: 'hw',
     userInfo: {},
     hasLocation: false,
     inputValue: '',
-    commomArray: {
-      address_name: 'fk',
-      new_longitude: '',
-      new_latitude: '',
-      img_path: ''
-    },
     address_city: '',
-    address_description: '',
+    problem_description: '',
     canvasWidth: '',
     canvasHeight: ''
+  }
+
+  methods = {
+    chooseImage(e) {
+      var that = this
+      wx.chooseImage({
+        count: 2,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success(res) {
+          // tempFilePath可以作为img标签的src属性显示图片
+          console.log(res)
+          that.setdata(
+            {src: res.tempFilePaths}
+          )
+        }
+      })
+    }
   }
 }
 </script>
