@@ -61,7 +61,7 @@ page {
   <view class="weui-uploader">
     <view class="img_hd">
       <view class="weui-uploader__title">图片上传</view>
-      <view class="weui-uploader__info">{{files.length}}/2</view>
+      <view class="weui-uploader__info">{{files.length}}/3</view>
     </view>
     <view class="weui-uploader__bd">
       <view class="weui-uploader__files" id="uploaderFiles">
@@ -93,7 +93,7 @@ import wepy from 'wepy'
 export default class queReport extends wepy.page {
   config = {
     navigationBarTitleText: '我的反馈'
-  }
+  };
 
   data = {
     files: [],
@@ -105,19 +105,49 @@ export default class queReport extends wepy.page {
     problem_description: '',
     canvasWidth: '',
     canvasHeight: ''
-  }
+  };
+
+  // computed = {
+  //   lenfile() {
+  //     return this.data.files.length
+  //   }
+  // }
 
   methods = {
     chooseImage(e) {
       var that = this
       wx.chooseImage({
-        count: 2,
+        count: 3,
         sizeType: ['original', 'compressed'],
         sourceType: ['album', 'camera'],
         success(res) {
           // tempFilePath可以作为img标签的src属性显示图片
+          var ratio = 2
+          // var ctx = wx.createCanvasContext('photo_canvas')
           that.data.files = that.data.files.concat(res.tempFilePaths)
+          that.$apply()
           console.log(that.data.files)
+          console.log(that.data.files.length)
+          wx.getImageInfo({
+            src: res.tempFilePaths[0],
+            succes(res) {
+              console.log(res.width)
+              console.log(res.height)
+              while (
+                that.data.canvasWidth > 10000 ||
+                that.data.canvasHeight > 10000
+              ) {
+                that.setData({
+                  canvasWidth: Math.trunc(res.width / ratio),
+                  canvasHeight: Math.trunc(res.height / ratio)
+                })
+                ratio++
+              }
+              console.log(that.data.canvasWidth, that.data.canvasHeight)
+            }
+          })
+          // ctx.drawImage(res.path, 0, 0, that.data.canvasWidth, that.data.canvasHeight)
+          // ctx.draw()
         }
       })
     }
