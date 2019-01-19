@@ -2,7 +2,7 @@
 </style>
 <template>
 	<view>
-		<button>aaaa</button>
+		<button>增加班级</button>
 	</view>
 </template>
 <script>

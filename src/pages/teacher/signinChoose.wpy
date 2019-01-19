@@ -96,8 +96,8 @@
                   <view class="kind-list__item-bd {{item.open ? 'kind-list__item-bd_show' : ''}}">
                       <view class="weui-cells {{item.open ? 'weui-cells_show' : ''}}">
                           <block wx:for="{{item.pages}}" wx:for-item="page" wx:key="*this">
-                              <navigator url="{{url[item]}}" class="weui-cell weui-cell_access">
-                                  <view class="weui-cell__bd">{{page}}</view>
+                              <navigator url="{{page.url}}" class="weui-cell weui-cell_access">
+                                  <view class="weui-cell__bd">{{page.name}}</view>
                                   <view class="weui-cell__ft weui-cell__ft_in-access"></view>
                               </navigator>
                           </block>
@@ -128,38 +128,33 @@ export default class signinChoose extends wepy.page {
     list: [
       {
         id: '1',
-        name: 'XXXXX班级',
+        name: '1XXXXX班级',
         open: false,
-        pages: ['XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到'],
-        url: ['./siginControl', './siginControl', './siginControl', './siginControl', './siginControl']
+        pages: [{'name': '1XXX月XX号签到', 'url': './signinControl'}, {'name': '2XX月XXX号签到', 'url': './signinControl'}, {'name': '3XXX月XXX号签到', 'url': './signinControl'}, {'name': '4xXX月XXX号签到', 'url': './signinControl'}, {'name': '5XXX月XXX2号签到', 'url': './signinControl'}]
       },
       {
         id: '2',
-        name: 'XXXXX班级',
+        name: '2XXXXX班级',
         open: false,
-        pages: ['XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到'],
-        url: ['./siginControl', './siginControl', './siginControl', './siginControl', './siginControl']
+        pages: [{'name': '1XXX月XX号签到', 'url': './signinControl'}, {'name': '2XX月XXX号签到', 'url': './signinControl'}, {'name': '3XXX月XXX号签到', 'url': './signinControl'}, {'name': '4xXX月XXX号签到', 'url': './signinControl'}, {'name': '5XXX月XXX2号签到', 'url': './signinControl'}]
       },
       {
         id: '3',
-        name: 'XXXXX班级',
+        name: '3XXXXX班级',
         open: false,
-        pages: ['XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到'],
-        url: ['./siginControl', './siginControl', './siginControl', './siginControl', './siginControl']
+        pages: [{'name': '1XXX月XX号签到', 'url': './signinControl'}, {'name': '2XX月XXX号签到', 'url': './signinControl'}, {'name': '3XXX月XXX号签到', 'url': './signinControl'}, {'name': '4xXX月XXX号签到', 'url': './signinControl'}, {'name': '5XXX月XXX2号签到', 'url': './signinControl'}]
       },
       {
         id: '4',
-        name: 'XXXXX班级',
+        name: '4XXXXX班级',
         open: false,
-        pages: ['XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到'],
-        url: ['./siginControl', './siginControl', './siginControl', './siginControl', './siginControl']
+        pages: [{'name': '1XXX月XX号签到', 'url': './signinControl'}, {'name': '2XX月XXX号签到', 'url': './signinControl'}, {'name': '3XXX月XXX号签到', 'url': './signinControl'}, {'name': '4xXX月XXX号签到', 'url': './signinControl'}, {'name': '5XXX月XXX2号签到', 'url': './signinControl'}]
       },
       {
         id: '5',
-        name: 'XXXXX班级',
+        name: '5XXXXX班级',
         open: false,
-        pages: ['XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到', 'XXX月XXX号签到'],
-        url: ['./siginControl', './siginControl', './siginControl', './siginControl', './siginControl']
+        pages: [{'name': '1XXX月XX号签到', 'url': './signinControl'}, {'name': '2XX月XXX号签到', 'url': './signinControl'}, {'name': '3XXX月XXX号签到', 'url': './signinControl'}, {'name': '4xXX月XXX号签到', 'url': './signinControl'}, {'name': '5XXX月XXX2号签到', 'url': './signinControl'}]
       }
     ]
   };

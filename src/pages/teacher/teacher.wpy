@@ -11,17 +11,23 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.greeting {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
 </style>
 <template>
 	<view>
 		<text class="bjlb">班级列表：</text>
     <icon type='success' class="jia" @tap='jia'>添加班级</icon>
-    <button class="bj" @tap="banji">XXXXX班级</button>
-    <button class="bj" @tap="banji">XXXXX班级</button>
-    <button class="bj" @tap="banji">XXXXX班级</button>
-    <button class="bj" @tap="banji">XXXXX班级</button>
-    <button class="bj" @tap="banji">XXXXX班级</button>
-    <button class="bj" @tap="banji">XXXXX班级</button>
+    <button class="greeting" @tap="banji">XXXXX班级</button>
+    <button class="greeting" @tap="banji">XXXXX班级</button>
+    <button class="greeting" @tap="banji">XXXXX班级</button>
+    <button class="greeting" @tap="banji">XXXXX班级</button>
+    <button class="greeting" @tap="banji">XXXXX班级</button>
+    <button class="greeting" @tap="banji">XXXXX班级</button>
 	</view>
 </template> 
 <script>
