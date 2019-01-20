@@ -1,8 +1,36 @@
 <style type="less">
+.greetingc {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+  display: flex;
+  justify-content: center;
+}
+.greeting {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
+input{
+  width: 300rpx;
+  border: 2rpx solid rgba(0, 0, 0, 0.301);
+  border-radius:10rpx; 
+  margin: 20rpx 0 10rpx 20rpx;
+  color: #000;
+  font-family: "仿宋";
+  font-size: 12px;
+}
 </style>
 <template>
 	<view>
-		<button>增加班级</button>
+		<text class="greetingc">增加班级</text>
+    <view>
+      <block>
+      <text class="greeting">班级名称：</text>
+      <input placeholder="请输入班级名称"  maxlength="15" placeholder-class="inputi"/>
+      </block>
+      <button class="greeting">提交</button>
+    </view>
 	</view>
 </template>
 <script>

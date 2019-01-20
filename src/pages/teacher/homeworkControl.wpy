@@ -2,7 +2,7 @@
 </style>
 <template>
 	<view>
-		<button>aaaa</button>
+		<text class="greetingc">管理课后作业</text>
 	</view>
 </template>
 <script>

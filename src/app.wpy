@@ -1,8 +1,21 @@
 <style src='public/style/weui.wxss'>
+</style>
+<style>
 .btn{
   background: linear-gradient(150deg, #d188fb, #9587f8, #558bf7); 
 }
-
+.greeting {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
+.greetingc {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+  display: flex;
+  justify-content: center;
+}
 </style>
 
 <script>

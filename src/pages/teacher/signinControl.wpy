@@ -2,7 +2,14 @@
 .greeting {
   font-size: 14px;
   color: gray;
-  margin: 20rpx 0 10rpx 20rpx;
+  margin: 20rpx 0 20rpx 20rpx;
+}
+.greetingc {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 20rpx 20rpx;
+  display: flex;
+  justify-content: center;
 }
 .border {
   display: flex;
@@ -17,11 +24,33 @@
   color: #b95;
   padding: 20rpx 20rpx 40rpx 20rpx;
 }
+.divide{
+  border-bottom: 1px solid #ccc
+}
 </style>
 <template>
 	<view>
-    <button class="greeting">Xxxxx班级</button>
+    <text class="greetingc">Xxx月xxx号签到</text>
+      <view class="divide">
+        <text class="greeting">
+          起止时间：
+        </text>
+        <button class="greeting">时间调整</button>
+      </view>
 	</view>
+  <view>
+    <textarea class="greeting">签到情况如下：</textarea>
+     <view class="page__bd">
+        <view class="weui-grids">
+            <block wx:for="{{grids}}" wx:key="*this">
+              <navigator class="weui-grid" hover-class="weui-grid_active">
+                    <image class="weui-grid__icon" src="{{i_url[item]}}" />
+                    <view class="weui-grid__label">{{i_name[item]}}</view>
+                </navigator>
+            </block>
+        </view>
+    </view>
+  </view>
 </template>
 <script>
   import wepy from 'wepy'
@@ -38,18 +67,19 @@
     }
     // 可用于页面模板绑定的数据
     data = {
+      grids: [0, 1, 2, 3, 4, 5],
+      i_name: ['xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx'],
+      i_url: ['/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png'],
+      naUrl: [1, 2, 3, 4, 5, 5]
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      bindViewTap () {
-        console.log('button clicked')
-      }
+      // todo wx.request请求到各班人数对grids赋值
     };
 
     // 页面的生命周期函数
     onLoad() {
-      console.log('onLoad')
     };
   }
 </script>
