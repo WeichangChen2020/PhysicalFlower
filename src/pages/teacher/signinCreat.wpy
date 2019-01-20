@@ -385,12 +385,12 @@ import wepy from 'wepy'
 // 通过继承自wepy.page的类创建页面逻辑
 export default class signinCreat extends wepy.page {
   config ={
-   window: {
+    window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: '发布签到',
       navigationBarTextStyle: 'black'
-    },
+    }
   }
   // 可用于页面模板绑定的数据
   data = {

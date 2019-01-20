@@ -124,8 +124,7 @@ export default class queReport extends wepy.page {
           // tempFilePath可以作为img标签的src属性显示图片
           var ratio = 2
           // var ctx = wx.createCanvasContext('photo_canvas')
-          that.data.files = that.data.files.concat(res.tempFilePaths)
-          that.$apply()
+          that.files = that.data.files.concat(res.tempFilePaths)
           console.log(that.data.files)
           console.log(that.data.files.length)
           wx.getImageInfo({
