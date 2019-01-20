@@ -36,7 +36,7 @@ page {
 <template>
  <view style='height:20rpx'></view>
 <view wx:for='{{setArr}}' wx:for-item="i" wx:key="name" style="background-color:{{bottonClr[i.id]}};margin-bottom:{{i.margin}}rpx">
-  <botton class='list' id="{{i.id}}"  bindtap="tap">
+  <botton class='list' id="{{i.id}}"  bindtap="tap" bindtouchstart="CA" bindtouchend="CB">
     <view class='listInfo'>{{i.name}}</view>
     <view class='listCont'>{{userInfo[i.type]}}</view>
   </botton>
@@ -92,6 +92,16 @@ export default class myInfo extends wepy.page {
       }
     ]
   }
+
+  methods = {
+    CA(e) {
+      this.setData({ [`bottonClr[${e.currentTarget.id}]`]: '#ddd' })
+    },
+    CB(e) {
+      this.setData({ [`bottonClr[${e.currentTarget.id}]`]: '#fff' })
+    }
+  }
+
   onLoad() {
     // this.data.userInfo = this.$parent.globalData.userInfo
     this.data.userInfo = this.$parent.globalData.userInfo
