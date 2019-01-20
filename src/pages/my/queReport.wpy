@@ -51,6 +51,7 @@ page {
 }
 </style>
 <template>
+<view class='greeting'>问题反馈</view></view>
 <view class='border'>
   <view>输入问题</view>
   <textarea class='input' disabled='{{isChecked<1}}' placeholder='请简单描述问题(最多输入200字)' focus='{{focus}}' maxlength="200" bindinput='bindKeyInput' />
@@ -65,9 +66,8 @@ page {
     </view>
     <view class="weui-uploader__bd">
       <view class="weui-uploader__files" id="uploaderFiles">
-
         <block wx:for="{{files}}" wx:key="*this">
-          <view class="weui-uploader__file" bindtap="chooseImage" id="{{item}}">
+          <view class="weui-uploader__file" id="{{item}}">
             <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
           </view>
         </block>
@@ -124,17 +124,17 @@ export default class queReport extends wepy.page {
           // tempFilePath可以作为img标签的src属性显示图片
           var ratio = 2
           // var ctx = wx.createCanvasContext('photo_canvas')
-          that.files = that.data.files.concat(res.tempFilePaths)
-          console.log(that.data.files)
-          console.log(that.data.files.length)
+          that.files = that.files.concat(res.tempFilePaths)
+          console.log(that.files)
+          console.log(that.files.length)
           wx.getImageInfo({
             src: res.tempFilePaths[0],
             succes(res) {
               console.log(res.width)
               console.log(res.height)
               while (
-                that.data.canvasWidth > 10000 ||
-                that.data.canvasHeight > 10000
+                that.canvasWidth > 10000 ||
+                that.canvasHeight > 10000
               ) {
                 that.setData({
                   canvasWidth: Math.trunc(res.width / ratio),
@@ -142,7 +142,7 @@ export default class queReport extends wepy.page {
                 })
                 ratio++
               }
-              console.log(that.data.canvasWidth, that.data.canvasHeight)
+              console.log(that.canvasWidth, that.canvasHeight)
             }
           })
           // ctx.drawImage(res.path, 0, 0, that.data.canvasWidth, that.data.canvasHeight)
