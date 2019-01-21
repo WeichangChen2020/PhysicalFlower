@@ -112,6 +112,7 @@ export default class myInfo extends wepy.page {
 
   onLoad() {
   }
+
   onShow() {
   }
 }
