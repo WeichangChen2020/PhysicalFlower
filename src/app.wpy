@@ -53,7 +53,8 @@ export default class extends wepy.app {
       'pages/teacher/testControl',
       'pages/teacher/signinControl',
       'pages/teacher/homeworkControl',
-      'pages/teacher/classControl'
+      'pages/teacher/classControl',
+      'pages/teacher/homeworkSearch'
     ],
     window: {
       backgroundTextStyle: 'light',
