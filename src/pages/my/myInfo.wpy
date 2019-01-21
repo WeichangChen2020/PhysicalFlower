@@ -112,7 +112,7 @@ export default class myInfo extends wepy.page {
 
   onLoad() {
     // this.data.userInfo = this.$parent.globalData.userInfo
-    this.data.userInfo = this.$parent.globalData.userInfo
+    this.userInfo = this.$parent.globalData.userInfo
     console.log(this.$parent.globalData.userInfo)
   }
   onShow() {

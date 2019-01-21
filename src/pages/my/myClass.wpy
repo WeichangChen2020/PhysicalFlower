@@ -41,7 +41,7 @@ page {
 <view wx:for='{{setArr}}' wx:for-item="i" wx:key="name" style="background-color:{{bottonClr[i.id]}};margin-bottom:{{i.margin}}rpx">
   <botton class='list' id="{{i.id}}"  bindtap="tap" bindtouchstart="CA" bindtouchend="CB">
     <view class='listInfo'>{{i.name}}</view>
-    <view class='listCont'>{{userInfo[i.type]}}</view>
+    <view class='listCont'>{{teachInfo[i.type]}}</view>
   </botton>
 </view>
 </template>
@@ -56,6 +56,9 @@ export default class myClass extends wepy.page {
   components = {}
 
   data = {
+    teachInfo: [
+
+    ],
     bottonClr: [
       'white',
       'white',
@@ -88,7 +91,14 @@ export default class myClass extends wepy.page {
         name: '任课教师联系方式',
         img: '',
         margin: '0',
-        type: 'teacTel'
+        type: 'teachTel'
+      },
+      {
+        id: '4',
+        name: '平时分',
+        img: '',
+        margin: '0',
+        type: 'grade'
       }
     ]
   }
@@ -101,11 +111,26 @@ export default class myClass extends wepy.page {
     },
     CB(e) {
       this.setData({ [`bottonClr[${e.currentTarget.id}]`]: '#fff' })
+    },
+    tap(e) {
+      var btnID = e.currentTarget.id
+      switch (btnID) {
+        case '4':
+          wx.navigateTo({ url: '../my/gradeInfo' })
+          break
+      }
     }
   }
 
   events = {}
 
-  onLoad() {}
+  onshow() {
+    this.teachInfo = this.$parent.globalData.teachInfo
+  }
+
+  onLoad() {
+    this.teachInfo = this.$parent.globalData.teachInfo
+    console.log(this.data.teachInfo)
+  }
 }
 </script>

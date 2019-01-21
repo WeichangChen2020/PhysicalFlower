@@ -32,6 +32,7 @@ export default class extends wepy.app {
   config = {
     // 最后需要对这些页面的顺序进行调整
     pages: [
+      'pages/my/gradeInfo',
       'pages/course/index',
       'pages/my/my',
       'pages/teacher/teacher',
@@ -91,6 +92,12 @@ export default class extends wepy.app {
       'id': '2',
       'tel': '33',
       'provience': 'hz'
+    },
+
+    teachInfo: {
+      'class': '1',
+      'teacher': 'zg',
+      'teachTel': '123456'
     }
   }
 
