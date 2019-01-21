@@ -1,26 +1,136 @@
 <style lang="less">
+page {
+  background-color: #f2f2f2;
+}
+
+.listInfo {
+  flex: 1;
+  font-size: 31rpx;
+  margin-top: 22rpx;
+  color: #777;
+}
+
+.listCont {
+  flex: 1;
+  text-align: right;
+  font-size: 31rpx;
+  margin-top: 22rpx;
+  color: #777;
+}
+
+.list {
+  border-width: 0rpx 0rpx 3rpx 0rpx;
+  border-style: solid;
+  border-color: #f6f6f6;
+  height: 100rpx;
+  display: flex;
+  flex-direction: row;
+  margin: 0rpx 40rpx 0rpx 40rpx;
+}
+
+.listImg {
+  height: 60rpx;
+  width: 60rpx;
+  margin: 15rpx 50rpx 0rpx 0rpx;
+}
 </style>
+
+
 <template>
- <text>Todo</text>
+ <view style='height:20rpx'></view>
+<view wx:for='{{setArr}}' wx:for-item="i" wx:key="name" style="background-color:{{bottonClr[i.id]}};margin-bottom:{{i.margin}}rpx">
+  <botton class='list' id="{{i.id}}"  bindtap="tap" bindtouchstart="CA" bindtouchend="CB">
+    <view class='listInfo'>{{i.name}}</view>
+    <view class='listCont'>{{teachInfo[i.type]}}</view>
+  </botton>
+</view>
 </template>
 
 <script>
 import wepy from 'wepy'
 
-export default class Index extends wepy.page {
+export default class myClass extends wepy.page {
   config = {
     navigationBarTitleText: '我的课程'
   };
-  components = {};
+  components = {}
 
-  data = {};
+  data = {
+    teachInfo: [
 
-  computed = {};
+    ],
+    bottonClr: [
+      'white',
+      'white',
+      'white',
+      'white',
+      'white',
+      'white',
+      'white',
+      'white',
+      'white',
+      'white'
+    ],
+    setArr: [
+      {
+        id: '1',
+        name: '班级',
+        img: 'o',
+        margin: '0',
+        type: 'class'
+      },
+      {
+        id: '2',
+        name: '任课教师',
+        img: '',
+        margin: '0',
+        type: 'teacher'
+      },
+      {
+        id: '3',
+        name: '任课教师联系方式',
+        img: '',
+        margin: '0',
+        type: 'teachTel'
+      },
+      {
+        id: '4',
+        name: '平时分',
+        img: '',
+        margin: '0',
+        type: 'grade'
+      }
+    ]
+  }
 
-  methods = {};
+  computed = {}
 
-  events = {};
+  methods = {
+    CA(e) {
+      this.setData({ [`bottonClr[${e.currentTarget.id}]`]: '#ddd' })
+    },
+    CB(e) {
+      this.setData({ [`bottonClr[${e.currentTarget.id}]`]: '#fff' })
+    },
+    tap(e) {
+      var btnID = e.currentTarget.id
+      switch (btnID) {
+        case '4':
+          wx.navigateTo({ url: '../my/gradeInfo' })
+          break
+      }
+    }
+  }
 
-  onLoad() {}
+  events = {}
+
+  onshow() {
+    this.teachInfo = this.$parent.globalData.teachInfo
+  }
+
+  onLoad() {
+    this.teachInfo = this.$parent.globalData.teachInfo
+    console.log(this.data.teachInfo)
+  }
 }
 </script>
