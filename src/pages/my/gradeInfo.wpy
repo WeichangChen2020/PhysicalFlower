@@ -52,7 +52,7 @@ import wepy from 'wepy'
 
 export default class myInfo extends wepy.page {
   config = {
-    navigationBarTitleText: '我的信息'
+    navigationBarTitleText: '平时分'
   };
 
   data = {
@@ -79,24 +79,24 @@ export default class myInfo extends wepy.page {
       },
       {
         id: '2',
-        name: '学号',
-        img: 'medal',
+        name: '签到得分',
+        img: '',
         margin: '0',
-        type: 'id'
+        type: 'signin'
       },
       {
         id: '3',
-        name: '手机号',
-        img: 'ticket',
+        name: '测验练习',
+        img: '',
         margin: '0',
-        type: 'tel'
+        type: 'exercis'
       },
       {
         id: '4',
-        name: '省份',
+        name: '班级排名',
         img: '',
         margin: '0',
-        type: 'provience'
+        type: 'rank'
       }
     ]
   }
