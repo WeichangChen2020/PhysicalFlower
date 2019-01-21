@@ -1,8 +1,18 @@
 <style type="less">
+.btnn{
+   font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
 </style>
 <template>
 	<view>
-		<button>创建课堂测验</button>
+		<text class="greetingc">浏览课程测验情况</text>
+    <block wx:for="{{girds}}" wx:item= "item" wx:key="*this">
+    <button class="btnn" @tap='tap' id='{{item.id}}'>
+    {{item.name}}
+    </button>
+  </block>
 	</view>
 </template>
 <script>
@@ -12,12 +22,42 @@
   export default class testControl extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
+      girds: [
+      {id: '1', name: '几月几号测验', url: './testSearch'},
+      {id: '2', name: '几月几号测验', url: './testSearch'},
+      {id: '3', name: '几月几号测验', url: './testSearch'},
+      {id: '4', name: '几月几号测验', url: './testSearch'},
+      {id: '5', name: '几月几号测验', url: './testSearch'},
+      {id: '6', name: '几月几号测验', url: './testSearch'}
+      ]
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      bindViewTap () {
-        console.log('button clicked')
+      tap(e) {
+        console.log(e)
+        let tid = e.currentTarget.id
+        console.log(this.data.girds[0].url)
+        switch (tid) {
+          case '1':
+            this.$navigate(this.data.girds[0].url)
+            break
+          case '2':
+            this.$navigate(this.data.girds[1].url)
+            break
+          case '3':
+            this.$navigate(this.data.girds[2].url)
+            break
+          case '4':
+            this.$navigate(this.data.girds[3].url)
+            break
+          case '5':
+            this.$navigate(this.data.girds[4].url)
+            break
+          case '6':
+            this.$navigate(this.data.girds[5].url)
+            break
+        }
       }
     };
 

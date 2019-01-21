@@ -11,6 +11,12 @@
   margin-left: 10rpx;
   border-radius: 50%;
 }
+.greetingbtn {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+  background-color: greenyellow;
+}
 </style>
 <template>
 	<view>
@@ -24,7 +30,7 @@
     {{item.name}}
     </view>
   </block>
-  <button class="greeting" formType="submit">提交</button>
+  <button formType="submit" class="greetingbtn">提交</button>
   </checkbox-group>
   </form>
 </template>

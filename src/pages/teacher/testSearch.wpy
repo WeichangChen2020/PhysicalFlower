@@ -7,28 +7,19 @@
 .padding{
   margin-top: 10%;
 }
-.greetingb {
-  width: 150rpx;
-  height: 90rpx;
-  font-size: 14px;
-  color: gray;
-  display: flex;
-  justify-content: center;
-}
 </style>
 <template>
 	<view>
-		<text class="greeting">删除学生信息</text>
+		<text class="greeting">浏览课堂测试</text>
 	</view>
   <view class="padding">
   <view class="page__bd">
         <view class="weui-grids">
             <block wx:for="{{grids}}" wx:key="*this">
-              <view class="weui-grid" hover-class="weui-grid_active">
+              <navigator class="weui-grid" hover-class="weui-grid_active">
                     <image class="weui-grid__icon" src="{{i_url[item]}}" />
                     <view class="weui-grid__label">{{i_name[item]}}</view>
-                    <button class="greetingb"  @tap= "ban" id="{{id[item]}}">删除</button>
-              </view>
+                </navigator>
             </block>
         </view>
     </view>
@@ -38,41 +29,24 @@
   import wepy from 'wepy'
 
   // 通过继承自wepy.page的类创建页面逻辑
-  export default class stuBan extends wepy.page {
+  export default class testSearch extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
       grids: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
-      id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
       i_name: ['xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx'],
       i_url: ['/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png']
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      ban(e) {
-        wepy.showModal({
-          title: '提示',
-          content: '是否确定删除该学生',
-          success(e) {
-            // todo wx.request(promise) 发送到后台删除再返回，重新渲染页面；
-            console.log('success', e.cancel)
-            if (e.cancel === true) {
-              console.log('取消删除学生')
-            } else if (e.cancel === false) {
-              console.log('确定删除')
-            }
-          },
-          fail(e) {
-          }
-        })
+      bindViewTap () {
+        console.log('button clicked')
       }
     };
 
     // 页面的生命周期函数
     onLoad() {
-    }
-    onShow() {
-      console.log('onshow')
-    }
+      console.log('onLoad')
+    };
   }
 </script>
