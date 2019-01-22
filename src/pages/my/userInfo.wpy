@@ -19,6 +19,9 @@ export default class UserInfo extends wepy.page {
   data = {
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   }
+  //声明组件
+  components = {
+  };
   methods = {
     bindGetUserInfo(e) {
       // let backtype = this.data.backType;
