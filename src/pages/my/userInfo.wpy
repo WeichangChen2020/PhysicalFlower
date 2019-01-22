@@ -1,0 +1,34 @@
+<style lang="less"></style>
+<template>
+  <view wx:if="{{canIUse}}">
+    <view class='zan-font-14 zan-c-gray-dark' style='text-align:center;margin-top:50rpx'>
+      允许微信授权后，可体验更多功能</view>
+    <view class="zan-btns">
+      <button open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" class="zan-btn zan-btn--primary">授权登录</button>
+      <button bindtap='navigateBack' class="zan-btn">返回首页</button>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+
+export default class UserInfo extends wepy.page {
+  config = {
+    navigationBarTitleText: '用户授权'
+  }
+  data = {
+    canIUse: wx.canIUse('button.open-type.getUserInfo')
+  }
+  methods = {
+    bindGetUserInfo(e) {
+      // let backtype = this.data.backType;
+      if (e.detail.userInfo) {
+        this.$parent.globalData.userInfo = e.detail.userInfo
+        wx.navigateBack({})
+      } else {
+        this.showZanTopTips('很遗憾，您拒绝了微信授权')
+      }
+    }
+  }
+}
+</script>
