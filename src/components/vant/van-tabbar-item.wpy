@@ -1,0 +1,137 @@
+<style lang="scss">
+
+@import '../styles/var.scss';
+@import '../vant/icon.scss';
+
+.van-tabbar-item {
+  float: left;
+  color: #666;
+  height: 100%;
+  display: flex;
+  line-height: 1;
+  font-size: 12px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  &__icon {
+    font-size: 18px;
+    margin-bottom: 5px;
+    position: relative;
+
+    .van-icon {
+      display: block;
+    }
+
+    &--dot {
+      &::after {
+        top: 0;
+        right: -8px;
+        width: 8px;
+        height: 8px;
+        content: ' ';
+        position: absolute;
+        border-radius: 100%;
+        background-color: $red;
+      }
+    }
+
+    image {
+      width: 50px;
+      height: 18px;
+    }
+  }
+
+  &--active {
+    color: $blue;
+  }
+}
+
+</style>
+
+<template>
+
+<view
+  class="van-tabbar-item {{ active ? 'van-tabbar-item--active' : '' }}"
+  style="{{ count ? 'width: ' + 100 / count + '%' : '' }}"
+  bind:tap="onClick"
+>
+  <view class="van-tabbar-item__icon {{ dot=='y' ? 'van-tabbar-item__icon--dot' : '' }}">
+    <block wx:if="{{ active }}">
+      <slot name="icon-active" />
+    </block>
+    <block wx:else>
+      <slot name="icon" />
+    </block>
+    <view wx:if="{{ icon }}" class="icon van-icon van-icon-{{ icon }}">
+      <view wx:if="{{ info !== null }}" class="van-icon__info">{{ info }}</view>
+    </view>
+  </view>
+  <view class="van-tabbar-item__text">
+    <slot />
+  </view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import ComOptionsMixin from '../mixins/com-options'
+
+export default class vanTabbarItem extends wepy.component {
+
+  mixins = [ ComOptionsMixin ]
+
+  props = {
+    info: String,
+    icon: String,
+    dot: String,
+    count: String,
+    tabbar: {
+      type: Object,
+      default: {
+        activeIndex: 0,
+        count: 0
+      },
+      twoWay: true
+    },
+    index: {
+      type: String
+    }
+  }
+  
+  data = {
+    active: false,
+    count: 0
+  }
+
+  watch = {
+    tabbar(val) {
+      this.methods.applyTabbar.call(this);
+    }
+  }
+  
+  methods = {
+    onClick(event) {
+      this.active = true;
+      // 更改tabbar值,因为是双向绑定值所以会影响到其他的tabbar-item
+      this.tabbar = {
+        activeIndex: this.index,
+        count: this.count
+      };
+      this.$apply();
+      this.$emit('click');
+    },
+    applyTabbar() {
+      this.active = this.tabbar.activeIndex == this.index;
+      this.count = this.tabbar.count;
+      this.$apply();
+    }
+  }
+
+  onLoad() {
+    this.methods.applyTabbar.call(this);
+  }
+  
+}
+</script>

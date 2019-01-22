@@ -10,7 +10,8 @@
   </view>
 </template>
 <script>
-import wepy from 'wepy'
+import wepy from 'wepy';
+import van_button from 'van-button';
 
 export default class UserInfo extends wepy.page {
   config = {
@@ -19,9 +20,9 @@ export default class UserInfo extends wepy.page {
   data = {
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   }
-  // 声明组件
   components = {
-  };
+      van: van_button
+  }
   methods = {
     bindGetUserInfo(e) {
       // let backtype = this.data.backType;
@@ -29,7 +30,7 @@ export default class UserInfo extends wepy.page {
         this.$parent.globalData.userInfo = e.detail.userInfo
         wx.navigateBack({})
       } else {
-        this.showZanTopTips('很遗憾，您拒绝了微信授权')
+        this.notify('很遗憾，您拒绝了微信授权')
       }
     }
   }

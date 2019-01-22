@@ -1,0 +1,55 @@
+<style lang="scss">
+
+@import '../styles/var.scss';
+
+.van-tabbar {
+  width: 100%;
+  height: 50px;
+  background-color: #fff;
+
+  &--fixed {
+    left: 0;
+    bottom: 0;
+    position: fixed;
+  }
+}
+
+</style>
+
+<template>
+
+<view
+  class="{{ externalClasses[0] }} van-tabbar van-hairline--top-bottom {{ fixed=='y' ? 'van-tabbar--fixed' : '' }}"
+  style="{{ zIndex ? 'style: ' + this.zIndex : '' }}"  
+>
+  <slot />
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import ComOptionsMixin from '../mixins/com-options'
+
+export default class vanTabbar extends wepy.component {
+
+  mixins = [ ComOptionsMixin ]
+  
+  props = {
+    externalClasses: {
+      type: Array,
+      default: [ 'custom-class' ]
+    },
+    options: Object,
+    fixed: {
+      type: String,
+      default: 'y'
+    },
+    zIndex: {
+      type: String,
+      default: '1'
+    }
+  }
+  
+}
+</script>

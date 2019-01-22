@@ -1,0 +1,109 @@
+<style lang="scss">
+
+@import '../styles/var.scss';
+
+.van-notify {
+  top: 0;
+  width: 100%;
+  z-index: 110;
+  color: $white;
+  position: fixed;
+  min-height: 32px;
+  line-height: 2.3;
+  font-size: 14px;
+  text-align: center;
+  background-color: #E64340;
+}
+
+</style>
+
+<template>
+
+<van-transition
+  name="slide-down"
+  :show.sync="show"
+  customClass="van-notify"
+  :customStyle.sync="customStyle"
+>
+  {{ text }}
+</van-transition>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import comOptionsMixin from '../mixins/com-options'
+import vanTransition from '../components/van-transition'
+
+export default class vanNotify extends wepy.component {
+
+  mixins = [ comOptionsMixin ]
+
+  components = {
+    'van-transition': vanTransition
+  }
+
+  props = {
+    options: Object,
+    show: {
+      type: Boolean,
+      twoWay: true
+    },
+    text: String,
+    color: {
+      type: String,
+      default: '#fff'
+    },
+    backgroundColor: {
+      type: String,
+      default: '#e64340'
+    },
+    duration: {
+      type: String,
+      default: '3000'
+    }
+  }
+
+  data = {
+    customStyle: ''
+  }
+
+  watch = {
+    show(display) {
+      if(display) {
+        this.methods.show.call(this);
+      } else {
+        this.methods.hide.call(this);
+      }
+    }
+  }
+
+  methods = {
+    show() {
+      const { duration } = this.data;
+
+      clearTimeout(this.timer);
+      this.show = true;
+      let that = this;
+      if (duration > 0 && duration !== Infinity) {
+        that.timer = setTimeout(() => {
+          that.methods.hide.call(that);
+        }, duration);
+      }
+      this.$apply();
+    },
+
+    hide() {
+      clearTimeout(this.timer);
+      this.show = false;
+      this.$apply();
+    }
+  }
+  
+  onLoad() {
+    this.customStyle = 'background-color:' + this.backgroundColor;
+    this.$apply();
+  }
+
+}
+</script>

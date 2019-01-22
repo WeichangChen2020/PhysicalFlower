@@ -1,0 +1,177 @@
+<style lang="scss">
+
+@import '../styles/var.scss';
+
+.van-search {
+  display: flex;
+  padding: 7px 15px;
+  align-items: center;
+  box-sizing: border-box;
+
+  &__field {
+    flex: 1;
+    border-radius: 4px;
+
+    &__left-icon {
+      color: $gray-dark;
+    }
+    .van-icon-search {
+      top: 6px;
+    }
+  }
+
+  &--show-action {
+    padding-right: 0;
+  }
+
+  input {
+    &::-webkit-search-decoration,
+    &::-webkit-search-cancel-button,
+    &::-webkit-search-results-button,
+    &::-webkit-search-results-decoration {
+      display: none;
+    }
+  }
+
+  &__action {
+    padding: 0 10px;
+    font-size: 14px;
+    line-height: 30px;
+    color: $gray-darker;
+
+    &:active {
+      background-color: $active-color;
+    }
+  }
+}
+
+</style>
+
+<template>
+
+<view
+  class="van-search custom-class {{ showAction=='y' || useActionSlot=='y' ? 'van-search--show-action' : '' }}"
+  style="background: {{ background }}"
+>
+  <view class="van-search__field">
+    <van-field
+      clearable="y" 
+      type="search"
+      leftIcon="search"
+      :border="n"
+      confirmType="search"
+      :value.sync="currentValue"
+      :disabled="disabled"
+      :readonly="readony"
+      :maxlength="maxlength"
+      :placeholder="placeholder"
+      customStyle="padding: 3px 10px"
+      @blur.user="onBlur"
+      @focus.user="onFocus"
+      @change.user="onChange"
+      @confirm.user="onSearch"
+    />
+  </view>
+  <view wx:if="{{ showAction=='y' || useActionSlot=='y' }}" class="van-search__action">
+    <slot wx:if="{{ useActionSlot=='y' }}" name="action" />
+    <view wx:if="{{ useActionSlot!='y' }}" bind:tap="onCancel" class="cancel-class">取消</view>
+  </view>
+</view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import ComOptionsMixin from '../mixins/com-options'
+import vanField from '../components/van-field'
+
+export default class vanSearch extends wepy.component {
+
+  mixins = [ ComOptionsMixin ]
+  
+  components = {
+    'van-field': vanField
+  }
+  
+  props = {
+    externalClasses: {
+      type: Array,
+      default: ['custom-class', 'cancel-class']
+    },
+    options: Object,
+    disabled: {
+      type: String,
+      default: 'n'
+    },
+    readonly: {
+      type: String,
+      default: 'n'
+    },
+    showAction: {
+      type: String,
+      default: 'n'
+    },
+    useActionSlot: {
+      type: String,
+      default: 'n'
+    },
+    placeholder: String,
+    value: {
+      type: String
+    },
+    background: {
+      type: String,
+      default: '#f2f2f2'
+    },
+    maxlength: {
+      type: String,
+      default: '-1'
+    }
+  }
+
+  data = {
+    currentValue: ''
+  }
+  
+  watch = {
+    value(currentValue) {
+      this.currentValue = currentValue;
+      this.$apply();
+    }
+  }
+  
+  methods = {
+    onChange(value) {
+      this.currentValue = value;
+      this.$emit('change', value);
+      this.$apply();
+    },
+
+    onCancel() {
+      this.currentValue = '';
+      this.$emit('cancel');
+      this.$emit('change', '');
+
+      this.$apply();
+    },
+
+    onSearch() {
+      this.$emit('search', this.currentValue);
+    },
+
+    onFocus() {
+      this.$emit('focus');
+    },
+
+    onBlur() {
+      this.$emit('blur');
+    }
+  }
+  
+  onLoad() {
+    this.currentValue = this.value;
+    this.$apply();
+  }
+  
+}
+</script>
