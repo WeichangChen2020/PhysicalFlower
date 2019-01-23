@@ -73,6 +73,7 @@ export default class Index extends wepy.page {
   }
   onSHow() {
     // 如果未加入课程,跳转到join页面
+    console.log(this.$parent.globalData)
   }
 }
 </script>
