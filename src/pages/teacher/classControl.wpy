@@ -26,7 +26,7 @@
 </template>
 <script>
   import wepy from 'wepy'
-  import base from '/components/dist/base/index'// 文件路径
+  import base from '/components/van/base/index'// 文件路径
   // 通过继承自wepy.page的类创建页面逻辑
   export default class classControl extends wepy.page {
     config={

@@ -58,7 +58,6 @@ export default class extends wepy.app {
       'pages/teacher/classControl',
       'pages/teacher/homeworkSearch',
       'pages/teacher/testSearch'
-
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -89,10 +88,10 @@ export default class extends wepy.app {
       ]
     },
     usingComponents: {
-      'i-button': '/components/dist/button/index',
-      'i-message': '/components/dist/message/index',
-      'i-icon': '/components/dist/icon/index',
-      'i-count-down': '/components/dist/count-down/index'
+      'i-button': '/components/van/button/index',
+      'i-message': '/components/van/message/index',
+      'i-icon': '/components/van/icon/index',
+      'i-count-down': '/components/van/count-down/index'
     }
   }
 
