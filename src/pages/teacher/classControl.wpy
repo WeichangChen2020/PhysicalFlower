@@ -25,7 +25,6 @@
 </template>
 <script>
   import wepy from 'wepy'
-  import Notify from '/components/vant/common/notify.js'
   
   // 通过继承自wepy.page的类创建页面逻辑
   export default class classControl extends wepy.page {
@@ -37,12 +36,6 @@
     }
     // 可用于页面模板绑定的数据
     data = {
-      Notify: ({
-        text: 'sss',
-        duration: 1000,
-        selector: '#custom-selector',
-        backgroundColor: '#1989fa'
-      })
     }
 
     // 事件处理函数(集中保存在methods对象中)
