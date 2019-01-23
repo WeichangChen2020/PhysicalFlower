@@ -89,7 +89,10 @@ export default class extends wepy.app {
       ]
     },
     usingComponents: {
-      'van-button': './components/vant/button/index'
+      'i-button': '/components/dist/button/index',
+      'i-message': '/components/dist/message/index',
+      'i-icon': '/components/dist/icon/index',
+      'i-count-down': '/components/dist/count-down/index'
     }
   }
 
