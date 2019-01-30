@@ -17,7 +17,7 @@ import wepy from 'wepy'
 // 通过继承自wepy.page的类创建页面逻辑
 export default class Index extends wepy.page {
   config = {
-    navigationBarTitleText: '主页面'
+    navigationBarTitleText: '物里看花'
   };
   data = {
     grids: [ // 修改时注意更新methods
