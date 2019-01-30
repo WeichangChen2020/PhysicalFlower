@@ -1,6 +1,6 @@
 <style type="less">
 @import '../../public/style/public.wxss';
-@import '../../public/style/index.wxss';
+/* @import '../../public/style/index.wxss'; */
 page {
   width: 100%;
   height: 100%;

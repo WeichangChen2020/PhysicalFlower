@@ -1,16 +1,18 @@
 <style lang="less"></style>
 <template>
+  <toptips />
   <view wx:if="{{canIUse}}">
-    <view class='zan-font-14 zan-c-gray-dark' style='text-align:center;margin-top:50rpx'>
+    <view >
       允许微信授权后，可体验更多功能</view>
-    <view class="zan-btns">
-      <button open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" class="zan-btn zan-btn--primary">授权登录</button>
-      <button bindtap='navigateBack' class="zan-btn">返回首页</button>
+    <view >
+      <button open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" >授权登录</button>
+      <button @tap="cancel" >返回首页</button>
     </view>
   </view>
 </template>
 <script>
 import wepy from 'wepy'
+import Toptips from '@/components/toptips/index'
 
 export default class UserInfo extends wepy.page {
   config = {
@@ -19,6 +21,9 @@ export default class UserInfo extends wepy.page {
   data = {
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   }
+  components = {
+    toptips: Toptips
+  }
   methods = {
     bindGetUserInfo(e) {
       // let backtype = this.data.backType;
@@ -26,8 +31,17 @@ export default class UserInfo extends wepy.page {
         this.$parent.globalData.userInfo = e.detail.userInfo
         wx.navigateBack({})
       } else {
-        this.notify('很遗憾，您拒绝了微信授权')
+        const options = {
+          content: '很遗憾，您拒绝了微信授权',
+          duration: 2000,
+          afterClose: 'afterClose',
+          className: 'mytest'
+        }
+        this.$invoke('toptips', 'show', options)
+        // this.notify('很遗憾，您拒绝了微信授权')
       }
+    },
+    cancel(e) {
     }
   }
 }
