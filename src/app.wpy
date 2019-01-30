@@ -86,12 +86,6 @@ export default class extends wepy.app {
           text: '我的'
         }
       ]
-    },
-    usingComponents: {
-      'i-button': '/components/van/button/index',
-      'i-message': '/components/van/message/index',
-      'i-icon': '/components/van/icon/index',
-      'i-count-down': '/components/van/count-down/index'
     }
   }
 

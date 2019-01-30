@@ -20,13 +20,13 @@
     <button class="greeting" @tap='tap' id="5">删除学生信息</button>
     <button class="greeting" @tap='tap' id="6">发布课堂测试</button>
     <button class="greeting" @tap='tap' id="7">管理课堂测试</button>
-    <i-button type="primary" bind:click="handleClick">这是一个按钮</i-button>
+    <!-- <i-button type="primary" bind:click="handleClick">这是一个按钮</i-button>
     <i-button type="ghost" bind:click="handleDefault">默认提醒</i-button>
-    <i-message id="message" />
+    <i-message id="message" /> -->
 </template>
 <script>
   import wepy from 'wepy'
-  import base from '/components/van/base/index'// 文件路径
+  // import base from '/components/van/base/index'// 文件路径
   // 通过继承自wepy.page的类创建页面逻辑
   export default class classControl extends wepy.page {
     config={
@@ -39,11 +39,11 @@
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      handleDefault () {
-        base.$Message({
-          content: '这是一条普通提醒'
-        })
-      },
+      // handleDefault () {
+      //   base.$Message({
+      //     content: '这是一条普通提醒'
+      //   })
+      // },
       tap(e) {
         let tid = e.currentTarget.id
         switch (tid) {
