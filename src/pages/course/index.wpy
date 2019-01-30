@@ -1,5 +1,6 @@
 <style type="less"></style>
 <template>
+  <dialog />
   <view class="page__bd">
     <view class="weui-grids">
         <block wx:for="{{grids}}" wx:item="item" wx:key="*this">
@@ -13,12 +14,13 @@
 </template>
 <script>
 import wepy from 'wepy'
+import Dialog from '@/components/dialog/index'
 
 // 通过继承自wepy.page的类创建页面逻辑
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '物里看花'
-  };
+  }
   data = {
     grids: [ // 修改时注意更新methods
       { id: '1', name: '签到', img: '/public/images/empty.png', url: '/pages/course/signin' },
@@ -30,8 +32,10 @@ export default class Index extends wepy.page {
       { id: '7', name: '视频', img: '/public/images/empty.png', url: '/pages/course/video' },
       { id: '8', name: '切换课程', img: '/public/images/empty.png', url: '/pages/course/switch' }
     ]
-  };
-
+  }
+  components = {
+    dialog: Dialog
+  }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
     tap(e) {
@@ -67,10 +71,32 @@ export default class Index extends wepy.page {
 
   // 页面的生命周期函数
   onLoad() {
-    console.log('onLoad')
-    console.log(this.$parent)
   }
-  onSHow() {
+  onShow() {
+    let app = this.$parent
+    // 检查信息
+    if (app.globalData.loginCode !== '0') {
+      const options = {
+        title: '完善信息',
+        content: '完善信息以便老师区分',
+        type: 'muti',
+        showVertical: true,
+        buttons: [{
+          text: '稍后'
+        }, {
+          text: '去完善',
+          color: '#C59E6C'
+        }]
+      }
+      this.$invoke('dialog', 'show', options).then((value) => {
+        console.log(value) // 0: 取消，1：确认
+        if (value === 1) {
+          wx.navigateTo({url: '../my/register'})
+        }
+      }, () => {
+        console.log('reject')
+      })
+    }
     // 如果未加入课程,跳转到join页面
     console.log(this.$parent.globalData)
   }

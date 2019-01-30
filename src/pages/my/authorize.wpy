@@ -20,7 +20,7 @@
 import wepy from 'wepy'
 import Toptips from '@/components/toptips/index'
 
-export default class UserInfo extends wepy.page {
+export default class Authorize extends wepy.page {
   config = {
     navigationBarTitleText: '用户授权'
   }
