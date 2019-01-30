@@ -116,6 +116,7 @@ page {
   margin-top: 10rpx;
   width: 335rpx;
   height: 160rpx;
+  
 }
 
 .container {
