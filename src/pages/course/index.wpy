@@ -1,25 +1,63 @@
-<style type="less">
+<style lang="less">
+.title {
+	font-size: 16px;
+	margin-bottom: 10px;
+	text-align: center;
+}
+.content {
+	font-size: 12px;
+	text-align: center;
+}
+.custom-icon{
+	font-size: 30px !important;
+  text-align:center;
+  width: 100%;
+}
+.img{
+  width: 30px;
+  height: 30px;
+}
 </style>
 <template>
-  <view class="page__bd">
-    <view class="weui-grids">
-        <block wx:for="{{grids}}" wx:item="item" wx:key="*this">
-            <view class="weui-grid" hover-class="weui-grid_active" id="{{item.id}}" @tap="tap">
-                <image class="weui-grid__icon" src="{{item.img}}" />
-                <view class="weui-grid__label">{{item.name}}</view>
-            </view>
-        </block>
-    </view>
+  <view class="kai-content" style="width: 100%">
+    <panel class="no-padding">
+      <view class="panel">
+        <grid col="9">
+          <repeat for="{{grids}}" index="index" wx:item="item" key="key">
+            <griditem>
+              <view slot="content" class="custom-icon" @tap="onClick({{item.id}})">
+                <image class="img" src="{{item.img}}" />
+                <view class="content">{{item.name}}</view>
+              </view>
+            </griditem>
+          </repeat>
+        </grid>
+      </view>
+    </panel>
   </view>
 </template>
+
 <script>
 import wepy from 'wepy'
+import grid from '@/components/grid/index'
+import gridItem from '@/components/grid-item/index'
+import panel from '@/components/panel/index'
+import icon from '@/components/icon/index'
 
-// 通过继承自wepy.page的类创建页面逻辑
-export default class Index extends wepy.page {
+export default class Grid extends wepy.page {
   config = {
-    navigationBarTitleText: '主页面'
-  };
+    navigationBarTitleText: '物里看花'
+  }
+
+  components = {
+    grid: grid,
+    grid1: grid,
+    griditem: gridItem,
+    griditem1: gridItem,
+    panel: panel,
+    icon: icon
+  }
+
   data = {
     grids: [ // 修改时注意更新methods
       { id: '1', name: '签到', img: '/public/images/empty.png', url: '/pages/course/signin' },
@@ -30,14 +68,15 @@ export default class Index extends wepy.page {
       { id: '6', name: '加入课程', img: '/public/images/empty.png', url: '/pages/course/join' },
       { id: '7', name: '视频', img: '/public/images/empty.png', url: '/pages/course/video' },
       { id: '8', name: '切换课程', img: '/public/images/empty.png', url: '/pages/course/switch' }
-    ]
-  };
+    ],
+    itemWidth: '33.333333%'
+  }
 
-  // 事件处理函数(集中保存在methods对象中)
+  computed = {}
+
   methods = {
-    tap(e) {
-      let bid = e.currentTarget.id
-      switch (bid) {
+    onClick(e) {
+      switch (e) {
         case '1':
           wx.navigateTo({url: './signin/list'})
           break

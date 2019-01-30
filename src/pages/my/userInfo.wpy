@@ -1,14 +1,20 @@
 <style lang="less"></style>
+<style lang="less">
+  .text {
+    text-align: center;
+    margin:40px 0 20px 0;
+  }
+</style>
+
 <template>
   <toptips />
-  <view wx:if="{{canIUse}}">
-    <view >
-      允许微信授权后，可体验更多功能</view>
-    <view >
-      <button open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" >授权登录</button>
-      <button @tap="cancel" >返回首页</button>
+  <view wx:if="{{canIUse}}" class="kai-content">
+    <view class="padding-10">
+      <view class="text">允许微信授权后，可体验更多功能</view>
+      <button class="btn btn-success" open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" >授权登录</button>
+      <button class="btn " @tap="cancel" >返回首页</button>
     </view>
-  </view>
+  </view> 
 </template>
 <script>
 import wepy from 'wepy'
@@ -38,10 +44,10 @@ export default class UserInfo extends wepy.page {
           className: 'mytest'
         }
         this.$invoke('toptips', 'show', options)
-        // this.notify('很遗憾，您拒绝了微信授权')
       }
     },
     cancel(e) {
+      wx.navigateBack({})
     }
   }
 }
