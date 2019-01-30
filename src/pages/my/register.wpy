@@ -1,0 +1,47 @@
+<style lang="less"></style>
+<template>
+  <view style="background-color: #fff;">
+    <input-name :config="name"></input-name>
+    <input-number :config="number"></input-number>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import input from '@/components/input/index'
+
+export default class Register extends wepy.page {
+  config = {
+    navigationBarTitleText: '完善信息'
+  };
+  components = {
+    'input-name': input,
+    'input-number': input
+  }
+
+  data = {
+    name: {
+      label: '姓名',
+      value: '',
+      placeholder: '名字'
+    },
+    number: {
+      error: true,
+      label: '学号',
+      inputType: 'number',
+      filter: /^\d{5,}$/,
+      placeholder: '请输入手机号'
+    }
+  };
+
+  computed = {};
+
+  methods = {};
+
+  events = {};
+
+  onLoad() {
+    this.$parent.globalData.loginCode = '0'
+  }
+}
+</script>
