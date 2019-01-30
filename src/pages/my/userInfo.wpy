@@ -32,7 +32,6 @@ export default class UserInfo extends wepy.page {
   }
   methods = {
     bindGetUserInfo(e) {
-      // let backtype = this.data.backType;
       if (e.detail.userInfo) {
         this.$parent.globalData.userInfo = e.detail.userInfo
         wx.navigateBack({})
