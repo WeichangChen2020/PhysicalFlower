@@ -20,8 +20,8 @@
 </style>
 <template>
 	<view>
-		<text class="bjlb">班级列表：</text>
-    <icon type='success' class="jia" @tap='jia'>添加班级</icon>
+		<text class="bjlb" >班级列表：</text>
+    <button class="btn btn-min btn-empty btn-success" @tap = 'jia'>增加班级</button>
     <button class="greeting" @tap="banji">XXXXX班级</button>
     <button class="greeting" @tap="banji">XXXXX班级</button>
     <button class="greeting" @tap="banji">XXXXX班级</button>
@@ -32,9 +32,12 @@
 </template> 
 <script>
   import wepy from 'wepy'
-
+  import panel from '@/components/panel/index'
   // 通过继承自wepy.page的类创建页面逻辑
   export default class teacher extends wepy.page {
+    components = {
+      panel: panel
+    }
     // 可用于页面模板绑定的数据
     data = {
     };
@@ -47,7 +50,6 @@
       jia(e) {
         this.$navigate('./classCreat')
       }
-  
     };
 
     // 页面的生命周期函数
