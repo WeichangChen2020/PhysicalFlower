@@ -1,4 +1,6 @@
 <style lang="less" src="./less/index.less"></style>
+<style src='public/style/weui.wxss'></style>
+
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
