@@ -17,6 +17,7 @@
   "author": "陈伟昌 <1339849378@qq.com>",
   "license": "MIT",
   "dependencies": {
+    "filter": "^0.1.1",
     "iview-weapp": "^2.0.0",
     "lodash": "^4.17.11",
     "redux": "^3.7.2",

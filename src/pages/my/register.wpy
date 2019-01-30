@@ -1,22 +1,38 @@
-<style lang="less">
-page {
-  background-color: #f2f2f2;
-}
-</style>
+<style lang="less"></style>
 <template>
- <text>注册</text>
+  <view style="background-color: #fff;">
+    <input-name :config="name"></input-name>
+    <input-number :config="number"></input-number>
+  </view>
 </template>
 
 <script>
 import wepy from 'wepy'
+import input from '@/components/input/index'
 
 export default class Register extends wepy.page {
   config = {
     navigationBarTitleText: '完善信息'
   };
-  components = {};
+  components = {
+    'input-name': input,
+    'input-number': input
+  }
 
-  data = {};
+  data = {
+    name: {
+      label: '姓名',
+      value: '',
+      placeholder: '名字'
+    },
+    number: {
+      error: true,
+      label: '学号',
+      inputType: 'number',
+      filter: /^\d{5,}$/,
+      placeholder: '请输入手机号'
+    }
+  };
 
   computed = {};
 
@@ -24,6 +40,8 @@ export default class Register extends wepy.page {
 
   events = {};
 
-  onLoad() {}
+  onLoad() {
+    this.$parent.globalData.loginCode = '0'
+  }
 }
 </script>

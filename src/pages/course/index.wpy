@@ -100,5 +100,15 @@ export default class Index extends wepy.page {
     // 如果未加入课程,跳转到join页面
     console.log(this.$parent.globalData)
   }
+  onPullDownRefresh() {
+    // 上拉刷新
+    this.onShow()
+    // if (!this.loading) {
+    //   this. fetchArticleList(1, true).then(() => {
+    //     // 处理完成后，终止下拉刷新
+    //     wx.stopPullDownRefresh()
+    //   })
+    // }
+  }
 }
 </script>
