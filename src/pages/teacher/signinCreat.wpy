@@ -341,6 +341,7 @@ html .row {
   justify-content: flex-start;
   box-sizing: border-box;
 }
+
 </style>
 <template>
     <canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-1000000px;top:-1000000px; "></canvas>
