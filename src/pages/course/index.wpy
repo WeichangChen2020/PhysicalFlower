@@ -84,13 +84,15 @@ export default class Index extends wepy.page {
       return app.request('userLogin', UL_DATA, '登录中')
     })
     .then(function(res) {
-      app.globalData.userInfo.loginCode = res.data.errCode
+      app.globalData.loginCode = res.data.errCode
       app.globalData.cookie = res.data.cookie
-    })
-    .then(function() {
-      console.log(app.globalData)
       // 检查信息
-      if (app.globalData.loginCode !== '0') {
+      console.log(app.globalData)
+      console.log(res)
+      console.log(res.data.errCode)
+      if (app.globalData.loginCode === 0) {
+        app.globalData.userInfo = res.data.userBasicInfo
+      } else {
         const options = {
           title: '完善信息',
           content: '完善信息以便老师区分',

@@ -10,19 +10,20 @@
 </style>
 <template>
   <toptips />
-  <!-- <view style="background-color: #fff;"> -->
-  <input-name :config="name" @onInput.user="_handleInputName"></input-name>
-  <input-number :config="number" @onInput.user="_handleInputNumber"></input-number>
-  <input-telphone :config="telphone" @onInput.user="_handleInputtelphone"></input-telphone>
-  <input-school :config="school" @onInput.user="_handleInputSchool"></input-school>
+  <toast />
+  <!-- 注意：组件异步更新需要加上.sync -->
+  <input-name :config.sync="name" @onInput.user="_handleInputName"></input-name>
+  <input-number :config.sync="number" @onInput.user="_handleInputNumber"></input-number>
+  <input-telphone :config.sync="telphone" @onInput.user="_handleInputtelphone"></input-telphone>
+  <input-school :config.sync="school" @onInput.user="_handleInputSchool"></input-school>
   <button class="weui-btn" type="primary" @tap="submit">提交</button>
-  <!-- </view> -->
 </template>
 
 <script>
 import wepy from 'wepy'
 import input from '@/components/input/index'
 import Toptips from '@/components/toptips/index'
+import Toast from '@/components/toast/index'
 
 export default class Register extends wepy.page {
   config = {
@@ -34,7 +35,8 @@ export default class Register extends wepy.page {
     'input-number': input,
     'input-telphone': input,
     'input-school': input,
-    'toptips': Toptips
+    'toptips': Toptips,
+    'toast': Toast
   }
 
   // TODO 其中的value值从globalData读取
@@ -48,6 +50,7 @@ export default class Register extends wepy.page {
     number: {
       error: false,
       label: '*学号',
+      value: '',
       inputType: 'number',
       filter: /^\d{5,15}$/,
       placeholder: '请输入学号'
@@ -55,12 +58,14 @@ export default class Register extends wepy.page {
     telphone: {
       error: false,
       label: ' 手机号',
+      value: '',
       inputType: 'number',
       filter: /^\d{8,13}$/,
       placeholder: '请输入手机号'
     },
     school: {
       label: ' 学校名',
+      value: '',
       inputType: 'text',
       placeholder: '请输入学校名'
     }
@@ -71,17 +76,18 @@ export default class Register extends wepy.page {
   methods = {
     submit(e) {
       let app = this.$parent
+      let that = this
       const options = {
         content: '',
         duration: 1500
       }
       console.log(this.data)
       // 合法性判断
-      if (this.data.userInfo.name === '') {
+      if (this.userInfo.name === '') {
         options.content = '姓名不能为空'
-      } else if (!(this.data.number.filter.test(this.data.userInfo.stunum))) {
+      } else if (!(this.number.filter.test(this.userInfo.stunum))) {
         options.content = '请检查学号'
-      } else if (!(this.data.telphone.filter.test(this.data.userInfo.telphone))) {
+      } else if (!(this.telphone.filter.test(this.userInfo.telphone))) {
         options.content = '请检查手机号'
       }
       // toptips提示
@@ -94,11 +100,28 @@ export default class Register extends wepy.page {
       var UL_DATA = {
         userBasicInfo: this.userInfo
       }
-      app.request('updateInfo', UL_DATA, '注册ing...')
+      app.request('updateInfo', UL_DATA, '请稍等...')
       .then(function(res) {
-        console.log(res)
+        if (res.data.errCode === 0 || res.data.errCode === 1) {
+          return res.data.errCode === 0 ? '更新成功' : '注册成功'
+        } else {
+          throw (new Error(res.data.msg))
+        }
       })
-      .then(function() {
+      .then(function(msg) {
+        const options = {
+          content: msg,
+          position: 'middle',
+          duration: 2000,
+          type: 'success'
+        }
+        that.$invoke('toast', 'show', options)
+      })
+      .then(function(data) {
+        app.globalData.userInfo = that.userInfo
+        setTimeout(function() {
+          wx.navigateBack({})
+        }, 1000)
       })
       .catch(function(error) {
         console.error(error)
@@ -126,7 +149,14 @@ export default class Register extends wepy.page {
   events = {};
 
   onLoad() {
+  }
+
+  onShow() {
     this.userInfo = this.$parent.globalData.userInfo
+    this.name.value = this.userInfo.name || ''
+    this.number.value = this.userInfo.stunum || ''
+    this.telphone.value = this.userInfo.telphone || ''
+    // console.log(this)
   }
 }
 </script>

@@ -108,19 +108,6 @@ export default class extends wepy.app {
         }
       }
     })
-
-    // this.getOpenid()
-    // .then(function(data) {
-    //   // console.log(data)
-    //   // return checkInformation()
-    // })
-    // .then(function(data){
-    //     console.log(data)
-    //     return runAsync3()
-    // })
-    // .then(function(data){
-    //     console.log(data)
-    // })
   }
 
   request(tag, data, loading) {
