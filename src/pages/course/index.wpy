@@ -71,44 +71,80 @@ export default class Index extends wepy.page {
 
   // 页面的生命周期函数
   onLoad() {
+    let app = this.$parent
+    let that = this
+    this.userLogin()
+    .then(function(data) {
+      var UL_DATA = {
+        code: data,
+        appId: app.globalData.appId,
+        appSecret: app.globalData.appSecret,
+        grant_type: app.globalData.grant_type
+      }
+      return app.request('userLogin', UL_DATA, '登录中')
+    })
+    .then(function(res) {
+      app.globalData.userInfo.openid = res.data.wx_msg.openid
+      app.globalData.userInfo.loginCode = res.data.errCode
+      app.globalData.cookies = res.data.cookies
+    })
+    .then(function() {
+      console.log(app.globalData)
+      // 检查信息
+      if (app.globalData.loginCode !== '0') {
+        const options = {
+          title: '完善信息',
+          content: '完善信息以便老师区分',
+          type: 'muti',
+          showVertical: true,
+          buttons: [{
+            text: '稍后'
+          }, {
+            text: '去完善',
+            color: '#C59E6C'
+          }]
+        }
+        that.$invoke('dialog', 'show', options).then((value) => {
+          // 0: 取消，1：确认
+          if (value === 1) {
+            wx.navigateTo({url: '../my/register'})
+          }
+        }, () => {
+          console.log('reject')
+        })
+      }
+    })
+    .catch(function(error) {
+      console.log(error)
+      app.modal(
+        error.message,
+        '错误!错误提示是：',
+        '确定'
+      )
+    })
   }
   onShow() {
-    let app = this.$parent
-    // 检查信息
-    if (app.globalData.loginCode !== '0') {
-      const options = {
-        title: '完善信息',
-        content: '完善信息以便老师区分',
-        type: 'muti',
-        showVertical: true,
-        buttons: [{
-          text: '稍后'
-        }, {
-          text: '去完善',
-          color: '#C59E6C'
-        }]
-      }
-      this.$invoke('dialog', 'show', options).then((value) => {
-        console.log(value) // 0: 取消，1：确认
-        if (value === 1) {
-          wx.navigateTo({url: '../my/register'})
-        }
-      }, () => {
-        console.log('reject')
-      })
-    }
     // 如果未加入课程,跳转到join页面
-    console.log(this.$parent.globalData)
+    // console.log(this.$parent.globalData)
   }
   onPullDownRefresh() {
     // 上拉刷新
     this.onShow()
-    // if (!this.loading) {
-    //   this. fetchArticleList(1, true).then(() => {
-    //     // 处理完成后，终止下拉刷新
     wx.stopPullDownRefresh()
-    //   })
-    // }
+  }
+
+  // 登录
+  userLogin (s) {
+    return new Promise((resolve, reject) => {
+      wx.login({
+        success: function (res) {
+          resolve(res.code)
+        },
+        fail: function (res) {
+          reject(new Error('请检查网络状况或账号安全状况。'))
+        }
+      })
+    })
   }
 }
 </script>

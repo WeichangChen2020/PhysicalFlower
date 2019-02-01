@@ -78,7 +78,10 @@ export default class extends wepy.app {
   globalData = {
     userInfo: {},
     loginCode: '', // 判断用户信息是否已完善
-    apiUrl: 'http://47.101.164.57:8080/physicalFlower/gateway.do'
+    apiUrl: 'http://47.101.164.57:8080/physicalFlower/gateway.do',
+    appId: 'wx9061828744e52511',
+    appSecret: 'f8edd6c9131964c83646a2056eba3700',
+    grant_type: 'authorization_code' // 获取openid的参数，不用改
   }
 
   constructor() {
@@ -106,11 +109,11 @@ export default class extends wepy.app {
       }
     })
 
-    this.getOpenid()
-    .then(function(data) {
-      console.log(data)
-      // return checkInformation()
-    })
+    // this.getOpenid()
+    // .then(function(data) {
+    //   // console.log(data)
+    //   // return checkInformation()
+    // })
     // .then(function(data){
     //     console.log(data)
     //     return runAsync3()
@@ -118,37 +121,6 @@ export default class extends wepy.app {
     // .then(function(data){
     //     console.log(data)
     // })
-  }
-
-  // 登录
-  getOpenid (s) {
-    let that = this
-    return new Promise((resolve, reject) => {
-      wx.login({
-        success: function (res) {
-          var UL_DATA = {
-            code: res.code,
-            appId: 'wx9061828744e52511',
-            appSecret: 'f8edd6c9131964c83646a2056eba3700',
-            grant_type: 'authorization_code'
-          }
-          that.request('userLogin', UL_DATA, '登录中')
-          .then((res) => {
-            that.globalData.userInfo.openid = res.data.wx_msg.openid
-            that.globalData.userInfo.loginCode = res.data.wx_msg.code
-            that.globalData.cookies = res.data.cookies
-          })
-        },
-        fail: function (res) {
-          that.modal(
-            '请检查网络状况或账号安全状况。\n您现在处于未登录状态。',
-            '登录账户失败',
-            '确定'
-          )
-          .then((res) => { console.log('wx.login失败') })
-        }
-      })
-    })
   }
 
   request(tag, data, loading) {
