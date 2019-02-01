@@ -13,7 +13,7 @@
   <!-- <view style="background-color: #fff;"> -->
   <input-name :config="name" @onInput.user="_handleInputName"></input-name>
   <input-number :config="number" @onInput.user="_handleInputNumber"></input-number>
-  <input-tel :config="tel" @onInput.user="_handleInputTel"></input-tel>
+  <input-telphone :config="telphone" @onInput.user="_handleInputtelphone"></input-telphone>
   <input-school :config="school" @onInput.user="_handleInputSchool"></input-school>
   <button class="weui-btn" type="primary" @tap="submit">提交</button>
   <!-- </view> -->
@@ -32,13 +32,14 @@ export default class Register extends wepy.page {
   components = {
     'input-name': input,
     'input-number': input,
-    'input-tel': input,
+    'input-telphone': input,
     'input-school': input,
     'toptips': Toptips
   }
 
   // TODO 其中的value值从globalData读取
   data = {
+    userInfo: {},
     name: {
       label: '*姓名',
       value: '',
@@ -51,7 +52,7 @@ export default class Register extends wepy.page {
       filter: /^\d{5,15}$/,
       placeholder: '请输入学号'
     },
-    tel: {
+    telphone: {
       error: false,
       label: ' 手机号',
       inputType: 'number',
@@ -69,43 +70,63 @@ export default class Register extends wepy.page {
 
   methods = {
     submit(e) {
+      let app = this.$parent
       const options = {
         content: '',
         duration: 1500
       }
       console.log(this.data)
       // 合法性判断
-      if (this.data.name.value === '') {
+      if (this.data.userInfo.name === '') {
         options.content = '姓名不能为空'
-      } else if (!(this.data.number.filter.test(this.data.number.value))) {
+      } else if (!(this.data.number.filter.test(this.data.userInfo.stunum))) {
         options.content = '请检查学号'
-      } else if (!(this.data.tel.filter.test(this.data.tel.value))) {
+      } else if (!(this.data.telphone.filter.test(this.data.userInfo.telphone))) {
         options.content = '请检查手机号'
       }
       // toptips提示
       if (options.content !== '') {
         this.$invoke('toptips', 'show', options)
+        return
       }
       // 提交数据更新
+      console.log(this.userInfo)
+      var UL_DATA = {
+        userBasicInfo: this.userInfo
+      }
+      app.request('updateInfo', UL_DATA, '注册ing...')
+      .then(function(res) {
+        console.log(res)
+      })
+      .then(function() {
+      })
+      .catch(function(error) {
+        console.error(error)
+        app.modal(
+          error.message,
+          '错误!错误提示是：',
+          '确定'
+        )
+      })
     },
     _handleInputName(e) {
-      this.data.name.value = e
+      this.userInfo.name = e
     },
     _handleInputNumber(e) {
-      this.data.number.value = e
+      this.userInfo.stunum = e
     },
-    _handleInputTel(e) {
-      this.data.tel.value = e
+    _handleInputtelphone(e) {
+      this.userInfo.telphone = e
     },
     _handleInputSchool(e) {
-      this.data.school.value = e
+      this.userInfo.school = e
     }
   };
 
   events = {};
 
   onLoad() {
-    this.$parent.globalData.loginCode = '0'
+    this.userInfo = this.$parent.globalData.userInfo
   }
 }
 </script>

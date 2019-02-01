@@ -84,9 +84,8 @@ export default class Index extends wepy.page {
       return app.request('userLogin', UL_DATA, '登录中')
     })
     .then(function(res) {
-      app.globalData.userInfo.openid = res.data.wx_msg.openid
       app.globalData.userInfo.loginCode = res.data.errCode
-      app.globalData.cookies = res.data.cookies
+      app.globalData.cookie = res.data.cookie
     })
     .then(function() {
       console.log(app.globalData)

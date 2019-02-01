@@ -137,14 +137,14 @@ export default class extends wepy.app {
         method: 'POST',
         header: {
           'content-type': 'application/json',
-          'cookies': that.globalData.cookies
+          'cookie': that.globalData.cookie || ''
         },
         data: data,
         success: function (res) {
           res.tag = tag + ': '   // 返还 tag 名字, 方便用 console 定位
           wx.hideLoading()
           if (res.statusCode === 200) resolve(res)
-          else reject(res)
+          else reject(new Error('request statusCode:' + res.statusCode))
         },
         fail: function (e) {
           wx.showToast({ icon: 'none', title: '网络连接失败' })
