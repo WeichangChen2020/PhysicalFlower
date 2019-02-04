@@ -31,7 +31,7 @@ export default class Join extends wepy.page {
   methods = {
     _handleCouseNum(e) {
       let app = this.$parent
-      if(e.length !== 6) {
+      if (e.length !== 6) {
         return
       }
       var UL_DATA = {
