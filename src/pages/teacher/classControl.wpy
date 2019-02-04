@@ -11,7 +11,7 @@
 </style>
 <template>
 	<view>
-		<text class="title">XXXXX班级</text>
+		<text class="title">XXXXX课程</text>
   </view>
     <button class="greeting" @tap='tap' id="1">创建签到</button>
     <button class="greeting" @tap='tap' id="2">管理签到</button>

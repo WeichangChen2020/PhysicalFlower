@@ -23,13 +23,13 @@ input{
 </style>
 <template>
 	<view>
-		<text class="greetingc">增加班级</text>
+		<text class="greetingc">增加课程</text>
     <view>
       <block>
-      <text class="greeting">班级名称：</text>
-      <input placeholder="请输入班级名称"  maxlength="15" placeholder-class="inputi"/>
+      <text class="greeting">课程名称：</text>
+      <input placeholder="请输入课程名称"  maxlength="15" placeholder-class="inputi" @input="input"/>
       </block>
-      <button class="greeting">提交</button>
+      <button class="greeting" @tap="tap">提交</button>
     </view>
 	</view>
 </template>
@@ -40,12 +40,30 @@ input{
   export default class classCreat extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
+      course: ''
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      bindViewTap () {
-        console.log('button clicked')
+      input(e) {
+        // console.log(e.detail.value)
+        this.course = e.detail
+        console.log(this.course)
+      },
+      tap(e) {
+        console.log(e)
+        if (this.course !== '') { // todo 发送到后台接口，创建课程，然后到教师界面请求（navigateto不可以导航到tabbar，navigateback不可以传值，只能用storage做桥梁,这里暂时这样做）
+          wx.setStorageSync('course_name', this.course.value)
+          wx.navigateBack({
+            delta: 1
+          })
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: '课程名称不能为空',
+            showCancel: false
+          })
+        }
       }
     };
 

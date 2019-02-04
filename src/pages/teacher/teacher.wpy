@@ -20,14 +20,17 @@
 </style>
 <template>
 	<view>
-		<text class="bjlb" >班级列表：</text>
-    <button class="btn btn-min btn-empty btn-success" @tap = 'jia'>增加班级</button>
-    <button class="greeting" @tap="banji">XXXXX班级</button>
-    <button class="greeting" @tap="banji">XXXXX班级</button>
-    <button class="greeting" @tap="banji">XXXXX班级</button>
-    <button class="greeting" @tap="banji">XXXXX班级</button>
-    <button class="greeting" @tap="banji">XXXXX班级</button>
-    <button class="greeting" @tap="banji">XXXXX班级</button>
+		<text class="bjlb" >课程列表：</text>
+    <button class="btn btn-min btn-empty btn-success" @tap = 'jia'>增加课程</button>
+    <block wx:for='{{course_list}}' wx:key='*this'>
+      <button class="greeting" >{{item}}</button>
+    </block>
+    <!-- <button class="greeting" @tap="banji">XXXXX课程</button>
+    <button class="greeting" @tap="banji">XXXXX课程</button>
+    <button class="greeting" @tap="banji">XXXXX课程</button>
+    <button class="greeting" @tap="banji">XXXXX课程</button>
+    <button class="greeting" @tap="banji">XXXXX课程</button>
+    <button class="greeting" @tap="banji">XXXXX课程</button> -->
 	</view>
 </template> 
 <script>
@@ -40,6 +43,7 @@
     }
     // 可用于页面模板绑定的数据
     data = {
+      course_list: []
     };
 
     // 事件处理函数(集中保存在methods对象中)
@@ -53,8 +57,28 @@
     };
 
     // 页面的生命周期函数
-    onLoad() {
-      console.log('onLoad')
+    onLoad(e) { // todo 直接从后台获取教师课程信息
     };
+    onShow() {
+      this.course_list[0] = wx.getStorageSync('course_name')
+      console.log('course_list', this.course_list.length)
+      if (this.course_list[0].length === 0) {
+        wepy.showModal({
+          title: '提示',
+          content: '暂无课程，请创建课程',
+          showCancel: false,
+          success(e) {
+            console.log(e)
+            if (e.confirm === true) {
+              wx.navigateTo({url: './classCreat'})
+            }
+          }
+        })
+      } else {
+        this.setData({
+          course_list: this.course_list
+        })
+      }
+    }
   }
 </script>
