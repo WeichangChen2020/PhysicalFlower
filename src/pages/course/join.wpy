@@ -1,0 +1,61 @@
+<style type="less"></style>
+<template>
+  <input-cnum :config="cnum" @onInput.user="_handleCouseNum"></input-cnum>
+</template>
+<script>
+import wepy from 'wepy'
+import input from '@/components/input/index'
+// TODO 课程推荐？
+// import cellGroup from '@/components/cell-group/index'
+// import cell from '@/components/cell/index'
+
+// 通过继承自wepy.page的类创建页面逻辑
+export default class Join extends wepy.page {
+  config = {
+    navigationBarTitleText: '加入课程',
+    enablePullDownRefresh: false
+  }
+  data = {
+    cnum: {
+      adjust: true,
+      focus: true,
+      inputType: 'number',
+      placeholder: '请输入课程号',
+      maxlength: 6
+    }
+  }
+  components = {
+    'input-cnum': input
+  }
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+    _handleCouseNum(e) {
+      let app = this.$parent
+      if(e.length !== 6) {
+        return
+      }
+      var UL_DATA = {
+        idCourse: e
+      }
+      // TODO 根据返回值确定是否跳转到课程详情页面
+      app.request('addUser', UL_DATA, '查询中...')
+      .then(function(data) {
+        console.log(data)
+      })
+    }
+  };
+
+  // 页面的生命周期函数
+  onLoad() {
+  }
+  onShow() {
+    // 如果未加入课程,跳转到join页面
+    // console.log(this.$parent.globalData)
+  }
+  onPullDownRefresh() {
+    // 上拉刷新
+    this.onShow()
+    wx.stopPullDownRefresh()
+  }
+}
+</script>

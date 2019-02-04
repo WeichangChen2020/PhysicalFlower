@@ -81,7 +81,6 @@ export default class Register extends wepy.page {
         content: '',
         duration: 1500
       }
-      console.log(this.data)
       // 合法性判断
       if (this.userInfo.name === '') {
         options.content = '姓名不能为空'
@@ -96,7 +95,6 @@ export default class Register extends wepy.page {
         return
       }
       // 提交数据更新
-      console.log(this.userInfo)
       var UL_DATA = {
         userBasicInfo: this.userInfo
       }
