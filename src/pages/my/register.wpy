@@ -3,10 +3,6 @@
   margin-left: 15px;
   margin-right: 15px;
 }
-.toptips {
-  line-height: 1;
-  min-height: 0.5rem;
-}
 </style>
 <template>
   <toptips />

@@ -1,5 +1,11 @@
 <style lang="less" src="./less/index.less"></style>
 <style src='public/style/weui.wxss'></style>
+<style lang="less">
+.toptips {
+  line-height: 1;
+  min-height: 0.5rem;
+}
+</style>
 
 <script>
 import wepy from 'wepy'
