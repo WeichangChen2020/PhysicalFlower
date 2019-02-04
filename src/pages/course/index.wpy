@@ -75,6 +75,7 @@ export default class Index extends wepy.page {
     let that = this
     this.userLogin()
     .then(function(data) {
+      // 登录请求
       var UL_DATA = {
         code: data,
         appId: app.globalData.appId,
@@ -84,12 +85,10 @@ export default class Index extends wepy.page {
       return app.request('userLogin', UL_DATA, '登录中')
     })
     .then(function(res) {
+      // 完善信息
       app.globalData.loginCode = res.data.errCode
       app.globalData.cookie = res.data.cookie
       // 检查信息
-      console.log(app.globalData)
-      console.log(res)
-      console.log(res.data.errCode)
       if (app.globalData.loginCode === 0) {
         app.globalData.userInfo = res.data.userBasicInfo
       } else {
@@ -116,6 +115,7 @@ export default class Index extends wepy.page {
       }
     })
     .catch(function(error) {
+      // 错误处理
       console.log(error)
       app.modal(
         error.message,
@@ -125,6 +125,15 @@ export default class Index extends wepy.page {
     })
   }
   onShow() {
+    this.getCourseId()
+    .then(function(res) {
+      // 如果本地没有存储则去请求
+      if (res === 'null') {
+        // TODO 等请求加入课程的后台接口
+        // app.request('userLogin', UL_DATA, '登录中')
+      } else {
+      }
+    })
     // 如果未加入课程,跳转到join页面
     // console.log(this.$parent.globalData)
   }
@@ -143,6 +152,25 @@ export default class Index extends wepy.page {
         },
         fail: function (res) {
           reject(new Error('请检查网络状况或账号安全状况。'))
+        }
+      })
+    })
+  }
+
+  // 从本地文件获取上次使用的课程id
+  getCourseId (s) {
+    let app = this.$parent
+    return new Promise((resolve, reject) => {
+      const fs = wx.getFileSystemManager()
+      fs.readFile({
+        filePath: `${wx.env.USER_DATA_PATH}/courseId`,
+        encoding: 'utf8',
+        success(res) {
+          app.globalData.activeCourse = res.data
+          resolve(res.data)
+        },
+        fail(res) {
+          resolve('null')
         }
       })
     })

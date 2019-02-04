@@ -5,7 +5,6 @@
 <script>
 import wepy from 'wepy'
 
-// 通过继承自wepy.page的类创建页面逻辑
 export default class CourseDetail extends wepy.page {
   config = {
     navigationBarTitleText: '课程详情'

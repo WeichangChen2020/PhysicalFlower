@@ -89,7 +89,8 @@ export default class extends wepy.app {
     apiUrl: 'http://47.101.164.57:8080/physicalFlower/gateway.do',
     appId: 'wx9061828744e52511',
     appSecret: 'f8edd6c9131964c83646a2056eba3700',
-    grant_type: 'authorization_code' // 获取openid的参数，不用改
+    grant_type: 'authorization_code', // 获取openid的参数，不用改
+    activeCourse: '' // 主页面的课程id
   }
 
   constructor() {
