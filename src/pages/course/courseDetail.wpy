@@ -1,0 +1,28 @@
+<style type="less"></style>
+<template>
+  <text>课程详情</text>
+</template>
+<script>
+import wepy from 'wepy'
+
+export default class CourseDetail extends wepy.page {
+  config = {
+    navigationBarTitleText: '课程详情'
+  }
+  data = {
+  }
+  components = {
+  }
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+  };
+
+  // 页面的生命周期函数
+  onLoad() {
+  }
+  onShow() {
+    // 如果未加入课程,跳转到join页面
+    // console.log(this.$parent.globalData)
+  }
+}
+</script>

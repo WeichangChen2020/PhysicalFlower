@@ -1,5 +1,11 @@
 <style lang="less" src="./less/index.less"></style>
 <style src='public/style/weui.wxss'></style>
+<style lang="less">
+.toptips {
+  line-height: 1;
+  min-height: 0.5rem;
+}
+</style>
 
 <script>
 import wepy from 'wepy'
@@ -16,6 +22,8 @@ export default class extends wepy.app {
     // 最后需要对这些页面的顺序进行调整
     pages: [
       'pages/course/index',
+      'pages/course/join',
+      'pages/course/courseDetail',
       'pages/my/authorize',
       'pages/my/register',
       'pages/my/gradeInfo',
@@ -81,7 +89,8 @@ export default class extends wepy.app {
     apiUrl: 'http://47.101.164.57:8080/physicalFlower/gateway.do',
     appId: 'wx9061828744e52511',
     appSecret: 'f8edd6c9131964c83646a2056eba3700',
-    grant_type: 'authorization_code' // 获取openid的参数，不用改
+    grant_type: 'authorization_code', // 获取openid的参数，不用改
+    activeCourse: '' // 主页面的课程id
   }
 
   constructor() {
