@@ -23,7 +23,7 @@
 		<text class="bjlb" >课程列表：</text>
     <button class="btn btn-min btn-empty btn-success" @tap = 'jia'>增加课程</button>
     <block wx:for='{{course_list}}' wx:key='*this'>
-      <button class="greeting" >{{item}}</button>
+      <button class="greeting" @tap='banji'>{{item}}</button>
     </block>
     <!-- <button class="greeting" @tap="banji">XXXXX课程</button>
     <button class="greeting" @tap="banji">XXXXX课程</button>
