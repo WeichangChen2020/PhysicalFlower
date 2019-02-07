@@ -63,7 +63,7 @@
       // this.course_list[0] = wx.getStorageSync('course_name')
       console.log('course_list', this.course_list.length)
       if (this.course_list.length === 0) {
-        wepy.showModal({
+        wx.showModal({
           title: '提示',
           content: '暂无课程，请创建课程',
           showCancel: false,
@@ -73,9 +73,6 @@
               // console.log("111")
               wx.navigateTo({url: './classCreat'})
             }
-          },
-          fail(e) {
-            console.log(e)
           }
         })
       } else {
