@@ -38,7 +38,7 @@ export default class Join extends wepy.page {
         idCourse: e
       }
       // TODO 根据返回值确定是否跳转到课程详情页面
-      app.request('addUser', UL_DATA, '查询中...')
+      app.request('addCourse', UL_DATA, '查询中...')
       .then(function(data) {
         console.log(data)
       })

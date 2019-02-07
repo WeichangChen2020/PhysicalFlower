@@ -78,8 +78,6 @@ export default class Index extends wepy.page {
       // 登录请求
       var UL_DATA = {
         code: data,
-        appId: app.globalData.appId,
-        appSecret: app.globalData.appSecret,
         grant_type: app.globalData.grant_type
       }
       return app.request('userLogin', UL_DATA, '登录中')
