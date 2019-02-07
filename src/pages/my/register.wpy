@@ -93,6 +93,7 @@ export default class Register extends wepy.page {
       // 提交数据更新
       var UL_DATA = {
         userBasicInfo: this.userInfo
+
       }
       app.request('updateInfo', UL_DATA, '请稍等...')
       .then(function(res) {
@@ -104,7 +105,7 @@ export default class Register extends wepy.page {
       })
       .then(function(msg) {
         const options = {
-          content: msg,
+          content: msg, 
           position: 'middle',
           duration: 2000,
           type: 'success'

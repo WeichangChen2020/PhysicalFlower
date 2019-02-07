@@ -60,9 +60,9 @@
     onLoad(e) { // todo 直接从后台获取教师课程信息
     };
     onShow() {
-      this.course_list[0] = wx.getStorageSync('course_name')
+      // this.course_list[0] = wx.getStorageSync('course_name')
       console.log('course_list', this.course_list.length)
-      if (this.course_list[0].length === 0) {
+      if (this.course_list.length === 0) {
         wepy.showModal({
           title: '提示',
           content: '暂无课程，请创建课程',
@@ -70,8 +70,12 @@
           success(e) {
             console.log(e)
             if (e.confirm === true) {
+              // console.log("111")
               wx.navigateTo({url: './classCreat'})
             }
+          },
+          fail(e) {
+            console.log(e)
           }
         })
       } else {

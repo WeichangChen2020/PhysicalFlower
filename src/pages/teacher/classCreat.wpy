@@ -51,9 +51,28 @@ input{
         console.log(this.course)
       },
       tap(e) {
+        // let app = this.$parent
+        // var courseDATA = {
+        //   questionSet: 1,
+        //   courseName: this.course.value
+        // }
+        // app.request('courseName', courseDATA, 'loading').than((d) => console.log(d))
+        wx.request({
+          url: this.$parent.globalData.apiUrl,
+          method: 'post',
+          data: {
+            pf: 'wx',
+            tag: 'courseCreate',
+            questionSet: 1,
+            courseName: this.course.value
+          },
+          success(e) {
+            console.log(e)
+          }
+        })
         console.log(e)
         if (this.course !== '') { // todo 发送到后台接口，创建课程，然后到教师界面请求（navigateto不可以导航到tabbar，navigateback不可以传值，只能用storage做桥梁,这里暂时这样做）
-          wx.setStorageSync('course_name', this.course.value)
+          // wx.setStorageSync('course_name', this.course.value)
           wx.navigateBack({
             delta: 1
           })
