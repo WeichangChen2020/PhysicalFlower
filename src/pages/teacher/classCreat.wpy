@@ -56,7 +56,7 @@ input{
         //   questionSet: 1,
         //   courseName: this.course.value
         // }
-        // app.request('courseName', courseDATA, 'loading').than((d) => console.log(d))
+        // app.request('courseName', courseDATA, 'loading').then((d) => console.log(d))
         wx.request({
           url: this.$parent.globalData.apiUrl,
           method: 'post',
