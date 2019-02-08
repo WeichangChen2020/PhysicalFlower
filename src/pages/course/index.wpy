@@ -76,6 +76,7 @@ export default class Index extends wepy.page {
     this.userLogin()
     .then(function(data) {
       // 登录请求
+      // console.log(data)
       var UL_DATA = {
         code: data,
         grant_type: app.globalData.grant_type
