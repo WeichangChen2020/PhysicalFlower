@@ -25,6 +25,7 @@ export default class extends wepy.app {
       'pages/teacher/signinCreat',
       'pages/course/join',
       'pages/course/courseDetail',
+      'pages/course/courseList',
       'pages/my/authorize',
       'pages/my/register',
       'pages/my/gradeInfo',

@@ -7,7 +7,7 @@
 <template>
   <toptips />
   <toast />
-  <!-- 注意：组件异步更新需要加上.sync -->
+  <!-- 注意：组件更新需要加上.sync -->
   <input-name :config.sync="name" @onInput.user="_handleInputName"></input-name>
   <input-number :config.sync="number" @onInput.user="_handleInputNumber"></input-number>
   <input-telphone :config.sync="telphone" @onInput.user="_handleInputtelphone"></input-telphone>
@@ -93,7 +93,6 @@ export default class Register extends wepy.page {
       // 提交数据更新
       var UL_DATA = {
         userBasicInfo: this.userInfo
-
       }
       app.request('updateInfo', UL_DATA, '请稍等...')
       .then(function(res) {

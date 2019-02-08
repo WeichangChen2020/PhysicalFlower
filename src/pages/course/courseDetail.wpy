@@ -1,9 +1,28 @@
-<style type="less"></style>
+<style type="less">
+canvas {
+  width: 150px;
+  height: 150px;
+}
+.page__bd {
+  text-align: center;
+}
+.weui-btn {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+</style>
 <template>
-  <text>课程详情</text>
+  <toast />
+  <view class="page__bd">
+    <canvas canvas-id="canvas" class="canvas"></canvas>
+    <text>课程详情</text>
+    <button class="weui-btn" type="primary" @tap="join">加入课程</button>
+    <button class="weui-btn" type="default" @tap="back">重新检索</button>
+  </view>
 </template>
 <script>
 import wepy from 'wepy'
+import Toast from '@/components/toast/index'
 
 export default class CourseDetail extends wepy.page {
   config = {
@@ -12,17 +31,64 @@ export default class CourseDetail extends wepy.page {
   data = {
   }
   components = {
+    'toast': Toast
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
+    join(e) {
+      let app = this.$parent
+      let that = this
+      console.log(e)
+      var UL_DATA = {
+        idCourse: this.idCourse
+      }
+      app.request('addCourse', UL_DATA, '请稍等...')
+      .then((res) => {
+        console.log(res)
+        if (res.data.errCode === 0 || res.data.errCode === 4001) {
+          // 课程id保存到本地文件以供下次打开时默认课程
+          const fs = wx.getFileSystemManager()
+          fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, that.idCourse, 'utf8')
+          app.globalData.courseInfo = res.data
+          return res.data.errCode
+        } else {
+          throw (new Error('课程加入失败'))
+        }
+      })
+      .then((code) => {
+        const options = {
+          content: code === 0 ? '加入成功' : '该课程已加入',
+          position: 'middle',
+          duration: 2000,
+          type: code === 0 ? 'success' : 'warning'
+        }
+        that.$invoke('toast', 'show', options)
+        setTimeout(function() {
+          wx.switchTab({
+            url: './index'
+          })
+        }, 1000)
+      })
+      .catch(function(error) {
+        console.error(error)
+        app.modal(
+          error.message,
+          '错误!错误提示是：',
+          '确定'
+        )
+      })
+    },
+    back(e) {
+      wx.navigateBack({})
+    }
   };
 
   // 页面的生命周期函数
-  onLoad() {
+  onLoad(e) {
+    console.log(e)
+    this.idCourse = e.idCourse
   }
-  onShow() {
-    // 如果未加入课程,跳转到join页面
-    // console.log(this.$parent.globalData)
+  onShow(e) {
   }
 }
 </script>

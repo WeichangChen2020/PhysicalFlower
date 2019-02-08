@@ -63,7 +63,7 @@ export default class Index extends wepy.page {
           wx.navigateTo({url: './video'})
           break
         case '8':
-          wx.navigateTo({url: './switch'})
+          wx.navigateTo({url: './courseList'})
           break
       }
     }
@@ -124,17 +124,18 @@ export default class Index extends wepy.page {
     })
   }
   onShow() {
+    console.log(this.$parent.globalData)
     this.getCourseId()
     .then(function(res) {
       // 如果本地没有存储则去请求
+      console.log(res)
       if (res === 'null') {
-        // TODO 等请求加入课程的后台接口
+        // TODO 等请求以加入课程的后台接口
         // app.request('userLogin', UL_DATA, '登录中')
+        // TODO 如果未加入任何课程，则跳转到jion页面
       } else {
       }
     })
-    // 如果未加入课程,跳转到join页面
-    // console.log(this.$parent.globalData)
   }
   onPullDownRefresh() {
     // 上拉刷新
