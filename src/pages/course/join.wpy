@@ -1,10 +1,18 @@
-<style type="less"></style>
+<style type="less">
+.page__bd {
+  margin-top: 10px;
+}
+</style>
 <template>
-  <input-cnum :config="cnum" @onInput.user="_handleCouseNum"></input-cnum>
+  <toptips />
+  <view class="page__bd">
+    <input-cnum :config="cnum" @onInput.user="_handleCouseNum"></input-cnum>
+  </view>
 </template>
 <script>
 import wepy from 'wepy'
 import input from '@/components/input/index'
+import Toptips from '@/components/toptips/index'
 // TODO 课程推荐？
 // import cellGroup from '@/components/cell-group/index'
 // import cell from '@/components/cell/index'
@@ -17,14 +25,18 @@ export default class Join extends wepy.page {
   }
   data = {
     cnum: {
+      error: false,
       adjust: true,
       focus: true,
+      clear: true,
       inputType: 'number',
       placeholder: '请输入课程号',
-      maxlength: 6
+      maxlength: 6,
+      filter: /^\d{0,6}$/
     }
   }
   components = {
+    'toptips': Toptips,
     'input-cnum': input
   }
   // 事件处理函数(集中保存在methods对象中)
@@ -33,14 +45,37 @@ export default class Join extends wepy.page {
       let app = this.$parent
       if (e.length !== 6) {
         return
+      } else if (!(this.cnum.filter.test(e))) {
+        const options = {
+          content: '请检查课程号',
+          duration: 1500
+        }
+        this.$invoke('toptips', 'show', options)
+        return
       }
       var UL_DATA = {
         idCourse: e
       }
       // TODO 根据返回值确定是否跳转到课程详情页面
-      app.request('addCourse', UL_DATA, '查询中...')
-      .then(function(data) {
-        console.log(data)
+      app.request('courseDetail', UL_DATA, '查询中...')
+      .then((res, reject) => {
+        console.log(res)
+        if (res.data.errCode === 0) {
+          // 跳转到课程详情页面
+          wx.navigateTo({url: './courseDetail?idCourse=' + res.data.courseInfo.idCourse})
+        } else if (res.data.errCode === 4000) {
+          throw (new Error('课程不存在'))
+        } else {
+          throw (new Error('课程请求失败'))
+        }
+      })
+      .catch(function(error) {
+        console.error(error)
+        app.modal(
+          error.message,
+          '错误!',
+          '确定'
+        )
       })
     }
   };

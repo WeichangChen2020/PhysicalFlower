@@ -1,0 +1,36 @@
+<style type="less">
+</style>
+<template>
+  <view class="weui-cells weui-cells_after-title">
+    <view @tap='tap' class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">course1</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </view>
+    <view @tap='tap' class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">course2</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+
+export default class CourseList extends wepy.page {
+  config = {
+    navigationBarTitleText: '已加入课程'
+  }
+  data = {
+  }
+  components = {
+  }
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+  };
+
+  // 页面的生命周期函数
+  onLoad(e) {
+  }
+  onShow(e) {
+  }
+}
+</script>
