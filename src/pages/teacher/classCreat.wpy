@@ -63,8 +63,9 @@ input{
           data: {
             pf: 'wx',
             tag: 'courseCreate',
-            questionSet: 0,
-            courseName: this.course.value
+            questionSet: 2,
+            courseName: this.course.value,
+            logo: '121212'
           },
           success(e) {
             console.log(e)
