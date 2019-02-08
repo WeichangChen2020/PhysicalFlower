@@ -125,8 +125,7 @@ export default class queReport extends wepy.page {
           var ratio = 2
           // var ctx = wx.createCanvasContext('photo_canvas')
           that.files = that.files.concat(res.tempFilePaths)
-          console.log(that.files)
-          console.log(that.files.length)
+          that.$apply()
           wx.getImageInfo({
             src: res.tempFilePaths[0],
             succes(res) {
@@ -136,10 +135,8 @@ export default class queReport extends wepy.page {
                 that.canvasWidth > 10000 ||
                 that.canvasHeight > 10000
               ) {
-                that.setData({
-                  canvasWidth: Math.trunc(res.width / ratio),
-                  canvasHeight: Math.trunc(res.height / ratio)
-                })
+                that.canvasWidth = Math.trunc(res.width / ratio)
+                that.canvasHeight = Math.trunc(res.height / ratio)
                 ratio++
               }
               console.log(that.canvasWidth, that.canvasHeight)

@@ -22,6 +22,7 @@ export default class extends wepy.app {
     // 最后需要对这些页面的顺序进行调整
     pages: [
       'pages/course/index',
+      'pages/teacher/signinCreat',
       'pages/course/join',
       'pages/course/courseDetail',
       'pages/my/authorize',
@@ -30,7 +31,6 @@ export default class extends wepy.app {
       'pages/my/my',
       'pages/teacher/teacher',
       'pages/teacher/signinChoose',
-      'pages/teacher/signinCreat',
       'pages/course/signin/list',
       'pages/course/signin/detail',
       'pages/course/homework/list',
@@ -51,6 +51,11 @@ export default class extends wepy.app {
       'pages/teacher/homeworkSearch',
       'pages/teacher/testSearch'
     ],
+    'permission': {
+      'scope.userLocation': {
+        'desc': '你的位置信息将用于小程序位置接口的效果展示'
+      }
+    },
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
@@ -92,7 +97,6 @@ export default class extends wepy.app {
     grant_type: 'authorization_code', // 获取openid的参数，不用改
     activeCourse: '' // 主页面的课程id
   }
-
   constructor() {
     super()
     this.use('requestfix')

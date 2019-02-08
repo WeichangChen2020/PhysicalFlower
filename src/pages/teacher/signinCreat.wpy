@@ -357,7 +357,7 @@ html .row {
     <view>签到地点记录</view>
     <form bindsubmit="openLocation">
       <view style='display: flex;flex-direction: row'>
-        <button class='btn' disabled='{{isChecked<2}}' bindtap='getLocation'>点击获取位置</button>
+        <button class='btn' disabled='{{isChecked<2}}' style='height:80rpx' bindtap='getLocation'>点击获取位置</button>
       </view>
 
         <view class='border'>
@@ -378,7 +378,7 @@ html .row {
 
   <view class='greeting'>发布签到</view>
   <view class='border'>
-    <button class="btn" style='width:400rpx' bindtap='reg'>提交并发布签到</button>
+    <button class="btn" style='width:400rpx;height:80rpx' bindtap='reg'>提交并发布签到</button>
   </view>
 </template>
 <script>
@@ -409,9 +409,6 @@ export default class signinCreat extends wepy.page {
       new_latitude: '',
       img_path: ''
     },
-    // new_longitude: '',
-    // new_latitude: '',
-
     address_city: '',
     address_description: '',
     canvasWidth: '',
@@ -428,49 +425,47 @@ export default class signinCreat extends wepy.page {
         type: 'wgs84',
         success: function(res) {
           console.log(res)
-          that.setData({
-            isGotLoc: 1,
-            hasLocation: true,
-            new_longitude: res.longitude,
-            new_latitude: res.latitude,
-            location: {
-              longitude: res.longitude,
-              latitude: res.latitude
-            }
-          })
+          that.isGotLoc = 1,
+          that.hasLocation = true,
+          that.new_longitude = res.longitude,
+          that.new_latitude = res.latitude,
+          that.location = {
+            longitude: res.longitude,
+            latitude: res.latitude
+          }
           wx.showToast({
             title: '获取坐标成功'
           })
-          wx.request({
-            // 百度地图API，将微信获得的经纬度传给百度，获得城市等信息
-            url:
-              'https:// api.map.baidu.com/geocoder/v2/?ak=GAKrXdS2lPhNejYKnvfalheyoiTqcnWG&location=' +
-              that.data.new_latitude +
-              ',' +
-              that.data.new_longitude +
-              '&output=json&coordtype=wgs84ll',
-            data: {},
-            header: {
-              'Content-Type': 'application/json'
-            },
-            success: function(res) {
-              console.log(res.data.result)
-              console.log(
-                res.data.result.addressComponent.city +
-                  res.data.result.addressComponent.district
-              )
-              console.log(res.data.result.sematic_description)
-              that.setData({
-                address_city:
-                  res.data.result.addressComponent.city +
-                  res.data.result.addressComponent.district,
-                address_description: res.data.result.sematic_description
-              })
-            },
-            fail: function() {
-              // fail
-            }
-          })
+          // wx.request({
+          //   // 百度地图API，将微信获得的经纬度传给百度，获得城市等信息
+          //   url:
+          //     'https:// api.map.baidu.com/geocoder/v2/?ak=GAKrXdS2lPhNejYKnvfalheyoiTqcnWG&location=' +
+          //     that.data.new_latitude +
+          //     ',' +
+          //     that.data.new_longitude +
+          //     '&output=json&coordtype=wgs84ll',
+          //   data: {},
+          //   header: {
+          //     'Content-Type': 'application/json'
+          //   },
+          //   success: function(res) {
+          //     console.log(res.data.result)
+          //     console.log(
+          //       res.data.result.addressComponent.city +
+          //         res.data.result.addressComponent.district
+          //     )
+          //     console.log(res.data.result.sematic_description)
+          //     that.setData({
+          //       address_city:
+          //         res.data.result.addressComponent.city +
+          //         res.data.result.addressComponent.district,
+          //       address_description: res.data.result.sematic_description
+          //     })
+          //   },
+          //   fail: function() {
+          //     // fail
+          //   }
+          // })
         }
       })
     },
@@ -480,31 +475,7 @@ export default class signinCreat extends wepy.page {
       wx.showLoading({
         title: '上传数据中'
       })
-      // todo
-      // wx.request ({
-      //   url: appData.apiUrl,
-      //   method: 'POST',
-      //   header: {
-      //     'content-type': 'application/json'
-      //   },
-      //   data: {
-      //     pf: 'wx',
-      //     tag: 'addLocation',
-      //     name: this.data.inputValue,
-      //     lon: this.data.new_longitude,
-      //     lat: this.data.new_latitude
-      //   },
-      //   success(res) {
-      //     wx.navigateBack({
-      //       delta: 1
-      //     })
-      //     wx.showToast({
-      //       title: '上传位置成功'
-      //     })
-      //   }
-      // })
     },
-    // 根据经纬度在地图上显示
 
     bindKeyInput: function(e) {
       this.setData({
