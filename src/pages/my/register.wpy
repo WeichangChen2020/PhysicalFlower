@@ -143,14 +143,20 @@ export default class Register extends wepy.page {
   events = {};
 
   onLoad() {
+    let that = this
+    wx.getUserInfo({
+      success(res) {
+        that.userInfo = res.userInfo
+        console.log('onLoad' + that.data)
+      }
+    })
   }
 
   onShow() {
-    this.userInfo = this.$parent.globalData.userInfo
     this.name.value = this.userInfo.name || ''
     this.number.value = this.userInfo.stunum || ''
     this.telphone.value = this.userInfo.telphone || ''
-    // console.log(this)
+    console.log(this.data)
   }
 }
 </script>
