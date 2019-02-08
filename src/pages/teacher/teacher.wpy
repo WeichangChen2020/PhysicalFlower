@@ -17,20 +17,15 @@
   color: gray;
   margin: 20rpx 0 10rpx 20rpx;
 }
+
 </style>
 <template>
 	<view>
 		<text class="bjlb" >课程列表：</text>
     <button class="btn btn-min btn-empty btn-success" @tap = 'jia'>增加课程</button>
     <block wx:for='{{courseInfo}}' wx:key='*this'>
-      <button class="greeting" @tap='banji'>{{item}}</button>
+      <button class="greeting" @tap='banji'>{{item.courseName}}</button>
     </block>
-    <!-- <button class="greeting" @tap="banji">XXXXX课程</button>
-    <button class="greeting" @tap="banji">XXXXX课程</button>
-    <button class="greeting" @tap="banji">XXXXX课程</button>
-    <button class="greeting" @tap="banji">XXXXX课程</button>
-    <button class="greeting" @tap="banji">XXXXX课程</button>
-    <button class="greeting" @tap="banji">XXXXX课程</button> -->
 	</view>
 </template> 
 <script>
@@ -43,7 +38,7 @@
     }
     // 可用于页面模板绑定的数据
     data = {
-      courseInfo: {}
+      courseInfo: [ ]
     }
 
     // 事件处理函数(集中保存在methods对象中)
@@ -60,10 +55,7 @@
     onLoad(e) { // todo 直接从后台获取教师课程信息
     };
     onShow() {
-      // console.log(this.$parent.globalData.userInfo.idUser)
-      console.log(this)
       var app = this.$parent
-      console.log(app.globalData.userInfo.idUser)
       var that = this
       var courseDATA = {
         idUser: app.globalData.userInfo.idUser
@@ -71,12 +63,13 @@
       app
         .request('getCourse', courseDATA, 'loading')
         .then(function(e) {
-          console.log(e)
-          that.courseInfo = e.data.courseInfo
+          for (var i = 0; i < e.data.courseInfo.length; i++) {
+            that.courseInfo[i] = e.data.courseInfo[i]
+          }
+          that.$apply()
         })
-
-      console.log('courseInfo', that.courseInfo.length)
-      if (this.courseInfo.length === 0) {
+      console.log('courseInfo', that.courseInfo)
+      if (that.courseInfo.length === 0) {
         wx.showModal({
           title: '提示',
           content: '暂无课程，请创建课程',
@@ -89,9 +82,8 @@
           }
         })
       } else {
-        this.setData({
-          courseInfo: this.courseInfo
-        })
+        // this.courseInfo = this.courseInfo
+        // this.$apply()
       }
     }
   }
