@@ -160,7 +160,6 @@ export default class classCreat extends wepy.page {
                 that.canvasHeight = Math.trunc(res.height / ratio)
                 ratio++
               }
-              console.log(that.data.canvasWidth, that.data.canvasHeight)
               ctx.drawImage(
                 res.path,
                 0,
