@@ -77,13 +77,16 @@ export default class Register extends wepy.page {
         content: '',
         duration: 1500
       }
+      console.log(this.userInfo)
       // 合法性判断
       if (this.userInfo.name === '') {
         options.content = '姓名不能为空'
       } else if (!(this.number.filter.test(this.userInfo.stunum))) {
         options.content = '请检查学号'
-      } else if (!(this.telphone.filter.test(this.userInfo.telphone))) {
-        options.content = '请检查手机号'
+      } else if (this.userInfo.telphone !== undefined && this.userInfo.telphone !== '') {
+        if (!(this.telphone.filter.test(this.userInfo.telphone))) {
+          options.content = '请检查手机号'
+        }
       }
       // toptips提示
       if (options.content !== '') {
@@ -94,6 +97,7 @@ export default class Register extends wepy.page {
       var UL_DATA = {
         userBasicInfo: this.userInfo
       }
+      console.log(UL_DATA)
       app.request('updateInfo', UL_DATA, '请稍等...')
       .then(function(res) {
         if (res.data.errCode === 0 || res.data.errCode === 1) {
@@ -147,7 +151,10 @@ export default class Register extends wepy.page {
     wx.getUserInfo({
       success(res) {
         that.userInfo = res.userInfo
-        console.log('onLoad' + that.data)
+        that.userInfo.name = ''
+        that.userInfo.stunum = ''
+        that.userInfo.telphone = ''
+        that.userInfo.school = ''
       }
     })
   }
