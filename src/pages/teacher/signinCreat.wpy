@@ -346,10 +346,10 @@ html .row {
 <template>
     <canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-1000000px;top:-1000000px; "></canvas>
 
-  <view class='greeting'>XXXXXX班级签到</view>
+  <view class='greeting'>{{courseName}}签到</view>
   <view class='border'>
     <view>签到编号</view>
-    <text class='input'>XX日XX号签到</text>
+    <text class='input'>{{signinName}}签到</text>
   </view>
 
   <view class='greeting'>获取签到地点</view>
@@ -361,15 +361,32 @@ html .row {
       </view>
 
         <view class='border'>
-          <view>签到精度选择</view>
-          <input class='input' disabled='{{isChecked<1}}' placeholder='输入签到精度' focus='{{focus}}' maxlength="10" bindinput='bindKeyInput' />
+          <view>签到信息选择</view>
+          <input class='input' disabled='{{isChecked<1}}' placeholder='输入签到精度' focus='{{focus}}' maxlength="5" bindinput='bindKeyInput' />
+            <view style="margin-bottom:10px"></view>
+            <view class="section">
+              <view class="section__title">选择签到截止时间</view>
+              <picker
+                mode="time"
+                value="{{time}}"
+                start="09:01"
+                end="21:01"
+                bindchange="bindTimeChange"
+              >
+                <view style="color:gray">
+                  当前选择: {{time}}
+                </view>
+              </picker>
+            </view>
+
+
       </view>
       <view class="img_hd" wx:if='{{isGotLoc}}'>
         <view class="weui-uploader__title">经度
-          <input class="weui-uploader__info" value="{{location.longitude}}°E" name="longitude" />
+          <input class="weui-uploader__info" value="{{get_longitude}}°E" name="longitude" />
         </view>
         <view class="weui-uploader__title">纬度
-          <input class="weui-uploader__info" value="{{location.latitude}}°N" name="latitude" />
+          <input class="weui-uploader__info" value="{{get_latitude}}°N" name="latitude" />
         </view>
       </view>
     </form>
@@ -396,6 +413,10 @@ export default class signinCreat extends wepy.page {
   }
   // 可用于页面模板绑定的数据
   data = {
+    dated: '',
+    signinName: '',
+    courseName: '',
+    idCourse: '',
     isGotLoc: 0,
     files: [],
     motto: 'hw',
@@ -403,16 +424,12 @@ export default class signinCreat extends wepy.page {
     // 默认未获取地址
     hasLocation: false,
     inputValue: '',
-    commomArray: {
-      address_name: 'fk',
-      new_longitude: '',
-      new_latitude: '',
-      img_path: ''
-    },
-    address_city: '',
-    address_description: '',
+    get_longitude: '',
+    get_latitude: '',
     canvasWidth: '',
-    canvasHeight: ''
+    canvasHeight: '',
+    time: '12:01',
+    horizontalAccuracy: 0
   }
 
   // 事件处理函数(集中保存在methods对象中)
@@ -425,69 +442,70 @@ export default class signinCreat extends wepy.page {
         type: 'wgs84',
         success: function(res) {
           console.log(res)
-          that.isGotLoc = 1,
-          that.hasLocation = true,
-          that.new_longitude = res.longitude,
-          that.new_latitude = res.latitude,
-          that.location = {
-            longitude: res.longitude,
-            latitude: res.latitude
-          }
+          that.isGotLoc = 1
+          that.hasLocation = true
+          that.new_longitude = res.longitude
+          that.new_latitude = res.latitude
+          that.get_longitude = res.longitude
+          that.get_latitude = res.latitude
+          that.horizontalAccuracy = res.horizontalAccuracy
+          that.$apply()
           wx.showToast({
             title: '获取坐标成功'
           })
-          // wx.request({
-          //   // 百度地图API，将微信获得的经纬度传给百度，获得城市等信息
-          //   url:
-          //     'https:// api.map.baidu.com/geocoder/v2/?ak=GAKrXdS2lPhNejYKnvfalheyoiTqcnWG&location=' +
-          //     that.data.new_latitude +
-          //     ',' +
-          //     that.data.new_longitude +
-          //     '&output=json&coordtype=wgs84ll',
-          //   data: {},
-          //   header: {
-          //     'Content-Type': 'application/json'
-          //   },
-          //   success: function(res) {
-          //     console.log(res.data.result)
-          //     console.log(
-          //       res.data.result.addressComponent.city +
-          //         res.data.result.addressComponent.district
-          //     )
-          //     console.log(res.data.result.sematic_description)
-          //     that.setData({
-          //       address_city:
-          //         res.data.result.addressComponent.city +
-          //         res.data.result.addressComponent.district,
-          //       address_description: res.data.result.sematic_description
-          //     })
-          //   },
-          //   fail: function() {
-          //     // fail
-          //   }
-          // })
         }
       })
     },
     // 提交位置信息
     reg: function(e) {
-      console.log(this.data.new_longitude, this.data.new_latitude)
-      wx.showLoading({
-        title: '上传数据中'
-      })
+      let app = this.$parent
+      let locationData = {
+        signinName: this.signinName,
+        gmtStart: parseInt(new Date().getTime() / 1000),
+        gmtEnd: parseInt(this.dated / 1000),
+        latitude: this.get_latitude,
+        longitude: this.get_longitude,
+        radius: parseInt(this.inputValue),
+        horizontalAccuracy: this.horizontalAccuracy,
+        idCourse: this.idCourse,
+        description: ''
+      }
+      app
+        .request('signinCreate', locationData, 'loading')
+        .then(function(e) {
+          console.log(e)
+        })
     },
 
     bindKeyInput: function(e) {
-      this.setData({
-        inputValue: e.detail.value
-      })
-      // console.log(inputValue)
+      this.inputValue = e.detail.value
+    },
+    bindTimeChange(e) {
+      this.time = e.detail.value
+      let timestamp = Date.parse(new Date())
+      let date = new Date(timestamp)
+      // 获取月份
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1)
+      // 获取当日日期
+      let D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+      this.dated = new Date().getFullYear() + '-' + M + '-' + D + ' ' + e.detail.value
+      this.dated = new Date(this.dated.replace(/-/g, '/')).getTime()
     }
   }
 
   // 页面的生命周期函数
-  onLoad() {
-    console.log('onLoad')
+  onLoad(e) {
+    this.courseName = e.courseName
+    this.idCourse = e.idCourse
+    let timestamp = Date.parse(new Date())
+    let date = new Date(timestamp)
+    // 获取月份
+    let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1)
+    // 获取当日日期
+    let D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+    console.log(M + '月' + D + '日')
+    this.signinName = M + '月' + D + '日'
+    this.$apply()
   }
 }
 </script>

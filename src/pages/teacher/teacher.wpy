@@ -24,7 +24,7 @@
 		<text class="bjlb" >课程列表：</text>
     <button class="btn btn-min btn-empty btn-success" @tap = 'jia'>增加课程</button>
     <block wx:for='{{courseInfo}}' wx:key='*this'>
-      <button class="greeting" @tap='banji'>{{item.courseName}}</button>
+      <button id="{{item.idCourse}}" data-coursename="{{item.courseName}}" class="greeting" bindtap='banji' bindlongpress="longtap" bindtouchend="touchEnd">{{item.courseName}}</button>
     </block>
 	</view>
 </template> 
@@ -38,16 +38,64 @@
     }
     // 可用于页面模板绑定的数据
     data = {
-      courseInfo: [ ]
+      courseInfo: [ ],
+      lock: false
     }
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       banji(e) {
-        this.$navigate('./classControl')
+        console.log(e)
+        var that = this
+        setTimeout(function() {
+          if (this.lock) {
+          } else {
+            that.$navigate('./classControl?idCourse=' + e.target.id + '&courseName=' + e.target.dataset.coursename)
+          }
+        }, 300)
       },
       jia(e) {
         this.$navigate('./classCreat')
+      },
+      touchEnd: function(e) {
+        if (this.data.lock) {
+        // 开锁
+          setTimeout(function() {
+            this.lock = false
+          }, 100)
+        }
+        this.$apply()
+      },
+      longtap(e) {
+        // 锁住
+        this.lock = true
+        var that = this
+        let courseId = e.target.id
+        wx.showModal({
+          title: '提示',
+          content: '确定删除该课程吗',
+          success(e) {
+            if (e.confirm === true) {
+              let app = that.$parent
+              var delData = {
+                idCourse: courseId
+              }
+              app
+                .request('delCourse', delData, 'loading')
+                .then(function(e) {
+                  that.onShow()
+                })
+                .catch(function(e) {
+                  app.modal(
+                    e.message,
+                    '错误!错误提示是：',
+                    '确定'
+                  )
+                })
+            }
+          }
+        })
+        this.$apply()
       }
     }
 
@@ -55,36 +103,41 @@
     onLoad(e) { // todo 直接从后台获取教师课程信息
     };
     onShow() {
-      var app = this.$parent
+      let app = this.$parent
       var that = this
       var courseDATA = {
         idUser: app.globalData.userInfo.idUser
       }
       app
-        .request('getCourse', courseDATA, 'loading')
+        .request('getCreatecourselist', courseDATA, 'loading')
         .then(function(e) {
+          for (var n = 0; n < that.courseInfo.length; n++) {
+            that.courseInfo[n] = ''
+          }
           for (var i = 0; i < e.data.courseInfo.length; i++) {
             that.courseInfo[i] = e.data.courseInfo[i]
           }
-          that.$apply()
-        })
-      console.log('courseInfo', that.courseInfo)
-      if (that.courseInfo.length === 0) {
-        wx.showModal({
-          title: '提示',
-          content: '暂无课程，请创建课程',
-          success(e) {
-            console.log(e)
-            if (e.confirm === true) {
-              // console.log("111")
-              wx.navigateTo({url: './classCreat'})
-            }
+          if (e.data.courseInfo.length === 0) {
+            wx.showModal({
+              title: '提示',
+              content: '暂无课程，请创建课程',
+              success(e) {
+                if (e.confirm === true) {
+                  wx.navigateTo({url: './classCreat'})
+                }
+              }
+            })
+          } else {
+            that.$apply()
           }
         })
-      } else {
-        // this.courseInfo = this.courseInfo
-        // this.$apply()
-      }
+        .catch(function(e) {
+          app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
     }
   }
 </script>

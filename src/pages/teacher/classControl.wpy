@@ -11,7 +11,7 @@
 </style>
 <template>
 	<view>
-		<text class="title">XXXXX课程</text>
+		<text class="title">{{courseName}}</text>
   </view>
     <button class="greeting" @tap='tap' id="1">创建签到</button>
     <button class="greeting" @tap='tap' id="2">管理签到</button>
@@ -35,46 +35,46 @@
     }
     // 可用于页面模板绑定的数据
     data = {
+      courseName: '',
+      idCourse: ''
     }
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      // handleDefault () {
-      //   base.$Message({
-      //     content: '这是一条普通提醒'
-      //   })
-      // },
       tap(e) {
         let tid = e.currentTarget.id
         switch (tid) {
           case '1':
-            this.$navigate('./signinCreat')
+            this.$navigate('./signinCreat?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
             break
           case '2':
-            this.$navigate('./signinChoose')
+            this.$navigate('./signinChoose?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
             break
           case '3':
-            this.$navigate('./homeworkCreat')
+            this.$navigate('./homeworkCreat?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
             break
           case '4':
-            this.$navigate('./homeworkControl')
+            this.$navigate('./homeworkControl?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
             break
           case '5':
-            this.$navigate('./stuBan')
+            this.$navigate('./stuBan?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
             break
           case '6':
-            this.$navigate('./testCreat')
+            this.$navigate('./testCreat?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
             break
           case '7':
-            this.$navigate('./testControl')
+            this.$navigate('./testControl?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
             break
         }
       }
     }
 
     // 页面的生命周期函数
-    onLoad() {
-      console.log('onLoad')
+    onLoad(e) {
+      console.log(e)
+      this.courseName = e.courseName
+      this.idCourse = e.idCourse
+      this.$apply()
     }
   }
 </script>
