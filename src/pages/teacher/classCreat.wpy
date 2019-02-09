@@ -98,7 +98,8 @@ export default class classCreat extends wepy.page {
     imageBase64: '',
     problem_description: '',
     canvasWidth: '',
-    canvasHeight: ''
+    canvasHeight: '',
+    iamgeType: ''
   }
 
   // 事件处理函数(集中保存在methods对象中)
@@ -107,12 +108,13 @@ export default class classCreat extends wepy.page {
       this.course = e.detail
     },
     tap(e) {
+      // console.log('上传的图片', 'data:iamge/'+ this.iamgeType + ';base64,' +this.imageBase64)
       if (this.course !== '') {
         let app = this.$parent
         var courseDATA = {
           questionSet: 1,
           courseName: this.course.value,
-          logo: this.imageBase64
+          logo: 'data:iamge/' + this.iamgeType + ';base64,' + this.imageBase64
         }
         app
           .request('courseCreate', courseDATA, 'loading')
@@ -142,6 +144,7 @@ export default class classCreat extends wepy.page {
             src: res.tempFilePaths[0],
             success: function(res) {
               // console.log('getImageInfo', res)
+              that.iamgeType = res.type
               var ctx = wx.createCanvasContext('photo_canvas')
               var ratio = 2
               that.canvasWidth = res.width
@@ -168,19 +171,21 @@ export default class classCreat extends wepy.page {
               ctx.draw()
               setTimeout(function() {
                 wx.canvasToTempFilePath({
-                  fileType: 'jpg',
+                  fileType: that.type,
                   quality: 0.5,
                   canvasId: 'photo_canvas',
                   success: function(res) {
-                    console.log('下载canvas成功')
+                    // console.log('下载canvas成功')
+                    // console.log(res)
                     // 转编码base64
                     wx.getFileSystemManager().readFile({
                       filePath: res.tempFilePath, // 选择图片返回的相对路径
                       encoding: 'base64', // 编码格式
                       success: res => {
                         that.imageBase64 = res.data
+                        // console.log(res)
                         that.$apply()
-                        console.log('修改成功等待调用')
+                        // console.log('修改成功等待调用')
                       },
                       fail: function(e) {
                         console.log(e)
