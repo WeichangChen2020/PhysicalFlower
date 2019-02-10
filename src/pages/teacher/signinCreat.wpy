@@ -362,7 +362,7 @@ html .row {
 
         <view class='border'>
           <view>签到信息选择</view>
-          <input class='input' disabled='{{isChecked<1}}' placeholder='输入签到精度' focus='{{focus}}' maxlength="5" bindinput='bindKeyInput' />
+          <input class='input' disabled='{{isChecked<1}}' placeholder='输入签到范围' focus='{{focus}}' maxlength="5" bindinput='bindKeyInput' />
             <view style="margin-bottom:10px"></view>
             <view class="section">
               <view class="section__title">选择签到截止时间</view>
@@ -471,52 +471,55 @@ export default class signinCreat extends wepy.page {
     // 提交位置信息
     reg: function(e) {
       // console.log(this.flag[0])
+      var veg = /^\+?[1-9][0-9]*$/
+      var isRight = veg.test(parseInt(this.inputValue))
+      console.log(isRight)
       if (this.flag[0] === 0) {
-        let app = this.$parent
-        var that = this
-        let locationData = {
-          signinName: this.signinName,
-          gmtStart: parseInt(new Date().getTime() / 1000),
-          gmtEnd: parseInt(this.dated / 1000),
-          latitude: this.get_latitude,
-          longitude: this.get_longitude,
-          radius: parseInt(this.inputValue),
-          horizontalAccuracy: this.horizontalAccuracy,
-          idCourse: this.idCourse,
-          description: ''
-        }
-        app
-          .request('signinCreate', locationData, 'loading')
-          .then(function(e) {
-            console.log(e)
-            if (e.data.errCode === 0) {
-              wx.showToast({
-                title: '发布签到成功'
-              })
-              wx.navigateBack({
-              })
-            } else if (e.data.errCode === 4003) {
+        if (isRight === true) {
+          let app = this.$parent
+          var that = this
+          let locationData = {
+            signinName: this.signinName,
+            gmtStart: parseInt(new Date().getTime() / 1000),
+            gmtEnd: parseInt(this.dated / 1000),
+            latitude: this.get_latitude,
+            longitude: this.get_longitude,
+            radius: parseInt(this.inputValue),
+            horizontalAccuracy: this.horizontalAccuracy,
+            idCourse: this.idCourse,
+            description: ''
+          }
+          app
+            .request('signinCreate', locationData, 'loading')
+            .then(function(e) {
+              console.log(e)
+              if (e.data.errCode === 0) {
+                wx.showToast({
+                  title: '发布签到成功'
+                })
+                wx.navigateBack({
+                })
+              } else if (e.data.errCode === 4003) {
+                that.flag[0] = 0
+                wx.showModal({
+                  title: '发布失败',
+                  content: '请注意您是否设置正确的终止时间'
+                })
+              }
+            },
+            function(e) {
               that.flag[0] = 0
               wx.showModal({
                 title: '发布失败',
-                content: '请注意您是否设置正确的终止时间'
+                content: '请注意您发布信息是否完全'
               })
-            }
-          },
-          function(e) {
-            that.flag[0] = 0
-            wx.showModal({
-              title: '发布失败',
-              content: '请注意您发布信息是否完全'
             })
+        } else {
+          wx.showModal({
+            title: '注意',
+            content: '请输入正确的签到范围'
           })
-          // .catch(function(e) {
-          //   console.log(e)
-          //   wx.showModal({
-          //     title: '发布失败',
-          //     content: '请注意您发布信息是否完全'
-          //   })
-          // })
+        }
       } else {
         wx.showToast({
           title: '已经在发布啦'
@@ -542,6 +545,8 @@ export default class signinCreat extends wepy.page {
 
   // 页面的生命周期函数
   onLoad(e) {
+    var veg = /^\+?[1-9][0-9]*$/
+    console.log(veg.test())
     this.courseName = e.courseName
     this.idCourse = e.idCourse
     let timestamp = Date.parse(new Date())

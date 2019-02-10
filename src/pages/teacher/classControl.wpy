@@ -11,8 +11,9 @@
 </style>
 <template>
 	<view>
-		<text class="title">{{courseName}}</text>
+		<text class="greeting">{{courseName}}</text>
   </view>
+  <view class="greeting">课程号:{{idCourse}}</view>
     <button class="greeting" @tap='tap' id="1">创建签到</button>
     <button class="greeting" @tap='tap' id="2">管理签到</button>
     <button class="greeting" @tap='tap' id="3">发布课后作业</button>
