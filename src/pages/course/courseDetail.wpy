@@ -14,8 +14,7 @@ canvas {
 <template>
   <toast />
   <view class="page__bd">
-    <canvas canvas-id="canvas" class="canvas"></canvas>
-    <text>课程详情</text>
+    <image src="{{course}}"></image>
     <button class="weui-btn" type="primary" @tap="join">加入课程</button>
     <button class="weui-btn" type="default" @tap="back">重新检索</button>
   </view>
@@ -42,14 +41,13 @@ export default class CourseDetail extends wepy.page {
       var UL_DATA = {
         idCourse: this.idCourse
       }
-      app.request('addCourse', UL_DATA, '请稍等...')
+      app.request('addToCourse', UL_DATA, '请稍等...')
       .then((res) => {
         console.log(res)
         if (res.data.errCode === 0 || res.data.errCode === 4001) {
           // 课程id保存到本地文件以供下次打开时默认课程
           const fs = wx.getFileSystemManager()
           fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, that.idCourse, 'utf8')
-          app.globalData.courseInfo = res.data
           return res.data.errCode
         } else {
           throw (new Error('课程加入失败'))
@@ -85,10 +83,11 @@ export default class CourseDetail extends wepy.page {
 
   // 页面的生命周期函数
   onLoad(e) {
-    console.log(e)
     this.idCourse = e.idCourse
   }
   onShow(e) {
+    this.courseInfo = this.$parent.globalData.tmp
+    this.$apply()
   }
 }
 </script>

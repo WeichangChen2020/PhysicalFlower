@@ -1,9 +1,45 @@
-<style type="less">
+<style src="@/public/style/zan.wxss">
+</style>
+<style>
+.zan-card::after{content:'';position:absolute;top:0;left:0;width:200%;height:200%;transform:scale(.5);transform-origin:0 0;pointer-events:none;box-sizing:border-box;border:0 solid #e5e5e5;border-top-width:1px;border-bottom-width:1px}
 </style>
 <template>
-  <block wx:for="{{courseList}}" wx:item="item" wx:key="*this">
-    <image src="data:image/jpg;base64,{{item.logo}}" />
-  </block>
+
+  <!-- <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell" wx:for="{{courseList}}" wx:for-index="idx" wx:for-item="item" @tap='change({{item.idCourse}})'>
+          <view class="weui-cell__hd">
+              <image src="{{item.logo}}"></image>
+          </view>
+          <view class="weui-cell__bd">标题文字</view>
+          <view class="weui-cell__ft">说明文字</view>
+      </view>
+  </view> -->
+  <view class="zan-panel class-header">
+    <view class="zan-card" wx:for="{{courseList}}" wx:for-index="idx" wx:for-item="item" @tap='change({{item.idCourse}})'>
+      <view class="zan-card__thumb">
+        <image class="zan-card__img" src="{{item.logo}}" mode="aspectFit"></image>
+      </view>
+      <view class="zan-card__detail">
+        <view class="zan-card__detail-row">
+          <view class="zan-card__left-col zan-font-16 zan-ellipsis--l2">
+            {{item.courseName}}
+          </view>
+        </view>
+        <view class="zan-card__detail-row zan-c-gray-darker">
+          <view class="zan-card__left-col zan-c-black">
+            <view class="zan-icon zan-icon-contact class-info-icon"></view>{{item.createrName}}
+          </view>
+        </view>
+        <view class="zan-card__detail-row zan-c-gray-darker">
+          <view class="zan-card__right-col" style='margin-right:20rpx;'>课程号:{{item.idCourse}} </view>
+          <view class="zan-card__left-col">
+            <view class="zan-icon zan-icon-chat class-info-icon"></view>{{item.count}}人加入
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
 </template>
 <script>
 import wepy from 'wepy'
@@ -19,16 +55,20 @@ export default class CourseList extends wepy.page {
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
+    change(id) {
+      console.log(id)
+      // 课程id保存到本地文件以供下次打开时默认课程
+      const fs = wx.getFileSystemManager()
+      fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, id, 'utf8')
+      wx.switchTab({url: './index'})
+    }
   };
 
   // 页面的生命周期函数
   onLoad(e) {
     let app = this.$parent
     let that = this
-    let UL_DATA = {
-      idUser: 75
-    }
-    app.request('getJoincourselist', UL_DATA, '请求中...')
+    app.request('getJoincourselist', '', '请求中...')
     .then((res) => {
       that.courseList = res.data.courseInfo
       this.$apply()

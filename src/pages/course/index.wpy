@@ -129,11 +129,12 @@ export default class Index extends wepy.page {
     .then(function(res) {
       // 如果本地没有存储则去请求
       console.log(res)
-      if (res === 'null') {
+      if (res === 'ok') {
+        // 啥都不干
+      } else {
         // TODO 等请求以加入课程的后台接口
         // app.request('userLogin', UL_DATA, '登录中')
         // TODO 如果未加入任何课程，则跳转到jion页面
-      } else {
       }
     })
   }
@@ -166,8 +167,14 @@ export default class Index extends wepy.page {
         filePath: `${wx.env.USER_DATA_PATH}/courseId`,
         encoding: 'utf8',
         success(res) {
-          app.globalData.activeCourse = res.data
-          resolve(res.data)
+          if (app.globalData.activeCourse === res.data) {
+            // 代表当前课程同步，无需再请求
+            resolve('ok')
+          } else {
+            // 当前课程不同步，需要从服务器请求课程数据
+            app.globalData.activeCourse = res.data
+            resolve(res.data)
+          }
         },
         fail(res) {
           resolve('null')
