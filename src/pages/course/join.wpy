@@ -62,6 +62,7 @@ export default class Join extends wepy.page {
         console.log(res)
         if (res.data.errCode === 0) {
           // 跳转到课程详情页面
+          app.globalData.tmp = res.data.courseInfo
           wx.navigateTo({url: './courseDetail?idCourse=' + res.data.courseInfo.idCourse})
         } else if (res.data.errCode === 4000) {
           throw (new Error('课程不存在'))
