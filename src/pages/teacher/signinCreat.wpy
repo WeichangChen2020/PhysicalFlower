@@ -348,8 +348,9 @@ html .row {
 
   <view class='greeting'>{{courseName}}签到</view>
   <view class='border'>
-    <view>签到编号</view>
-    <text class='input'>{{signinName}}签到</text>
+    <view>签到名称</view>
+    <input class='input' placeholder='输入签到名称' focus='{{focus}}' maxlength="15" bindinput='inputName'/>
+    <!-- <text class='input'>{{signinName}}签到</text> -->
   </view>
 
   <view class='greeting'>获取签到地点</view>
@@ -430,7 +431,8 @@ export default class signinCreat extends wepy.page {
     canvasHeight: '',
     time: '12:01',
     horizontalAccuracy: 0,
-    flag: [0, 0, 0]
+    flag: [0, 0, 0],
+    inputName: ''
   }
 
   // 事件处理函数(集中保存在methods对象中)
@@ -479,7 +481,7 @@ export default class signinCreat extends wepy.page {
           let app = this.$parent
           var that = this
           let locationData = {
-            signinName: this.signinName,
+            signinName: this.inputName,
             gmtStart: parseInt(new Date().getTime() / 1000),
             gmtEnd: parseInt(this.dated / 1000),
             latitude: this.get_latitude,
@@ -529,6 +531,9 @@ export default class signinCreat extends wepy.page {
 
     bindKeyInput: function(e) {
       this.inputValue = e.detail.value
+    },
+    inputName(e) {
+      this.inputName = e.detail.value
     },
     bindTimeChange(e) {
       this.time = e.detail.value

@@ -156,7 +156,9 @@ export default class signinChoose extends wepy.page {
         open: false,
         pages: [{'name': '1XXX月XX号签到', 'url': './signinControl'}, {'name': '2XX月XXX号签到', 'url': './signinControl'}, {'name': '3XXX月XXX号签到', 'url': './signinControl'}, {'name': '4xXX月XXX号签到', 'url': './signinControl'}, {'name': '5XXX月XXX2号签到', 'url': './signinControl'}]
       }
-    ]
+    ],
+    idCourse: '',
+    courseName: ''
   };
 
   // 事件处理函数(集中保存在methods对象中)
@@ -178,7 +180,21 @@ export default class signinChoose extends wepy.page {
   };
 
   // 页面的生命周期函数
-  onLoad() {
+  onLoad(e) {
+    console.log(e)
+    this.idCourse = e.idCourse
+    this.courseName = e.courseName
+    let app = this.$parent
+    var that = this
+    let postData = {
+      idCourse: that.idCourse,
+      page: 1
+    }
+    app
+      .request('getSigninList', postData, 'Loading')
+      .then(function(e) {
+        console.log(e)
+      })
   }
 }
 </script>

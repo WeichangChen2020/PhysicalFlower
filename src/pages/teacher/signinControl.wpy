@@ -70,7 +70,9 @@
       grids: [0, 1, 2, 3, 4, 5],
       i_name: ['xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx'],
       i_url: ['/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png'],
-      naUrl: [1, 2, 3, 4, 5, 5]
+      naUrl: [1, 2, 3, 4, 5, 5],
+      idCourse: '',
+      courseName: ''
     };
 
     // 事件处理函数(集中保存在methods对象中)
@@ -79,7 +81,11 @@
     };
 
     // 页面的生命周期函数
-    onLoad() {
+    onLoad(e) {
+      console.log(e)
+      this.idCourse = e.idCourse
+      this.courseName = e.courseName
+      this.$apply()
     };
   }
 </script>
