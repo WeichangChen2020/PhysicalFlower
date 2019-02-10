@@ -429,14 +429,26 @@ export default class signinCreat extends wepy.page {
     canvasWidth: '',
     canvasHeight: '',
     time: '12:01',
-    horizontalAccuracy: 0
+    horizontalAccuracy: 0,
+    flag: [0, 0, 0]
   }
 
   // 事件处理函数(集中保存在methods对象中)
   methods = {
     // 获取经纬度
     getLocation: function(e) {
-      console.log(e)
+      wx.getSetting({
+        success(e) {
+          console.log(e.authSetting)
+          if (e.authSetting['scope.userLocation'] === false) {
+            wx.openSetting({
+              success(e) {
+                console.log(e)
+              }
+            })
+          }
+        }
+      })
       var that = this
       wx.getLocation({
         type: 'wgs84',
@@ -458,23 +470,58 @@ export default class signinCreat extends wepy.page {
     },
     // 提交位置信息
     reg: function(e) {
-      let app = this.$parent
-      let locationData = {
-        signinName: this.signinName,
-        gmtStart: parseInt(new Date().getTime() / 1000),
-        gmtEnd: parseInt(this.dated / 1000),
-        latitude: this.get_latitude,
-        longitude: this.get_longitude,
-        radius: parseInt(this.inputValue),
-        horizontalAccuracy: this.horizontalAccuracy,
-        idCourse: this.idCourse,
-        description: ''
-      }
-      app
-        .request('signinCreate', locationData, 'loading')
-        .then(function(e) {
-          console.log(e)
+      // console.log(this.flag[0])
+      if (this.flag[0] === 0) {
+        let app = this.$parent
+        var that = this
+        let locationData = {
+          signinName: this.signinName,
+          gmtStart: parseInt(new Date().getTime() / 1000),
+          gmtEnd: parseInt(this.dated / 1000),
+          latitude: this.get_latitude,
+          longitude: this.get_longitude,
+          radius: parseInt(this.inputValue),
+          horizontalAccuracy: this.horizontalAccuracy,
+          idCourse: this.idCourse,
+          description: ''
+        }
+        app
+          .request('signinCreate', locationData, 'loading')
+          .then(function(e) {
+            console.log(e)
+            if (e.data.errCode === 0) {
+              wx.showToast({
+                title: '发布签到成功'
+              })
+              wx.navigateBack({
+              })
+            } else if (e.data.errCode === 4003) {
+              that.flag[0] = 0
+              wx.showModal({
+                title: '发布失败',
+                content: '请注意您是否设置正确的终止时间'
+              })
+            }
+          },
+          function(e) {
+            that.flag[0] = 0
+            wx.showModal({
+              title: '发布失败',
+              content: '请注意您发布信息是否完全'
+            })
+          })
+          // .catch(function(e) {
+          //   console.log(e)
+          //   wx.showModal({
+          //     title: '发布失败',
+          //     content: '请注意您发布信息是否完全'
+          //   })
+          // })
+      } else {
+        wx.showToast({
+          title: '已经在发布啦'
         })
+      }
     },
 
     bindKeyInput: function(e) {
