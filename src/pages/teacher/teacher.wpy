@@ -24,7 +24,7 @@
 		<text class="bjlb" >课程列表：</text>
     <button class="btn btn-min btn-empty btn-success" @tap = 'jia'>增加课程</button>
     <block wx:for='{{courseInfo}}' wx:key='*this'>
-      <button id="{{item.idCourse}}" data-coursename="{{item.courseName}}" class="greeting" bindtap='banji' bindlongpress="longtap" bindtouchend="touchEnd">{{item.courseName}}</button>
+      <button id="{{item.idCourse}}" data-coursename="{{item.courseName}}" class="greeting" bindtap='banji' bindlongpress="longtap" bindtouchend="touchEnd">{{item.courseName}}   {{item.idCourse}}</button>
     </block>
 	</view>
 </template> 
