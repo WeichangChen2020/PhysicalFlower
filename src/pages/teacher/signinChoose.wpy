@@ -131,30 +131,6 @@ export default class signinChoose extends wepy.page {
         name: '1XXXXX班级',
         open: false,
         pages: [{'name': '1XXX月XX号签到', 'url': './signinControl'}, {'name': '2XX月XXX号签到', 'url': './signinControl'}, {'name': '3XXX月XXX号签到', 'url': './signinControl'}, {'name': '4xXX月XXX号签到', 'url': './signinControl'}, {'name': '5XXX月XXX2号签到', 'url': './signinControl'}]
-      },
-      {
-        id: '2',
-        name: '2XXXXX班级',
-        open: false,
-        pages: [{'name': '1XXX月XX号签到', 'url': './signinControl'}, {'name': '2XX月XXX号签到', 'url': './signinControl'}, {'name': '3XXX月XXX号签到', 'url': './signinControl'}, {'name': '4xXX月XXX号签到', 'url': './signinControl'}, {'name': '5XXX月XXX2号签到', 'url': './signinControl'}]
-      },
-      {
-        id: '3',
-        name: '3XXXXX班级',
-        open: false,
-        pages: [{'name': '1XXX月XX号签到', 'url': './signinControl'}, {'name': '2XX月XXX号签到', 'url': './signinControl'}, {'name': '3XXX月XXX号签到', 'url': './signinControl'}, {'name': '4xXX月XXX号签到', 'url': './signinControl'}, {'name': '5XXX月XXX2号签到', 'url': './signinControl'}]
-      },
-      {
-        id: '4',
-        name: '4XXXXX班级',
-        open: false,
-        pages: [{'name': '1XXX月XX号签到', 'url': './signinControl'}, {'name': '2XX月XXX号签到', 'url': './signinControl'}, {'name': '3XXX月XXX号签到', 'url': './signinControl'}, {'name': '4xXX月XXX号签到', 'url': './signinControl'}, {'name': '5XXX月XXX2号签到', 'url': './signinControl'}]
-      },
-      {
-        id: '5',
-        name: '5XXXXX班级',
-        open: false,
-        pages: [{'name': '1XXX月XX号签到', 'url': './signinControl'}, {'name': '2XX月XXX号签到', 'url': './signinControl'}, {'name': '3XXX月XXX号签到', 'url': './signinControl'}, {'name': '4xXX月XXX号签到', 'url': './signinControl'}, {'name': '5XXX月XXX2号签到', 'url': './signinControl'}]
       }
     ],
     idCourse: '',
@@ -184,7 +160,7 @@ export default class signinChoose extends wepy.page {
     console.log(e)
     this.idCourse = e.idCourse
     this.courseName = e.courseName
-    let app = this.$parent
+    var app = this.$parent
     var that = this
     let postData = {
       idCourse: that.idCourse,
@@ -194,6 +170,13 @@ export default class signinChoose extends wepy.page {
       .request('getSigninList', postData, 'Loading')
       .then(function(e) {
         console.log(e)
+      },
+      function(e) {
+        app.modal(
+          e.message,
+          '错误!错误提示是：',
+          '确定'
+        )
       })
   }
 }
