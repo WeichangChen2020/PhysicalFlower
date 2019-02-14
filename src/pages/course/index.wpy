@@ -42,7 +42,7 @@ export default class Index extends wepy.page {
       let bid = e.currentTarget.id
       switch (bid) {
         case '1':
-          wx.navigateTo({url: './signin/list'})
+          wx.navigateTo({url: './signin/signinList'})
           break
         case '2':
           wx.navigateTo({url: './homework/list'})
@@ -112,6 +112,30 @@ export default class Index extends wepy.page {
           console.log('reject')
         })
       }
+      return that.getCourseId()
+    })
+    .then(function(res) {
+      // 如果本地没有存储则去请求
+      console.log(res)
+      if (res !== 'null') {
+        // 啥都不干
+        console.log('readfile', res)
+      } else {
+        // 等请求以加入课程的后台接口
+        app.request('getJoincourselist', '', '请求中...')
+        .then((res) => {
+          if (res.data.courseInfo.length === 0) {
+            wx.navigateTo({url: './join'})
+          }
+          app.courseList = res.data.courseInfo
+          app.activeCourse = app.courseList[0].idCourse
+          const fs = wx.getFileSystemManager()
+          fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, app.courseList[0].idCourse, 'utf8')
+          console.log('request', app.courseList[0].idCourse)
+        })
+        // app.request('userLogin', UL_DATA, '登录中')
+        // TODO 如果未加入任何课程，则跳转到jion页面
+      }
     })
     .catch(function(error) {
       // 错误处理
@@ -124,19 +148,6 @@ export default class Index extends wepy.page {
     })
   }
   onShow() {
-    console.log(this.$parent.globalData)
-    this.getCourseId()
-    .then(function(res) {
-      // 如果本地没有存储则去请求
-      console.log(res)
-      if (res === 'ok') {
-        // 啥都不干
-      } else {
-        // TODO 等请求以加入课程的后台接口
-        // app.request('userLogin', UL_DATA, '登录中')
-        // TODO 如果未加入任何课程，则跳转到jion页面
-      }
-    })
   }
   onPullDownRefresh() {
     // 上拉刷新
@@ -167,14 +178,8 @@ export default class Index extends wepy.page {
         filePath: `${wx.env.USER_DATA_PATH}/courseId`,
         encoding: 'utf8',
         success(res) {
-          if (app.globalData.activeCourse === res.data) {
-            // 代表当前课程同步，无需再请求
-            resolve('ok')
-          } else {
-            // 当前课程不同步，需要从服务器请求课程数据
-            app.globalData.activeCourse = res.data
-            resolve(res.data)
-          }
+          app.globalData.activeCourse = res.data
+          resolve(res.data)
         },
         fail(res) {
           resolve('null')

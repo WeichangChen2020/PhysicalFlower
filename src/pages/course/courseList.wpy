@@ -49,7 +49,8 @@ export default class CourseList extends wepy.page {
     navigationBarTitleText: '已加入课程'
   }
   data = {
-    courseList: [ ]
+    courseList: [ ],
+    refreshTimes: 0
   }
   components = {
   }
@@ -66,17 +67,28 @@ export default class CourseList extends wepy.page {
 
   // 页面的生命周期函数
   onLoad(e) {
+    console.log(this.$parent.courseList)
+    if (this.refreshTimes === 0 && this.$parent.courseList !== undefined) {
+      // 如果之前已经请求过了，则直接读取（可以少请求一次）
+      this.courseList = this.$parent.courseList
+    } else {
+      this.getList()
+    }
+  }
+  onShow(e) {
+  }
+  onPullDownRefresh() {
+    this.getList()
+  }
+  getList() {
     let app = this.$parent
     let that = this
+    this.refreshTimes++
     app.request('getJoincourselist', '', '请求中...')
     .then((res) => {
       that.courseList = res.data.courseInfo
       this.$apply()
-      console.log(that.data)
     })
-  }
-  onShow(e) {
-    console.log(this.data)
   }
 }
 </script>
