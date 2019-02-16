@@ -30,7 +30,7 @@
 </style>
 <template>
 	<view>
-    <text class="greetingc">Xxx月xxx号签到</text>
+    <text class="greetingc">{{signinName}}</text>
       <view class="divide">
         <text class="greeting">
           起止时间：
@@ -72,7 +72,9 @@
       i_url: ['/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png'],
       naUrl: [1, 2, 3, 4, 5, 5],
       idCourse: '',
-      courseName: ''
+      courseName: '',
+      signinName: '',
+      idSignin: 0
     };
 
     // 事件处理函数(集中保存在methods对象中)
@@ -85,6 +87,25 @@
       console.log(e)
       this.idCourse = e.idCourse
       this.courseName = e.courseName
+      this.signinName = e.signinName
+      this.idSignin = e.idSignin
+      let app = this.$parent
+      let idData = {
+        idCourse: this.idCourse,
+        idSignin: this.idSignin
+      }
+      app
+        .request('getClassSigninInfo', idData, 'loading')
+        .then(function(e) {
+          console.log(e)
+        })
+        .catch(function(e) {
+          app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
       this.$apply()
     };
   }
