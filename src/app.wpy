@@ -32,7 +32,7 @@ export default class extends wepy.app {
       'pages/my/my',
       'pages/teacher/teacher',
       'pages/teacher/signinChoose',
-      'pages/course/signin/list',
+      'pages/course/signin/signinList',
       'pages/course/signin/detail',
       'pages/course/homework/list',
       'pages/course/homework/detail',
@@ -136,7 +136,12 @@ export default class extends wepy.app {
         success: function (res) {
           res.tag = tag + ': '   // 返还 tag 名字, 方便用 console 定位
           wx.hideLoading()
-          if (res.statusCode === 200) resolve(res)
+          if (res.statusCode === 200) {
+            if (res.data.msg === 4002) {
+              reject(new Error('请先登录'))
+            }
+            resolve(res)
+          }
           else reject(new Error('request statusCode:' + res.statusCode))
         },
         fail: function (e) {

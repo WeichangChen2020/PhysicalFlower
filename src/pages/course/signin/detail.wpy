@@ -20,8 +20,9 @@
     };
 
     // 页面的生命周期函数
-    onLoad() {
-      console.log('onLoad')
+    onLoad(e) {
+      // e.from == 1代表签到，2代表详情
+      console.log(e)
     };
   }
 </script>

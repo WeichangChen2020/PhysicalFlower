@@ -1,0 +1,113 @@
+<style type="less">
+</style>
+<template>
+  <tab @bindChange.user="change"/>
+  <!-- 只显示10条数据,下拉加载更多 -->
+  <view class="weui-cells weui-cells_after-title">
+    <view class="weui-cells weui-cells_after-title">
+    <!-- <view class="weui-grid" hover-class="weui-grid_active" id="{{item.id}}" >
+        <view class="weui-grid__label">{{item.signinName}}</view>
+    </view> -->
+      <view wx:if="{{tab.selectedId === 1 ? false : true}}" wx:for="{{allSigninList}}" wx:item="item" wx:key="*this" class="weui-cell weui-cell_access" hover-class="weui-cell_active" @tap="tap({{item.idSignin}})">
+          <view class="weui-cell__bd">{{item.signinName}}</view>
+          <view class="weui-cell__ft weui-cell__ft_in-access">{{item.timeEnd}}</view>
+      </view>
+      <view wx:if="{{tab.selectedId === 1}}" wx:for="{{doingSigninList}}" wx:item="item" wx:key="*this" class="weui-cell weui-cell_access" hover-class="weui-cell_active" @tap="tap({{item.idSignin}})">
+          <view class="weui-cell__bd">{{item.signinName}}</view>
+          <view class="weui-cell__ft weui-cell__ft_in-access">{{item.timeEnd}}</view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import Tab from '@/components/tab/index'
+
+  // TODO 下拉刷新
+  export default class SigninList extends wepy.page {
+    // 可用于页面模板绑定的数据
+    data = {
+      allSigninList: {},
+      doingSigninList: {},
+      tab: {
+        list: [{id: 1, title: '进行中'}, {id: 2, title: '所有'}],
+        selectedId: 1,
+        class: 'tab-success'
+      }
+    };
+
+    components = {
+      tab: Tab
+    }
+    // 事件处理函数(集中保存在methods对象中)
+    methods = {
+      tap (e) {
+        console.log(e)
+        wx.navigateTo({url: './detail?idSignin=' + e + '&from' + this.tab.selectedId})
+      },
+      change (res) {
+        this.tab.selectedId = res
+        if (JSON.stringify(this.allSigninList) === '{}') {
+          this.getAllList()
+        }
+        this.$apply()
+      }
+    };
+
+    onLoad() {
+      this.$invoke('tab', 'doInitTabData', this.tab)
+      this.getDoingList()
+    };
+    onShow() {
+    };
+    getDoingList() {
+      let app = this.$parent
+      let that = this
+      var UL_DATA = {
+        idCourse: app.globalData.activeCourse
+      }
+      app.request('getDoingSigninList', UL_DATA, '查询中...')
+      .then((res, reject) => {
+        that.doingSigninList = res.data.signinInfo
+        for (let i = 0; i < that.doingSigninList.length; i++) {
+          let timestr = new Date(that.doingSigninList[i].gmtEnd * 1000).toString()
+          that.doingSigninList[i].timeEnd = timestr.substring(16, 24)
+        }
+        this.$apply()
+      })
+      .catch(function(error) {
+        console.error(error)
+        app.modal(
+          error.message,
+          '错误!',
+          '确定'
+        )
+      })
+    };
+    getAllList() {
+      let app = this.$parent
+      let that = this
+      var UL_DATA = {
+        idCourse: app.globalData.activeCourse,
+        page: 1
+      }
+      app.request('getStuAllSigninList', UL_DATA, '查询中...')
+      .then((res, reject) => {
+        that.allSigninList = res.data.signinInfo
+        for (let i = 0; i < that.allSigninList.length; i++) {
+          let timestr = new Date(that.allSigninList[i].gmtEnd * 1000).toString()
+          that.allSigninList[i].timeEnd = timestr.substring(16, 24)
+        }
+        this.$apply()
+      })
+      .catch(function(error) {
+        console.error(error)
+        app.modal(
+          error.message,
+          '错误!',
+          '确定'
+        )
+      })
+    }
+  }
+</script>
