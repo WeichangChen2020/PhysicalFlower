@@ -370,8 +370,8 @@ html .row {
               <picker
                 mode="time"
                 value="{{time}}"
-                start="09:01"
-                end="21:01"
+                start="06:00"
+                end="24:00"
                 bindchange="bindTimeChange"
               >
                 <view style="color:gray">
@@ -429,7 +429,7 @@ export default class signinCreat extends wepy.page {
     get_latitude: '',
     canvasWidth: '',
     canvasHeight: '',
-    time: '12:01',
+    time: '23:01',
     horizontalAccuracy: 0,
     flag: [0, 0, 0],
     inputName: ''
