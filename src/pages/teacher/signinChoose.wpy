@@ -286,9 +286,15 @@ export default class signinChoose extends wepy.page {
           // console.log(e)
           that.list[0].name = that.courseName
           // console.log(e.data['signinInfo'])
+          var timestamp = (new Date()).getTime()
           for (var i = that.lastPage, j = 0; i < that.lastPage + e.data['signinInfo'].length; i++, j++) {
             // console.log(i)
             that.list[0].pages[i] = e.data['signinInfo'][j]
+            if (e.data['signinInfo'][j].gmtEnd > (timestamp / 1000)) {
+              that.list[0].pages[i].state = '进行中'
+            } else {
+              that.list[0].pages[i].state = '已结束'
+            }
             that.list[0].pages[i].idSignin = e.data['signinInfo'][j].idSignin
             that.list[0].pages[i].name = e.data['signinInfo'][j].signinName
             that.list[0].pages[i].url = './signinControl?idCourse=' + e.data['signinInfo'][j].idCourse + '&idSignin=' + e.data['signinInfo'][j].idSignin + '&gmtEnd=' + e.data['signinInfo'][j].gmtEnd + '&signinName=' + e.data['signinInfo'][j].signinName

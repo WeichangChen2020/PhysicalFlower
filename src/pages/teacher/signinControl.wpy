@@ -30,6 +30,12 @@
 .tag{
   margin-right:10px;
 }
+.list {
+  color: #808080;
+}
+.bold {
+  font-weight: bold;
+}
 </style>
 <template>
 	<view>
@@ -46,18 +52,22 @@
      <view class="page__bd">
         <view class="weui-grids">
             <block wx:for="{{studentInfo}}" wx:for-item="page" wx:key="*this">
-              <view class="weui-grid" hover-class="weui-grid_active" @tap="change">
-                    <view class="weui-grid__label">{{page['check']}}</view>
-                    <view class="weui-grid__label">{{page['name']}}</view>
+              <view class="weui-grid" hover-class="weui-grid_active" @tap="showActionSheet(1)" data-id="{{index}}">
+                    <view class="weui-grid__label" >{{page['name']}}</view>
+                    <view class="weui-grid__label" style="font-size:10px;color:{{page['check_color']}}">{{page['check']}}</view>
+                    <repeat for="{{asData}}" index="i" item="item" key="row-{{index}}">
+                      <actionsheet :asData.sync="item"></actionsheet>
+                    </repeat>
                 </view>
             </block>
         </view>
     </view>
   </view>
+
 </template>
 <script>
   import wepy from 'wepy'
-
+  import actionsheet from '@/components/actionsheet/index'
   // 通过继承自wepy.page的类创建页面逻辑
   export default class signinControl extends wepy.page {
     config ={
@@ -68,26 +78,122 @@
         navigationBarTextStyle: 'black'
       }
     }
+    components = {
+      actionsheet: actionsheet
+    }
+  
     // 可用于页面模板绑定的数据
     data = {
+      id: 0,
       studentInfo: [],
       i_url: ['/public/images/empty.png'],
       idCourse: '',
       courseName: '',
       signinName: '',
-      idSignin: 0
+      idSignin: 0,
+      asData: [
+        {
+          top: true,
+          index: 0,
+          show: false
+        },
+        {
+          itemList: [{
+            value: '补签',
+            event: 'addSignin'
+          },
+          {
+            value: '撤销签到',
+            event: 'delSignin'
+          }],
+          index: 1,
+          show: false
+        }
+      ]
+
     };
+
+    // props = {
+    //   stuId: {
+    //     type: String,
+    //     default: 'null'
+    //   }
+    // }
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      change(e) {
+      showActionSheet (i, e) {
+        // console.log(e)
+        this.id = e.currentTarget.dataset.id
+        this.asData.map((r, i) => {
+          r.show = false
+        })
+        this.asData[i].show = true
       }
+    }
 
-    };
+    hideActionsheet (i) {
+      this.asData[i].show = false
+    }
+
+    events = {
+      'addSignin': function (i, index, close) {
+        let app = this.$parent
+        var that = this
+        let idData = {
+          idUser: that.studentInfo[this.id].idUser,
+          idSignin: this.idSignin
+        }
+        app
+          .request('substitudeSignin', idData, 'loading')
+          .then(function(e) {
+            console.log(e)
+          })
+          .catch(function(e) {
+            app.modal(
+              e.message,
+              '错误!错误提示是：',
+              '确定'
+            )
+          })
+        this.hideActionsheet(i)
+      },
+      'delSignin': function (i, index, close) {
+        let app = this.$parent
+        var that = this
+        let idData = {
+          idUser: that.studentInfo[this.id].idUser,
+          idSignin: this.idSignin
+        }
+        app
+          .request('delSigninRecord', idData, 'loading')
+          .then(function(e) {
+            console.log(e)
+            if (e.data.errCode === 0) {
+              wx.showToast({
+                title: '撤销签到成功'
+              })
+            } else {
+              wx.showToast({
+                title: '撤销失败，请重试',
+                icon: 'fail'
+              })
+            }
+          })
+          .catch(function(e) {
+            app.modal(
+              e.message,
+              '错误!错误提示是：',
+              '确定'
+            )
+          })
+        this.hideActionsheet(i)
+      }
+    }
 
     // 页面的生命周期函数
     onLoad(e) {
-      console.log(e)
+      // console.log(e)
       this.idCourse = e.idCourse
       this.courseName = e.courseName
       this.signinName = e.signinName
@@ -101,20 +207,23 @@
       app
         .request('getClassSigninInfo', idData, 'loading')
         .then(function(e) {
-          console.log(e)
+          // console.log(e)
           for (let i = 0; i < e.data.classStuSigninInfo.length; i++) {
             that.studentInfo[i] = e.data.classStuSigninInfo[i]
             if (e.data.classStuSigninInfo[i].check === 0) {
               that.studentInfo[i].check = '未签到'
+              that.studentInfo[i].check_color = 'red'
             } else if (e.data.classStuSigninInfo[i].check === 1) {
               that.studentInfo[i].check = '已签到'
+              that.studentInfo[i].check_color = 'green'
             } else if (e.data.classStuSigninInfo[i].check === 2) {
               that.studentInfo[i].check = '补签'
+              that.studentInfo[i].check_color = 'yellow'
             }
           }
           // that.studentInfo = e.data.classStuSigninInfo
           that.$apply()
-          console.log(that.studentInfo[0]['name'])
+          // console.log(that.studentInfo[0]['name'])
         })
         .catch(function(e) {
           app.modal(
