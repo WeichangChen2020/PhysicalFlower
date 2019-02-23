@@ -80,8 +80,7 @@
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      change(e){
-        
+      change(e) {
       }
 
     };
