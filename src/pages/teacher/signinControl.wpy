@@ -4,6 +4,10 @@
   color: gray;
   margin: 20rpx 0 20rpx 20rpx;
 }
+.input {
+  margin-top: 30rpx;
+  border-bottom: #ddd solid 2rpx;
+}
 .greetingc {
   font-size: 14px;
   color: gray;
@@ -41,14 +45,24 @@
 	<view>
     <text class="greetingc">{{signinName}}</text>
       <view class="divide">
-        <text class="greeting">
-          起止时间：
-        </text>
-        <button class="greeting">时间调整</button>
+          <picker
+                mode="time"
+                value="{{time}}"
+                start="06:00"
+                end="24:00"
+                bindchange="bindTimeChange"
+              >
+              <text class="greeting" style="font-size:16px">
+                签到截止时间：<text style="font-size:13px">{{time}}</text>
+              </text>
+          </picker>
+        <view style="margin-bottom:10px"></view>
+        <input class='input' placeholder='输入签到范围:' maxlength="5" bindinput='bindKeyInput' />
+        <button class="greeting" @tap="submitChange">提交修改</button>
       </view>
 	</view>
   <view>
-    <textarea class="greeting">签到情况如下：</textarea>
+    <textarea class="greeting" style="font-size:16px">签到情况如下：</textarea>
      <view class="page__bd">
         <view class="weui-grids">
             <block wx:for="{{studentInfo}}" wx:for-item="page" wx:key="*this">
@@ -84,13 +98,18 @@
   
     // 可用于页面模板绑定的数据
     data = {
+      dated: '',
+      submitchangeFlag: 1,
       id: 0,
       studentInfo: [],
+      time: '23:01',
       i_url: ['/public/images/empty.png'],
       idCourse: '',
       courseName: '',
       signinName: '',
+      inputValue: '',
       idSignin: 0,
+      gmtEnd: 0,
       asData: [
         {
           top: true,
@@ -112,14 +131,6 @@
       ]
 
     };
-
-    // props = {
-    //   stuId: {
-    //     type: String,
-    //     default: 'null'
-    //   }
-    // }
-
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       showActionSheet (i, e) {
@@ -129,6 +140,76 @@
           r.show = false
         })
         this.asData[i].show = true
+      },
+      bindTimeChange(e) {
+        if (e.detail.value !== this.time) {
+          this.time = e.detail.value
+          let timestamp = Date.parse(new Date())
+          let date = new Date(timestamp)
+          // 获取月份
+          let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1)
+          // 获取当日日期
+          let D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+          this.dated = new Date().getFullYear() + '-' + M + '-' + D + ' ' + e.detail.value
+          this.dated = new Date(this.dated.replace(/-/g, '/')).getTime()
+          this.submitchangeFlag = 0
+        } else {
+          this.time = e.detail.value
+        }
+      },
+      submitChange(e) {
+        if (this.submitchangeFlag === 0 && this.inputValue !== null) {
+          var veg = /^\+?[1-9][0-9]*$/
+          var isRight = veg.test(parseInt(this.inputValue))
+          if (isRight === true) {
+            let app = this.$parent
+            var that = this
+            let idData = {
+              idSignin: this.idSignin,
+              gmtEnd: (this.dated / 1000),
+              radius: this.inputValue
+            }
+            app
+            .request('manageSignin', idData, 'loading')
+            .then(function(e) {
+              console.log(e)
+              if (e.data.errCode === 0) {
+                wx.showToast({
+                  title: '修改成功'
+                })
+                that.submitchangeFlag = that.submitchangeFlag + 1
+              } else {
+                wx.showToast({
+                  title: '修改失败',
+                  icon: 'none'
+                })
+              }
+            })
+          } else {
+            wx.showModal({
+              title: '注意',
+              content: '注意您的精度格式'
+            })
+          }
+        } else if (this.inputValue === null) {
+          wx.showToast({
+            title: '请输入精度',
+            icon: 'none'
+          })
+        } else if (this.inputValue !== null && this.submitchangeFlag === 1) {
+          wx.showToast({
+            title: '请勿重复提交',
+            icon: 'none'
+          })
+        }
+      },
+      bindKeyInput: function(e) {
+        if (e.detail.value !== this.inputValue) {
+          this.inputValue = e.detail.value
+          this.submitchangeFlag = 0
+        } else {
+          this.inputValue = e.detail.value
+        }
       }
     }
 
@@ -148,6 +229,22 @@
           .request('substitudeSignin', idData, 'loading')
           .then(function(e) {
             console.log(e)
+            if (e.data.errCode === 0) {
+              wx.showToast({
+                title: '补签成功'
+              })
+              that.onLoad({gmtEnd: that.gmtEnd, idCourse: that.idCourse, idSignin: that.idSignin, signinName: that.signinName})
+            } else if (e.data.msg === 'user has already doSignin!') {
+              wx.showToast({
+                title: '学生已签到',
+                icon: 'none'
+              })
+            } else {
+              wx.showToast({
+                title: '补签失败请重试',
+                icon: 'none'
+              })
+            }
           })
           .catch(function(e) {
             app.modal(
@@ -173,6 +270,7 @@
               wx.showToast({
                 title: '撤销签到成功'
               })
+              that.onLoad({gmtEnd: that.gmtEnd, idCourse: that.idCourse, idSignin: that.idSignin, signinName: that.signinName})
             } else {
               wx.showToast({
                 title: '撤销失败，请重试',
@@ -194,8 +292,10 @@
     // 页面的生命周期函数
     onLoad(e) {
       // console.log(e)
+      var timeTrans = new Date(parseInt(e.gmtEnd) * 1000)
+      this.time = timeTrans.toLocaleTimeString('chinese', {hour12: false}).slice(0, 5)// 去除毫秒数
+      this.gmtEnd = e.gmtEnd
       this.idCourse = e.idCourse
-      this.courseName = e.courseName
       this.signinName = e.signinName
       this.idSignin = e.idSignin
       let app = this.$parent

@@ -363,7 +363,7 @@ html .row {
 
         <view class='border'>
           <view>签到信息选择</view>
-          <input class='input' disabled='{{isChecked<1}}' placeholder='输入签到范围' focus='{{focus}}' maxlength="5" bindinput='bindKeyInput' />
+          <input class='input' placeholder='输入签到范围' maxlength="5" bindinput='bindKeyInput' />
             <view style="margin-bottom:10px"></view>
             <view class="section">
               <view class="section__title">选择签到截止时间</view>

@@ -223,7 +223,7 @@ export default class signinChoose extends wepy.page {
 
   // 页面的生命周期函数
   onLoad(e) {
-    console.log(e)
+    // console.log(e)
     this.idCourse = e.idCourse
     this.courseName = e.courseName
     var app = this.$parent
@@ -266,6 +266,9 @@ export default class signinChoose extends wepy.page {
           '确定'
         )
       })
+  }
+  onShow() {
+    this.onLoad({courseName: this.courseName, idCourse: this.idCourse})
   }
   onReachBottom(e) {
     this.page = this.page + 1
