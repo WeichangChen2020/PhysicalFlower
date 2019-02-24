@@ -1,28 +1,171 @@
 <style type="less">
+.zan-btn {
+  background-color:rgb(0, 214, 0);
+  color: #fff;
+}
+.zan-tab__item--selected .zan-tab__title {
+  color:#4bbc93;
+  border-bottom: 2px solid #4bbc93;
+}
+.container{
+  padding: 0;
+}
+.zan-panel{
+  margin-top: 0;
+}
+.sigin_icon_msg{
+  color: #4bbc93;
+  font-size: 90px;
+}
+.signin_head_img{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-left: 10rpx;
+}
+.signin_student_name{
+  margin-left: 20rpx;
+}
+
+.signin_online_nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%
+}
+.zan-col {
+  line-height: 44px;
+  text-align: center;
+  background-color: #4bbc93;
+  font-size: 14px;
+  color: #fff;
+}
+
+.zan-col:nth-child(even) {
+  background-color: #66c6f2;
+}
+
+.signin_manage_title{
+  height: 44rpx;
+}
+.signin_tag {
+  flex: 2;
+  margin-left:-10px;
+}
 </style>
 <template>
-	<view>signinDetail</view>
+  <toast />
+  <view class="page">
+    <view class="weui-msg">
+      <view class="weui-msg__icon-area">
+        <!-- <view class="zan-icon zan-icon-checked sigin_icon_msg"></view> -->
+        <icon type="waiting" size="93"></icon>
+      </view>
+      <view class="weui-msg__title">{{now}}</view>
+      <view class="weui-msg__title" style='font-size:16px;'>
+        <view class="zan-icon zan-icon-location change_icon"></view>
+        {{signin_online.location}}
+        <text>E: {{signin_online.longitude}}°</text>
+        <text>N: {{signin_online.latitude}}°</text>
+      </view>
+      <view class="weui-msg__opr-area">
+        <view class="weui-btn-area">
+          <button class="zan-btn zan-btn--primary" bindtap="doSignin">在线签到</button>
+          <!--已签到后的样式  -->
+          <!-- <button class="weui-btn" type="default">辅助操作</button> -->
+        </view>
+      </view>
+    </view>
+  </view>
 </template>
 <script>
-  import wepy from 'wepy'
+import wepy from 'wepy'
+import Toast from '@/components/toast/index'
 
-  // 通过继承自wepy.page的类创建页面逻辑
-  export default class Detail extends wepy.page {
-    // 可用于页面模板绑定的数据
-    data = {
-    };
-
-    // 事件处理函数(集中保存在methods对象中)
-    methods = {
-      bindViewTap () {
-        console.log('button clicked')
-      }
-    };
-
-    // 页面的生命周期函数
-    onLoad(e) {
-      // e.from == 1代表签到，2代表详情
-      console.log(e)
-    };
+// 通过继承自wepy.page的类创建页面逻辑
+export default class Detail extends wepy.page {
+  // 可用于页面模板绑定的数据
+  data = {
+    now: '',
+    signin_online: {
+      location: '',
+      latitude: '',
+      longitude: ''
+    },
+    idSignin: 0
+  };
+  components = {
+    'toast': Toast
   }
+
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+    doSignin(e) {
+      let app = this.$parent
+      let that = this
+      var UL_DATA = {
+        idSignin: that.idSignin,
+        latitude: that.signin_online.latitude,
+        longitude: that.signin_online.longitude,
+        horizontalAccuracy: that.signin_online.horizontalAccuracy
+      }
+      app.request('doSignin', UL_DATA, '签到...')
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          return '签到成功'
+        } else {
+          return res.data.msg
+        }
+      })
+      .then(function(msg) {
+        const options = {
+          content: msg,
+          position: 'middle',
+          duration: 2000,
+          type: msg === '签到成功' ? 'success' : 'warning'
+        }
+        that.$invoke('toast', 'show', options)
+      })
+      .then(function(data) {
+        setTimeout(function() {
+          wx.switchTab({
+            url: '../index'
+          })
+        }, 1000)
+      })
+      .catch(function(error) {
+        console.error(error)
+        app.modal(
+          error.message,
+          '错误!',
+          '确定'
+        )
+      })
+    }
+  };
+
+  // 页面的生命周期函数
+  onLoad(e) {
+    let that = this
+    let now = new Date().getTime()
+    this.idSignin = e.idSignin
+    setInterval(function () {
+      now += 1000
+      that.now = new Date(now).toString().substring(16, 24)
+      that.$apply()
+    }, 1000)
+    wx.getLocation({
+      success: function (res) {
+        that.signin_online = res
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: '获取位置信息失败',
+          icon: 'none'
+        })
+      }
+    })
+    // e.from == 1代表签到，2代表详情
+    console.log(e)
+  };
+}
 </script>

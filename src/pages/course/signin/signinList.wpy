@@ -1,4 +1,7 @@
 <style type="less">
+.weui-footer__text {
+  margin-top: 5px;
+}
 </style>
 <template>
   <tab @bindChange.user="change"/>
@@ -17,6 +20,9 @@
           <view class="weui-cell__ft weui-cell__ft_in-access">{{item.timeEnd}}</view>
       </view>
     </view>
+  </view>
+  <view class="weui-footer">
+      <view class="weui-footer__text">——到底了——</view>
   </view>
 </template>
 <script>
