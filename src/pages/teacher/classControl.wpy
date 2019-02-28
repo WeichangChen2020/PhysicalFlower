@@ -52,7 +52,7 @@
             this.$navigate('./signinChoose?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
             break
           case '3':
-            this.$navigate('./homeworkCreat?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            this.$navigate('./homeworkChoose?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
             break
           case '4':
             this.$navigate('./homeworkControl?idCourse=' + this.idCourse + '&courseName=' + this.courseName)

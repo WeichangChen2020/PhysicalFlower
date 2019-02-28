@@ -5,6 +5,10 @@
   line-height: 1;
   min-height: 0.5rem;
 }
+.padding{
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+}
 </style>
 
 <script>
@@ -22,6 +26,7 @@ export default class extends wepy.app {
     // 最后需要对这些页面的顺序进行调整
     pages: [
       'pages/course/index',
+      'pages/course/homework/detail',
       'pages/teacher/signinCreat',
       'pages/course/join',
       'pages/course/courseDetail',
@@ -35,7 +40,6 @@ export default class extends wepy.app {
       'pages/teacher/signinChoose',
       'pages/course/signin/signinList',
       'pages/course/homework/list',
-      'pages/course/homework/detail',
       'pages/my/myInfo',
       'pages/my/myClass',
       'pages/my/useHelp',
@@ -50,7 +54,8 @@ export default class extends wepy.app {
       'pages/teacher/homeworkControl',
       'pages/teacher/classControl',
       'pages/teacher/homeworkSearch',
-      'pages/teacher/testSearch'
+      'pages/teacher/testSearch',
+      'pages/teacher/homeworkChoose'
     ],
     'permission': {
       'scope.userLocation': {
@@ -86,11 +91,6 @@ export default class extends wepy.app {
           text: '我的'
         }
       ]
-    },
-    'permission': {
-      'scope.userLocation': {
-        'desc': '位置信息将用于签到'
-      }
     }
   }
 

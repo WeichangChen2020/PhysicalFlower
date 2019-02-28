@@ -26,6 +26,9 @@
     methods = {
       tap () {
         console.log('点击')
+        wx.navigateTo({
+          url: './detail'
+        })
       }
     };
 

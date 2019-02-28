@@ -1,37 +1,221 @@
 <style type="less">
+.xxq{
+  margin-bottom: 5px;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-right: 15px;
+}
+.answer{
+  /* height: 250px; */
+  margin-left: 10px;
+  margin-right: 10px;
+}
+/* page {
+  background-color: #f2f2f2;
+} */
+
+.container1 {
+  background-color: white;
+}
+
+.input {
+  margin-top: 30rpx;
+  border-bottom: #ddd solid 2rpx;
+}
+
+.img_hd {
+  width: 670rpx;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.greeting {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
+
+.border {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-width: 4rpx 0 4rpx 0;
+  border-style: solid;
+  border-color: #eee;
+  font-size: 30rpx;
+  line-height: 60rpx;
+  color: #b95;
+  padding: 20rpx 20rpx 40rpx 20rpx;
+}
+.subBtn {
+  border-radius: 60rpx;
+  font-size: 33rpx;
+  width: 490rpx;
+  height: 80rpx;
+}
+.subBtn:hover{
+  border-radius: 60rpx;
+  font-size: 33rpx;
+  width: 490rpx;
+  height: 80rpx;
+  background-color: rgb(243, 240, 240)
+}
 </style>
 <template>
-  <!-- 只显示10条数据,下拉加载更多 -->
-  <view class="weui-cells weui-cells_after-title">
-      <view @tap='tap' class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          <view class="weui-cell__bd">homework1</view>
-          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+  <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
+  <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
+    <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this"> 
+      <image src="{{page.imgUrl}}"/>
+
+      <view class='greeting'>上传截图</view>
+        <view class='border'>
+          <view class="weui-uploader">
+            <view class="img_hd">
+              <view class="weui-uploader__title">图片上传</view>
+              <view class="weui-uploader__info">{{havePic[index]==true?'1':'0'}}/1</view>
+            </view>
+      <view style="display:flex">
+        <view class="weui-uploader__bd">
+          <view class="weui-uploader__files" id="uploaderFiles">
+              <view class="weui-uploader__file">
+              <block wx:if="{{havePic[index]}}">
+                <image class="weui-uploader__img" src="{{files[index]}}" mode="aspectFill" />
+              </block>
+              </view>
+            </view>
+          </view>
+          <view class="weui-uploader__input-box">
+            <view class="weui-uploader__input" bindtap="chooseImage" id="{{index}}"></view>
+          </view>
       </view>
-      <view @tap='tap' class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          <view class="weui-cell__bd">homework2</view>
-          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-      </view>
-  </view>
+        </view>
+          </view>
+
+    </swiper-item>
+  </swiper>
+
+  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;' plain @tap="Submit">Submit</button>
 </template>
 <script>
   import wepy from 'wepy'
 
   // 通过继承自wepy.page的类创建页面逻辑
-  export default class Detail extends wepy.page {
+  export default class detail extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
+      homeworkName: '课后作业名称',
+      system_height: 100,
+      files: [],
+      havePic: [],
+      inputValue: '',
+      canvasWidth: '',
+      canvasHeight: '',
+      homeworkInfo: [
+        {
+          'imgUrl': 'https://sanleisen.cn/photo/001.jpg',
+          'imgId': 0
+        },
+        {
+          'imgUrl': 'https://sanleisen.cn/photo/001.jpg',
+          'imgId': 1
+        },
+        {
+          'imgUrl': 'https://sanleisen.cn/photo/001.jpg',
+          'imgId': 2
+        },
+        {
+          'imgUrl': 'https://sanleisen.cn/photo/001.jpg',
+          'imgId': 3
+        },
+        {
+          'imgUrl': 'https://sanleisen.cn/photo/001.jpg',
+          'imgId': 4
+        }
+      ]
+
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      tap () {
-        wx.navigateTo({url: './detail'})
+      Submit(e) {
+        // todo 提交答案到后台 提交files,为图片显示路径，到时候后台返回路径就可以用image组件查看
+      },
+      roll(e) {
+      },
+      chooseImage(e, h) {
+        var that = this
+        if (h === undefined) {
+          h = that
+        } else {
+          // h = h
+        }
+        var fakeE = e
+        var imgIdd = e.target.id
+        if (h.files[imgIdd] !== '') {
+          wx.showModal({
+            title: '注意',
+            content: '确定要覆盖已有的图片吗？',
+            success(e) {
+              if (e.confirm === true) {
+                h.havePic[imgIdd] = false
+                h.files[imgIdd] = ''
+                h.$apply()
+                h.methods.chooseImage(fakeE, h)
+              }
+            }
+          })
+        } else {
+          wx.chooseImage({
+            count: 3,
+            sizeType: ['original', 'compressed'],
+            sourceType: ['album', 'camera'],
+            success(res) {
+              // tempFilePath可以作为img标签的src属性显示图片
+              var ratio = 2
+              h.files[imgIdd] = res.tempFilePaths[0]
+              h.havePic[imgIdd] = true
+              h.$apply()
+              wx.getImageInfo({
+                src: res.tempFilePaths[0],
+                succes(res) {
+                  while (
+                    h.canvasWidth > 10000 ||
+                    h.canvasHeight > 10000
+                  ) {
+                    h.canvasWidth = Math.trunc(res.width / ratio)
+                    h.canvasHeight = Math.trunc(res.height / ratio)
+                    ratio++
+                  }
+                }
+              })
+            }
+          })
+        }
       }
     };
 
     // 页面的生命周期函数
-    onLoad() {
-      console.log('onLoad')
+    onLoad(e) {
+      // console.log('sdsdsdsds')
+      for (let i = 0; i < 5; i++) { // todo根据获取的题目进行数量赋值
+        this.havePic[i] = false
+        this.files[i] = ''
+      }
+      var that = this
+      wx.getSystemInfo({
+        success: function (e) {
+          that.system_height = e.windowHeight
+          that.$apply()
+        },
+        fail(e) {
+          wx.showmodal({
+            title: '注意',
+            content: '显示失败请下拉刷新重试'
+          })
+        }
+      })
     };
   }
 </script>

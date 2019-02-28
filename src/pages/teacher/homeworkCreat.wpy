@@ -15,7 +15,20 @@
   font-size: 14px;
   color: gray;
   margin: 20rpx 0 10rpx 20rpx;
-  background-color: greenyellow;
+  background-color: gold;
+}
+.subBtn {
+  border-radius: 60rpx;
+  font-size: 33rpx;
+  width: 490rpx;
+  height: 80rpx;
+}
+.subBtn:hover{
+  border-radius: 60rpx;
+  font-size: 33rpx;
+  width: 490rpx;
+  height: 80rpx;
+  background-color: rgb(243, 240, 240)
 }
 </style>
 <template>
@@ -23,14 +36,14 @@
 		<text class="greetingc">试题列表</text>
 	</view>
   <form @submit= "form1">
-  <checkbox-group name="chpter">
-  <block wx:for="{{girds}}" wx:item= "item" wx:key="*this">
+  <checkbox-group name="questionId" >
+  <block wx:for="{{questionInfo}}" wx:for-item="page" wx:key="*this">
     <view>
-    <checkbox class="icont" @tap='tap' value="{{item.id}}"></checkbox>
-    {{item.name}}
+    <checkbox class="icont" value="{{page.idQues}}"></checkbox>
+    <image src="{{page.img}}" />
     </view>
   </block>
-  <button formType="submit" class="greetingbtn">提交</button>
+  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px' plain form-type='submit'>提交</button>
   </checkbox-group>
   </form>
 </template>
@@ -41,32 +54,46 @@
   export default class homeworkCreat extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
-      girds: [
-        {id: '1', name: '第X章大学物理上1-X学'},
-        {id: '2', name: '第X章大学物理上2-X学'},
-        {id: '3', name: '第X章大学物理上3-X学'},
-        {id: '4', name: '第X章大学物理上4-X学'},
-        {id: '5', name: '第X章大学物理上5-X学'},
-        {id: '6', name: '第X章大学物理上6-X学'}
-      ]
+      questionInfo: [],
+      idQuestionChapter: 0
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      tap(e) {
-        console.log('g', e)
-      },
-      tap2(e) {
-        console.log('group', e)
-      },
       form1(e) {
         console.log('form', e.detail.value)
       }
     };
 
     // 页面的生命周期函数
-    onLoad() {
-      console.log('onLoad')
+    onLoad(e) {
+      var that = this
+      this.idQuestionChapter = e.chapter
+      let app = that.$parent
+      var delData = {
+        idQuestionChapter: this.idQuestionChapter
+      }
+      app
+        .request('getChapterQuestionList', delData, 'loading')
+        .then(function(e) {
+          console.log(e)
+          if (e.data.errCode === 0) {
+            that.questionInfo = e.data.questionInfo
+            that.$apply()
+          } else {
+            wx.showModal({
+              title: '注意',
+              content: '网络开小差了'
+            })
+          }
+        })
+        .catch(function(e) {
+          app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
     };
   }
 </script>

@@ -1,0 +1,97 @@
+<style>
+.greetingc {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+  display: flex;
+  justify-content: center;
+}
+.icont{
+  position: relative;
+  margin-left: 10rpx;
+  border-radius: 50%;
+}
+.greetingbtn {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+  background-color: gold;
+}
+.subBtn {
+  border-radius: 60rpx;
+  font-size: 33rpx;
+  width: 490rpx;
+  height: 80rpx;
+}
+.subBtn:hover{
+  border-radius: 60rpx;
+  font-size: 33rpx;
+  width: 490rpx;
+  height: 80rpx;
+  background-color: rgb(243, 240, 240)
+}
+</style>
+<template>
+	<view>
+		<text class="greetingc">章节列表</text>
+	</view>
+  <form @submit= "form1">
+  <radio-group name="chapter">
+  <block wx:for="{{girds}}" wx:item= "item" wx:key="*this">
+    <view>
+    <radio class="icont" @tap='tap' value="{{item.id}}"></radio>
+    {{item.name}}
+    </view>
+  </block>
+  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px' plain form-type='submit'>选择章节</button>
+  </radio-group>
+  </form>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  // 通过继承自wepy.page的类创建页面逻辑
+  export default class homeworkChoose extends wepy.page {
+    // 可用于页面模板绑定的数据
+    data = {
+      girds: [
+        {id: '1', name: '第X章大学物理上1-X学'},
+        {id: '2', name: '第X章大学物理上2-X学'},
+        {id: '3', name: '第X章大学物理上3-X学'},
+        {id: '4', name: '第X章大学物理上4-X学'},
+        {id: '5', name: '第X章大学物理上5-X学'},
+        {id: '6', name: '第X章大学物理上6-X学'}
+      ]
+    };
+
+    // 事件处理函数(集中保存在methods对象中)
+    methods = {
+      tap(e) {
+        console.log('g', e)
+      },
+      tap2(e) {
+        console.log('group', e)
+      },
+      form1(e) {
+        console.log('form', e.detail.value.chapter)
+        if (e.detail.value.chapter === '') {
+          wx.showModal({
+            title: '注意',
+            content: '请选择章节',
+            success(e) {
+            }
+          })
+        } else {
+          wx.navigateTo({
+            url: './homeworkCreat?chapter=' + e.detail.value.chapter
+          })
+        }
+      }
+    };
+
+    // 页面的生命周期函数
+    onLoad() {
+      console.log('onLoad')
+    };
+  }
+</script>
