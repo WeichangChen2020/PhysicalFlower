@@ -30,6 +30,56 @@
   height: 80rpx;
   background-color: rgb(243, 240, 240)
 }
+.fake{
+  width: 100%;
+  display: flex;
+  padding: 10px 8px 15px;
+  box-sizing: border-box;
+  line-height: 24px;
+  position: relative;
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+  overflow: visible;
+
+}
+.fake_title{
+  flex: 1;
+  max-width: 90px;
+  min-width: 90px;
+  display: flex
+}
+.fake_input{
+  color: #999;
+  overflow: hidden;
+  text-align: right;
+  vertical-align: middle;
+}
+.fake_picker{
+  width: 100%;
+  height: 24px;
+  text-align: left;
+  min-height: 24px;
+  color: #333;
+  line-height: inherit;
+  display: flex;
+  padding-left: 8px;
+}
+
+.fake_botton{
+  color: #fff;
+  background-color: #07c160;
+  border: 1px solid #07c160;
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  text-align: center;
+  vertical-align: middle;
+  height: 30px;
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 28px;
+}
 </style>
 <template>
 	<view>
@@ -38,11 +88,38 @@
   <form @submit= "form1">
   <checkbox-group name="questionId" >
   <block wx:for="{{questionInfo}}" wx:for-item="page" wx:key="*this">
-    <view>
+    <view style="display:flex;margin-left:8px;margin-right:8px;border-bottom:1px solid #ccc;margin-bottom:15px;margin-top:15px;">
     <checkbox class="icont" value="{{page.idQues}}"></checkbox>
-    <image src="{{page.img}}" />
+    <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px"/>
     </view>
   </block>
+  <view class='fake' style="border-top:1px solid #ccc;border-bottom:1px solid #ccc">
+      <picker
+        mode="date"
+        value="{{date}}"
+        start="1900-09-01"
+        end="{{now_date}}"
+        bindchange="bindDateChange"
+      >
+      <view style='display:flex'>
+        <view class="fake_title">
+          <view style='color:red;margin-right:3px;left:0px'></view>截止时间:</view><view class='fake_picker' style="color:{{date === '请选择截止日期'?'gray':'#333'}};font-size:12px">{{date}}</view>
+          </view>
+      </picker>
+
+       <picker
+        mode="time"
+        value="{{time}}"
+        start="06:00"
+        end="24:00"
+        bindchange="bindTimeChange"
+      >
+        <view class="picker" style="color:{{time === '请选择截止时间'?'gray':'#333'}};margin-left:5px;font-size:12px">
+          {{time}}
+        </view>
+      </picker>
+    </view>
+
   <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px' plain form-type='submit'>提交</button>
   </checkbox-group>
   </form>
@@ -55,18 +132,59 @@
     // 可用于页面模板绑定的数据
     data = {
       questionInfo: [],
-      idQuestionChapter: 0
+      idQuestionChapter: 0,
+      chooseLength: 0,
+      gmtEnd: 0,
+      idQues: {},
+      idCourse: 0,
+      now_date: '2019-02-25',
+      date: '请选择截止日期',
+      time: '请选择截止时间'
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       form1(e) {
-        console.log('form', e.detail.value)
+        var that = this
+        this.chooseLength = e.detail.value.questionId.length
+        for (let i = 0; i < this.chooseLength; i++) {
+          this.idQues[i] = parseInt(e.detail.value.questionId[i])
+        }
+        console.log('0', this.idQues['0'])
+        var vag = this.date + '-' + this.time
+        var gmtTime = new Date(vag.replace(/-/g, '/')).getTime()
+        let app = that.$parent
+        var delData = {
+          gmtEnd: gmtTime / 1000,
+          length: this.chooseLength,
+          idQues: this.idQues,
+          idCourse: parseInt(that.idCourse)
+        }
+        app
+          .request('arrangeHomework', delData, 'loading')
+          .then(function(e) {
+            console.log(e)
+          })
+          .catch(function(e) {
+            app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+          })
+      },
+      bindDateChange(e) {
+        this.date = e.detail.value
+      },
+      bindTimeChange(e) {
+        this.time = e.detail.value
       }
     };
 
     // 页面的生命周期函数
     onLoad(e) {
+      console.log(e)
+      this.idCourse = e.idCourse
       var that = this
       this.idQuestionChapter = e.chapter
       let app = that.$parent
@@ -76,10 +194,20 @@
       app
         .request('getChapterQuestionList', delData, 'loading')
         .then(function(e) {
-          console.log(e)
           if (e.data.errCode === 0) {
             that.questionInfo = e.data.questionInfo
-            that.$apply()
+            for (let i = 0; i < e.data.questionInfo.length; i++) {
+              wx.getImageInfo({
+                src: that.questionInfo[i].img,
+                success(e) {
+                  // console.log(e)
+                  that.questionInfo[i].height = e.height
+                  that.questionInfo[i].width = e.width
+                  that.$apply()
+                }
+              })
+            }
+            // console.log(that.questionInfo)
           } else {
             wx.showModal({
               title: '注意',
@@ -94,6 +222,7 @@
             '确定'
           )
         })
+      this.$apply()
     };
   }
 </script>

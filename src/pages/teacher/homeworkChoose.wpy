@@ -61,19 +61,21 @@
         {id: '4', name: '第X章大学物理上4-X学'},
         {id: '5', name: '第X章大学物理上5-X学'},
         {id: '6', name: '第X章大学物理上6-X学'}
-      ]
+      ],
+      idCourse: 0,
+      courseName: ''
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       tap(e) {
-        console.log('g', e)
+        // console.log('g', e)
       },
       tap2(e) {
-        console.log('group', e)
+        // console.log('group', e)
       },
       form1(e) {
-        console.log('form', e.detail.value.chapter)
+        // console.log('form', e.detail.value.chapter)
         if (e.detail.value.chapter === '') {
           wx.showModal({
             title: '注意',
@@ -83,15 +85,17 @@
           })
         } else {
           wx.navigateTo({
-            url: './homeworkCreat?chapter=' + e.detail.value.chapter
+            url: './homeworkCreat?chapter=' + e.detail.value.chapter + '&idCourse=' + this.idCourse
           })
         }
       }
     };
 
     // 页面的生命周期函数
-    onLoad() {
-      console.log('onLoad')
+    onLoad(e) {
+      this.idCourse = e.idCourse
+      this.courseName = e.courseName
+      this.$apply()
     };
   }
 </script>

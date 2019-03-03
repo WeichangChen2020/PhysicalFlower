@@ -35,9 +35,9 @@
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       tap(e) {
-        console.log(e)
+        // console.log(e)
         let tid = e.currentTarget.id
-        console.log(this.data.girds[0].url)
+        // console.log(this.data.girds[0].url)
         switch (tid) {
           case '1':
             this.$navigate(this.data.girds[0].url)
@@ -63,7 +63,7 @@
 
     // 页面的生命周期函数
     onLoad() {
-      console.log('onLoad')
+      // console.log('onLoad')
     };
   }
 </script>
