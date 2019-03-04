@@ -30,17 +30,78 @@
   height: 80rpx;
   background-color: rgb(243, 240, 240)
 }
+.fake{
+  width: 100%;
+  display: flex;
+  padding: 10px 8px 15px;
+  box-sizing: border-box;
+  line-height: 24px;
+  position: relative;
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+  overflow: visible;
+
+}
+.fake_title{
+  flex: 1;
+  max-width: 90px;
+  min-width: 90px;
+  display: flex
+}
+.fake_input{
+  color: #999;
+  overflow: hidden;
+  text-align: right;
+  vertical-align: middle;
+}
+.fake_picker{
+  width: 100%;
+  height: 24px;
+  text-align: left;
+  min-height: 24px;
+  color: #333;
+  line-height: inherit;
+  display: flex;
+  padding-left: 8px;
+}
+
+.fake_botton{
+  color: #fff;
+  background-color: #07c160;
+  border: 1px solid #07c160;
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  text-align: center;
+  vertical-align: middle;
+  height: 30px;
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 28px;
+}
 </style>
 <template>
 	<view>
 		<text class="greetingc">章节列表</text>
 	</view>
+
+  <view class='fake'>
+    <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+    <view style='display:flex'>
+        <view class="fake_title">
+          <view style='color:red;margin-right:3px;left:0px'>*</view>当前学期:</view><view class='fake_picker' >{{array[index]}}</view>
+          </view>
+    </picker>
+  </view>
+<!-- 
+  <button class="btn" @tap="tap" style="text-align:left">当前学期：{{idQuestionSet}}</button> -->
   <form @submit= "form1">
   <radio-group name="chapter">
-  <block wx:for="{{girds}}" wx:item= "item" wx:key="*this">
+  <block wx:for="{{chapterInfo}}" wx:item= "item" wx:key="*this">
     <view>
-    <radio class="icont" @tap='tap' value="{{item.id}}"></radio>
-    {{item.name}}
+    <radio class="icont" value="{{item.idQuestionChapter}}"></radio>
+    {{item.nameChapter}}
     </view>
   </block>
   <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px' plain form-type='submit'>选择章节</button>
@@ -54,47 +115,82 @@
   export default class homeworkChoose extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
-      girds: [
-        {id: '1', name: '第X章大学物理上1-X学'},
-        {id: '2', name: '第X章大学物理上2-X学'},
-        {id: '3', name: '第X章大学物理上3-X学'},
-        {id: '4', name: '第X章大学物理上4-X学'},
-        {id: '5', name: '第X章大学物理上5-X学'},
-        {id: '6', name: '第X章大学物理上6-X学'}
-      ],
+      array: ['大物上', '大物下'],
+      index: 0,
+      chapterInfo: [],
       idCourse: 0,
-      courseName: ''
+      courseName: '',
+      idQuestionSet: 1
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      tap(e) {
-        // console.log('g', e)
+      bindPickerChange(e) {
+        this.index = e.detail.value
+        this.onLoad({'idCourse': this.idCourse, 'courseName': this.courseName, idQuestionSet: (parseInt(this.index) + 1)})
+        // console.log('1')
       },
-      tap2(e) {
-        // console.log('group', e)
+      tap(e) {
+        console.log(e)
       },
       form1(e) {
         // console.log('form', e.detail.value.chapter)
         if (e.detail.value.chapter === '') {
           wx.showModal({
             title: '注意',
-            content: '请选择章节',
-            success(e) {
-            }
+            content: '请选择章节'
           })
         } else {
           wx.navigateTo({
             url: './homeworkCreat?chapter=' + e.detail.value.chapter + '&idCourse=' + this.idCourse
           })
         }
+      },
+      close (i) {
+        this.popData[i].showPopup = false
+        console.log(this.popData[i].showPopup)
       }
     };
 
     // 页面的生命周期函数
     onLoad(e) {
+      console.log(e.idQuestionSet)
+      if (e.idQuestionSet !== undefined) {
+        this.idQuestionSet = e.idQuestionSet
+      }
+      // wx.showModal({
+      //   title: '注意',
+      //   content: '默认是大物上的章节哦，需要更改请选择',
+      //   cancel: false
+      // })
+      var that = this
       this.idCourse = e.idCourse
       this.courseName = e.courseName
+      let app = that.$parent
+      var delData = {
+        idQuestionSet: that.idQuestionSet
+      }
+      app
+        .request('getChapterList', delData, 'loading')
+        .then(function(e) {
+          console.log(e)
+          if (e.data.errCode === 0) {
+            that.chapterInfo = e.data.chapterInfo
+            that.$apply()
+          } else {
+            wx.showToast({
+              title: '网络开小差啦',
+              icon: 'none'
+            })
+          }
+        })
+        .catch(function(e) {
+          app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
       this.$apply()
     };
   }
