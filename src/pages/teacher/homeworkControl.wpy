@@ -4,15 +4,36 @@
   color: gray;
   margin: 20rpx 0 10rpx 20rpx;
 }
+.greetingc {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+  display: flex;
+  justify-content: center;
+}
 </style>
 <template>
 	<view>
 		<text class="greetingc">浏览课后作业</text>
-    <block wx:for="{{girds}}" wx:item= "item" wx:key="*this">
-    <button class="btnn" @tap='tap' id='{{item.id}}'>
+
+
+
+
+    <block wx:for="{{homeworkInfo}}" wx:item="item" wx:key="*this">
+        <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{item.idHomework}}'>
+            <view class="weui-cell__bd" style="display:flex;justify-content:space-between"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </view>
+    </block>
+
+    <!-- <block wx:for="{{homeworkInfo}}" wx:item= "item" wx:key="*this">
+    <button class="btnn" @tap='tap' id='{{item.idHomework}}'>
     {{item.name}}
     </button>
-  </block>
+  </block> -->
+
+
+
 	</view>
 </template>
 <script>
@@ -22,14 +43,9 @@
   export default class homeworkControl extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
-      girds: [
-      {id: '1', name: '几月几号作业', url: './homeworkSearch'},
-      {id: '2', name: '几月几号作业', url: './homeworkSearch'},
-      {id: '3', name: '几月几号作业', url: './homeworkSearch'},
-      {id: '4', name: '几月几号作业', url: './homeworkSearch'},
-      {id: '5', name: '几月几号作业', url: './homeworkSearch'},
-      {id: '6', name: '几月几号作业', url: './homeworkSearch'}
-      ]
+      homeworkInfo: [
+      ],
+      idCourse: ''
     };
 
     // 事件处理函数(集中保存在methods对象中)
@@ -37,33 +53,51 @@
       tap(e) {
         // console.log(e)
         let tid = e.currentTarget.id
-        // console.log(this.data.girds[0].url)
-        switch (tid) {
-          case '1':
-            this.$navigate(this.data.girds[0].url)
-            break
-          case '2':
-            this.$navigate(this.data.girds[1].url)
-            break
-          case '3':
-            this.$navigate(this.data.girds[2].url)
-            break
-          case '4':
-            this.$navigate(this.data.girds[3].url)
-            break
-          case '5':
-            this.$navigate(this.data.girds[4].url)
-            break
-          case '6':
-            this.$navigate(this.data.girds[5].url)
-            break
-        }
+        // console.log(this.data.homeworkInfo[0].url)
+        this.$navigate(this.homeworkInfo[tid].url)
       }
     };
 
     // 页面的生命周期函数
-    onLoad() {
-      // console.log('onLoad')
+    onLoad(e) {
+      this.idCourse = e.idCourse
+      var that = this
+      let app = that.$parent
+      var delData = {
+        idCourse: this.idCourse
+      }
+      app
+        .request('getHomeworkList', delData, 'loading')
+        .then(function(e) {
+          console.log(e)
+          if (e.data.errCode === 0) {
+            that.homeworkInfo = e.data.homeworkInfo
+            var timestamp = (new Date()).getTime()
+            for (let i = 0; i < that.homeworkInfo.length; i++) {
+              var endTime = new Date(parseInt(that.homeworkInfo[i].gmtStart) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
+              if (e.data.homeworkInfo[i].gmtEnd > (timestamp / 1000)) {
+                that.homeworkInfo[i].state = '进行中'
+              } else {
+                that.homeworkInfo[i].state = '已结束'
+              }
+              that.homeworkInfo[i].url = './homeworkSearch'
+              that.homeworkInfo[i].name = endTime
+            }
+            that.$apply()
+          } else {
+            wx.showToast({
+              title: '网络开小差了',
+              icon: 'none'
+            })
+          }
+        })
+        .catch(function(e) {
+          app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
     };
   }
 </script>
