@@ -26,13 +26,16 @@ export default class extends wepy.app {
     // 最后需要对这些页面的顺序进行调整
     pages: [
       'pages/course/index',
+      'pages/my/authorize',
       'pages/course/homework/detail',
       'pages/teacher/signinCreat',
       'pages/course/join',
       'pages/course/courseDetail',
       'pages/course/courseList',
       'pages/course/signin/detail',
-      'pages/my/authorize',
+      'pages/course/exercise/index',
+      'pages/course/chat/index',
+      'pages/course/test/index',
       'pages/my/register',
       'pages/my/gradeInfo',
       'pages/my/my',
