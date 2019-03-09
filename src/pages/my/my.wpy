@@ -80,7 +80,7 @@ page {
     style="background-color:{{bottonClr[i.id]}};margin-bottom:{{i.margin}}rpx"
   >
     <botton class="list" id="{{i.id}}"   bindtap="tap">
-      <image class="listImg" mode="aspectFit" src="">
+      <image class="listImg" mode="aspectFit" src="" />
       <view class="listInfo">{{i.name}}</view>
     </botton>
   </view>
