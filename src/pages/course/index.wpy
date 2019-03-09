@@ -31,7 +31,8 @@ export default class Index extends wepy.page {
       { id: '6', name: '加入课程', img: '/public/images/empty.png', url: '/pages/course/join' },
       { id: '7', name: '视频', img: '/public/images/empty.png', url: '/pages/course/video' },
       { id: '8', name: '切换课程', img: '/public/images/empty.png', url: '/pages/course/switch' }
-    ]
+    ],
+    idCourse: 0
   }
   components = {
     dialog: Dialog
@@ -45,7 +46,7 @@ export default class Index extends wepy.page {
           wx.navigateTo({url: './signin/signinList'})
           break
         case '2':
-          wx.navigateTo({url: './homework/list'})
+          wx.navigateTo({url: './homework/list?idCourse=' + this.idCourse})
           break
         case '3':
           wx.navigateTo({url: './test'})
@@ -72,7 +73,7 @@ export default class Index extends wepy.page {
   // 页面的生命周期函数
   onLoad() {
     let app = this.$parent
-    let that = this
+    var that = this
     this.userLogin()
     .then(function(data) {
       // 登录请求
@@ -119,6 +120,8 @@ export default class Index extends wepy.page {
       console.log(res)
       if (res !== 'null') {
         // 啥都不干
+        that.idCourse = res
+        that.$apply()
         console.log('readfile', res)
       } else {
         // 等请求以加入课程的后台接口
