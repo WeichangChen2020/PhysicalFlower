@@ -69,13 +69,15 @@
       app
         .request('getHomeworkList', delData, 'loading')
         .then(function(e) {
-          console.log(e)
+          console.log('e', e)
           if (e.data.errCode === 0) {
-            that.homeworkInfo = e.data.homeworkInfo
+            var len = e.data.homeworkInfo
             var timestamp = (new Date()).getTime()
-            for (let i = 0; i < that.homeworkInfo.length; i++) {
-              var endTime = new Date(parseInt(that.homeworkInfo[i].gmtStart) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
-              if (e.data.homeworkInfo[i].gmtEnd > (timestamp / 1000)) {
+            for (let i = 0, j = len.length - 1; i < len.length; i++, j--) {
+              that.homeworkInfo[i] = e.data.homeworkInfo[j]
+              var endTime = new Date(parseInt(e.data.homeworkInfo[j].gmtStart) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
+              // console.log('end', endTime)
+              if (parseInt(e.data.homeworkInfo[j].gmtEnd) > (timestamp / 1000)) {
                 that.homeworkInfo[i].state = '进行中'
               } else {
                 that.homeworkInfo[i].state = '已结束'

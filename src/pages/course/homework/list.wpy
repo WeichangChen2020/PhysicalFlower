@@ -3,7 +3,7 @@
 <template>
   <!-- 只显示10条数据,下拉加载更多 -->
   <block wx:for="{{homeworkInfo}}" wx:item="item" wx:key="*this">
-        <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{item.idHomework}}'>
+        <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{index}}'>
             <view class="weui-cell__bd" style="display:flex;justify-content:space-between"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
             <view class="weui-cell__ft weui-cell__ft_in-access"></view>
         </view>
@@ -25,6 +25,8 @@
     methods = {
       tap (e) {
         let tid = e.currentTarget.id
+        // console.log(e.currentTarget.id)
+        // console.log(this.homeworkInfo)
         wx.navigateTo({
           url: this.homeworkInfo[tid].url
         })
@@ -43,18 +45,20 @@
       app
         .request('getHomeworkList', delData, 'loading')
         .then(function(e) {
-          console.log(e)
+          // console.log('e', e)
           if (e.data.errCode === 0) {
-            that.homeworkInfo = e.data.homeworkInfo
+            var len = e.data.homeworkInfo
             var timestamp = (new Date()).getTime()
-            for (let i = 0; i < that.homeworkInfo.length; i++) {
-              var endTime = new Date(parseInt(that.homeworkInfo[i].gmtStart) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
-              if (e.data.homeworkInfo[i].gmtEnd > (timestamp / 1000)) {
+            for (let i = 0, j = len.length - 1; i < len.length; i++, j--) {
+              that.homeworkInfo[i] = e.data.homeworkInfo[j]
+              var endTime = new Date(parseInt(e.data.homeworkInfo[j].gmtStart) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
+              // console.log('end', endTime)
+              if (parseInt(e.data.homeworkInfo[j].gmtEnd) > (timestamp / 1000)) {
                 that.homeworkInfo[i].state = '进行中'
               } else {
                 that.homeworkInfo[i].state = '已结束'
               }
-              that.homeworkInfo[i].url = './detail?idHomework=' + e.data.homeworkInfo[i].idHomework
+              that.homeworkInfo[i].url = './detail?idCourse=' + that.idCourse
               that.homeworkInfo[i].name = endTime
             }
             that.$apply()
