@@ -94,7 +94,7 @@ export default class Index extends wepy.page {
         code: data,
         grant_type: app.globalData.grant_type
       }
-      return app.request('userLogin', UL_DATA, '登录中')
+      return app.request('User.userLogin', UL_DATA, '登录中')
     })
     .then(function(res) {
       // 完善信息
