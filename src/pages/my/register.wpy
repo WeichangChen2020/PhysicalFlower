@@ -3,6 +3,18 @@
   margin-left: 15px;
   margin-right: 15px;
 }
+
+.btn{
+  width: 60%;
+  margin-top: 60rpx;
+  background-color: #b39ddb;
+  color:whitesmoke;
+  border-radius: 98rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 </style>
 <template>
   <toptips />
@@ -12,7 +24,7 @@
   <input-number :config.sync="number" @onInput.user="_handleInputNumber"></input-number>
   <input-telphone :config.sync="telphone" @onInput.user="_handleInputtelphone"></input-telphone>
   <input-school :config.sync="school" @onInput.user="_handleInputSchool"></input-school>
-  <button class="weui-btn" type="primary" @tap="submit">提交</button>
+  <button class=".btn" @tap="submit">提交</button>
 </template>
 
 <script>
@@ -146,7 +158,8 @@ export default class Register extends wepy.page {
 
   events = {};
 
-  onLoad() {
+  onLoad(e) {
+    this.userInfo = this.$parent.globalData.userInfo
     let that = this
     wx.getUserInfo({
       success(res) {

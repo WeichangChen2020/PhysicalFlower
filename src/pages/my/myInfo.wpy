@@ -33,6 +33,18 @@ page {
   width: 60rpx;
   margin: 15rpx 50rpx 0rpx 0rpx;
 }
+
+.btn{
+  width: 60%;
+  margin-top: 60rpx;
+  background-color: #b39ddb;
+  color:whitesmoke;
+  border-radius: 98rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 </style>
 <template>
  <view style='height:20rpx'></view>
@@ -41,6 +53,9 @@ page {
     <view class='listInfo'>{{i.name}}</view>
     <view class='listCont'>{{userInfo[i.type]}}</view>
   </botton>
+</view>
+<view  class="page__bd">
+  <button class="btn" bindtap="openConfirm">修改个人信息</button>
 </view>
 <view class="weui-footer weui-footer_fixed-bottom">
       <view class="weui-footer__text">Copyright © 2008-2019 xd435</view>
@@ -82,26 +97,55 @@ export default class myInfo extends wepy.page {
         name: '学号',
         img: 'medal',
         margin: '0',
-        type: 'id'
+        type: 'stunum'
       },
       {
         id: '3',
         name: '手机号',
         img: 'ticket',
         margin: '0',
-        type: 'tel'
+        type: 'telphone'
       },
       {
         id: '4',
         name: '省份',
         img: '',
         margin: '0',
-        type: 'provience'
+        type: 'province'
+      },
+      {
+        id: '5',
+        name: '城市',
+        img: '',
+        margin: '0',
+        type: 'city'
       }
     ]
   }
 
   methods = {
+    openConfirm: function() {
+      let app = this.$parent.globalData
+      console.log(app)
+      wx.showModal({
+        title: '提示',
+        content: '确定要修改个人信息吗？',
+        showCancel: true,
+        cancelText: '取消',
+        cancelColor: '',
+        confirmText: '好的',
+        confirmColor: '#f8bbd0',
+        success: function (res) {
+          console.log(this)
+          if (res.confirm) {
+            wx.navigateTo({ url: `./register?name=${app.userInfo['name']}&stunum=${app.userInfo['stunum']}&telphone=${app.userInfo['telphone']}` })
+          } else if (res.cancel) {
+          }
+        },
+        fail: function (res) {
+        }
+      })
+    },
     CA(e) {
       this.setData({ [`bottonClr[${e.currentTarget.id}]`]: '#ddd' })
     },
@@ -111,6 +155,7 @@ export default class myInfo extends wepy.page {
   }
 
   onLoad() {
+    console.log(this.$parent.globalData.userInfo)
     // this.data.userInfo = this.$parent.globalData.userInfo
     this.userInfo = this.$parent.globalData.userInfo
     console.log(this.$parent.globalData.userInfo)

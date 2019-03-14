@@ -9,6 +9,18 @@
   border-bottom: 1px solid #ccc;
   margin-bottom: 10px;
 }
+
+.btn{
+  width: 60%;
+  margin-top: 60rpx;
+  background-color: #b39ddb;
+  color:whitesmoke;
+  border-radius: 98rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 </style>
 
 <script>
@@ -67,7 +79,7 @@ export default class extends wepy.app {
     },
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
+      navigationBarBackgroundColor: '#b39ddb',
       backgroundColor: '#eee',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black',
@@ -77,8 +89,8 @@ export default class extends wepy.app {
       list: [
         {
           pagePath: 'pages/course/index',
-          selectedIconPath: 'public/images/empty.png',
-          iconPath: 'public/images/empty.png',
+          selectedIconPath: 'public/images/icon_帮助文档 (1).png',
+          iconPath: 'public/images/icon_帮助文档.png',
           text: '课程'
         },
         {
@@ -162,16 +174,16 @@ export default class extends wepy.app {
     return promise
   }
 
-  modal(content, title, confirmText, showCancel) {
+  modal(content, title, confirmText, showCancel, Color) {
     var promise = new Promise((resolve, reject) => {
       wx.showModal({
         title: title || '提示',
         content: content,
         showCancel: showCancel || false,
-        cancelText: '',
+        cancelText: '取消',
         cancelColor: '',
         confirmText: confirmText || '好的',
-        confirmColor: '',
+        confirmColor: Color,
         success: function (res) {
           if (res.confirm) resolve(res)
           else reject(res)
