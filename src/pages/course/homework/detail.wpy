@@ -96,7 +96,7 @@
     </swiper-item>
   </swiper>
 
-  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;' plain @tap="Submit">Submit</button>
+  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:-350rpx;' plain @tap="Submit">Submit</button>
 </template>
 <script>
   import wepy from 'wepy'
@@ -199,6 +199,7 @@
     // 页面的生命周期函数
     onLoad(e) {
       // console.log('sdsdsdsds')
+      console.log(e)
       for (let i = 0; i < 5; i++) { // todo根据获取的题目进行数量赋值
         this.havePic[i] = false
         this.files[i] = ''

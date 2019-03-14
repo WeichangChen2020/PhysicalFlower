@@ -1,0 +1,17 @@
+<style type="less">
+</style>
+<template>
+  <view class="page__bd">
+    功能制作中，敬请期待
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+
+export default class IndexDetail extends wepy.page {
+  config = {
+    navigationBarTitleText: '自由练习',
+    enablePullDownRefresh: false
+  }
+}
+</script>

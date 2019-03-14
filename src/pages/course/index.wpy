@@ -1,12 +1,22 @@
-<style type="less"></style>
+<style type="less">
+.kai-iconfont {
+  font-size:30px;
+  margin-bottom:20px;
+  color:#999;
+}
+.weui-grids {
+  text-align: center;
+}
+</style>
 <template>
   <dialog />
   <view class="page__bd">
     <view class="weui-grids">
         <block wx:for="{{grids}}" wx:item="item" wx:key="*this">
             <view class="weui-grid" hover-class="weui-grid_active" id="{{item.id}}" @tap="tap">
-                <image class="weui-grid__icon" src="{{item.img}}" />
-                <view class="weui-grid__label">{{item.name}}</view>
+              <!-- <icon :type="item"></icon> -->
+              <text class="kai-iconfont kai-icon-{{item.img}}" />
+              <view class="weui-grid__label">{{item.name}}</view>
             </view>
         </block>
     </view>
@@ -15,6 +25,7 @@
 <script>
 import wepy from 'wepy'
 import Dialog from '@/components/dialog/index'
+import Icon from '@/components/icon/index'
 
 // 通过继承自wepy.page的类创建页面逻辑
 export default class Index extends wepy.page {
@@ -22,19 +33,21 @@ export default class Index extends wepy.page {
     navigationBarTitleText: '物里看花'
   }
   data = {
-    grids: [ // 修改时注意更新methods
-      { id: '1', name: '签到', img: '/public/images/empty.png', url: '/pages/course/signin' },
-      { id: '2', name: '课后作业', img: '/public/images/empty.png', url: '/pages/course/homework' },
-      { id: '3', name: '随堂测试', img: '/public/images/empty.png', url: '/pages/course/test' },
-      { id: '4', name: '自由练习', img: '/public/images/empty.png', url: '/pages/course/exercise' },
-      { id: '5', name: '平台互动', img: '/public/images/empty.png', url: '/pages/course/chat' },
-      { id: '6', name: '加入课程', img: '/public/images/empty.png', url: '/pages/course/join' },
-      { id: '7', name: '视频', img: '/public/images/empty.png', url: '/pages/course/video' },
-      { id: '8', name: '切换课程', img: '/public/images/empty.png', url: '/pages/course/switch' }
+    grids: [ // id顺序是乱的，注意一下
+      { id: '1', name: '签到', img: 'location' },
+      { id: '2', name: '课后作业', img: 'pencil' },
+      { id: '3', name: '随堂测试', img: 'edit' },
+      { id: '6', name: '加入课程', img: 'plus' },
+      { id: '8', name: '切换课程', img: 'info' },
+      { id: '4', name: '自由练习', img: 'close' },
+      { id: '5', name: '平台互动', img: 'close' }
+      // ,
+      // { id: '7', name: '视频', img: 'close' }
     ]
   }
   components = {
-    dialog: Dialog
+    dialog: Dialog,
+    icon: Icon
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
@@ -45,23 +58,23 @@ export default class Index extends wepy.page {
           wx.navigateTo({url: './signin/signinList'})
           break
         case '2':
-          wx.navigateTo({url: './homework/list'})
+          wx.navigateTo({url: './homework/list?idCourse=' + this.idCourse})
           break
         case '3':
-          wx.navigateTo({url: './test'})
+          wx.navigateTo({url: './test/index'})
           break
         case '4':
-          wx.navigateTo({url: './exercise'})
+          wx.navigateTo({url: './exercise/index'})
           break
         case '5':
-          wx.navigateTo({url: './chat'})
+          wx.navigateTo({url: './chat/index'})
           break
         case '6':
           wx.navigateTo({url: './join'})
           break
-        case '7':
-          wx.navigateTo({url: './video'})
-          break
+        // case '7':
+        //   wx.navigateTo({url: './video'})
+        //   break
         case '8':
           wx.navigateTo({url: './courseList'})
           break
@@ -72,7 +85,7 @@ export default class Index extends wepy.page {
   // 页面的生命周期函数
   onLoad() {
     let app = this.$parent
-    let that = this
+    var that = this
     this.userLogin()
     .then(function(data) {
       // 登录请求
@@ -116,26 +129,27 @@ export default class Index extends wepy.page {
     })
     .then(function(res) {
       // 如果本地没有存储则去请求
-      console.log(res)
       if (res !== 'null') {
         // 啥都不干
+        that.idCourse = res
+        that.$apply()
         console.log('readfile', res)
       } else {
         // 等请求以加入课程的后台接口
         app.request('getJoincourselist', '', '请求中...')
         .then((res) => {
+          console.log(res)
           if (res.data.courseInfo.length === 0) {
             wx.navigateTo({url: './join'})
           }
           app.courseList = res.data.courseInfo
-          app.activeCourse = app.courseList[0].idCourse
+          app.globalData.activeCourse = app.courseList[0].idCourse
           const fs = wx.getFileSystemManager()
           fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, app.courseList[0].idCourse, 'utf8')
           console.log('request', app.courseList[0].idCourse)
         })
-        // app.request('userLogin', UL_DATA, '登录中')
-        // TODO 如果未加入任何课程，则跳转到jion页面
       }
+      console.log(app)
     })
     .catch(function(error) {
       // 错误处理

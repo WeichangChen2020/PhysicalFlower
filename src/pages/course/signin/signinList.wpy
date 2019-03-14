@@ -69,9 +69,14 @@
     getDoingList() {
       let app = this.$parent
       let that = this
+      console.log(app)
+      console.log(app.globalData)
+      // console.log(app)
       var UL_DATA = {
         idCourse: app.globalData.activeCourse
       }
+      console.log(UL_DATA)
+      // TODO 以签到的进行标记，并不可重复签到
       app.request('getDoingSigninList', UL_DATA, '查询中...')
       .then((res, reject) => {
         that.doingSigninList = res.data.signinInfo

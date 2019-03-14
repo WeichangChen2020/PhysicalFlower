@@ -2,16 +2,12 @@
 </style>
 <template>
   <!-- 只显示10条数据,下拉加载更多 -->
-  <view class="weui-cells weui-cells_after-title">
-    <view @tap='tap' class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-      <view class="weui-cell__bd">homework1</view>
-      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-    </view>
-    <view @tap='tap' class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-      <view class="weui-cell__bd">homework2</view>
-      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-    </view>
-  </view>
+  <block wx:for="{{homeworkInfo}}" wx:item="item" wx:key="*this">
+        <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{index}}'>
+            <view class="weui-cell__bd" style="display:flex;justify-content:space-between"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </view>
+    </block>
 </template>
 <script>
   import wepy from 'wepy'
@@ -20,21 +16,66 @@
   export default class List extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
+      homeworkInfo: [
+      ],
+      idCourse: ''
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      tap () {
-        console.log('点击')
+      tap (e) {
+        let tid = e.currentTarget.id
+        // console.log(e.currentTarget.id)
+        // console.log(this.homeworkInfo)
         wx.navigateTo({
-          url: './detail'
+          url: this.homeworkInfo[tid].url
         })
       }
     };
 
     // 页面的生命周期函数
-    onLoad() {
-      console.log('onLoad')
+    onLoad(e) {
+      var that = this
+      // console.log(e)
+      this.idCourse = e.idCourse
+      let app = that.$parent
+      var delData = {
+        idCourse: this.idCourse
+      }
+      app
+        .request('getHomeworkList', delData, 'loading')
+        .then(function(e) {
+          // console.log('e', e)
+          if (e.data.errCode === 0) {
+            var len = e.data.homeworkInfo
+            var timestamp = (new Date()).getTime()
+            for (let i = 0, j = len.length - 1; i < len.length; i++, j--) {
+              that.homeworkInfo[i] = e.data.homeworkInfo[j]
+              var endTime = new Date(parseInt(e.data.homeworkInfo[j].gmtStart) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
+              // console.log('end', endTime)
+              if (parseInt(e.data.homeworkInfo[j].gmtEnd) > (timestamp / 1000)) {
+                that.homeworkInfo[i].state = '进行中'
+              } else {
+                that.homeworkInfo[i].state = '已结束'
+              }
+              that.homeworkInfo[i].url = './detail?idCourse=' + that.idCourse
+              that.homeworkInfo[i].name = endTime
+            }
+            that.$apply()
+          } else {
+            wx.showToast({
+              title: '网络开小差了',
+              icon: 'none'
+            })
+          }
+        })
+        .catch(function(e) {
+          app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
     };
   }
 </script>
