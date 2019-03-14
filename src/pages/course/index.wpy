@@ -58,7 +58,7 @@ export default class Index extends wepy.page {
           wx.navigateTo({url: './signin/signinList'})
           break
         case '2':
-          wx.navigateTo({url: './homework/list'})
+          wx.navigateTo({url: './homework/list?idCourse=' + this.idCourse})
           break
         case '3':
           wx.navigateTo({url: './test/index'})
@@ -85,7 +85,7 @@ export default class Index extends wepy.page {
   // 页面的生命周期函数
   onLoad() {
     let app = this.$parent
-    let that = this
+    var that = this
     this.userLogin()
     .then(function(data) {
       // 登录请求
@@ -131,6 +131,8 @@ export default class Index extends wepy.page {
       // 如果本地没有存储则去请求
       if (res !== 'null') {
         // 啥都不干
+        that.idCourse = res
+        that.$apply()
         console.log('readfile', res)
       } else {
         // 等请求以加入课程的后台接口

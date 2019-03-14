@@ -138,7 +138,7 @@
       gmtEnd: 0,
       idQues: {},
       idCourse: 0,
-      now_date: '2019-02-25',
+      now_date: '2100-02-25',
       date: '请选择截止日期',
       time: '请选择截止时间'
     };
@@ -165,6 +165,11 @@
           .request('arrangeHomework', delData, 'loading')
           .then(function(e) {
             console.log(e)
+            wx.showToast({
+              title: '发布成功',
+              icon: 'none'
+            })
+            wx.navigateBack({})
           })
           .catch(function(e) {
             app.modal(
