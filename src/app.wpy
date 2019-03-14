@@ -112,9 +112,7 @@ export default class extends wepy.app {
   globalData = {
     userInfo: {},
     loginCode: '', // 判断用户信息是否已完善
-    apiUrl: 'http://physicalflower.geefunlab.com:8080/physicalFlower/gateway.do',
-    appId: 'wx9061828744e52511',
-    appSecret: 'f8edd6c9131964c83646a2056eba3700',
+    apiUrl: 'http://313.testet.sinaapp.com/index.php/Gateway/route',
     grant_type: 'authorization_code', // 获取openid的参数，不用改
     activeCourse: '' // 主页面的课程id
   }
@@ -144,7 +142,7 @@ export default class extends wepy.app {
       loading = loading || 'Requesting'  // 在调试器打印请求发送记录
       if (that.globalData.showLog) console.log(tag + ': ' + loading + '...')
       data.pf = 'wx'
-      data.tag = tag   // 默认添加 pf 和 tag 参数
+      data.method = tag   // 默认添加 pf 和 tag 参数
       wx.request({
         url: that.globalData.apiUrl,
         method: 'POST',

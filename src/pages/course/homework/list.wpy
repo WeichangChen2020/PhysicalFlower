@@ -77,5 +77,23 @@
           )
         })
     };
+    onShow() {
+      let app = this.$parent
+      var UL_DATA = {
+        idCourse: app.globalData.activeCourse
+      }
+      app.request('getHomeworkList', UL_DATA, '查询中...')
+      .then((res, reject) => {
+        console.log(res)
+      })
+      .catch(function(error) {
+        console.error(error)
+        app.modal(
+          error.message,
+          '错误!',
+          '确定'
+        )
+      })
+    }
   }
 </script>
