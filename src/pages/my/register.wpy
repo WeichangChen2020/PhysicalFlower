@@ -110,7 +110,7 @@ export default class Register extends wepy.page {
         userBasicInfo: this.userInfo
       }
       console.log(UL_DATA)
-      app.request('updateInfo', UL_DATA, '请稍等...')
+      app.request('User.updateInfo', UL_DATA, '请稍等...')
       .then(function(res) {
         if (res.data.errCode === 0 || res.data.errCode === 1) {
           return res.data.errCode === 0 ? '更新成功' : '注册成功'
