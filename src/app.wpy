@@ -10,7 +10,7 @@
   margin-bottom: 10px;
 }
 
-.btn{
+.button{
   width: 60%;
   margin-top: 60rpx;
   background-color: #b39ddb;

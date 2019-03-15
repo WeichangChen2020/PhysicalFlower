@@ -129,8 +129,9 @@ export default class myClass extends wepy.page {
   }
 
   onLoad() {
-    this.teachInfo = this.$parent.globalData.teachInfo
-    console.log(this.data.teachInfo)
+    let app = this.$parent.globalData
+    let that = this
+    this.$parent.request('getClassList')
   }
 }
 </script>
