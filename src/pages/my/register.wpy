@@ -23,7 +23,7 @@
   <input-name :config.sync="name" @onInput.user="_handleInputName"></input-name>
   <input-number :config.sync="number" @onInput.user="_handleInputNumber"></input-number>
   <input-telphone :config.sync="telphone" @onInput.user="_handleInputtelphone"></input-telphone>
-  <input-school :config.sync="school" @onInput.user="_handleInputSchool"></input-school>
+  <input-class :config.sync="class" @onInput.user="_handleInputSchool"></input-class>
   <button class=".btn" @tap="submit">提交</button>
 </template>
 
@@ -42,7 +42,7 @@ export default class Register extends wepy.page {
     'input-name': input,
     'input-number': input,
     'input-telphone': input,
-    'input-school': input,
+    'input-class': input,
     'toptips': Toptips,
     'toast': Toast
   }
@@ -71,11 +71,11 @@ export default class Register extends wepy.page {
       filter: /^\d{8,13}$/,
       placeholder: '请输入手机号'
     },
-    school: {
-      label: ' 学校名',
+    class: {
+      label: '班级',
       value: '',
       inputType: 'text',
-      placeholder: '请输入学校名'
+      placeholder: '请输入班级'
     }
   };
 

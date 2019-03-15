@@ -101,20 +101,27 @@ export default class myInfo extends wepy.page {
       },
       {
         id: '3',
+        name: '班级',
+        img: 'medal',
+        margin: '0',
+        type: 'class'
+      },
+      {
+        id: '4',
         name: '手机号',
         img: 'ticket',
         margin: '0',
         type: 'telphone'
       },
       {
-        id: '4',
+        id: '5',
         name: '省份',
         img: '',
         margin: '0',
         type: 'province'
       },
       {
-        id: '5',
+        id: '6',
         name: '城市',
         img: '',
         margin: '0',
@@ -133,7 +140,7 @@ export default class myInfo extends wepy.page {
         showCancel: true,
         cancelText: '取消',
         cancelColor: '',
-        confirmText: '好的',
+        confirmText: '确定',
         confirmColor: '#f8bbd0',
         success: function (res) {
           console.log(this)
