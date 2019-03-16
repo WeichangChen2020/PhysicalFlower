@@ -41,10 +41,10 @@ export default class CourseDetail extends wepy.page {
       var UL_DATA = {
         idCourse: this.idCourse
       }
-      app.request('addToCourse', UL_DATA, '请稍等...')
+      app.request('Course.joinCourse', UL_DATA, '请稍等...')
       .then((res) => {
         console.log(res)
-        if (res.data.errCode === 0 || res.data.errCode === 4001) {
+        if (res.data.errCode === 0 || res.data.errCode === 103) {
           // 课程id保存到本地文件以供下次打开时默认课程
           const fs = wx.getFileSystemManager()
           fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, that.idCourse, 'utf8')

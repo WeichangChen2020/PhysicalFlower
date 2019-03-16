@@ -34,7 +34,7 @@
     <block wx:for="{{Length}}" wx:key="item">
       <input class='iptbox' value="{{Value.length>=index+1?Value[index]:''}}" disabled password='{{ispassword}}' catchtap='Tap'></input>
     </block>
- 
+    
   </view>
  
   <input name="password" password="{{true}}" class='ipt' maxlength="{{Length}}" focus="{{isFocus}}" bindinput="Focus"></input>
@@ -47,14 +47,13 @@
 </template>
 <script>
   import wepy from 'wepy'
-  // TODO 课程推荐？
   export default class Join extends wepy.page {
     config = {
       navigationBarTitleText: '加入课程',
       enablePullDownRefresh: false
     }
     data = {
-      Length: 6,
+      Length: 4,
       isFocus: true,
       Value: '',
       ispassword: false
@@ -64,11 +63,10 @@
     methods = {
       Focus(e) {
         let that = this
-        console.log(e.detail.value)
-        let inputValue = e.detail.value
-        that.setData({
-          Value: inputValue
-        })
+        // console.log(e.detail.value)
+        // let inputValue = e.detail.value
+        that.Value = e.detail.value
+        // console.log(that.data)
       },
       Tap() {
         let that = this
@@ -77,7 +75,13 @@
         })
       },
       formSubmit(e) {
-        console.log(e.detail.value.password)
+        console.log(parseInt(e.detail.value.password))
+        let that = this
+        let app = this.$parent
+        var deldata = {
+          idCourse: parseInt(e.detail.value.password)
+        }
+        app.request('course.getcourseList', deldata, '请稍等...')
       }
     };
     // 页面的生命周期函数
