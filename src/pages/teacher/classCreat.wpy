@@ -117,7 +117,7 @@ export default class classCreat extends wepy.page {
           logo: 'data:iamge/' + this.iamgeType + ';base64,' + this.imageBase64
         }
         app
-          .request('courseCreate', courseDATA, 'loading')
+          .request('Course.createCourse', courseDATA, 'loading')
           .then(function(e) {
             console.log(e)
           })
