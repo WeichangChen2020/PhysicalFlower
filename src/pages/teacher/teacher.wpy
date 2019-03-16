@@ -55,7 +55,7 @@
         }, 300)
       },
       jia(e) {
-        this.$navigate('./classCreat')
+        wx.navigateTo({ url: './classCreate' })
       },
       touchEnd: function(e) {
         if (this.data.lock) {
