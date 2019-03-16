@@ -232,8 +232,11 @@ export default class signinChoose extends wepy.page {
       idCourse: that.idCourse,
       page: this.page
     }
+    let UL_DATA = {
+      'postData': postData
+    }
     app
-      .request('getSigninList', postData, 'Loading')
+      .request('Signin.getCreatedSigninList', UL_DATA, 'Loading')
       .then(function(e) {
         if (e.data['signinInfo'].length === 0) {
           wx.showToast({

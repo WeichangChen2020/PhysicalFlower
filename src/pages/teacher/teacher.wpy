@@ -24,7 +24,7 @@
 		<text class="bjlb" >课程列表：</text>
     <button class="btn btn-min btn-empty btn-success" @tap = 'jia'>增加课程</button>
     <block wx:for='{{courseInfo}}' wx:key='*this'>
-      <button id="{{item.idCourse}}" data-coursename="{{item.courseName}}" class="greeting" bindtap='banji' bindlongpress="longtap" bindtouchend="touchEnd">{{item.courseName}}   {{item.idCourse}}</button>
+      <button id="{{item.idcourse}}" data-coursename="{{item.coursename}}" class="greeting" bindtap='banji' bindlongpress="longtap" bindtouchend="touchEnd">{{item.coursename}}   {{item.idcourse}}</button>
     </block>
 	</view>
 </template> 
@@ -106,18 +106,19 @@
       let app = this.$parent
       var that = this
       var courseDATA = {
-        idUser: app.globalData.userInfo.idUser
       }
       app
-        .request('getCreatecourselist', courseDATA, 'loading')
+        .request('Course.getCreatedCourseList', courseDATA, 'loading')
         .then(function(e) {
+          console.log(e)
           for (var n = 0; n < that.courseInfo.length; n++) {
             that.courseInfo[n] = ''
           }
-          for (var i = 0; i < e.data.courseInfo.length; i++) {
-            that.courseInfo[i] = e.data.courseInfo[i]
+          for (var i = 0; i < e.data.data.length; i++) {
+            that.courseInfo[i] = e.data.data[i]
           }
-          if (e.data.courseInfo.length === 0) {
+          console.log(that)
+          if (e.data.data.length === 0) {
             wx.showModal({
               title: '提示',
               content: '暂无课程，请创建课程',
