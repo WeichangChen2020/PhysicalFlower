@@ -37,11 +37,12 @@ export default class extends wepy.app {
   config = {
     // 最后需要对这些页面的顺序进行调整
     pages: [
+      'pages/teacher/classCreate2',
+      'pages/course/join',
       'pages/course/index',
       'pages/my/authorize',
       'pages/course/homework/detail',
       'pages/teacher/signinCreat',
-      'pages/course/join',
       'pages/course/courseDetail',
       'pages/course/courseList',
       'pages/course/signin/detail',
@@ -114,7 +115,7 @@ export default class extends wepy.app {
     loginCode: '', // 判断用户信息是否已完善
     apiUrl: 'http://313.testet.sinaapp.com/index.php/Gateway/route',
     grant_type: 'authorization_code', // 获取openid的参数，不用改
-    activeCourse: '' // 主页面的课程id
+    activeCourse: '1' // 主页面的课程id
   }
   constructor() {
     super()
