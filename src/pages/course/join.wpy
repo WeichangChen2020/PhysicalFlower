@@ -83,24 +83,9 @@
         app.request('Course.courseDetail', deldata, '请稍等...')
         .then((res) => {
           console.log(res)
-          let activeCourse = app.globalData.activeCourse
-          switch (activeCourse) {
-            case '1':
-              wx.navigateTo({ url: '../my/myInfo' })
-              break
-            case '2':
-              wx.navigateTo({ url: '../my/myClass' })
-              break
-            case '3':
-              wx.navigateTo({ url: '../my/useHelp' })
-              break
-            case '4':
-              wx.navigateTo({ url: '../my/connectUs' })
-              break
-            case '5':
-              wx.navigateTo({ url: '../my/queReport' })
-              break
-          }
+          // app.globalData.activeCourse = res.data.data.idcourse
+          console.log(res.data.data.idcourse)
+          wx.navigateTo({ url: '../course/courseDetail.wpy' })
         })
         .catch(function(error) {
           console.error(error)
