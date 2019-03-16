@@ -152,7 +152,7 @@ export default class Register extends wepy.page {
       this.userInfo.telphone = e
     },
     _handleInputSchool(e) {
-      this.userInfo.school = e
+      this.userInfo.class = e
     }
   };
 
@@ -167,7 +167,7 @@ export default class Register extends wepy.page {
         that.userInfo.name = ''
         that.userInfo.stunum = ''
         that.userInfo.telphone = ''
-        that.userInfo.school = ''
+        that.userInfo.class = ''
       }
     })
   }
