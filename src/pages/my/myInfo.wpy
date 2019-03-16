@@ -145,7 +145,7 @@ export default class myInfo extends wepy.page {
         success: function (res) {
           console.log(this)
           if (res.confirm) {
-            wx.navigateTo({ url: `./register?name=${app.userInfo['name']}&stunum=${app.userInfo['stunum']}&telphone=${app.userInfo['telphone']}` })
+            wx.navigateTo({ url: `./register` })
           } else if (res.cancel) {
           }
         },

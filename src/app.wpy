@@ -95,14 +95,14 @@ export default class extends wepy.app {
         },
         {
           pagePath: 'pages/teacher/teacher',
-          selectedIconPath: 'public/images/empty.png',
-          iconPath: 'public/images/empty.png',
+          selectedIconPath: 'public/images/老师 (1).png',
+          iconPath: 'public/images/老师.png',
           text: '教师'
         },
         {
           pagePath: 'pages/my/my',
-          selectedIconPath: 'public/images/empty.png',
-          iconPath: 'public/images/empty.png',
+          selectedIconPath: 'public/images/icon_账号 (1).png',
+          iconPath: 'public/images/icon_账号.png',
           text: '我的'
         }
       ]
