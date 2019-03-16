@@ -6,8 +6,8 @@
     margin-top: 200rpx;
   }
   .iptbox {
-    width: 80rpx;
-    height: 80rpx;
+    width: 100rpx;
+    height: 100rpx;
     border: 1rpx solid #ddd;
     border-radius: 20rpx;
     display: flex;
@@ -28,7 +28,7 @@
 <template>
  
 <form bindsubmit="formSubmit">
- 
+ <toast/>
   <view class='content'>
  
     <block wx:for="{{Length}}" wx:key="item">
@@ -45,8 +45,11 @@
  
 </form>
 </template>
+
+
 <script>
   import wepy from 'wepy'
+  import Toast from '@/components/toast/index'
   export default class Join extends wepy.page {
     config = {
       navigationBarTitleText: '加入课程',
@@ -58,7 +61,9 @@
       Value: '',
       ispassword: false
     }
-    components = {}
+    components = {
+      'toast': Toast
+    }
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       Focus(e) {
@@ -77,6 +82,7 @@
       formSubmit(e) {
         console.log(parseInt(e.detail.value.password))
         let app = this.$parent
+        let that = this
         var deldata = {
           idCourse: parseInt(e.detail.value.password)
         }
@@ -84,8 +90,20 @@
         .then((res) => {
           console.log(res)
           // app.globalData.activeCourse = res.data.data.idcourse
-          console.log(res.data.data.idcourse)
-          wx.navigateTo({ url: '../course/courseDetail.wpy' })
+          // console.log(res.data.data.idcourse)
+          var code = res.data.errCode
+          if (code === 0) {
+            app.globalData.logo = res.data.data.logo
+            wx.navigateTo({ url: '../course/courseDetail' })
+          } else {
+            const options = {
+              content: '课程未创建',
+              position: 'middle',
+              duration: 2000,
+              type: 'warning'
+            }
+            that.$invoke('toast', 'show', options)
+          }
         })
         .catch(function(error) {
           console.error(error)

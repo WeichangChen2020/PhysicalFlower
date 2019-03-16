@@ -27,6 +27,19 @@
   color: #b95;
   padding: 20rpx 20rpx 40rpx 20rpx;
 }
+.border2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-width: 4rpx 0 4rpx 0;
+  border-style: solid;
+  border-color: #eee;
+  font-size: 30rpx;
+  line-height: 60rpx;
+  color: #b95;
+  padding: 20rpx 20rpx 40rpx 20rpx;
+}
 .input {
   margin-top: 30rpx;
   border-bottom: #ddd solid 2rpx;
@@ -57,6 +70,9 @@
 s .flex-list:nth-child(4n) {
   margin-right: 0;
 }
+.warn {
+  color: #ef5350;
+}
 </style>
 <template>
 <view class="kai-content">
@@ -67,14 +83,17 @@ s .flex-list:nth-child(4n) {
 </view>
 
         <panel>
-            <view slot="title" class="greeting">上传课程logo</view>
+            <view slot="title" class="greeting">上传图片</view>
+            <view class='border2'>
+              <view>上传logo</view>
             <view class="panel-upload">
                 <repeat for="{{imgList}}" index="index" item="item" key="row-{{index}}">
-                    <view class="img-list flex-list common-bg" style="width:{{imgWidth+'px'}};height:{{imgWidth+'px'}};background-image:url({{item.url}})" catchtap="previewImg({{imgList}}, {{item.url}})">
-                        <text class="kai-iconfont kai-icon-close delete-file" catchtap="removeImg({{index}})"></text>
+                    <view class="img-list flex-list common-bg" style="width:{{imgWidth+'px'}};height:{{imgWidth+'px'}};background-image:url({{item.url}});background-size:100% 100%;" catchtap="previewImg({{imgList}}, {{item.url}})">
+                        <text class="kai-iconfont kai-icon-close delete-file" catchtap="removeImg({{index}})" style="line-height:16px;"></text>
                     </view>
                 </repeat>
                 <uploader :imgWidth.sync="imgWidth" :total="imgTotal" region="ECN" :imgList.sync="imgList" :domain="domain" :uptokenURL="uptokenURL" :test="test"></uploader>
+            </view>
             </view>
         </panel>
 
@@ -82,12 +101,12 @@ s .flex-list:nth-child(4n) {
           <view class="weui-cells weui-cells_after-title">
               <view class="weui-cell">
                   <view class="weui-cell__bd">
-                      <textarea class="weui-textarea" placeholder="请输入对课程的简单描述" style="height: 3.3em" />
-                      <view class="weui-textarea-counter">{{length}}/200</view>
+                      <textarea class="weui-textarea" placeholder="请输入对课程的简单描述" style="height: 3.3em" bindinput="Focus" />
+                      <view class="weui-textarea-counter {{Description.length > 50 ? 'warn' : ''}}">{{Description.length}}/50</view>
                   </view>
               </view>
           </view>
-        <button class='button'>创建课程</button>
+        <button class='button' @tap="submit">创建课程</button>
     </view>
 </template>
 <script>
@@ -104,16 +123,56 @@ export default class classCreat extends wepy.page {
     panel: Panel
   }
   data = {
-    imgTotal: 3, // 可上传图片总数
+    imgTotal: 1, // 可上传图片总数
     imgList: [], // 图片上传列表
     imgWidth: 90,
     domain: '',
     uptokenURL: '',
-    test: true,
-    length: 0
+    local: true,
+    Description: '',
+    className: ''
   }
   computed = {}
   methods = {
+    Focus(e) {
+      let that = this
+      let app = this.$parent
+      console.log(e.detail.value)
+      // let inputValue = e.detail.value
+      that.Description = e.detail.value
+      if (that.Description.length > 50) {
+        app.toast('请注意字数！')
+      }
+    },
+    bindKeyInput(e) {
+      let that = this
+      // console.log(e.detail.value)
+      that.className = e.detail.value
+    },
+    submit() {
+      let that = this
+      let app = this.$parent
+      if (that.data.className.length <= 0) {
+        app.toast('课程名称不能为空！')
+      } else {
+        var createData = {
+          description: that.data.Description,
+          courseName: that.data.className,
+          logo: that.data.imgList[0].url
+        }
+        console.log(createData)
+        app.request('Course.createCourse', createData, '请稍等...')
+        .then((res) => {
+          console.log(res.data.errCode)
+          if (res.data.errCode === 0) {
+            app.toast('课程创建成功')
+          } else {
+            app.toast('课程创建失败')
+          }
+        }
+        )
+      }
+    },
     // 图片预览
     previewImg(list, cur) {
       var that = this
