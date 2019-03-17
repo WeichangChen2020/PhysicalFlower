@@ -59,7 +59,7 @@ margin-left:10rpx;
   <view class='contain'>
     <view class='title'>课程名称：{{item.courseName}}</view>
     <text class='subtitle'>课程号：{{item.idCourse}}</text>
-    <text class='subtitle'>加入人数：</text>
+    <text class='subtitle'>加入人数：{{item.count}}</text>
   </view>
 </view>
 <image src='../../public/images/joinCourse.png' class='icon2' @tap='test'></image>
@@ -73,6 +73,9 @@ margin-left:10rpx;
       panel: panel
     }
     // 可用于页面模板绑定的数据
+    config = {
+      navigationBarTitleText: '教师'
+    }
     data = {
       courseInfo: []
     }
@@ -89,10 +92,8 @@ margin-left:10rpx;
     }
 
     // 页面的生命周期函数
-    onLoad(e) { // todo 直接从后台获取教师课程信息
-    };
-    onShow() {
-      let app = this.$parent
+    onLoad(e) {
+       let app = this.$parent
       var that = this
       var courseDATA = {
       }
@@ -111,6 +112,32 @@ margin-left:10rpx;
         console.error(error)
         app.modal(error.message, '错误!错误提示是：', '确定')
       })
+    };
+    onShow() {
+      // let app = this.$parent
+      // var that = this
+      // var courseDATA = {
+      // }
+      // app.request('Course.getCreatedCourseList', courseDATA, '请稍等...')
+      // .then((res) => {
+      //   that.courseInfo = res.data.data
+      //   that.$apply()
+      //   console.log(that.courseInfo)
+      //   if (res.data.errCode === 0) {
+      //     // app.toast('获取课程列表成功')
+      //   } else {
+      //     app.toast('请先登录')
+      //   }
+      // })
+      // .catch(function(error) {
+      //   console.error(error)
+      //   app.modal(error.message, '错误!错误提示是：', '确定')
+      // })
+    };
+    onPullDownRefresh() {
+      this.onLoad()
+      wx.stopPullDownRefresh()
+      console.log('pulldown')
     }
   }
 </script>
