@@ -67,7 +67,7 @@
   <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
   <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
     <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this"> 
-      <image src="{{page.imgUrl}}"/>
+      <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px;"/>
 
       <view class='greeting'>上传截图</view>
         <view class='border'>
@@ -92,11 +92,9 @@
       </view>
         </view>
           </view>
-
+        <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px' plain @tap="Submit" id="{{index}}">Submit</button>
     </swiper-item>
   </swiper>
-
-  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:-350rpx;' plain @tap="Submit">Submit</button>
 </template>
 <script>
   import wepy from 'wepy'
@@ -106,6 +104,7 @@
     // 可用于页面模板绑定的数据
     data = {
       homeworkName: '课后作业名称',
+      idHomework: 0,
       system_height: 100,
       files: [],
       havePic: [],
@@ -113,27 +112,8 @@
       canvasWidth: '',
       canvasHeight: '',
       homeworkInfo: [
-        {
-          'imgUrl': 'https://sanleisen.cn/photo/001.jpg',
-          'imgId': 0
-        },
-        {
-          'imgUrl': 'https://sanleisen.cn/photo/001.jpg',
-          'imgId': 1
-        },
-        {
-          'imgUrl': 'https://sanleisen.cn/photo/001.jpg',
-          'imgId': 2
-        },
-        {
-          'imgUrl': 'https://sanleisen.cn/photo/001.jpg',
-          'imgId': 3
-        },
-        {
-          'imgUrl': 'https://sanleisen.cn/photo/001.jpg',
-          'imgId': 4
-        }
-      ]
+      ],
+      state: ''
 
     };
 
@@ -141,6 +121,33 @@
     methods = {
       Submit(e) {
         // todo 提交答案到后台 提交files,为图片显示路径，到时候后台返回路径就可以用image组件查看
+        if (this.state === '已结束') {
+          wx.showToast({
+            title: '提交已经截至了哦',
+            icon: 'none'
+          })
+        } else {
+          var that = this
+          let app = that.$parent
+          var delData = {
+            idHomeworkDetail: parseInt(this.homeworkInfo[e.currentTarget.id].idHomeworkDetail),
+            submitImg1: this.files[e.currentTarget.id],
+            submitImg2: '',
+            submitImg3: ''
+          }
+          app
+            .request('submitHomework', delData, 'loading')
+            .then(function(e) {
+              console.log(e)
+            })
+            .catch(function(e) {
+              app.modal(
+                e.message,
+                '错误!错误提示是：',
+                '确定'
+              )
+            })
+        }
       },
       roll(e) {
       },
@@ -153,7 +160,8 @@
         }
         var fakeE = e
         var imgIdd = e.target.id
-        if (h.files[imgIdd] !== '') {
+        // console.log(h.files[imgIdd])
+        if (h.files[imgIdd] !== undefined) {
           wx.showModal({
             title: '注意',
             content: '确定要覆盖已有的图片吗？',
@@ -198,13 +206,45 @@
 
     // 页面的生命周期函数
     onLoad(e) {
-      // console.log('sdsdsdsds')
       console.log(e)
-      for (let i = 0; i < 5; i++) { // todo根据获取的题目进行数量赋值
-        this.havePic[i] = false
-        this.files[i] = ''
-      }
+      this.state = e.state
+      this.idHomework = e.idHomework
       var that = this
+      let app = that.$parent
+      var delData = {
+        idHomework: this.idHomework
+      }
+      app
+        .request('getHomeworkDetails', delData, 'loading')
+        .then(function(e) {
+          console.log(e)
+          if (e.data.errCode === 0) {
+            that.homeworkInfo = e.data.homeworkInfo
+            for (let i = 0; i < e.data.count; i++) {
+              wx.getImageInfo({
+                src: e.data.homeworkInfo[i].img,
+                success(e) {
+                  // console.log(e)
+                  that.homeworkInfo[i].height = e.height
+                  that.homeworkInfo[i].width = e.width
+                }
+              })
+            }
+            that.$apply()
+          } else {
+            wx.showToast({
+              title: '网络开小差了',
+              icon: 'none'
+            })
+          }
+        })
+        .catch(function(e) {
+          app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
       wx.getSystemInfo({
         success: function (e) {
           that.system_height = e.windowHeight
