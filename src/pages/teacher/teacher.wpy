@@ -93,7 +93,7 @@ margin-left:10rpx;
 
     // 页面的生命周期函数
     onLoad(e) {
-       let app = this.$parent
+      let app = this.$parent
       var that = this
       var courseDATA = {
       }
