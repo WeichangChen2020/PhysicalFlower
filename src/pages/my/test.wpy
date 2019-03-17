@@ -1,57 +1,144 @@
-<style lang="less">
+<style type="less">
+.bjlb{
+  display: flex;
+  justify-content: center
+}
+.bj{
+  margin-bottom: 5px
+}
+.jia{
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.greeting {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
+
 </style>
 <template>
- <view @tap='test2({{a}}{{test}})' style="width:200px;height:20px;backgroud-color:#eee;">{{test}}</view>
-</template>
-
+	<view>
+		<text class="bjlb" >课程列表：</text>
+    <button class="btn btn-min btn-empty btn-success" @tap = 'jia'>增加课程</button>
+    <block wx:for='{{courseInfo}}' wx:key='*this'>
+      <button id="{{item.idCourse}}" data-courseName="{{item.courseName}}" class="greeting" bindtap='banji' bindlongpress="longtap" bindtouchend="touchEnd">{{item.courseName}}   {{item.idCourse}}</button>
+    </block>
+	</view>
+</template> 
 <script>
-import wepy from 'wepy'
+  import wepy from 'wepy'
+  import panel from '@/components/panel/index'
+  // 通过继承自wepy.page的类创建页面逻辑
+  export default class teacher extends wepy.page {
+    components = {
+      panel: panel
+    }
+    // 可用于页面模板绑定的数据
+    data = {
+      courseInfo: [ ],
+      lock: false
+    }
 
-export default class test extends wepy.page {
-  data = {
-    test: 1,
-    a: 1,
-    b: 2
-  }
+    // 事件处理函数(集中保存在methods对象中)
+    methods = {
+      banji(e) {
+        console.log(e)
+        var that = this
+        setTimeout(function() {
+          if (this.lock) {
+          } else {
+            that.$navigate('./classControl?idCourse=' + e.target.id + '&courseName=' + e.target.dataset.courseName)
+          }
+        }, 300)
+      },
+      jia(e) {
+        wx.navigateTo({ url: './classCreate' })
+      },
+      touchEnd: function(e) {
+        if (this.data.lock) {
+        // 开锁
+          setTimeout(function() {
+            this.lock = false
+          }, 100)
+        }
+        this.$apply()
+      },
+      longtap(e) {
+        // 锁住
+        this.lock = true
+        var that = this
+        let courseId = e.target.id
+        wx.showModal({
+          title: '提示',
+          content: '确定删除该课程吗',
+          success(e) {
+            if (e.confirm === true) {
+              let app = that.$parent
+              var delData = {
+                idCourse: courseId
+              }
+              app
+                .request('delCourse', delData, 'loading')
+                .then(function(e) {
+                  that.onShow()
+                })
+                .catch(function(e) {
+                  app.modal(
+                    e.message,
+                    '错误!错误提示是：',
+                    '确定'
+                  )
+                })
+            }
+          }
+        })
+        this.$apply()
+      }
+    }
 
-  // computed = {
-
-  // }
-
-  methods = {
-    test2(e) {
-      this.test = this.test + 1
-      console.log(e)
+    // 页面的生命周期函数
+    onLoad(e) { // todo 直接从后台获取教师课程信息
+    };
+    onShow() {
+      let app = this.$parent
+      var that = this
+      var courseDATA = {
+      }
+      app
+        .request('Course.getCreatedCourseList', courseDATA, 'loading')
+        .then(function(e) {
+          console.log(e)
+          for (var n = 0; n < that.courseInfo.length; n++) {
+            that.courseInfo[n] = ''
+          }
+          for (var i = 0; i < e.data.data.length; i++) {
+            that.courseInfo[i] = e.data.data[i]
+          }
+          console.log(that)
+          if (e.data.data.length === 0) {
+            wx.showModal({
+              title: '提示',
+              content: '暂无课程，请创建课程',
+              success(e) {
+                if (e.confirm === true) {
+                  wx.navigateTo({url: './classCreat'})
+                }
+              }
+            })
+          } else {
+            that.$apply()
+          }
+        })
+        .catch(function(e) {
+          app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
     }
   }
-
-  // events = {
-
-  // }
-
-  onShow() {
-    var promise = new Promise(function(resolve) {
-      resolve(42)
-    })
-    promise.then(function(value) {
-      console.log(value)
-    }).catch(function(error) {
-      console.error(error)
-    })
-  }
-
-  f1(resolve, reject) {
-    console.log('f1')
-    // let num = Math.random() * 2
-    // setTimeout(function() {
-    //   if (num < 1) {
-    //     console.log('<1,resolve')
-    //     resolve('11')
-    //   } else {
-    //     console.log('>1,reject')
-    //     reject('22')
-    //   }
-    // }, num * 1000)
-  }
-}
 </script>

@@ -21,6 +21,22 @@
   align-items: center;
   justify-content: center;
 }
+page {
+  background-color: #f6f6f6;
+  height: 100%;
+}
+.longBtn {
+  margin: 30rpx 40rpx 20rpx 40rpx;
+  background-color: #db7;
+  color: white;
+  border-radius: 60rpx;
+  /*background-color: #3af;*/
+}
+.placeholder{
+  font-style:italic;
+  font-size: 30rpx;
+  color: #39b;
+}
 </style>
 
 <script>
@@ -211,6 +227,10 @@ export default class extends wepy.app {
     setTimeout(() => {
       return promise
     }, 1800)
+  }
+
+  formatDate(inputTime) {
+    return new Date(parseInt(inputTime) * 1000).toLocaleString().replace(/\//g, '-').replace(/日/g, '')
   }
 }
 </script>

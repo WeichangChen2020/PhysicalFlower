@@ -1,32 +1,68 @@
 <style type="less">
-.bjlb{
-  display: flex;
-  justify-content: center
+page{
+  width: 100%;
 }
-.bj{
-  margin-bottom: 5px
-}
-.jia{
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-}
+.head{
+  padding:75rpx;
+  text-align:center;
+  color:#777;
+  font-size:35rpx;
 
-.greeting {
-  font-size: 14px;
-  color: gray;
-  margin: 20rpx 0 10rpx 20rpx;
 }
+.border{
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  margin: 40rpx;
+  height: 120rpx;
+}
+.icon{
+  width:120rpx;
+  height:120rpx;
+  margin:0rpx;
+  margin-left:10rpx;
+}
+.contain{
+  padding-left:20rpx;
+  line-height:55rpx;
+  font-size:36rpx;
+  margin-left:35rpx;
 
+}
+.subtitle{
+  color:#aaa;
+  font-size:28rpx;
+  line-height:32rpx;
+  display:block;
+  margin-top:8rpx;
+}
+.icon2{
+position:fixed;
+right:25px;
+bottom:30px;
+width:100rpx;
+height:100rpx;
+margin-left:10rpx;
+}
 </style>
 <template>
-	<view>
-		<text class="bjlb" >课程列表：</text>
-    <button class="btn btn-min btn-empty btn-success" @tap = 'jia'>增加课程</button>
-    <block wx:for='{{courseInfo}}' wx:key='*this'>
-      <button id="{{item.idCourse}}" data-courseName="{{item.courseName}}" class="greeting" bindtap='banji' bindlongpress="longtap" bindtouchend="touchEnd">{{item.courseName}}   {{item.idCourse}}</button>
-    </block>
-	</view>
+  <view class='head'>
+  创建者：
+  <open-data class='userNickname' type="userNickName"></open-data>
+
+</view>
+
+<view wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}">
+  <image src='{{item.logo}}' class='icon' />
+  <view class='contain'>
+    <view class='title'>课程名称：{{item.courseName}}</view>
+    <text class='subtitle'>课程号：{{item.idCourse}}</text>
+    <text class='subtitle'>加入人数：</text>
+  </view>
+</view>
+<image src='../../public/images/添加.png' class='icon2' @tap='test'></image>
 </template> 
 <script>
   import wepy from 'wepy'
@@ -38,64 +74,17 @@
     }
     // 可用于页面模板绑定的数据
     data = {
-      courseInfo: [ ],
-      lock: false
+      courseInfo: []
     }
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      banji(e) {
-        console.log(e)
-        var that = this
-        setTimeout(function() {
-          if (this.lock) {
-          } else {
-            that.$navigate('./classControl?idCourse=' + e.target.id + '&courseName=' + e.target.dataset.courseName)
-          }
-        }, 300)
+      test() {
+        this.$navigate('./classCreate')
       },
-      jia(e) {
-        wx.navigateTo({ url: './classCreate' })
-      },
-      touchEnd: function(e) {
-        if (this.data.lock) {
-        // 开锁
-          setTimeout(function() {
-            this.lock = false
-          }, 100)
-        }
-        this.$apply()
-      },
-      longtap(e) {
-        // 锁住
-        this.lock = true
-        var that = this
-        let courseId = e.target.id
-        wx.showModal({
-          title: '提示',
-          content: '确定删除该课程吗',
-          success(e) {
-            if (e.confirm === true) {
-              let app = that.$parent
-              var delData = {
-                idCourse: courseId
-              }
-              app
-                .request('delCourse', delData, 'loading')
-                .then(function(e) {
-                  that.onShow()
-                })
-                .catch(function(e) {
-                  app.modal(
-                    e.message,
-                    '错误!错误提示是：',
-                    '确定'
-                  )
-                })
-            }
-          }
-        })
-        this.$apply()
+      tap(e) {
+        let that = this
+        that.$navigate('./classControl?idCourse=' + e.currentTarget.dataset.idcourse + '&courseName=' + e.currentTarget.dataset.coursename)
       }
     }
 
@@ -107,38 +96,21 @@
       var that = this
       var courseDATA = {
       }
-      app
-        .request('Course.getCreatedCourseList', courseDATA, 'loading')
-        .then(function(e) {
-          console.log(e)
-          for (var n = 0; n < that.courseInfo.length; n++) {
-            that.courseInfo[n] = ''
-          }
-          for (var i = 0; i < e.data.data.length; i++) {
-            that.courseInfo[i] = e.data.data[i]
-          }
-          console.log(that)
-          if (e.data.data.length === 0) {
-            wx.showModal({
-              title: '提示',
-              content: '暂无课程，请创建课程',
-              success(e) {
-                if (e.confirm === true) {
-                  wx.navigateTo({url: './classCreat'})
-                }
-              }
-            })
-          } else {
-            that.$apply()
-          }
-        })
-        .catch(function(e) {
-          app.modal(
-            e.message,
-            '错误!错误提示是：',
-            '确定'
-          )
-        })
+      app.request('Course.getCreatedCourseList', courseDATA, '请稍等...')
+      .then((res) => {
+        that.courseInfo = res.data.data
+        that.$apply()
+        console.log(that.courseInfo)
+        if (res.data.errCode === 0) {
+          // app.toast('获取课程列表成功')
+        } else {
+          app.toast('请先登录')
+        }
+      })
+      .catch(function(error) {
+        console.error(error)
+        app.modal(error.message, '错误!错误提示是：', '确定')
+      })
     }
   }
 </script>
