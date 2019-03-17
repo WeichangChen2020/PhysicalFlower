@@ -89,12 +89,12 @@
         app.request('Course.courseDetail', deldata, '请稍等...')
         .then((res) => {
           console.log(res)
-          // app.globalData.activeCourse = res.data.data.idcourse
-          // console.log(res.data.data.idcourse)
+          // app.globalData.activeCourse = res.data.data.idCourse
+          // console.log(res.data.data.idCourse)
           var code = res.data.errCode
           if (code === 0) {
             app.globalData.logo = res.data.data.logo
-            wx.navigateTo({ url: '../course/courseDetail?idCourse=' + res.data.data.idcourse })
+            wx.navigateTo({ url: '../course/courseDetail?idCourse=' + res.data.data.idCourse })
           } else {
             const options = {
               content: '课程未创建',
