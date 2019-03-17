@@ -1,29 +1,29 @@
 <style type="less">
-  .content {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 200rpx;
-  }
-  .iptbox {
-    width: 100rpx;
-    height: 100rpx;
-    border: 1rpx solid #ddd;
-    border-radius: 20rpx;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-  .ipt {
-    width: 0;
-    height: 0;
-  }
-  .btn-area {
-    width: 80%;
-    background-color:#b39ddb;
-    color: white;
-  }
+.content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 200rpx;
+}
+.iptbox {
+  width: 100rpx;
+  height: 100rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.ipt {
+  width: 0;
+  height: 0;
+}
+.btn-area {
+  width: 80%;
+  background-color: #b39ddb;
+  color: white;
+}
 </style>
 <template>
  
@@ -37,7 +37,7 @@
     
   </view>
  
-  <input name="password" password="{{true}}" class='ipt' maxlength="{{Length}}" focus="{{isFocus}}" bindinput="Focus"></input>
+  <input name="password" password="{{true}}" class='ipt' maxlength="{{Length}}" focus="{{isFocus}}" bindinput="Focus" type="number"></input>
  
   <view>
     <button class="btn-area" formType="submit">Submit</button>
@@ -48,83 +48,84 @@
 
 
 <script>
-  import wepy from 'wepy'
-  import Toast from '@/components/toast/index'
-  export default class Join extends wepy.page {
-    config = {
-      navigationBarTitleText: '加入课程',
-      enablePullDownRefresh: false
-    }
-    data = {
-      Length: 4,
-      isFocus: true,
-      Value: '',
-      ispassword: false
-    }
-    components = {
-      'toast': Toast
-    }
-    // 事件处理函数(集中保存在methods对象中)
-    methods = {
-      Focus(e) {
-        let that = this
-        // console.log(e.detail.value)
-        // let inputValue = e.detail.value
-        that.Value = e.detail.value
-        // console.log(that.data)
-      },
-      Tap() {
-        let that = this
-        that.setData({
-          isFocus: true
-        })
-      },
-      formSubmit(e) {
-        console.log(parseInt(e.detail.value.password))
-        let app = this.$parent
-        let that = this
-        var deldata = {
-          idCourse: parseInt(e.detail.value.password)
-        }
-        app.request('Course.courseDetail', deldata, '请稍等...')
-        .then((res) => {
-          console.log(res)
-          // app.globalData.activeCourse = res.data.data.idcourse
-          // console.log(res.data.data.idcourse)
-          var code = res.data.errCode
-          if (code === 0) {
-            app.globalData.logo = res.data.data.logo
-            wx.navigateTo({ url: '../course/courseDetail' })
-          } else {
-            const options = {
-              content: '课程未创建',
-              position: 'middle',
-              duration: 2000,
-              type: 'warning'
-            }
-            that.$invoke('toast', 'show', options)
-          }
-        })
-        .catch(function(error) {
-          console.error(error)
-          app.modal(
-            error.message,
-            '错误!错误提示是：',
-            '确定'
-          )
-        })
+import wepy from 'wepy'
+import Toast from '@/components/toast/index'
+export default class Join extends wepy.page {
+  config = {
+    navigationBarTitleText: '加入课程',
+    enablePullDownRefresh: false
+  };
+  data = {
+    Length: 4,
+    isFocus: true,
+    Value: '',
+    ispassword: false
+  };
+  components = {
+    toast: Toast
+  };
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+    Focus(e) {
+      let that = this
+      // console.log(e.detail.value)
+      // let inputValue = e.detail.value
+      that.Value = e.detail.value
+      console.log(parseInt(that.Value))
+    },
+    Tap() {
+      let that = this
+      that.setData({
+        isFocus: true
+      })
+    },
+    formSubmit(e) {
+      console.log(parseInt(e.detail.value.password))
+      let app = this.$parent
+      let that = this
+      var deldata = {
+        idCourse: parseInt(e.detail.value.password)
       }
-    };
-    // 页面的生命周期函数
-    onLoad() {}
-    onShow() {
-      // 如果未加入课程,跳转到join页面
-      // console.log(this.$parent.globalData)
-    }
-    onPullDownRefresh() {
-      // 上拉刷新
-      this.onShow()
-      wx.stopPullDownRefresh()
+      if (e.detail.value.password.length < 4) {
+        app.toast('请输入正确课程号!')
+      } else {
+        app
+          .request('Course.courseDetail', deldata, '请稍等...')
+          .then(res => {
+            console.log(res)
+            // app.globalData.activeCourse = res.data.data.idcourse
+            // console.log(res.data.data.idcourse)
+            var code = res.data.errCode
+            if (code === 0) {
+              app.globalData.logo = res.data.data.logo
+              wx.navigateTo({ url: '../course/courseDetail' })
+            } else {
+              const options = {
+                content: '课程未创建',
+                position: 'middle',
+                duration: 2000,
+                type: 'warning'
+              }
+              that.$invoke('toast', 'show', options)
+            }
+          })
+          .catch(function(error) {
+            console.error(error)
+            app.modal(error.message, '错误!错误提示是：', '确定')
+          })
+      }
     }
   }
+  // 页面的生命周期函数
+  onLoad() {}
+  onShow() {
+    // 如果未加入课程,跳转到join页面
+    // console.log(this.$parent.globalData)
+  }
+  onPullDownRefresh() {
+    // 上拉刷新
+    this.onShow()
+    wx.stopPullDownRefresh()
+  }
+}
 </script>

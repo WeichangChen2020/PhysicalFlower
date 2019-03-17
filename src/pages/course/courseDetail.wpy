@@ -37,7 +37,7 @@ canvas {
   <toast />
   <view class="page__bd">
     <image src="{{course}}"></image>
-    <button class="button" type="primary" @tap="join">加入课程</button>
+    <button class="btn"  @tap="join">加入课程</button>
     <button class="btn" type="default" @tap="back">重新检索</button>
   </view>
 </template>
