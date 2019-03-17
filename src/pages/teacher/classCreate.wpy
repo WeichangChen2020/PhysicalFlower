@@ -75,46 +75,45 @@ s .flex-list:nth-child(4n) {
 }
 </style>
 <template>
-<view class="kai-content">
-<view slot="title" class="greeting">填写课程名称</view>
-<view class='border'>
-  <view>输入名称</view>
-  <input class='input' disabled='{{isChecked<1}}' placeholder='输入课程名称' focus='{{focus}}' maxlength="20" bindinput='bindKeyInput' />
-</view>
-
-        <panel>
-            <view slot="title" class="greeting">上传图片</view>
-            <view class='border2'>
-              <view>上传logo</view>
-            <view class="panel-upload">
-                <repeat for="{{imgList}}" index="index" item="item" key="row-{{index}}">
-                    <view class="img-list flex-list common-bg" style="width:{{imgWidth+'px'}};height:{{imgWidth+'px'}};background-image:url({{item.url}});background-size:100% 100%;" catchtap="previewImg({{imgList}}, {{item.url}})">
-                        <text class="kai-iconfont kai-icon-close delete-file" catchtap="removeImg({{index}})" style="line-height:16px;"></text>
-                    </view>
-                </repeat>
-                <uploader :imgWidth.sync="imgWidth" :total="imgTotal" region="ECN" :imgList.sync="imgList" :domain="domain" :uptokenURL="uptokenURL" :test="test"></uploader>
-            </view>
-            </view>
-        </panel>
-
-        <view class="weui-cells__title">课程描述</view>
-          <view class="weui-cells weui-cells_after-title">
-              <view class="weui-cell">
-                  <view class="weui-cell__bd">
-                      <textarea class="weui-textarea" placeholder="请输入对课程的简单描述" style="height: 3.3em" bindinput="Focus" />
-                      <view class="weui-textarea-counter {{Description.length > 50 ? 'warn' : ''}}">{{Description.length}}/50</view>
-                  </view>
-              </view>
-          </view>
-        <button class='button' @tap="submit">创建课程</button>
+  <view class="kai-content">
+  <view slot="title" class="greeting">填写课程名称</view>
+  <view class='border'>
+    <view>输入名称</view>
+    <input class='input' disabled='{{isChecked<1}}' placeholder='输入课程名称' focus='{{focus}}' maxlength="20" bindinput='bindKeyInput' />
+  </view>
+  <panel>
+    <view slot="title" class="greeting">上传图片</view>
+    <view class='border2'>
+      <view>上传logo</view>
+    <view class="panel-upload">
+      <repeat for="{{imgList}}" index="index" item="item" key="row-{{index}}">
+        <view class="img-list flex-list common-bg" style="width:{{imgWidth+'px'}};height:{{imgWidth+'px'}};background-image:url({{item.url}});background-size:100% 100%;" catchtap="previewImg({{imgList}}, {{item.url}})">
+            <text class="kai-iconfont kai-icon-close delete-file" catchtap="removeImg({{index}})" style="line-height:16px;"></text>
+        </view>
+      </repeat>
+      <uploader :imgWidth.sync="imgWidth" :total="imgTotal" region="ECN" :imgList.sync="imgList" :domain="domain" :uptokenURL="uptokenURL" :test="test"></uploader>
     </view>
+    </view>
+  </panel>
+
+  <view class="weui-cells__title">课程描述</view>
+    <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+            <view class="weui-cell__bd">
+                <textarea class="weui-textarea" placeholder="请输入对课程的简单描述" style="height: 3.3em" bindinput="Focus" />
+                <view class="weui-textarea-counter {{Description.length > 50 ? 'warn' : ''}}">{{Description.length}}/50</view>
+            </view>
+        </view>
+    </view>
+    <button class='button' @tap="submit">创建课程</button>
+  </view>
 </template>
 <script>
 import wepy from 'wepy'
 import Uploader from '@/components/uploader/index'
 import Panel from '@/components/panel/index'
 // 通过继承自wepy.page的类创建页面逻辑
-export default class classCreat extends wepy.page {
+export default class classCreate extends wepy.page {
   config = {
     navigationBarTitleText: '创建课程'
   }
@@ -169,8 +168,10 @@ export default class classCreat extends wepy.page {
           } else {
             app.toast('课程创建失败')
           }
-        }
-        )
+        })
+        .then(() => {
+          wx.navigateBack({})
+        })
       }
     },
     // 图片预览
