@@ -103,6 +103,7 @@ export default class extends wepy.app {
       enablePullDownRefresh: true
     },
     tabBar: {
+      selectedColor: '#90caf9',
       list: [
         {
           pagePath: 'pages/course/index',

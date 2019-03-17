@@ -3,7 +3,7 @@ page{
   width: 100%;
 }
 .head{
-  padding:75rpx;
+  padding:55rpx;
   text-align:center;
   color:#777;
   font-size:35rpx;
@@ -62,7 +62,7 @@ margin-left:10rpx;
     <text class='subtitle'>加入人数：</text>
   </view>
 </view>
-<image src='../../public/images/添加.png' class='icon2' @tap='test'></image>
+<image src='../../public/images/joinCourse.png' class='icon2' @tap='test'></image>
 </template> 
 <script>
   import wepy from 'wepy'
