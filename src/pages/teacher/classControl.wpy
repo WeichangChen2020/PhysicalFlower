@@ -18,7 +18,7 @@
     <button class="greeting" @tap='tap' id="2">管理签到</button>
     <button class="greeting" @tap='tap' id="3">发布课后作业</button>
     <button class="greeting" @tap='tap' id="4">管理课后作业</button>
-    <button class="greeting" @tap='tap' id="5">删除学生信息</button>
+    <button class="greeting" @tap='tap' id="5">管理课程学生信息</button>
     <button class="greeting" @tap='tap' id="6">发布课堂测试</button>
     <button class="greeting" @tap='tap' id="7">管理课堂测试</button>
     <!-- <i-button type="primary" bind:click="handleClick">这是一个按钮</i-button>
