@@ -169,7 +169,7 @@ export default class classCreate extends wepy.page {
             app.toast('课程创建失败')
           }
         })
-        .then(() => {
+        .then((e) => {
           wx.navigateBack({})
         })
       }

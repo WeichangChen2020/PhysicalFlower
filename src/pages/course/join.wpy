@@ -94,7 +94,7 @@
           var code = res.data.errCode
           if (code === 0) {
             app.globalData.logo = res.data.data.logo
-            wx.navigateTo({ url: '../course/courseDetail' })
+            wx.navigateTo({ url: '../course/courseDetail?idCourse=' + res.data.data.idcourse })
           } else {
             const options = {
               content: '课程未创建',
