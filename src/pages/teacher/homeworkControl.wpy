@@ -20,17 +20,11 @@
 
 
     <block wx:for="{{homeworkInfo}}" wx:item="item" wx:key="*this">
-        <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{item.idHomework}}'>
+        <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{index}}'>
             <view class="weui-cell__bd" style="display:flex;justify-content:space-between"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
             <view class="weui-cell__ft weui-cell__ft_in-access"></view>
         </view>
     </block>
-
-    <!-- <block wx:for="{{homeworkInfo}}" wx:item= "item" wx:key="*this">
-    <button class="btnn" @tap='tap' id='{{item.idHomework}}'>
-    {{item.name}}
-    </button>
-  </block> -->
 
 
 
@@ -51,9 +45,7 @@
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       tap(e) {
-        // console.log(e)
         let tid = e.currentTarget.id
-        // console.log(this.data.homeworkInfo[0].url)
         this.$navigate(this.homeworkInfo[tid].url)
       }
     };
@@ -69,20 +61,20 @@
       app
         .request('getHomeworkList', delData, 'loading')
         .then(function(e) {
-          console.log('e', e)
+          // console.log('e', e)
           if (e.data.errCode === 0) {
             var len = e.data.homeworkInfo
             var timestamp = (new Date()).getTime()
             for (let i = 0, j = len.length - 1; i < len.length; i++, j--) {
               that.homeworkInfo[i] = e.data.homeworkInfo[j]
-              var endTime = new Date(parseInt(e.data.homeworkInfo[j].gmtStart) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
+              var endTime = new Date(parseInt(e.data.homeworkInfo[j].gmtEnd) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
               // console.log('end', endTime)
               if (parseInt(e.data.homeworkInfo[j].gmtEnd) > (timestamp / 1000)) {
                 that.homeworkInfo[i].state = '进行中'
               } else {
                 that.homeworkInfo[i].state = '已结束'
               }
-              that.homeworkInfo[i].url = './homeworkSearch'
+              that.homeworkInfo[i].url = './homeworkSearch?idHomework=' + e.data.homeworkInfo[j].idHomework
               that.homeworkInfo[i].name = endTime
             }
             that.$apply()

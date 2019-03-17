@@ -89,30 +89,29 @@ export default class Join extends wepy.page {
       if (e.detail.value.password.length < 4) {
         app.toast('请输入正确课程号!')
       } else {
-        app
-          .request('Course.courseDetail', deldata, '请稍等...')
-          .then(res => {
-            console.log(res)
-            // app.globalData.activeCourse = res.data.data.idcourse
-            // console.log(res.data.data.idcourse)
-            var code = res.data.errCode
-            if (code === 0) {
-              app.globalData.logo = res.data.data.logo
-              wx.navigateTo({ url: '../course/courseDetail' })
-            } else {
-              const options = {
-                content: '课程未创建',
-                position: 'middle',
-                duration: 2000,
-                type: 'warning'
-              }
-              that.$invoke('toast', 'show', options)
+        app.request('Course.courseDetail', deldata, '请稍等...')
+        .then((res) => {
+          console.log(res)
+          // app.globalData.activeCourse = res.data.data.idCourse
+          // console.log(res.data.data.idCourse)
+          var code = res.data.errCode
+          if (code === 0) {
+            app.globalData.logo = res.data.data.logo
+            wx.navigateTo({ url: '../course/courseDetail?idCourse=' + res.data.data.idCourse })
+          } else {
+            const options = {
+              content: '课程未创建',
+              position: 'middle',
+              duration: 2000,
+              type: 'warning'
             }
-          })
-          .catch(function(error) {
-            console.error(error)
-            app.modal(error.message, '错误!错误提示是：', '确定')
-          })
+            that.$invoke('toast', 'show', options)
+          }
+        })
+        .catch(function(error) {
+          console.error(error)
+          app.modal(error.message, '错误!错误提示是：', '确定')
+        })
       }
     }
   }
