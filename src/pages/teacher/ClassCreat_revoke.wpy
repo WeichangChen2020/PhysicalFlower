@@ -57,31 +57,30 @@ input {
 		<text class="greetingc">增加课程</text>
     <view>
       <block>
-      <text class="greeting">课程名称：</text>
-      <input placeholder="请输入课程名称"  maxlength="15" placeholder-class="inputi" @input="input"/>
+        <text class="greeting">课程名称：</text>
+        <input placeholder="请输入课程名称"  maxlength="15" placeholder-class="inputi" @input="input"/>
       </block>
-<view class='border'>
-  <view class="weui-uploader">
-    <view class="img_hd">
-      <view class="weui-uploader__title">图片上传</view>
-      <view class="weui-uploader__info">{{files.length}}/2</view>
-    </view>
-    <view class="weui-uploader__bd">
-      <view class="weui-uploader__files" id="uploaderFiles">
-        <block wx:for="{{files}}" wx:key="*this">
-          <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
-            <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+      <view class='border'>
+        <view class="weui-uploader">
+          <view class="img_hd">
+            <view class="weui-uploader__title">图片上传</view>
+            <view class="weui-uploader__info">{{files.length}}/2</view>
           </view>
-        </block>
-      </view>
+          <view class="weui-uploader__bd">
+            <view class="weui-uploader__files" id="uploaderFiles">
+              <block wx:for="{{files}}" wx:key="*this">
+                <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
+                  <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                </view>
+              </block>
+            </view>
 
-      <view class="weui-uploader__input-box">
-        <view class="weui-uploader__input" bindtap="chooseImage"></view>
+            <view class="weui-uploader__input-box">
+              <view class="weui-uploader__input" bindtap="chooseImage"></view>
+            </view>
+          </view>
+        </view>
       </view>
-    </view>
-  </view>
-</view>
-
       <button class="greeting" @tap="tap">提交</button>
     </view>
 	</view>
@@ -90,7 +89,7 @@ input {
 import wepy from 'wepy'
 
 // 通过继承自wepy.page的类创建页面逻辑
-export default class classCreat extends wepy.page {
+export default class classCreate extends wepy.page {
   // 可用于页面模板绑定的数据
   data = {
     course: '',
@@ -117,7 +116,7 @@ export default class classCreat extends wepy.page {
           logo: 'data:iamge/' + this.iamgeType + ';base64,' + this.imageBase64
         }
         app
-          .request('courseCreate', courseDATA, 'loading')
+          .request('Course.createCourse', courseDATA, 'loading')
           .then(function(e) {
             console.log(e)
           })

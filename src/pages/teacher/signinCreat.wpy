@@ -491,31 +491,33 @@ export default class signinCreat extends wepy.page {
             idCourse: this.idCourse,
             description: ''
           }
-          app
-            .request('signinCreate', locationData, 'loading')
-            .then(function(e) {
-              console.log(e)
-              if (e.data.errCode === 0) {
-                wx.showToast({
-                  title: '发布签到成功'
-                })
-                wx.navigateBack({
-                })
-              } else if (e.data.errCode === 4003) {
-                that.flag[0] = 0
-                wx.showModal({
-                  title: '发布失败',
-                  content: '请注意您是否设置正确的终止时间'
-                })
-              }
-            },
-            function(e) {
+          let UL_DATA = {
+            'locationData': locationData
+          }
+          app.request('Signin.createSignin', UL_DATA, 'loading')
+          .then(function(e) {
+            console.log(e)
+            if (e.data.errCode === 0) {
+              wx.showToast({
+                title: '发布签到成功'
+              })
+              wx.navigateBack({
+              })
+            } else if (e.data.errCode === 4003) {
               that.flag[0] = 0
               wx.showModal({
                 title: '发布失败',
-                content: '请注意您发布信息是否完全'
+                content: '请注意您是否设置正确的终止时间'
               })
+            }
+          },
+          function(e) {
+            that.flag[0] = 0
+            wx.showModal({
+              title: '发布失败',
+              content: '请注意您发布信息是否完全'
             })
+          })
         } else {
           wx.showModal({
             title: '注意',

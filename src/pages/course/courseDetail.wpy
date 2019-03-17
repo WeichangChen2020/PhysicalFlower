@@ -10,13 +10,35 @@ canvas {
   margin-left: 10px;
   margin-right: 10px;
 }
+.btn{
+  width: 60%;
+  margin-top: 60rpx;
+  background-color: #b39ddb;
+  color:whitesmoke;
+  border-radius: 98rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.btn2{
+  width: 60%;
+  margin-top: 60rpx;
+  background-color: #f0f0f0;
+  color:whitesmoke;
+  border-radius: 98rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 </style>
 <template>
   <toast />
   <view class="page__bd">
     <image src="{{course}}"></image>
-    <button class="weui-btn" type="primary" @tap="join">加入课程</button>
-    <button class="weui-btn" type="default" @tap="back">重新检索</button>
+    <button class="button" type="primary" @tap="join">加入课程</button>
+    <button class="btn" type="default" @tap="back">重新检索</button>
   </view>
 </template>
 <script>
@@ -41,10 +63,10 @@ export default class CourseDetail extends wepy.page {
       var UL_DATA = {
         idCourse: this.idCourse
       }
-      app.request('addToCourse', UL_DATA, '请稍等...')
+      app.request('Course.joinCourse', UL_DATA, '请稍等...')
       .then((res) => {
         console.log(res)
-        if (res.data.errCode === 0 || res.data.errCode === 4001) {
+        if (res.data.errCode === 0 || res.data.errCode === 103) {
           // 课程id保存到本地文件以供下次打开时默认课程
           const fs = wx.getFileSystemManager()
           fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, that.idCourse, 'utf8')

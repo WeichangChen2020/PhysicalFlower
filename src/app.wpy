@@ -9,6 +9,18 @@
   border-bottom: 1px solid #ccc;
   margin-bottom: 10px;
 }
+
+.button{
+  width: 60%;
+  margin-top: 60rpx;
+  background-color: #b39ddb;
+  color:whitesmoke;
+  border-radius: 98rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 </style>
 
 <script>
@@ -26,10 +38,11 @@ export default class extends wepy.app {
     // 最后需要对这些页面的顺序进行调整
     pages: [
       'pages/course/index',
+      'pages/course/join',
       'pages/my/authorize',
       'pages/course/homework/detail',
+      'pages/teacher/classCreate',
       'pages/teacher/signinCreat',
-      'pages/course/join',
       'pages/course/courseDetail',
       'pages/course/courseList',
       'pages/course/signin/detail',
@@ -48,7 +61,6 @@ export default class extends wepy.app {
       'pages/my/useHelp',
       'pages/my/connectUs',
       'pages/my/queReport',
-      'pages/teacher/classCreat',
       'pages/teacher/stuBan',
       'pages/teacher/testCreat',
       'pages/teacher/homeworkCreat',
@@ -68,7 +80,7 @@ export default class extends wepy.app {
     },
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
+      navigationBarBackgroundColor: '#b39ddb',
       backgroundColor: '#eee',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black',
@@ -78,20 +90,20 @@ export default class extends wepy.app {
       list: [
         {
           pagePath: 'pages/course/index',
-          selectedIconPath: 'public/images/empty.png',
-          iconPath: 'public/images/empty.png',
+          selectedIconPath: 'public/images/icon_帮助文档 (1).png',
+          iconPath: 'public/images/icon_帮助文档.png',
           text: '课程'
         },
         {
           pagePath: 'pages/teacher/teacher',
-          selectedIconPath: 'public/images/empty.png',
-          iconPath: 'public/images/empty.png',
+          selectedIconPath: 'public/images/老师 (1).png',
+          iconPath: 'public/images/老师.png',
           text: '教师'
         },
         {
           pagePath: 'pages/my/my',
-          selectedIconPath: 'public/images/empty.png',
-          iconPath: 'public/images/empty.png',
+          selectedIconPath: 'public/images/icon_账号 (1).png',
+          iconPath: 'public/images/icon_账号.png',
           text: '我的'
         }
       ]
@@ -101,11 +113,10 @@ export default class extends wepy.app {
   globalData = {
     userInfo: {},
     loginCode: '', // 判断用户信息是否已完善
-    apiUrl: 'http://47.101.164.57:8080/physicalFlower/gateway.do',
-    appId: 'wx9061828744e52511',
-    appSecret: 'f8edd6c9131964c83646a2056eba3700',
+    apiUrl: 'https://testet.sinaapp.com/index.php/Gateway/route',
     grant_type: 'authorization_code', // 获取openid的参数，不用改
-    activeCourse: '' // 主页面的课程id
+    activeCourse: '1', // 主页面的课程id
+    logo: ''
   }
   constructor() {
     super()
@@ -133,7 +144,7 @@ export default class extends wepy.app {
       loading = loading || 'Requesting'  // 在调试器打印请求发送记录
       if (that.globalData.showLog) console.log(tag + ': ' + loading + '...')
       data.pf = 'wx'
-      data.tag = tag   // 默认添加 pf 和 tag 参数
+      data.method = tag   // 默认添加 pf 和 tag 参数
       wx.request({
         url: that.globalData.apiUrl,
         method: 'POST',
@@ -163,16 +174,16 @@ export default class extends wepy.app {
     return promise
   }
 
-  modal(content, title, confirmText, showCancel) {
+  modal(content, title, confirmText, showCancel, Color) {
     var promise = new Promise((resolve, reject) => {
       wx.showModal({
         title: title || '提示',
         content: content,
         showCancel: showCancel || false,
-        cancelText: '',
+        cancelText: '取消',
         cancelColor: '',
         confirmText: confirmText || '好的',
-        confirmColor: '',
+        confirmColor: Color,
         success: function (res) {
           if (res.confirm) resolve(res)
           else reject(res)
@@ -191,13 +202,15 @@ export default class extends wepy.app {
         title: content,
         icon: title || 'none',
         image: '',
-        duration: 2000,
+        duration: 1800,
         mask: mask || false,
         success: function (res) { resolve(res) },
         fail: function (res) { reject(res) }
       })
     })
-    return promise
+    setTimeout(() => {
+      return promise
+    }, 1800)
   }
 }
 </script>

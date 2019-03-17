@@ -87,6 +87,7 @@
 	</view>
   <form @submit= "form1">
   <checkbox-group name="questionId" >
+    <!-- TODO 这里应该做个懒加载 -->
   <block wx:for="{{questionInfo}}" wx:for-item="page" wx:key="*this">
     <view style="display:flex;margin-left:8px;margin-right:8px;border-bottom:1px solid #ccc;margin-bottom:15px;margin-top:15px;">
     <checkbox class="icont" value="{{page.idQues}}"></checkbox>

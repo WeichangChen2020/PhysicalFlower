@@ -1,97 +1,130 @@
 <style type="less">
-.page__bd {
-  margin-top: 10px;
-}
+  .content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 200rpx;
+  }
+  .iptbox {
+    width: 100rpx;
+    height: 100rpx;
+    border: 1rpx solid #ddd;
+    border-radius: 20rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .ipt {
+    width: 0;
+    height: 0;
+  }
+  .btn-area {
+    width: 80%;
+    background-color:#b39ddb;
+    color: white;
+  }
 </style>
 <template>
-  <toptips />
-  <view class="page__bd">
-    <input-cnum :config="cnum" @onInput.user="_handleCouseNum"></input-cnum>
+ 
+<form bindsubmit="formSubmit">
+ <toast/>
+  <view class='content'>
+ 
+    <block wx:for="{{Length}}" wx:key="item">
+      <input class='iptbox' value="{{Value.length>=index+1?Value[index]:''}}" disabled password='{{ispassword}}' catchtap='Tap'></input>
+    </block>
+    
   </view>
+ 
+  <input name="password" password="{{true}}" class='ipt' maxlength="{{Length}}" focus="{{isFocus}}" bindinput="Focus"></input>
+ 
+  <view>
+    <button class="btn-area" formType="submit">Submit</button>
+  </view>
+ 
+</form>
 </template>
+
+
 <script>
-import wepy from 'wepy'
-import input from '@/components/input/index'
-import Toptips from '@/components/toptips/index'
-// TODO 课程推荐？
-// import cellGroup from '@/components/cell-group/index'
-// import cell from '@/components/cell/index'
-
-// 通过继承自wepy.page的类创建页面逻辑
-export default class Join extends wepy.page {
-  config = {
-    navigationBarTitleText: '加入课程',
-    enablePullDownRefresh: false
-  }
-  data = {
-    cnum: {
-      error: false,
-      adjust: true,
-      focus: true,
-      clear: true,
-      inputType: 'number',
-      placeholder: '请输入课程号',
-      maxlength: 6,
-      filter: /^\d{0,6}$/
+  import wepy from 'wepy'
+  import Toast from '@/components/toast/index'
+  export default class Join extends wepy.page {
+    config = {
+      navigationBarTitleText: '加入课程',
+      enablePullDownRefresh: false
+    }
+    data = {
+      Length: 4,
+      isFocus: true,
+      Value: '',
+      ispassword: false
+    }
+    components = {
+      'toast': Toast
+    }
+    // 事件处理函数(集中保存在methods对象中)
+    methods = {
+      Focus(e) {
+        let that = this
+        // console.log(e.detail.value)
+        // let inputValue = e.detail.value
+        that.Value = e.detail.value
+        // console.log(that.data)
+      },
+      Tap() {
+        let that = this
+        that.setData({
+          isFocus: true
+        })
+      },
+      formSubmit(e) {
+        console.log(parseInt(e.detail.value.password))
+        let app = this.$parent
+        let that = this
+        var deldata = {
+          idCourse: parseInt(e.detail.value.password)
+        }
+        app.request('Course.courseDetail', deldata, '请稍等...')
+        .then((res) => {
+          console.log(res)
+          // app.globalData.activeCourse = res.data.data.idcourse
+          // console.log(res.data.data.idcourse)
+          var code = res.data.errCode
+          if (code === 0) {
+            app.globalData.logo = res.data.data.logo
+            wx.navigateTo({ url: '../course/courseDetail' })
+          } else {
+            const options = {
+              content: '课程未创建',
+              position: 'middle',
+              duration: 2000,
+              type: 'warning'
+            }
+            that.$invoke('toast', 'show', options)
+          }
+        })
+        .catch(function(error) {
+          console.error(error)
+          app.modal(
+            error.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
+      }
+    };
+    // 页面的生命周期函数
+    onLoad() {}
+    onShow() {
+      // 如果未加入课程,跳转到join页面
+      // console.log(this.$parent.globalData)
+    }
+    onPullDownRefresh() {
+      // 上拉刷新
+      this.onShow()
+      wx.stopPullDownRefresh()
     }
   }
-  components = {
-    'toptips': Toptips,
-    'input-cnum': input
-  }
-  // 事件处理函数(集中保存在methods对象中)
-  methods = {
-    _handleCouseNum(e) {
-      let app = this.$parent
-      if (e.length !== 6) {
-        return
-      } else if (!(this.cnum.filter.test(e))) {
-        const options = {
-          content: '请检查课程号',
-          duration: 1500
-        }
-        this.$invoke('toptips', 'show', options)
-        return
-      }
-      var UL_DATA = {
-        idCourse: e
-      }
-      // TODO 根据返回值确定是否跳转到课程详情页面
-      app.request('courseDetail', UL_DATA, '查询中...')
-      .then((res, reject) => {
-        console.log(res)
-        if (res.data.errCode === 0) {
-          // 跳转到课程详情页面
-          app.globalData.tmp = res.data.courseInfo
-          wx.navigateTo({url: './courseDetail?idCourse=' + res.data.courseInfo.idCourse})
-        } else if (res.data.errCode === 4000) {
-          throw (new Error('课程不存在'))
-        } else {
-          throw (new Error('课程请求失败'))
-        }
-      })
-      .catch(function(error) {
-        console.error(error)
-        app.modal(
-          error.message,
-          '错误!',
-          '确定'
-        )
-      })
-    }
-  };
-
-  // 页面的生命周期函数
-  onLoad() {
-  }
-  onShow() {
-    // 如果未加入课程,跳转到join页面
-    // console.log(this.$parent.globalData)
-  }
-  onPullDownRefresh() {
-    // 上拉刷新
-    this.onShow()
-    wx.stopPullDownRefresh()
-  }
-}
 </script>

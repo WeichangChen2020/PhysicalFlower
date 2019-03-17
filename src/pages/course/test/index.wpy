@@ -13,5 +13,10 @@ export default class IndexDetail extends wepy.page {
     navigationBarTitleText: '随堂测试',
     enablePullDownRefresh: false
   }
+
+  // 页面的生命周期函数
+  onLoad(e) {
+    console.log(e)
+  }
 }
 </script>

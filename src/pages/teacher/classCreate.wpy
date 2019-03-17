@@ -1,0 +1,231 @@
+<style lang="less" src="../node_modules/kai-ui/src/less/font">
+</style>
+<style lang="less">
+.border {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  padding: 20rpx;
+  height: 120rpx;
+  border-top: 1rpx #ccc solid;
+}
+.greeting {
+  font-size: 15px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
+.border {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-width: 4rpx 0 4rpx 0;
+  border-style: solid;
+  border-color: #eee;
+  font-size: 30rpx;
+  line-height: 60rpx;
+  color: #b95;
+  padding: 20rpx 20rpx 40rpx 20rpx;
+}
+.border2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-width: 4rpx 0 4rpx 0;
+  border-style: solid;
+  border-color: #eee;
+  font-size: 30rpx;
+  line-height: 60rpx;
+  color: #b95;
+  padding: 20rpx 20rpx 40rpx 20rpx;
+}
+.input {
+  margin-top: 30rpx;
+  border-bottom: #ddd solid 2rpx;
+}
+.panel-upload {
+  display: flex;
+  flex-wrap: wrap;
+}
+.img-list {
+  width: 80px;
+  height: 80px;
+  display: inline-block;
+  margin: 0 10px 10px 0;
+  position: relative;
+  .delete-file {
+    position: absolute;
+    top: -7px;
+    right: -5px;
+    z-index: 99;
+    background: #fff;
+    border-radius: 8px;
+    font-size: 16px;
+    border: 1px solid #fff;
+    width: 16px;
+    height: 16px;
+  }
+}
+s .flex-list:nth-child(4n) {
+  margin-right: 0;
+}
+.warn {
+  color: #ef5350;
+}
+</style>
+<template>
+  <view class="kai-content">
+  <view slot="title" class="greeting">填写课程名称</view>
+  <view class='border'>
+    <view>输入名称</view>
+    <input class='input' disabled='{{isChecked<1}}' placeholder='输入课程名称' focus='{{focus}}' maxlength="20" bindinput='bindKeyInput' />
+  </view>
+  <panel>
+    <view slot="title" class="greeting">上传图片</view>
+    <view class='border2'>
+      <view>上传logo</view>
+    <view class="panel-upload">
+      <repeat for="{{imgList}}" index="index" item="item" key="row-{{index}}">
+        <view class="img-list flex-list common-bg" style="width:{{imgWidth+'px'}};height:{{imgWidth+'px'}};background-image:url({{item.url}});background-size:100% 100%;" catchtap="previewImg({{imgList}}, {{item.url}})">
+            <text class="kai-iconfont kai-icon-close delete-file" catchtap="removeImg({{index}})" style="line-height:16px;"></text>
+        </view>
+      </repeat>
+      <uploader :imgWidth.sync="imgWidth" :total="imgTotal" region="ECN" :imgList.sync="imgList" :domain="domain" :uptokenURL="uptokenURL" :test="test"></uploader>
+    </view>
+    </view>
+  </panel>
+
+  <view class="weui-cells__title">课程描述</view>
+    <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+            <view class="weui-cell__bd">
+                <textarea class="weui-textarea" placeholder="请输入对课程的简单描述" style="height: 3.3em" bindinput="Focus" />
+                <view class="weui-textarea-counter {{Description.length > 50 ? 'warn' : ''}}">{{Description.length}}/50</view>
+            </view>
+        </view>
+    </view>
+    <button class='button' @tap="submit">创建课程</button>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import Uploader from '@/components/uploader/index'
+import Panel from '@/components/panel/index'
+// 通过继承自wepy.page的类创建页面逻辑
+export default class classCreate extends wepy.page {
+  config = {
+    navigationBarTitleText: '创建课程'
+  }
+  components = {
+    uploader: Uploader,
+    panel: Panel
+  }
+  data = {
+    imgTotal: 1, // 可上传图片总数
+    imgList: [], // 图片上传列表
+    imgWidth: 90,
+    domain: '',
+    uptokenURL: '',
+    local: true,
+    Description: '',
+    className: ''
+  }
+  computed = {}
+  methods = {
+    Focus(e) {
+      let that = this
+      let app = this.$parent
+      console.log(e.detail.value)
+      // let inputValue = e.detail.value
+      that.Description = e.detail.value
+      if (that.Description.length > 50) {
+        app.toast('请注意字数！')
+      }
+    },
+    bindKeyInput(e) {
+      let that = this
+      // console.log(e.detail.value)
+      that.className = e.detail.value
+    },
+    submit() {
+      let that = this
+      let app = this.$parent
+      if (that.data.className.length <= 0) {
+        app.toast('课程名称不能为空！')
+      } else {
+        var createData = {
+          description: that.data.Description,
+          courseName: that.data.className,
+          logo: that.data.imgList[0].url
+        }
+        console.log(createData)
+        app.request('Course.createCourse', createData, '请稍等...')
+        .then((res) => {
+          console.log(res.data.errCode)
+          if (res.data.errCode === 0) {
+            app.toast('课程创建成功')
+          } else {
+            app.toast('课程创建失败')
+          }
+        })
+        .then(() => {
+          wx.navigateBack({})
+        })
+      }
+    },
+    // 图片预览
+    previewImg(list, cur) {
+      var that = this
+      let urls = []
+      for (let i = 0, len = list.length; i < len; i++) {
+        urls.push(list[i].url)
+      }
+      wx.previewImage({
+        current: cur, // 当前显示图片的http链接
+        urls: urls, // 需要预览的图片http链接列表
+        success: function(res) {
+          that.$apply()
+        },
+        fail: function(res) {
+          console.log(res)
+        },
+        complete: function(res) {
+          console.log(res)
+        }
+      })
+    },
+    // 删除图片
+    removeImg(idx) {
+      this.imgList.splice(idx, 1)
+      this.$apply()
+    }
+  }
+  events = {
+    // 上传图片成功回调
+    'refresh-img-list': (data, test) => {
+      if (test) {
+        this.imgList.push({
+          url: data
+        })
+      } else {
+        this.imgList.push({
+          url: data.imageURL
+        })
+      }
+      this.$apply()
+    }
+  }
+  onLoad() {
+    let that = this
+    wx.getSystemInfo({
+      success: function(res) {
+        const windowWidth = ~~res.windowWidth
+        console.log(windowWidth)
+        that.imgWidth = (windowWidth - 20 - 30) / 4 // 两个外边距 和三个内边距
+        that.$apply()
+      }
+    })
+  }
+}
+</script>

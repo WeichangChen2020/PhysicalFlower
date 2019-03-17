@@ -3,6 +3,18 @@
   margin-left: 15px;
   margin-right: 15px;
 }
+
+.btn{
+  width: 60%;
+  margin-top: 60rpx;
+  background-color: #b39ddb;
+  color:whitesmoke;
+  border-radius: 98rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 </style>
 <template>
   <toptips />
@@ -11,8 +23,8 @@
   <input-name :config.sync="name" @onInput.user="_handleInputName"></input-name>
   <input-number :config.sync="number" @onInput.user="_handleInputNumber"></input-number>
   <input-telphone :config.sync="telphone" @onInput.user="_handleInputtelphone"></input-telphone>
-  <input-school :config.sync="school" @onInput.user="_handleInputSchool"></input-school>
-  <button class="weui-btn" type="primary" @tap="submit">提交</button>
+  <input-class :config.sync="class" @onInput.user="_handleInputSchool"></input-class>
+  <button class=".btn" @tap="submit">提交</button>
 </template>
 
 <script>
@@ -30,7 +42,7 @@ export default class Register extends wepy.page {
     'input-name': input,
     'input-number': input,
     'input-telphone': input,
-    'input-school': input,
+    'input-class': input,
     'toptips': Toptips,
     'toast': Toast
   }
@@ -59,11 +71,11 @@ export default class Register extends wepy.page {
       filter: /^\d{8,13}$/,
       placeholder: '请输入手机号'
     },
-    school: {
-      label: ' 学校名',
+    class: {
+      label: '班级',
       value: '',
       inputType: 'text',
-      placeholder: '请输入学校名'
+      placeholder: '请输入班级'
     }
   };
 
@@ -98,10 +110,11 @@ export default class Register extends wepy.page {
         userBasicInfo: this.userInfo
       }
       console.log(UL_DATA)
-      app.request('updateInfo', UL_DATA, '请稍等...')
+      app.request('User.updateInfo', UL_DATA, '请稍等...')
       .then(function(res) {
+        console.log(res)
         if (res.data.errCode === 0 || res.data.errCode === 1) {
-          return res.data.errCode === 0 ? '更新成功' : '注册成功'
+          return '更新成功'
         } else {
           throw (new Error(res.data.msg))
         }
@@ -140,13 +153,14 @@ export default class Register extends wepy.page {
       this.userInfo.telphone = e
     },
     _handleInputSchool(e) {
-      this.userInfo.school = e
+      this.userInfo.class = e
     }
   };
 
   events = {};
 
-  onLoad() {
+  onLoad(e) {
+    this.userInfo = this.$parent.globalData.userInfo
     let that = this
     wx.getUserInfo({
       success(res) {
@@ -154,7 +168,7 @@ export default class Register extends wepy.page {
         that.userInfo.name = ''
         that.userInfo.stunum = ''
         that.userInfo.telphone = ''
-        that.userInfo.school = ''
+        that.userInfo.class = ''
       }
     })
   }
