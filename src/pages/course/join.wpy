@@ -29,15 +29,15 @@
  
 <form bindsubmit="formSubmit">
  <toast/>
-  <view class='content'>
+  <view class='content' catchtap='Tap'>
  
     <block wx:for="{{Length}}" wx:key="item">
-      <input class='iptbox' value="{{Value.length>=index+1?Value[index]:''}}" disabled password='{{ispassword}}' catchtap='Tap'></input>
+      <input class='iptbox' value="{{Value.length>=index+1?Value[index]:''}}" disabled password='{{ispassword}}'></input>
     </block>
     
   </view>
  
-  <input name="password" password="{{true}}" class='ipt' maxlength="{{Length}}" focus="{{isFocus}}" bindinput="Focus" type="number"></input>
+  <input name="password" password="{{true}}" class='ipt' focus="{{isFocus}}" bindinput="inputing" type="number" value="{{Value}}"></input>
  
   <view>
     <button class="btn-area" formType="submit">Submit</button>
@@ -66,12 +66,15 @@ export default class Join extends wepy.page {
   };
   // 事件处理函数(集中保存在methods对象中)
   methods = {
-    Focus(e) {
+    inputing(e) {
       let that = this
-      // console.log(e.detail.value)
-      // let inputValue = e.detail.value
+      let regexp = (/[^0-9]|^0+(?!$)/g)
+      console.log(regexp.test(e.detail.value))
+      e.detail.value = e.detail.value.replace(regexp, '').substr(0, 4)
+      e.detail.cursor = e.detail.value.length
+      console.log(e.detail)
       that.Value = e.detail.value
-      console.log(parseInt(that.Value))
+      // console.log(parseInt(that.Value))
     },
     Tap() {
       let that = this
@@ -83,7 +86,7 @@ export default class Join extends wepy.page {
       console.log(parseInt(e.detail.value.password))
       let app = this.$parent
       let that = this
-      var deldata = {
+      let deldata = {
         idCourse: parseInt(e.detail.value.password)
       }
       if (e.detail.value.password.length < 4) {

@@ -130,12 +130,12 @@ export default class Index extends wepy.page {
     })
     .then(function(res) {
       // 如果本地没有存储则去请求
-      // if (res !== 'null') {
-      //   // 啥都不干
-      //   that.idCourse = res
-      //   that.$apply()
-      //   console.log('readfile', res)
-      // } else {
+      if (res !== 'null') {
+        // 啥都不干
+        that.idCourse = res
+        that.$apply()
+        console.log('readfile', res)
+      } else {
         // 等请求以加入课程的后台接口
         app.request('Course.getJoinedCourseList', '', '请求中...')
         .then((res) => {
@@ -148,7 +148,7 @@ export default class Index extends wepy.page {
           fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, app.courseList[0].idCourse, 'utf8')
           console.log('request', app.courseList[0].idCourse)
         })
-      // }
+      }
       console.log(app)
     })
     .catch(function(error) {
