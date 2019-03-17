@@ -148,7 +148,9 @@
         var that = this
         this.chooseLength = e.detail.value.questionId.length
         for (let i = 0; i < this.chooseLength; i++) {
+          this.idQues[i] = {}
           this.idQues[i] = parseInt(e.detail.value.questionId[i])
+          // this.idQues['"' + i + '"'] = parseInt(e.detail.value.questionId[i])
         }
         console.log('0', this.idQues['0'])
         var vag = this.date + '-' + this.time

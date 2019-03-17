@@ -1,0 +1,93 @@
+<style type="less">
+
+</style>
+<template>
+	<view style="margin-bottom:30px;text-align:center;">{{stuName}}的作业情况</view>
+  <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
+    <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this">
+      <view style="text-align:center">
+      <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px;"/>
+      </view>
+      </swiper-item>
+  </swiper>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  // 通过继承自wepy.page的类创建页面逻辑
+  export default class homeworkSearchDetail extends wepy.page {
+    // 可用于页面模板绑定的数据
+    data = {
+      stuName: '',
+      homeworkInfo: [],
+      answerInfo: [],
+      idUser: 0,
+      idHomework: 0,
+      system_height: 300
+    };
+
+    // 事件处理函数(集中保存在methods对象中)
+    methods = {
+    };
+
+    // 页面的生命周期函数
+    onLoad(e) {
+      console.log(e)
+      this.stuName = e.stuName
+      this.idUser = e.idUser
+      this.idHomework = e.idHomework
+      var that = this
+      let app = that.$parent
+      var delData = {
+        idHomework: parseInt(this.idHomework)
+        // idUser: parseInt(this.idUser)
+      }
+      app
+        .request('getHomeworkDetails', delData, 'loading')
+        .then(function(e) {
+          that.homeworkInfo = e.data.homeworkInfo
+          for (let i = 0; i < that.homeworkInfo.length; i++) {
+            wx.getImageInfo({
+              src: e.data.homeworkInfo[i].img,
+              success(e) {
+                // console.log(that)
+                that.homeworkInfo[i].height = e.height
+                that.homeworkInfo[i].width = e.width
+                that.$apply()
+              }
+            })
+          }
+          for (let i = 0; i < that.homeworkInfo.length; i++) {
+            let stuData = {
+              idHomework: parseInt(that.homeworkInfo[i].idHomeworkDetail),
+              idUser: parseInt(that.idUser)
+            }
+            app
+              .request('getStuHomeworkInfo', stuData, 'loading')
+              .then(function(e) {
+                console.log(e)
+              })
+          }
+        })
+        .catch(function(e) {
+          app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
+      wx.getSystemInfo({
+        success: function (e) {
+          that.system_height = e.windowHeight
+          that.$apply()
+        },
+        fail(e) {
+          wx.showmodal({
+            title: '注意',
+            content: '显示失败请下拉刷新重试'
+          })
+        }
+      })
+    }
+  }
+</script>

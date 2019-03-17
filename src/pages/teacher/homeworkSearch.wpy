@@ -15,10 +15,10 @@
   <view class="padding">
   <view class="page__bd">
         <view class="weui-grids">
-            <block wx:for="{{grids}}" wx:key="*this">
-              <navigator class="weui-grid" hover-class="weui-grid_active">
-                    <image class="weui-grid__icon" src="{{i_url[item]}}" />
-                    <view class="weui-grid__label">{{i_name[item]}}</view>
+            <block wx:for="{{homeworkInfo}}" wx:key="*this" wx:for-item="page">
+              <navigator class="weui-grid" hover-class="weui-grid_active" url="{{page.url}}">
+                    <view class="weui-grid__label" style="font-size:40rpx">{{page.name}}</view>
+                    <view style="color:{{page.check == '已交' ? 'green' : 'red'}};font-size:30rpx;text-align:center">{{page.check}}</view>
                 </navigator>
             </block>
         </view>
@@ -32,9 +32,8 @@
   export default class homeworkSearch extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
-      grids: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
-      i_name: ['xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx'],
-      i_url: ['/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png']
+      idHomework: 0,
+      homeworkInfo: []
     };
 
     // 事件处理函数(集中保存在methods对象中)
@@ -45,8 +44,36 @@
     };
 
     // 页面的生命周期函数
-    onLoad() {
-      console.log('onLoad')
+    onLoad(e) {
+      console.log(e)
+      this.idHomework = e.idHomework
+      var that = this
+      let app = that.$parent
+      var delData = {
+        idHomework: this.idHomework
+      }
+      app
+        .request('getStuHomeworkList', delData, 'loading')
+        .then(function(e) {
+          console.log(e)
+          that.homeworkInfo = e.data.homeworkInfo
+          for (let i = 0; i < e.data.homeworkInfo.length; i++) {
+            that.homeworkInfo[i].url = './homeworkSearchDetail?stuName=' + e.data.homeworkInfo[i].name + '&idUser=' + e.data.homeworkInfo[i].idUser + '&idHomework=' + that.idHomework
+            if (e.data.homeworkInfo[i].check === 0) {
+              that.homeworkInfo[i].check = '未交'
+            } else {
+              that.homeworkInfo[i].check = '已交'
+            }
+          }
+          that.$apply()
+        })
+        .catch(function(e) {
+          app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
     };
   }
 </script>
