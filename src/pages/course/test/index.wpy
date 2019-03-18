@@ -77,9 +77,8 @@
     <view style="display:flex;border-top:1px solid #ccc;margin-top:50rpx;border-bottom:1px solid #ccc;">
   <view class='leftbox'>
         <view class='source2'>{{name}} : {{testName}}</view>
-        <view class='score'><text class='time' style='font-size:12px;color:#ccc;'>{{lastTime}}</text></view>
+        <view class='score' style="margin-left:20rpx;"><text class='time' style='font-size:12px;color:#ccc;'>{{lastTime}}</text></view>
       </view>
-
       <view class='rightbox'>
         <view>
           {{status}}

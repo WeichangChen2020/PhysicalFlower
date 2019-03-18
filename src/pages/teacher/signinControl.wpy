@@ -48,7 +48,7 @@
           <picker
                 mode="time"
                 value="{{time}}"
-                start="06:00"
+                start="00:00"
                 end="24:00"
                 bindchange="bindTimeChange"
               >
@@ -291,7 +291,7 @@
 
     // 页面的生命周期函数
     onLoad(e) {
-      // console.log(e)
+      // console.log('', e)
       var timeTrans = new Date(parseInt(e.gmtEnd) * 1000)
       this.time = timeTrans.toLocaleTimeString('chinese', {hour12: false}).slice(0, 5)// 去除毫秒数
       this.gmtEnd = e.gmtEnd

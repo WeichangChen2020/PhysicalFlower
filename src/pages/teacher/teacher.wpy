@@ -45,12 +45,14 @@
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       banji(e) {
-        console.log(e)
+        console.log('banji', e)
         var that = this
+        var courseName1 = e.currentTarget.dataset.coursename
         setTimeout(function() {
           if (this.lock) {
           } else {
-            that.$navigate('./classControl?idCourse=' + e.target.id + '&courseName=' + e.target.dataset.courseName)
+            // console.log(e.target.dataset.courseName)
+            that.$navigate('./classControl?idCourse=' + e.target.id + '&courseName=' + courseName1)
           }
         }, 300)
       },

@@ -238,25 +238,25 @@ export default class signinChoose extends wepy.page {
     app
       .request('Signin.getCreatedSigninList', UL_DATA, 'Loading')
       .then(function(e) {
-        if (e.data['signinInfo'].length === 0) {
+        console.log(e)
+        if (e.data.data.length === 0) {
           wx.showToast({
             title: '我是有底线的'
           })
         } else {
-          // console.log(e)
           that.list[0].name = that.courseName
-          // console.log(e.data['signinInfo'])
+          // console.log(e.data.data)
           var timestamp = (new Date()).getTime()
-          for (var i = 0; i < e.data['signinInfo'].length; i++) {
-            that.list[0].pages[i] = e.data['signinInfo'][i]
-            if (e.data['signinInfo'][i].gmtEnd > (timestamp / 1000)) {
+          for (var i = 0; i < e.data.data.length; i++) {
+            that.list[0].pages[i] = e.data.data[i]
+            if (e.data.data[i].gmtEnd > (timestamp / 1000)) {
               that.list[0].pages[i].state = '进行中'
             } else {
               that.list[0].pages[i].state = '已结束'
             }
-            that.list[0].pages[i].idSignin = e.data['signinInfo'][i].idSignin
-            that.list[0].pages[i].name = e.data['signinInfo'][i].signinName
-            that.list[0].pages[i].url = './signinControl?idCourse=' + e.data['signinInfo'][i].idCourse + '&idSignin=' + e.data['signinInfo'][i].idSignin + '&gmtEnd=' + e.data['signinInfo'][i].gmtEnd + '&signinName=' + e.data['signinInfo'][i].signinName
+            that.list[0].pages[i].idSignin = e.data.data[i].idSignin
+            that.list[0].pages[i].name = e.data.data[i].signinName
+            that.list[0].pages[i].url = './signinControl?idCourse=' + e.data.data[i].idCourse + '&idSignin=' + e.data.data[i].idSignin + '&gmtEnd=' + e.data.data[i].gmtEnd + '&signinName=' + e.data.data[i].signinName
           }
           that.lastPage = i
           that.$apply()
@@ -282,28 +282,28 @@ export default class signinChoose extends wepy.page {
       page: this.page
     }
     app
-      .request('getSigninList', postData, 'Loading')
+      .request('Signin.getSigninList', postData, 'Loading')
       .then(function(e) {
-        if (e.data['signinInfo'].length === 0) {
+        if (e.data.data.length === 0) {
           wx.showToast({
             title: '我是有底线的'
           })
         } else {
           // console.log(e)
           that.list[0].name = that.courseName
-          // console.log(e.data['signinInfo'])
+          // console.log(e.data.data)
           var timestamp = (new Date()).getTime()
-          for (var i = that.lastPage, j = 0; i < that.lastPage + e.data['signinInfo'].length; i++, j++) {
+          for (var i = that.lastPage, j = 0; i < that.lastPage + e.data.data.length; i++, j++) {
             // console.log(i)
-            that.list[0].pages[i] = e.data['signinInfo'][j]
-            if (e.data['signinInfo'][j].gmtEnd > (timestamp / 1000)) {
+            that.list[0].pages[i] = e.data.data[j]
+            if (e.data.data[j].gmtEnd > (timestamp / 1000)) {
               that.list[0].pages[i].state = '进行中'
             } else {
               that.list[0].pages[i].state = '已结束'
             }
-            that.list[0].pages[i].idSignin = e.data['signinInfo'][j].idSignin
-            that.list[0].pages[i].name = e.data['signinInfo'][j].signinName
-            that.list[0].pages[i].url = './signinControl?idCourse=' + e.data['signinInfo'][j].idCourse + '&idSignin=' + e.data['signinInfo'][j].idSignin + '&gmtEnd=' + e.data['signinInfo'][j].gmtEnd + '&signinName=' + e.data['signinInfo'][j].signinName
+            that.list[0].pages[i].idSignin = e.data.data[j].idSignin
+            that.list[0].pages[i].name = e.data.data[j].signinName
+            that.list[0].pages[i].url = './signinControl?idCourse=' + e.data.data[j].idCourse + '&idSignin=' + e.data.data[j].idSignin + '&gmtEnd=' + e.data.data[j].gmtEnd + '&signinName=' + e.data.data[j].signinName
           }
           that.lastPage = i
           that.$apply()
