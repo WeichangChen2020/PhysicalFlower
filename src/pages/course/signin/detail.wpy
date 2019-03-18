@@ -108,7 +108,7 @@ export default class Detail extends wepy.page {
         longitude: that.signin_online.longitude,
         horizontalAccuracy: that.signin_online.horizontalAccuracy
       }
-      app.request('doSignin', UL_DATA, '签到...')
+      app.request('Signin.doSignin', UL_DATA, '签到...')
       .then((res) => {
         if (res.data.errCode === 0) {
           return '签到成功'

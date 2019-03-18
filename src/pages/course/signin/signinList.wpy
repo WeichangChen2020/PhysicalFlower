@@ -77,9 +77,9 @@
       }
       console.log(UL_DATA)
       // TODO 以签到的进行标记，并不可重复签到
-      app.request('getDoingSigninList', UL_DATA, '查询中...')
+      app.request('Signin.getSigningList', UL_DATA, '查询中...')
       .then((res, reject) => {
-        that.doingSigninList = res.data.signinInfo
+        that.doingSigninList = res.data.data
         for (let i = 0; i < that.doingSigninList.length; i++) {
           let timestr = new Date(that.doingSigninList[i].gmtEnd * 1000).toString()
           that.doingSigninList[i].timeEnd = timestr.substring(16, 24)
@@ -102,9 +102,9 @@
         idCourse: app.globalData.activeCourse,
         page: 1
       }
-      app.request('getStuAllSigninList', UL_DATA, '查询中...')
+      app.request('Signin.getAllSigninList', UL_DATA, '查询中...')
       .then((res, reject) => {
-        that.allSigninList = res.data.signinInfo
+        that.allSigninList = res.data.data
         for (let i = 0; i < that.allSigninList.length; i++) {
           let timestr = new Date(that.allSigninList[i].gmtEnd * 1000).toString()
           that.allSigninList[i].timeEnd = timestr.substring(16, 24)

@@ -1,57 +1,81 @@
-<style lang="less">
+<style type="less">
+.title{
+  display: flex;
+  justify-content: center;
+}
+.greeting {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
 </style>
 <template>
- <view @tap='test2({{a}}{{test}})' style="width:200px;height:20px;backgroud-color:#eee;">{{test}}</view>
+	<view>
+		<text class="greeting">{{courseName}}</text>
+  </view>
+  <view class="greeting">课程号:{{idCourse}}</view>
+    <button class="greeting" @tap='tap' id="1">创建签到</button>
+    <button class="greeting" @tap='tap' id="2">管理签到</button>
+    <button class="greeting" @tap='tap' id="3">发布课后作业</button>
+    <button class="greeting" @tap='tap' id="4">管理课后作业</button>
+    <button class="greeting" @tap='tap' id="5">管理课程学生信息</button>
+    <button class="greeting" @tap='tap' id="6">发布课堂测试</button>
+    <button class="greeting" @tap='tap' id="7">管理课堂测试</button>
+    <!-- <i-button type="primary" bind:click="handleClick">这是一个按钮</i-button>
+    <i-button type="ghost" bind:click="handleDefault">默认提醒</i-button>
+    <i-message id="message" /> -->
 </template>
-
 <script>
-import wepy from 'wepy'
+  import wepy from 'wepy'
+  // import base from '/components/van/base/index'// 文件路径
+  // 通过继承自wepy.page的类创建页面逻辑
+  export default class classControl extends wepy.page {
+    config={
+      usingComponents: {
+      }
+    }
+    // 可用于页面模板绑定的数据
+    data = {
+      courseName: '',
+      idCourse: ''
+    }
 
-export default class test extends wepy.page {
-  data = {
-    test: 1,
-    a: 1,
-    b: 2
-  }
+    // 事件处理函数(集中保存在methods对象中)
+    methods = {
+      tap(e) {
+        let tid = e.currentTarget.id
+        switch (tid) {
+          case '1':
+            this.$navigate('./signinCreat?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+          case '2':
+            this.$navigate('./signinChoose?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+          case '3':
+            this.$navigate('./homeworkChoose?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+          case '4':
+            this.$navigate('./homeworkControl?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+          case '5':
+            this.$navigate('./stuBan?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+          case '6':
+            this.$navigate('./testCreat?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+          case '7':
+            this.$navigate('./testControl?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+        }
+      }
+    }
 
-  // computed = {
-
-  // }
-
-  methods = {
-    test2(e) {
-      this.test = this.test + 1
+    // 页面的生命周期函数
+    onLoad(e) {
       console.log(e)
+      this.courseName = e.courseName
+      this.idCourse = e.idCourse
+      this.$apply()
     }
   }
-
-  // events = {
-
-  // }
-
-  onShow() {
-    var promise = new Promise(function(resolve) {
-      resolve(42)
-    })
-    promise.then(function(value) {
-      console.log(value)
-    }).catch(function(error) {
-      console.error(error)
-    })
-  }
-
-  f1(resolve, reject) {
-    console.log('f1')
-    // let num = Math.random() * 2
-    // setTimeout(function() {
-    //   if (num < 1) {
-    //     console.log('<1,resolve')
-    //     resolve('11')
-    //   } else {
-    //     console.log('>1,reject')
-    //     reject('22')
-    //   }
-    // }, num * 1000)
-  }
-}
 </script>

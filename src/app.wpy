@@ -13,7 +13,7 @@
 .button{
   width: 60%;
   margin-top: 60rpx;
-  background-color: #b39ddb;
+  background: linear-gradient(150deg, #d188fb, #9587f8, #558bf7); 
   color:whitesmoke;
   border-radius: 98rpx;
   display: flex;
@@ -21,6 +21,23 @@
   align-items: center;
   justify-content: center;
 }
+page {
+  background-color: #f6f6f6;
+  height: 100%;
+}
+.longBtn {
+  margin: 30rpx 40rpx 20rpx 40rpx;
+  background-color: #db7;
+  color: white;
+  border-radius: 60rpx;
+  /*background-color: #3af;*/
+}
+.placeholder{
+  font-style:italic;
+  font-size: 30rpx;
+  color: #39b;
+}
+
 </style>
 
 <script>
@@ -38,6 +55,7 @@ export default class extends wepy.app {
     // 最后需要对这些页面的顺序进行调整
     pages: [
       'pages/course/index',
+      'pages/teacher/classControl',
       'pages/teacher/teacher',
       'pages/course/join',
       'pages/my/authorize',
@@ -67,7 +85,6 @@ export default class extends wepy.app {
       'pages/teacher/testControl',
       'pages/teacher/signinControl',
       'pages/teacher/homeworkControl',
-      'pages/teacher/classControl',
       'pages/teacher/homeworkSearch',
       'pages/teacher/testSearch',
       'pages/teacher/homeworkChoose',
@@ -80,13 +97,14 @@ export default class extends wepy.app {
     },
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#b39ddb',
-      backgroundColor: '#eee',
+      navigationBarBackgroundColor: '#90caf9',
+      backgroundColor: '#90caf9',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black',
       enablePullDownRefresh: true
     },
     tabBar: {
+      selectedColor: '#90caf9',
       list: [
         {
           pagePath: 'pages/course/index',
@@ -211,6 +229,10 @@ export default class extends wepy.app {
     setTimeout(() => {
       return promise
     }, 1800)
+  }
+
+  formatDate(inputTime) {
+    return new Date(parseInt(inputTime) * 1000).toLocaleString().replace(/\//g, '-').replace(/日/g, '')
   }
 }
 </script>

@@ -70,6 +70,7 @@ export default class CourseDetail extends wepy.page {
           // 课程id保存到本地文件以供下次打开时默认课程
           const fs = wx.getFileSystemManager()
           fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, that.idCourse, 'utf8')
+          app.globalData.activeCourse = that.idCourse
           return res.data.errCode
         } else {
           throw (new Error('课程加入失败'))

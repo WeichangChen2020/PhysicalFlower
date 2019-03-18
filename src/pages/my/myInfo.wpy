@@ -37,7 +37,7 @@ page {
 .btn{
   width: 60%;
   margin-top: 60rpx;
-  background-color: #b39ddb;
+  background: linear-gradient(150deg, #d188fb, #9587f8, #558bf7); 
   color:whitesmoke;
   border-radius: 98rpx;
   display: flex;

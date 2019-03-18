@@ -57,10 +57,10 @@ export default class CourseList extends wepy.page {
   // 事件处理函数(集中保存在methods对象中)
   methods = {
     change(id) {
-      console.log(id)
       // 课程id保存到本地文件以供下次打开时默认课程
       const fs = wx.getFileSystemManager()
       fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, id, 'utf8')
+      this.$parent.globalData.activeCourse = id
       wx.switchTab({url: './index'})
     }
   };
@@ -84,9 +84,9 @@ export default class CourseList extends wepy.page {
     let app = this.$parent
     let that = this
     this.refreshTimes++
-    app.request('getJoincourselist', '', '请求中...')
+    app.request('Course.getJoinedCourseList', '', '请求中...')
     .then((res) => {
-      that.courseList = res.data.courseInfo
+      that.courseList = res.data.data
       this.$apply()
     })
   }

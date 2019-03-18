@@ -171,7 +171,7 @@
         idQuestionSet: that.idQuestionSet
       }
       app
-        .request('getChapterList', delData, 'loading')
+        .request('Course.getChapterList', delData, 'loading')
         .then(function(e) {
           console.log(e)
           if (e.data.errCode === 0) {
