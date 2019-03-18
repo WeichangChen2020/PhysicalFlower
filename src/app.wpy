@@ -55,6 +55,7 @@ export default class extends wepy.app {
     // 最后需要对这些页面的顺序进行调整
     pages: [
       'pages/course/index',
+      'pages/teacher/classControl',
       'pages/teacher/teacher',
       'pages/course/join',
       'pages/my/authorize',
@@ -84,7 +85,6 @@ export default class extends wepy.app {
       'pages/teacher/testControl',
       'pages/teacher/signinControl',
       'pages/teacher/homeworkControl',
-      'pages/teacher/classControl',
       'pages/teacher/homeworkSearch',
       'pages/teacher/testSearch',
       'pages/teacher/homeworkChoose',
@@ -97,8 +97,8 @@ export default class extends wepy.app {
     },
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#b39ddb',
-      backgroundColor: '#eee',
+      navigationBarBackgroundColor: '#90caf9',
+      backgroundColor: '#90caf9',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black',
       enablePullDownRefresh: true

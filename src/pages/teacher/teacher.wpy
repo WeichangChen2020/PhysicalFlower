@@ -54,7 +54,7 @@ margin-left:10rpx;
 
 </view>
 
-<view wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}">
+<view wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
   <image src='{{item.logo}}' class='icon' />
   <view class='contain'>
     <view class='title'>课程名称：{{item.courseName}}</view>
@@ -89,7 +89,7 @@ margin-left:10rpx;
         console.log(e)
         console.log(this.data)
         let that = this
-        that.$navigate('./classControl?idCourse=' + e.currentTarget.dataset.idcourse + '&courseName=' + e.currentTarget.dataset.coursename)
+        that.$navigate('./classControl?idCourse=' + e.currentTarget.dataset.idcourse + '&courseName=' + e.currentTarget.dataset.coursename + '&count=' + e.currentTarget.dataset.count)
       }
     }
 

@@ -349,24 +349,32 @@ html .row {
   <view class='greeting'>{{courseName}}签到</view>
   <view class='border'>
     <view>签到名称</view>
-    <input class='input' placeholder='输入签到名称' focus='{{focus}}' maxlength="15" bindinput='inputName'/>
-    <!-- <text class='input'>{{signinName}}签到</text> -->
+    <input class='input' placeholder='{{signinName}}' focus='{{focus}}' maxlength="15" bindinput='inputName'/>
   </view>
 
-  <view class='greeting'>获取签到地点</view>
+  <!-- <view class='greeting'>获取签到地点</view>
   <view class='border'>
     <view>签到地点记录</view>
     <form bindsubmit="openLocation">
       <view style='display: flex;flex-direction: row'>
         <button class='btn' disabled='{{isChecked<2}}' style='height:80rpx' bindtap='getLocation'>点击获取位置</button>
-      </view>
+      </view> -->
 
         <view class='border'>
           <view>签到信息选择</view>
-          <input class='input' placeholder='输入签到范围' maxlength="5" bindinput='bindKeyInput' />
+            <view class="img_hd" wx:if='{{isGotLoc}}' style="font-size:30rpx;">
+              <view class="weui-uploader__title">经度
+                <input class="weui-uploader__info" value="{{get_longitude}}°E" name="longitude" />
+              </view>
+              <view class="weui-uploader__title">纬度
+                <input class="weui-uploader__info" value="{{get_latitude}}°N" name="latitude" />
+              </view>
+            </view>
+            <view class="section__title">输入签到精度</view>
+          <input class='input' placeholder='{{inputValue}}' maxlength="5" bindinput='bindKeyInput' />
             <view style="margin-bottom:10px"></view>
             <view class="section">
-              <view class="section__title">选择签到截止时间</view>
+              <view class="section__title">选择签到开始时间</view>
               <picker
                 mode="time"
                 value="{{time}}"
@@ -378,17 +386,10 @@ html .row {
                   当前选择: {{time}}
                 </view>
               </picker>
+              <view class="section__title">输入签到持续时间</view>
+              <input class='input' placeholder='{{lastMinutes}}' maxlength="5" bindinput='lastMinutes' />
+            <view style="margin-bottom:10px"></view>
             </view>
-
-
-      </view>
-      <view class="img_hd" wx:if='{{isGotLoc}}'>
-        <view class="weui-uploader__title">经度
-          <input class="weui-uploader__info" value="{{get_longitude}}°E" name="longitude" />
-        </view>
-        <view class="weui-uploader__title">纬度
-          <input class="weui-uploader__info" value="{{get_latitude}}°N" name="latitude" />
-        </view>
       </view>
     </form>
 
@@ -424,7 +425,7 @@ export default class signinCreat extends wepy.page {
     userInfo: {},
     // 默认未获取地址
     hasLocation: false,
-    inputValue: '',
+    inputValue: '100',
     get_longitude: '',
     get_latitude: '',
     canvasWidth: '',
@@ -432,58 +433,67 @@ export default class signinCreat extends wepy.page {
     time: '23:01',
     horizontalAccuracy: 0,
     flag: [0, 0, 0],
-    inputName: ''
+    inputName: '',
+    lastMinutes: 10
   }
 
   // 事件处理函数(集中保存在methods对象中)
   methods = {
     // 获取经纬度
-    getLocation: function(e) {
-      wx.getSetting({
-        success(e) {
-          console.log(e.authSetting)
-          if (e.authSetting['scope.userLocation'] === false) {
-            wx.openSetting({
-              success(e) {
-                console.log(e)
-              }
-            })
-          }
-        }
-      })
-      var that = this
-      wx.getLocation({
-        type: 'wgs84',
-        success: function(res) {
-          console.log(res)
-          that.isGotLoc = 1
-          that.hasLocation = true
-          that.new_longitude = res.longitude
-          that.new_latitude = res.latitude
-          that.get_longitude = res.longitude
-          that.get_latitude = res.latitude
-          that.horizontalAccuracy = res.horizontalAccuracy
-          that.$apply()
-          wx.showToast({
-            title: '获取坐标成功'
-          })
-        }
-      })
-    },
+    // getLocation: function(e) {
+    //   wx.getSetting({
+    //     success(e) {
+    //       console.log(e.authSetting)
+    //       if (e.authSetting['scope.userLocation'] === false) {
+    //         wx.openSetting({
+    //           success(e) {
+    //             console.log(e)
+    //           }
+    //         })
+    //       }
+    //     }
+    //   })
+    //   var that = this
+    //   wx.getLocation({
+    //     type: 'wgs84',
+    //     success: function(res) {
+    //       console.log(res)
+    //       that.isGotLoc = 1
+    //       that.hasLocation = true
+    //       that.new_longitude = res.longitude
+    //       that.new_latitude = res.latitude
+    //       that.get_longitude = res.longitude
+    //       that.get_latitude = res.latitude
+    //       that.horizontalAccuracy = res.horizontalAccuracy
+    //       that.$apply()
+    //       wx.showToast({
+    //         title: '获取坐标成功'
+    //       })
+    //     }
+    //   })
+    // },
     // 提交位置信息
     reg: function(e) {
       // console.log(this.flag[0])
       var veg = /^\+?[1-9][0-9]*$/
       var isRight = veg.test(parseInt(this.inputValue))
-      console.log(isRight)
+      // console.log(isRight)
+      let timestamp = Date.parse(new Date())
+      let date = new Date(timestamp)
+      // 获取月份
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1)
+      // 获取当日日期
+      let D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+      this.dated = new Date().getFullYear() + '-' + M + '-' + D + ' ' + this.time
+      this.dated = new Date(this.dated.replace(/-/g, '/')).getTime()
       if (this.flag[0] === 0) {
         if (isRight === true) {
           let app = this.$parent
           var that = this
           let locationData = {
-            signinName: this.inputName,
+            signinName: this.signinName,
             gmtStart: parseInt(new Date().getTime() / 1000),
-            gmtEnd: parseInt(this.dated / 1000),
+            gmtEnd: parseInt(this.dated / 1000) + parseInt(this.lastMinutes) * 60,
             latitude: this.get_latitude,
             longitude: this.get_longitude,
             radius: parseInt(this.inputValue),
@@ -535,25 +545,50 @@ export default class signinCreat extends wepy.page {
       this.inputValue = e.detail.value
     },
     inputName(e) {
-      this.inputName = e.detail.value
+      this.signinName = e.detail.value
+    },
+    lastMinutes(e) {
+      this.lastMinutes = e.detail.value
     },
     bindTimeChange(e) {
       this.time = e.detail.value
-      let timestamp = Date.parse(new Date())
-      let date = new Date(timestamp)
-      // 获取月份
-      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1)
-      // 获取当日日期
-      let D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
-      this.dated = new Date().getFullYear() + '-' + M + '-' + D + ' ' + e.detail.value
-      this.dated = new Date(this.dated.replace(/-/g, '/')).getTime()
     }
   }
 
   // 页面的生命周期函数
   onLoad(e) {
-    var veg = /^\+?[1-9][0-9]*$/
-    console.log(veg.test())
+    wx.getSetting({
+      success(e) {
+        console.log(e.authSetting)
+        if (e.authSetting['scope.userLocation'] === false) {
+          wx.openSetting({
+            success(e) {
+              // console.log(e)
+            }
+          })
+        }
+      }
+    })
+    var that = this
+    wx.getLocation({
+      type: 'wgs84',
+      success: function(res) {
+        // console.log(res)
+        that.isGotLoc = 1
+        that.hasLocation = true
+        that.new_longitude = res.longitude
+        that.new_latitude = res.latitude
+        that.get_longitude = res.longitude
+        that.get_latitude = res.latitude
+        that.horizontalAccuracy = res.horizontalAccuracy
+        that.$apply()
+        wx.showToast({
+          title: '获取坐标成功'
+        })
+      }
+    })
+    // var veg = /^\+?[1-9][0-9]*$/
+    // console.log(veg.test())
     this.courseName = e.courseName
     this.idCourse = e.idCourse
     let timestamp = Date.parse(new Date())
@@ -562,8 +597,12 @@ export default class signinCreat extends wepy.page {
     let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1)
     // 获取当日日期
     let D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
-    console.log(M + '月' + D + '日')
+    // console.log(M + '月' + D + '日')
     this.signinName = M + '月' + D + '日'
+    var hourTime = date.getHours()
+    var minuteTime = date.getMinutes()
+    // console.log(hourTime + ':' + minuteTime)
+    this.time = hourTime + ':' + minuteTime
     this.$apply()
   }
 }

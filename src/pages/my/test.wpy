@@ -1,144 +1,81 @@
 <style type="less">
-.bjlb{
+.title{
   display: flex;
-  justify-content: center
+  justify-content: center;
 }
-.bj{
-  margin-bottom: 5px
-}
-.jia{
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-}
-
 .greeting {
   font-size: 14px;
   color: gray;
   margin: 20rpx 0 10rpx 20rpx;
 }
-
 </style>
 <template>
 	<view>
-		<text class="bjlb" >课程列表：</text>
-    <button class="btn btn-min btn-empty btn-success" @tap = 'jia'>增加课程</button>
-    <block wx:for='{{courseInfo}}' wx:key='*this'>
-      <button id="{{item.idCourse}}" data-courseName="{{item.courseName}}" class="greeting" bindtap='banji' bindlongpress="longtap" bindtouchend="touchEnd">{{item.courseName}}   {{item.idCourse}}</button>
-    </block>
-	</view>
-</template> 
+		<text class="greeting">{{courseName}}</text>
+  </view>
+  <view class="greeting">课程号:{{idCourse}}</view>
+    <button class="greeting" @tap='tap' id="1">创建签到</button>
+    <button class="greeting" @tap='tap' id="2">管理签到</button>
+    <button class="greeting" @tap='tap' id="3">发布课后作业</button>
+    <button class="greeting" @tap='tap' id="4">管理课后作业</button>
+    <button class="greeting" @tap='tap' id="5">管理课程学生信息</button>
+    <button class="greeting" @tap='tap' id="6">发布课堂测试</button>
+    <button class="greeting" @tap='tap' id="7">管理课堂测试</button>
+    <!-- <i-button type="primary" bind:click="handleClick">这是一个按钮</i-button>
+    <i-button type="ghost" bind:click="handleDefault">默认提醒</i-button>
+    <i-message id="message" /> -->
+</template>
 <script>
   import wepy from 'wepy'
-  import panel from '@/components/panel/index'
+  // import base from '/components/van/base/index'// 文件路径
   // 通过继承自wepy.page的类创建页面逻辑
-  export default class teacher extends wepy.page {
-    components = {
-      panel: panel
+  export default class classControl extends wepy.page {
+    config={
+      usingComponents: {
+      }
     }
     // 可用于页面模板绑定的数据
     data = {
-      courseInfo: [ ],
-      lock: false
+      courseName: '',
+      idCourse: ''
     }
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      banji(e) {
-        console.log(e)
-        var that = this
-        setTimeout(function() {
-          if (this.lock) {
-          } else {
-            that.$navigate('./classControl?idCourse=' + e.target.id + '&courseName=' + e.target.dataset.courseName)
-          }
-        }, 300)
-      },
-      jia(e) {
-        wx.navigateTo({ url: './classCreate' })
-      },
-      touchEnd: function(e) {
-        if (this.data.lock) {
-        // 开锁
-          setTimeout(function() {
-            this.lock = false
-          }, 100)
+      tap(e) {
+        let tid = e.currentTarget.id
+        switch (tid) {
+          case '1':
+            this.$navigate('./signinCreat?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+          case '2':
+            this.$navigate('./signinChoose?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+          case '3':
+            this.$navigate('./homeworkChoose?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+          case '4':
+            this.$navigate('./homeworkControl?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+          case '5':
+            this.$navigate('./stuBan?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+          case '6':
+            this.$navigate('./testCreat?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
+          case '7':
+            this.$navigate('./testControl?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+            break
         }
-        this.$apply()
-      },
-      longtap(e) {
-        // 锁住
-        this.lock = true
-        var that = this
-        let courseId = e.target.id
-        wx.showModal({
-          title: '提示',
-          content: '确定删除该课程吗',
-          success(e) {
-            if (e.confirm === true) {
-              let app = that.$parent
-              var delData = {
-                idCourse: courseId
-              }
-              app
-                .request('delCourse', delData, 'loading')
-                .then(function(e) {
-                  that.onShow()
-                })
-                .catch(function(e) {
-                  app.modal(
-                    e.message,
-                    '错误!错误提示是：',
-                    '确定'
-                  )
-                })
-            }
-          }
-        })
-        this.$apply()
       }
     }
 
     // 页面的生命周期函数
-    onLoad(e) { // todo 直接从后台获取教师课程信息
-    };
-    onShow() {
-      let app = this.$parent
-      var that = this
-      var courseDATA = {
-      }
-      app
-        .request('Course.getCreatedCourseList', courseDATA, 'loading')
-        .then(function(e) {
-          console.log(e)
-          for (var n = 0; n < that.courseInfo.length; n++) {
-            that.courseInfo[n] = ''
-          }
-          for (var i = 0; i < e.data.data.length; i++) {
-            that.courseInfo[i] = e.data.data[i]
-          }
-          console.log(that)
-          if (e.data.data.length === 0) {
-            wx.showModal({
-              title: '提示',
-              content: '暂无课程，请创建课程',
-              success(e) {
-                if (e.confirm === true) {
-                  wx.navigateTo({url: './classCreat'})
-                }
-              }
-            })
-          } else {
-            that.$apply()
-          }
-        })
-        .catch(function(e) {
-          app.modal(
-            e.message,
-            '错误!错误提示是：',
-            '确定'
-          )
-        })
+    onLoad(e) {
+      console.log(e)
+      this.courseName = e.courseName
+      this.idCourse = e.idCourse
+      this.$apply()
     }
   }
 </script>
