@@ -194,7 +194,7 @@ export default class signinChoose extends wepy.page {
               idSignin: that.list[0].pages[id].idSignin
             }
             app
-              .request('delSignin', delData, 'loading')
+              .request('Signin.delSignin', delData, 'loading')
               .then(function(e) {
                 wx.navigateBack({})
               })
@@ -282,7 +282,7 @@ export default class signinChoose extends wepy.page {
       page: this.page
     }
     app
-      .request('getSigninList', postData, 'Loading')
+      .request('Signin.getCreatedSigninList', postData, 'Loading')
       .then(function(e) {
         if (e.data['signinInfo'].length === 0) {
           wx.showToast({

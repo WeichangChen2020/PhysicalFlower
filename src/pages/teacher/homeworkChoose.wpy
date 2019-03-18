@@ -100,8 +100,8 @@
   <radio-group name="chapter">
   <block wx:for="{{chapterInfo}}" wx:item= "item" wx:key="*this">
     <view>
-    <radio class="icont" value="{{item.idQuestionChapter}}"></radio>
-    {{item.nameChapter}}
+      <radio class="icont" value="{{item.idQuestionChapter}}"></radio>
+      {{item.nameChapter}}
     </view>
   </block>
   <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px' plain form-type='submit'>选择章节</button>
@@ -154,28 +154,19 @@
 
     // 页面的生命周期函数
     onLoad(e) {
-      console.log(e.idQuestionSet)
-      if (e.idQuestionSet !== undefined) {
-        this.idQuestionSet = e.idQuestionSet
-      }
-      // wx.showModal({
-      //   title: '注意',
-      //   content: '默认是大物上的章节哦，需要更改请选择',
-      //   cancel: false
-      // })
       var that = this
       this.idCourse = e.idCourse
       this.courseName = e.courseName
       let app = that.$parent
       var delData = {
-        idQuestionSet: that.idQuestionSet
+        idCourse: that.idCourse
       }
       app
-        .request('Course.getChapterList', delData, 'loading')
+        .request('Question.getChapterList', delData, 'loading')
         .then(function(e) {
           console.log(e)
           if (e.data.errCode === 0) {
-            that.chapterInfo = e.data.chapterInfo
+            that.chapterInfo = e.data.data
             that.$apply()
           } else {
             wx.showToast({

@@ -136,7 +136,7 @@
             submitImg3: ''
           }
           app
-            .request('submitHomework', delData, 'loading')
+            .request('Homework.submitHomework', delData, 'loading')
             .then(function(e) {
               console.log(e)
             })
@@ -215,7 +215,7 @@
         idHomework: this.idHomework
       }
       app
-        .request('getHomeworkDetails', delData, 'loading')
+        .request('Homework.getHomeworkDetail', delData, 'loading')
         .then(function(e) {
           console.log(e)
           if (e.data.errCode === 0) {

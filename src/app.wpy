@@ -201,7 +201,7 @@ export default class extends wepy.app {
         cancelText: '取消',
         cancelColor: '',
         confirmText: confirmText || '好的',
-        confirmColor: Color,
+        confirmColor: Color || '#000000',
         success: function (res) {
           if (res.confirm) resolve(res)
           else reject(res)

@@ -59,7 +59,7 @@
         idCourse: this.idCourse
       }
       app
-        .request('getHomeworkList', delData, 'loading')
+        .request('Homework.getHomeworkList', delData, 'loading')
         .then(function(e) {
           // console.log('e', e)
           if (e.data.errCode === 0) {
