@@ -130,7 +130,7 @@
           var that = this
           let app = that.$parent
           var delData = {
-            idHomeworkDetail: parseInt(this.homeworkInfo[e.currentTarget.id].idHomeworkDetail),
+            idHomeworkItems: parseInt(this.homeworkInfo[e.currentTarget.id].idHomeworkItems),
             submitImg1: this.files[e.currentTarget.id],
             submitImg2: '',
             submitImg3: ''
@@ -215,14 +215,14 @@
         idHomework: this.idHomework
       }
       app
-        .request('Homework.getHomeworkDetail', delData, 'loading')
+        .request('Homework.getHomeworkItems', delData, 'loading')
         .then(function(e) {
           console.log(e)
           if (e.data.errCode === 0) {
-            that.homeworkInfo = e.data.homeworkInfo
+            that.homeworkInfo = e.data.data
             for (let i = 0; i < e.data.count; i++) {
               wx.getImageInfo({
-                src: e.data.homeworkInfo[i].img,
+                src: e.data.data[i].img,
                 success(e) {
                   // console.log(e)
                   that.homeworkInfo[i].height = e.height
