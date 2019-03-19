@@ -46,6 +46,7 @@ width:100rpx;
 height:100rpx;
 margin-left:10rpx;
 }
+
 </style>
 <template>
   <view class='head'>

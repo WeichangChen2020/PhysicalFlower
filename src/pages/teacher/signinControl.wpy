@@ -305,23 +305,23 @@
         idSignin: this.idSignin
       }
       app
-        .request('getClassSigninInfo', idData, 'loading')
+        .request('Signin.getCreatedSigninList', idData, 'loading')
         .then(function(e) {
           // console.log(e)
-          for (let i = 0; i < e.data.classStuSigninInfo.length; i++) {
-            that.studentInfo[i] = e.data.classStuSigninInfo[i]
-            if (e.data.classStuSigninInfo[i].check === 0) {
+          for (let i = 0; i < e.data.data.length; i++) {
+            that.studentInfo[i] = e.data.data[i]
+            if (e.data.data[i].check === 0) {
               that.studentInfo[i].check = '未签到'
               that.studentInfo[i].check_color = 'red'
-            } else if (e.data.classStuSigninInfo[i].check === 1) {
+            } else if (e.data.data[i].check === 1) {
               that.studentInfo[i].check = '已签到'
               that.studentInfo[i].check_color = 'green'
-            } else if (e.data.classStuSigninInfo[i].check === 2) {
+            } else if (e.data.data[i].check === 2) {
               that.studentInfo[i].check = '补签'
               that.studentInfo[i].check_color = 'yellow'
             }
           }
-          // that.studentInfo = e.data.classStuSigninInfo
+          // that.studentInfo = e.data.data
           that.$apply()
           // console.log(that.studentInfo[0]['name'])
         })

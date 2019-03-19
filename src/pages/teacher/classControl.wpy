@@ -22,11 +22,11 @@
   border-radius: 98rpx;
   border: 0;
 }
-.head{
-  padding:13rpx;
-  text-align:center;
-  color:#777;
-  font-size:36rpx;
+.folder-container .folder-header {
+height:50px
+}
+.font-14 {
+font-size:20px;
 }
 </style>
 <template>
