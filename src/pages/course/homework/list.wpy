@@ -1,16 +1,21 @@
 <style type="less">
 </style>
 <template>
+  <tab @bindChange.user="change"/>
   <!-- 只显示10条数据,下拉加载更多 -->
-  <block wx:for="{{homeworkInfo}}" wx:item="item" wx:key="*this">
-        <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{index}}'>
-            <view class="weui-cell__bd" style="display:flex;justify-content:space-between"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
-            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-        </view>
-    </block>
+  <block wx:if="{{tab.selectedId === 2 ? false : true}}" wx:for="{{homeworkInfo}}" wx:item="item" wx:key="*this">
+    <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{index}}'>
+      <view class="weui-cell__bd" style="display:flex;justify-content:space-between"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </view>
+  </block>
+  <view wx:if="{{tab.selectedId === 1 ? false : true}}">
+    <view>互评列表</view>
+  </view>
 </template>
 <script>
   import wepy from 'wepy'
+  import Tab from '@/components/tab/index'
 
   // 通过继承自wepy.page的类创建页面逻辑
   export default class List extends wepy.page {
@@ -18,23 +23,35 @@
     data = {
       homeworkInfo: [
       ],
-      idCourse: ''
+      idCourse: '',
+      tab: {
+        list: [{id: 1, title: '提交作业'}, {id: 2, title: '互评'}],
+        selectedId: 1,
+        class: 'tab-success'
+      }
+    };
+    components = {
+      tab: Tab
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       tap (e) {
         let tid = e.currentTarget.id
-        // console.log(e.currentTarget.id)
-        // console.log(this.homeworkInfo)
         wx.navigateTo({
           url: this.homeworkInfo[tid].url
         })
+      },
+      change (res) {
+        // TODO 互评tab
+        this.tab.selectedId = res
+        this.$apply()
       }
     };
 
     // 页面的生命周期函数
     onLoad(e) {
+      this.$invoke('tab', 'doInitTabData', this.tab)
       var that = this
       // console.log(e)
       this.idCourse = e.idCourse
