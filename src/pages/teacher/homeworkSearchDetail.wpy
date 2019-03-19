@@ -43,7 +43,7 @@
         // idUser: parseInt(this.idUser)
       }
       app
-        .request('getHomeworkDetails', delData, 'loading')
+        .request('Homework.getHomeworkDetail', delData, 'loading')
         .then(function(e) {
           that.homeworkInfo = e.data.homeworkInfo
           for (let i = 0; i < that.homeworkInfo.length; i++) {

@@ -170,7 +170,7 @@
               radius: this.inputValue
             }
             app
-            .request('manageSignin', idData, 'loading')
+            .request('Signin.manageSignin', idData, 'loading')
             .then(function(e) {
               console.log(e)
               if (e.data.errCode === 0) {

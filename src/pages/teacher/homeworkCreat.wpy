@@ -88,23 +88,17 @@
   <form @submit= "form1">
   <checkbox-group name="questionId" >
     <!-- TODO 这里应该做个懒加载 -->
-  <block wx:for="{{questionInfo}}" wx:for-item="page" wx:key="*this">
-    <view style="display:flex;margin-left:8px;margin-right:8px;border-bottom:1px solid #ccc;margin-bottom:15px;margin-top:15px;">
-    <checkbox class="icont" value="{{page.idQues}}"></checkbox>
-    <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px"/>
-    </view>
-  </block>
   <view class='fake' style="border-top:1px solid #ccc;border-bottom:1px solid #ccc">
       <picker
         mode="date"
-        value="{{date}}"
+        value="{{a}}"
         start="1900-09-01"
         end="{{now_date}}"
         bindchange="bindDateChange"
       >
       <view style='display:flex'>
         <view class="fake_title">
-          <view style='color:red;margin-right:3px;left:0px'></view>截止时间:</view><view class='fake_picker' style="color:{{date === '请选择截止日期'?'gray':'#333'}};font-size:12px">{{date}}</view>
+          <view style='color:red;margin-right:3px;left:0px'></view>截止时间:</view><view class='fake_picker' style="color:{{a === '请选择截止日期'?'gray':'#333'}};font-size:12px">{{a}}</view>
           </view>
       </picker>
 
@@ -121,7 +115,13 @@
       </picker>
     </view>
 
-  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px' plain form-type='submit'>提交</button>
+    <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px' plain form-type='submit'>提交</button>
+    <block wx:for="{{questionInfo}}" wx:for-item="page" wx:key="*this">
+      <view style="display:flex;margin-left:8px;margin-right:8px;border-bottom:1px solid #ccc;margin-bottom:15px;margin-top:15px;">
+      <checkbox class="icont" value="{{page.idQues}}"></checkbox>
+      <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px"/>
+      </view>
+    </block>
   </checkbox-group>
   </form>
 </template>
@@ -132,46 +132,53 @@
   export default class homeworkCreat extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
-      questionInfo: [],
+      questionInfo: {},
       idQuestionChapter: 0,
       chooseLength: 0,
       gmtEnd: 0,
       idQues: {},
       idCourse: 0,
       now_date: '2100-02-25',
-      date: '请选择截止日期',
-      time: '请选择截止时间'
+      a: '请选择截止日期',
+      time: '请选择截止时间',
+      page: 0,
+      haveMore: true
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       form1(e) {
-        var that = this
-        this.chooseLength = e.detail.value.questionId.length
-        for (let i = 0; i < this.chooseLength; i++) {
-          this.idQues[i] = {}
-          this.idQues[i] = parseInt(e.detail.value.questionId[i])
-          // this.idQues['"' + i + '"'] = parseInt(e.detail.value.questionId[i])
+        let app = this.$parent
+        let that = this
+        this.idQues = e.detail.value.questionId
+        if (this.idQues.length === 0) {
+          app.toast('至少选择1题')
+          return
         }
-        console.log('0', this.idQues['0'])
-        var vag = this.date + '-' + this.time
+        var vag = this.a + '-' + this.time
         var gmtTime = new Date(vag.replace(/-/g, '/')).getTime()
-        let app = that.$parent
         var delData = {
           gmtEnd: gmtTime / 1000,
           length: this.chooseLength,
-          idQues: this.idQues,
+          idQuesList: this.idQues,
           idCourse: parseInt(that.idCourse)
         }
+        if (isNaN(delData.gmtEnd)) {
+          app.toast('检查截止时间')
+          return
+        }
         app
-          .request('arrangeHomework', delData, 'loading')
+          .request('Homework.createHomework', delData, 'loading')
           .then(function(e) {
-            console.log(e)
-            wx.showToast({
-              title: '发布成功',
-              icon: 'none'
-            })
-            wx.navigateBack({})
+            if (e.data.errCode === 0) {
+              wx.showToast({
+                title: '发布成功',
+                icon: 'none'
+              })
+              wx.navigateBack({})
+            } else {
+              throw (new Error(e.data.msg))
+            }
           })
           .catch(function(e) {
             app.modal(
@@ -182,7 +189,7 @@
           })
       },
       bindDateChange(e) {
-        this.date = e.detail.value
+        this.a = e.detail.value
       },
       bindTimeChange(e) {
         this.time = e.detail.value
@@ -191,46 +198,68 @@
 
     // 页面的生命周期函数
     onLoad(e) {
-      console.log(e)
       this.idCourse = e.idCourse
-      var that = this
       this.idQuestionChapter = e.chapter
-      let app = that.$parent
-      var delData = {
-        idQuestionChapter: this.idQuestionChapter
-      }
-      app
-        .request('getChapterQuestionList', delData, 'loading')
-        .then(function(e) {
-          if (e.data.errCode === 0) {
-            that.questionInfo = e.data.questionInfo
-            for (let i = 0; i < e.data.questionInfo.length; i++) {
-              wx.getImageInfo({
-                src: that.questionInfo[i].img,
-                success(e) {
-                  // console.log(e)
-                  that.questionInfo[i].height = e.height
-                  that.questionInfo[i].width = e.width
-                  that.$apply()
-                }
-              })
-            }
-            // console.log(that.questionInfo)
-          } else {
-            wx.showModal({
-              title: '注意',
-              content: '网络开小差了'
-            })
-          }
-        })
-        .catch(function(e) {
-          app.modal(
-            e.message,
-            '错误!错误提示是：',
-            '确定'
-          )
-        })
-      this.$apply()
+      this.getQuestionList(this.page, this.idQuestionChapter)
     };
+    onReachBottom() {
+      if (this.haveMore) {
+        this.getQuestionList(this.page, this.idQuestionChapter)
+      }
+    };
+    getQuestionList(page, idQuestionChapter) {
+      this.page = this.page + 1
+      let app = this.$parent
+      let that = this
+      let tmp = {}
+      let delData = {
+        idQuestionChapter: 8,
+        page: that.page
+      }
+      app.request('Question.getQuestionListByIdChapter', delData, 'loading')
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          tmp = res.data.data
+          if (res.data.data.length !== 15) {
+            that.haveMore = false
+          }
+        } else if (res.data.errCode === 102) {
+          that.haveMore = false
+        } else {
+          wx.showModal({
+            title: '注意',
+            content: '网络开小差了'
+          })
+        }
+        for (let i = 0; i < tmp.length; i++) {
+          wx.getImageInfo({
+            src: tmp[i].img,
+            success(e) {
+              tmp[i].height = e.height
+              tmp[i].width = e.width
+            }
+          })
+        }
+        app.toast('加载中', 'loading', true)
+      })
+      .then(() => {
+        that.$apply()
+      })
+      .then(() => {
+        if (that.questionInfo.length === undefined) {
+          that.questionInfo = tmp
+        } else {
+          that.questionInfo = Array.prototype.concat.apply(that.questionInfo, tmp)
+        }
+      })
+      .catch(function(e) {
+        app.modal(
+          e.message,
+          '错误!错误提示是：',
+          '确定'
+        )
+      })
+      this.$apply()
+    }
   }
 </script>

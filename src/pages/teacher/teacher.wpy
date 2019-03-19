@@ -54,7 +54,7 @@ margin-left:10rpx;
 
 </view>
 
-<view wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-count="{{item.count}}">
+<view wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
   <image src='{{item.logo}}' class='icon' />
   <view class='contain'>
     <view class='title'>课程名称：{{item.courseName}}</view>
@@ -86,6 +86,8 @@ margin-left:10rpx;
         this.$navigate('./classCreate')
       },
       tap(e) {
+        console.log(e)
+        console.log(this.data)
         let that = this
         that.$navigate('./classControl?idCourse=' + e.currentTarget.dataset.idcourse + '&courseName=' + e.currentTarget.dataset.coursename + '&count=' + e.currentTarget.dataset.count)
       }
@@ -114,30 +116,10 @@ margin-left:10rpx;
       })
     };
     onShow() {
-      // let app = this.$parent
-      // var that = this
-      // var courseDATA = {
-      // }
-      // app.request('Course.getCreatedCourseList', courseDATA, '请稍等...')
-      // .then((res) => {
-      //   that.courseInfo = res.data.data
-      //   that.$apply()
-      //   console.log(that.courseInfo)
-      //   if (res.data.errCode === 0) {
-      //     // app.toast('获取课程列表成功')
-      //   } else {
-      //     app.toast('请先登录')
-      //   }
-      // })
-      // .catch(function(error) {
-      //   console.error(error)
-      //   app.modal(error.message, '错误!错误提示是：', '确定')
-      // })
     };
     onPullDownRefresh() {
       this.onLoad()
       wx.stopPullDownRefresh()
-      console.log('pulldown')
     }
   }
 </script>

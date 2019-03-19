@@ -23,7 +23,7 @@
   border: 0;
 }
 .head{
-  padding:30rpx;
+  padding:13rpx;
   text-align:center;
   color:#777;
   font-size:36rpx;

@@ -53,7 +53,7 @@
         idHomework: this.idHomework
       }
       app
-        .request('getStuHomeworkList', delData, 'loading')
+        .request('Homework.getHomeworkList', delData, 'loading')
         .then(function(e) {
           console.log(e)
           that.homeworkInfo = e.data.homeworkInfo
