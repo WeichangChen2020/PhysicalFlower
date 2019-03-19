@@ -215,7 +215,7 @@
         idHomework: this.idHomework
       }
       app
-        .request('Homework.getHomeworkItems', delData, 'loading')
+        .request('Homework.getHomeworkQues', delData, 'loading')
         .then(function(e) {
           console.log(e)
           if (e.data.errCode === 0) {
