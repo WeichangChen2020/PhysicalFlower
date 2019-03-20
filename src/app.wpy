@@ -231,8 +231,19 @@ export default class extends wepy.app {
     }, 1800)
   }
 
-  formatDate(inputTime) {
-    return new Date(parseInt(inputTime) * 1000).toLocaleString().replace(/\//g, '-').replace(/日/g, '')
-  }
+//   dateTime(unixtime) {
+//     var dateTime = new Date(parseInt(unixtime) * 1000)
+//     var year = dateTime.getFullYear()
+//     var month = dateTime.getMonth() + 1
+//     var day = dateTime.getDate()
+//     var hour = dateTime.getHours()
+//     var minute = dateTime.getMinutes()
+//     // var second = dateTime.getSeconds()
+//     var now = new Date()
+//     // var nowNew = Date.parse(now.toDateString())  //pescript转换写法
+//     // var milliseconds = nowNew - dateTime
+//     var timeSpanStr = year + '-' + month + '-' + day + ' ' + hour + ':' + minute
+//     return timeSpanStr
+// }
 }
 </script>

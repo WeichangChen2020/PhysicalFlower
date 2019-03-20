@@ -2,19 +2,9 @@
 .greeting {
   font-size: 14px;
   color: gray;
-  margin: 20rpx 0 20rpx 20rpx;
+  margin: 20rpx 0 10rpx 20rpx;
 }
-.input {
-  margin-top: 30rpx;
-  border-bottom: #ddd solid 2rpx;
-}
-.greetingc {
-  font-size: 14px;
-  color: gray;
-  margin: 20rpx 0 20rpx 20rpx;
-  display: flex;
-  justify-content: center;
-}
+
 .border {
   display: flex;
   flex-direction: column;
@@ -28,311 +18,304 @@
   color: #b95;
   padding: 20rpx 20rpx 40rpx 20rpx;
 }
-.divide{
-  border-bottom: 1px solid #ccc
+
+.weui-flex {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
 }
-.tag{
-  margin-right:10px;
+
+.weui-cells {
+  margin-top: 0;
+  opacity: 0;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
 }
-.list {
-  color: #808080;
+
+.weui-cells:after, .weui-cells:before {
+  display: none;
 }
-.bold {
-  font-weight: bold;
+
+.weui-cells_show {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+}
+
+.weui-cell:before {
+  right: 15px;
+}
+
+.kind-list__item {
+  margin: 10px 0;
+  background-color: #fff;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.kind-list__item:first-child {
+  margin-top: 0;
+}
+
+.kind-list__img {
+  width: 30px;
+  height: 30px;
+}
+
+.kind-list__item-hd {
+  padding: 20px;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+}
+
+.kind-list__item-hd_show {
+  opacity: 0.4;
+}
+
+.kind-list__item-bd {
+  height: 0;
+  overflow: hidden;
+}
+
+.kind-list__item-bd_show {
+  height: auto;
+}
+button::after{
+
+border: none;
+
+}
+
+button{
+
+background-color: #fff;
+align-content: center;
+text-align: left;
+font-size: 15px;
+line-height: auto
+
 }
 </style>
 <template>
-	<view>
-    <text class="greetingc">{{signinName}}</text>
-      <view class="divide">
-          <picker
-                mode="time"
-                value="{{time}}"
-                start="00:00"
-                end="24:00"
-                bindchange="bindTimeChange"
-              >
-              <text class="greeting" style="font-size:16px">
-                签到截止时间：<text style="font-size:13px">{{time}}</text>
-              </text>
-          </picker>
-        <view style="margin-bottom:10px"></view>
-        <input class='input' placeholder='输入签到范围:' maxlength="5" bindinput='bindKeyInput' />
-        <button class="greeting" @tap="submitChange">提交修改</button>
+  <view class="page__bd page__bd_spacing">
+      <view class="kind-list">
+          <block wx:for="{{list}}" wx:key="*this">
+              <view class="kind-list__item">
+                  <view id="{{item.id}}" class="weui-flex kind-list__item-hd {{item.open ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle">
+                      <view class="weui-flex__item">{{item.name}}</view>
+                      <image class="kind-list__img" src="../../public/images/icon_nav_select.png"></image>
+                  </view>
+                  <view class="kind-list__item-bd {{item.open ? 'kind-list__item-bd_show' : ''}}">
+                      <view class="weui-cells {{item.open ? 'weui-cells_show' : ''}}">
+                          <block wx:for="{{item.pages}}" wx:for-item="page" wx:key="*this">
+                              <button id="{{index}}"  class="weui-cell weui-cell_access" bindtap='control' bindlongpress='cancel' bindtouchend="touchEnd">
+                                  <view class="weui-cell__bd" style="display:flex;justify-content:space-between"><view>{{page.name}}</view><view style="font-size:11px;color:{{page.state =='进行中' ?'green':'#ccc'}}">{{page.state}}</view></view>
+                                  <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+                              </button>
+                          </block>
+                      </view>
+                  </view>
+              </view>
+          </block>
       </view>
-	</view>
-  <view>
-    <textarea class="greeting" style="font-size:16px">签到情况如下：</textarea>
-     <view class="page__bd">
-        <view class="weui-grids">
-            <block wx:for="{{studentInfo}}" wx:for-item="page" wx:key="*this">
-              <view class="weui-grid" hover-class="weui-grid_active" @tap="showActionSheet(1)" data-id="{{index}}">
-                    <view class="weui-grid__label" >{{page['name']}}</view>
-                    <view class="weui-grid__label" style="font-size:10px;color:{{page['check_color']}}">{{page['check']}}</view>
-                    <repeat for="{{asData}}" index="i" item="item" key="row-{{index}}">
-                      <actionsheet :asData.sync="item"></actionsheet>
-                    </repeat>
-                </view>
-            </block>
-        </view>
-    </view>
   </view>
+
 
 </template>
 <script>
-  import wepy from 'wepy'
-  import actionsheet from '@/components/actionsheet/index'
-  // 通过继承自wepy.page的类创建页面逻辑
-  export default class signinControl extends wepy.page {
-    config ={
-      window: {
-        backgroundTextStyle: 'light',
-        navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: '管理签到',
-        navigationBarTextStyle: 'black'
-      }
-    }
-    components = {
-      actionsheet: actionsheet
-    }
-  
-    // 可用于页面模板绑定的数据
-    data = {
-      dated: '',
-      submitchangeFlag: 1,
-      id: 0,
-      studentInfo: [],
-      time: '23:01',
-      i_url: ['/public/images/empty.png'],
-      idCourse: '',
-      courseName: '',
-      signinName: '',
-      inputValue: '',
-      idSignin: 0,
-      gmtEnd: 0,
-      asData: [
-        {
-          top: true,
-          index: 0,
-          show: false
-        },
-        {
-          itemList: [{
-            value: '补签',
-            event: 'addSignin'
-          },
-          {
-            value: '撤销签到',
-            event: 'delSignin'
-          }],
-          index: 1,
-          show: false
-        }
-      ]
+import wepy from 'wepy'
 
-    };
-    // 事件处理函数(集中保存在methods对象中)
-    methods = {
-      showActionSheet (i, e) {
-        // console.log(e)
-        this.id = e.currentTarget.dataset.id
-        this.asData.map((r, i) => {
-          r.show = false
-        })
-        this.asData[i].show = true
-      },
-      bindTimeChange(e) {
-        if (e.detail.value !== this.time) {
-          this.time = e.detail.value
-          let timestamp = Date.parse(new Date())
-          let date = new Date(timestamp)
-          // 获取月份
-          let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1)
-          // 获取当日日期
-          let D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
-          this.dated = new Date().getFullYear() + '-' + M + '-' + D + ' ' + e.detail.value
-          this.dated = new Date(this.dated.replace(/-/g, '/')).getTime()
-          this.submitchangeFlag = 0
+// 通过继承自wepy.page的类创建页面逻辑
+export default class signinChoose extends wepy.page {
+  config = {
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: '管理签到',
+      navigationBarTextStyle: 'black'
+    }
+  };
+  // 可用于页面模板绑定的数据
+  data = {
+    list: [
+      {
+        id: '1',
+        name: '1XXXXX班级',
+        open: false,
+        pages: []
+      }
+    ],
+    idCourse: '',
+    courseName: '',
+    lock: false,
+    page: 1,
+    lastPage: 0
+  };
+
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+    kindToggle(e) {
+      var id = e.currentTarget.id
+      var list = this.data.list
+      for (var i = 0, len = list.length; i < len; ++i) {
+        if (list[i].id === id) {
+          list[i].open = !list[i].open
         } else {
-          this.time = e.detail.value
+          list[i].open = false
         }
-      },
-      submitChange(e) {
-        if (this.submitchangeFlag === 0 && this.inputValue !== null) {
-          var veg = /^\+?[1-9][0-9]*$/
-          var isRight = veg.test(parseInt(this.inputValue))
-          if (isRight === true) {
-            let app = this.$parent
-            var that = this
-            let idData = {
-              idSignin: this.idSignin,
-              gmtEnd: (this.dated / 1000),
-              radius: this.inputValue
+      }
+      this.setData({
+        list: list
+      })
+    },
+    control(e) {
+      var that = this
+      setTimeout(function() {
+        if (this.lock) {
+        } else {
+          that.$navigate(that.list[0].pages[e.target.id].url)
+        }
+      }, 300)
+    },
+    cancel(e) {
+      // 锁住
+      this.lock = true
+      var that = this
+      let id = e.target.id
+      wx.showModal({
+        title: '提示',
+        content: '确定删除该签到吗',
+        success(e) {
+          if (e.confirm === true) {
+            let app = that.$parent
+            var delData = {
+              idSignin: that.list[0].pages[id].idSignin
             }
             app
-            .request('Signin.manageSignin', idData, 'loading')
-            .then(function(e) {
-              console.log(e)
-              if (e.data.errCode === 0) {
-                wx.showToast({
-                  title: '修改成功'
-                })
-                that.submitchangeFlag = that.submitchangeFlag + 1
-              } else {
-                wx.showToast({
-                  title: '修改失败',
-                  icon: 'none'
-                })
-              }
-            })
-          } else {
-            wx.showModal({
-              title: '注意',
-              content: '注意您的精度格式'
-            })
+              .request('Signin.delSignin', delData, 'loading')
+              .then(function(e) {
+                wx.navigateBack({})
+              })
+              .catch(function(e) {
+                app.modal(
+                  e.message,
+                  '错误!错误提示是：',
+                  '确定'
+                )
+              })
           }
-        } else if (this.inputValue === null) {
-          wx.showToast({
-            title: '请输入精度',
-            icon: 'none'
-          })
-        } else if (this.inputValue !== null && this.submitchangeFlag === 1) {
-          wx.showToast({
-            title: '请勿重复提交',
-            icon: 'none'
-          })
         }
-      },
-      bindKeyInput: function(e) {
-        if (e.detail.value !== this.inputValue) {
-          this.inputValue = e.detail.value
-          this.submitchangeFlag = 0
-        } else {
-          this.inputValue = e.detail.value
-        }
-      }
-    }
-
-    hideActionsheet (i) {
-      this.asData[i].show = false
-    }
-
-    events = {
-      'addSignin': function (i, index, close) {
-        let app = this.$parent
-        var that = this
-        let idData = {
-          idUser: that.studentInfo[this.id].idUser,
-          idSignin: this.idSignin
-        }
-        app
-          .request('substitudeSignin', idData, 'loading')
-          .then(function(e) {
-            console.log(e)
-            if (e.data.errCode === 0) {
-              wx.showToast({
-                title: '补签成功'
-              })
-              that.onLoad({gmtEnd: that.gmtEnd, idCourse: that.idCourse, idSignin: that.idSignin, signinName: that.signinName})
-            } else if (e.data.msg === 'user has already doSignin!') {
-              wx.showToast({
-                title: '学生已签到',
-                icon: 'none'
-              })
-            } else {
-              wx.showToast({
-                title: '补签失败请重试',
-                icon: 'none'
-              })
-            }
-          })
-          .catch(function(e) {
-            app.modal(
-              e.message,
-              '错误!错误提示是：',
-              '确定'
-            )
-          })
-        this.hideActionsheet(i)
-      },
-      'delSignin': function (i, index, close) {
-        let app = this.$parent
-        var that = this
-        let idData = {
-          idUser: that.studentInfo[this.id].idUser,
-          idSignin: this.idSignin
-        }
-        app
-          .request('delSigninRecord', idData, 'loading')
-          .then(function(e) {
-            console.log(e)
-            if (e.data.errCode === 0) {
-              wx.showToast({
-                title: '撤销签到成功'
-              })
-              that.onLoad({gmtEnd: that.gmtEnd, idCourse: that.idCourse, idSignin: that.idSignin, signinName: that.signinName})
-            } else {
-              wx.showToast({
-                title: '撤销失败，请重试',
-                icon: 'fail'
-              })
-            }
-          })
-          .catch(function(e) {
-            app.modal(
-              e.message,
-              '错误!错误提示是：',
-              '确定'
-            )
-          })
-        this.hideActionsheet(i)
-      }
-    }
-
-    // 页面的生命周期函数
-    onLoad(e) {
-      // console.log('', e)
-      var timeTrans = new Date(parseInt(e.gmtEnd) * 1000)
-      this.time = timeTrans.toLocaleTimeString('chinese', {hour12: false}).slice(0, 5)// 去除毫秒数
-      this.gmtEnd = e.gmtEnd
-      this.idCourse = e.idCourse
-      this.signinName = e.signinName
-      this.idSignin = e.idSignin
-      let app = this.$parent
-      var that = this
-      let idData = {
-        idCourse: this.idCourse,
-        idSignin: this.idSignin
-      }
-      app
-        .request('Signin.getCreatedSigninList', idData, 'loading')
-        .then(function(e) {
-          // console.log(e)
-          for (let i = 0; i < e.data.data.length; i++) {
-            that.studentInfo[i] = e.data.data[i]
-            if (e.data.data[i].check === 0) {
-              that.studentInfo[i].check = '未签到'
-              that.studentInfo[i].check_color = 'red'
-            } else if (e.data.data[i].check === 1) {
-              that.studentInfo[i].check = '已签到'
-              that.studentInfo[i].check_color = 'green'
-            } else if (e.data.data[i].check === 2) {
-              that.studentInfo[i].check = '补签'
-              that.studentInfo[i].check_color = 'yellow'
-            }
-          }
-          // that.studentInfo = e.data.data
-          that.$apply()
-          // console.log(that.studentInfo[0]['name'])
-        })
-        .catch(function(e) {
-          app.modal(
-            e.message,
-            '错误!错误提示是：',
-            '确定'
-          )
-        })
+      })
       this.$apply()
-    };
+    },
+    touchEnd: function(e) {
+      if (this.data.lock) {
+      // 开锁
+        setTimeout(function() {
+          this.lock = false
+        }, 100)
+      }
+      this.$apply()
+    }
+  };
+
+  // 页面的生命周期函数
+  onLoad(e) {
+    // console.log(e)
+    this.idCourse = e.idCourse
+    this.courseName = e.courseName
+    var app = this.$parent
+    var that = this
+    let postData = {
+      idCourse: that.idCourse,
+      page: this.page
+    }
+    let UL_DATA = {
+      'postData': postData
+    }
+    app
+      .request('Signin.getCreatedSigninList', UL_DATA, 'Loading')
+      .then(function(e) {
+        console.log(e)
+        if (e.data.data.length === 0) {
+          wx.showToast({
+            title: '我是有底线的'
+          })
+        } else {
+          that.list[0].name = that.courseName
+          // console.log(e.data.data)
+          var timestamp = (new Date()).getTime()
+          for (var i = 0; i < e.data.data.length; i++) {
+            that.list[0].pages[i] = e.data.data[i]
+            if (e.data.data[i].gmtEnd > (timestamp / 1000)) {
+              that.list[0].pages[i].state = '进行中'
+            } else {
+              that.list[0].pages[i].state = '已结束'
+            }
+            that.list[0].pages[i].idSignin = e.data.data[i].idSignin
+            that.list[0].pages[i].name = e.data.data[i].signinName
+            that.list[0].pages[i].url = './signinControl?idCourse=' + e.data.data[i].idCourse + '&idSignin=' + e.data.data[i].idSignin + '&gmtEnd=' + e.data.data[i].gmtEnd + '&signinName=' + e.data.data[i].signinName
+          }
+          that.lastPage = i
+          that.$apply()
+        }
+      },
+      function(e) {
+        app.modal(
+          e.message,
+          '错误!错误提示是：',
+          '确定'
+        )
+      })
   }
+  onShow() {
+    this.onLoad({courseName: this.courseName, idCourse: this.idCourse})
+  }
+  onReachBottom(e) {
+    this.page = this.page + 1
+    var app = this.$parent
+    var that = this
+    let postData = {
+      idCourse: that.idCourse,
+      page: this.page
+    }
+    app
+      .request('Signin.getCreatedSigninList', postData, 'Loading')
+      .then(function(e) {
+        if (e.data.data.length === 0) {
+          wx.showToast({
+            title: '我是有底线的'
+          })
+        } else {
+          // console.log(e)
+          that.list[0].name = that.courseName
+          // console.log(e.data.data)
+          var timestamp = (new Date()).getTime()
+          for (var i = that.lastPage, j = 0; i < that.lastPage + e.data.data.length; i++, j++) {
+            // console.log(i)
+            that.list[0].pages[i] = e.data.data[j]
+            if (e.data.data[j].gmtEnd > (timestamp / 1000)) {
+              that.list[0].pages[i].state = '进行中'
+            } else {
+              that.list[0].pages[i].state = '已结束'
+            }
+            that.list[0].pages[i].idSignin = e.data.data[j].idSignin
+            that.list[0].pages[i].name = e.data.data[j].signinName
+            that.list[0].pages[i].url = './signinControl?idCourse=' + e.data.data[j].idCourse + '&idSignin=' + e.data.data[j].idSignin + '&gmtEnd=' + e.data.data[j].gmtEnd + '&signinName=' + e.data.data[j].signinName
+          }
+          that.lastPage = i
+          that.$apply()
+        }
+      },
+      function(e) {
+        app.modal(
+          e.message,
+          '错误!错误提示是：',
+          '确定'
+        )
+      })
+  }
+}
 </script>

@@ -501,6 +501,7 @@ export default class signinCreat extends wepy.page {
             idCourse: this.idCourse,
             description: ''
           }
+          console.log(locationData)
           let UL_DATA = {
             'locationData': locationData
           }
@@ -511,8 +512,11 @@ export default class signinCreat extends wepy.page {
               wx.showToast({
                 title: '发布签到成功'
               })
+              console.log('s')
               wx.navigateBack({
+                delta: 2
               })
+              console.log('s')
             } else if (e.data.errCode === 4003) {
               that.flag[0] = 0
               wx.showModal({

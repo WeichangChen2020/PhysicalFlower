@@ -131,10 +131,10 @@ export default class classControl extends wepy.page {
           this.$navigate('./signinCreat?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
           break
         case '2':
-          this.$navigate('./signinControl?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+          this.$navigate('./signinChoose?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
           break
         case '3':
-          this.$navigate('./signinChoose?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+          this.$navigate('./signinControl?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
           break
         case '4':
           this.$navigate('./homeworkCreat?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
