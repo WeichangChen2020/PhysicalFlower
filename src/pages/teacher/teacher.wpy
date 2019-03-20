@@ -117,6 +117,7 @@ margin-left:10rpx;
       })
     };
     onShow() {
+      this.onLoad()
     };
     onPullDownRefresh() {
       this.onLoad()

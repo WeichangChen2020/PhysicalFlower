@@ -1,0 +1,222 @@
+<style type="less">
+.xxq{
+  margin-bottom: 5px;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-right: 15px;
+}
+.answer{
+  /* height: 250px; */
+  margin-left: 10px;
+  margin-right: 10px;
+}
+/* page {
+  background-color: #f2f2f2;
+} */
+
+.container1 {
+  background-color: white;
+}
+
+.input {
+  margin-top: 30rpx;
+  border-bottom: #ddd solid 2rpx;
+}
+
+.img_hd {
+  width: 670rpx;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.greeting {
+  font-size: 14px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+}
+
+.border {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-width: 4rpx 0 4rpx 0;
+  border-style: solid;
+  border-color: #eee;
+  font-size: 30rpx;
+  line-height: 60rpx;
+  color: #b95;
+  padding: 20rpx 20rpx 40rpx 20rpx;
+}
+.subBtn {
+  border-radius: 60rpx;
+  font-size: 33rpx;
+  width: 490rpx;
+  height: 80rpx;
+}
+.subBtn:hover{
+  border-radius: 60rpx;
+  font-size: 33rpx;
+  width: 490rpx;
+  height: 80rpx;
+  background-color: rgb(243, 240, 240)
+}
+</style>
+<template>
+  <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
+  <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
+    <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this"> 
+      <!-- <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px;"/> -->
+      <image src="{{page.img}}" style="width:100%;margin-bottom:100rpx"/>
+      <block wx:if="{{index== 0 ? true:false}}">
+        <rate1 title="作业打分" :value.sync="value1" :desc="desc" />
+      </block>
+      <block wx:if="{{index== 1 ? true:false}}">
+        <rate2 title="作业打分" :value.sync="value2" :desc="desc" />
+      </block>
+      <block wx:if="{{index== 2 ? true:false}}">
+        <rate3 title="作业打分" :value.sync="value3" :desc="desc" />
+      </block>
+      <block wx:if="{{index== 3 ? true:false}}">
+        <rate4 title="作业打分" :value.sync="value4" :desc="desc" />
+      </block>
+
+      </view>
+        </view>
+          </view>
+        <!-- <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px' plain @tap="Submit" id="{{index}}">Submit</button> -->
+    </swiper-item>
+  </swiper>
+  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:200rpx;' plain @tap="Submit" id="{{index}}">Submit</button>
+</template>
+<script>
+  import wepy from 'wepy'
+  import Rate from '@/components/rate/index'
+  // 通过继承自wepy.page的类创建页面逻辑
+  export default class homeworkRecord extends wepy.page {
+    // 可用于页面模板绑定的数据
+    data = {
+      homeworkName: '课后作业名称',
+      idHomework: 0,
+      system_height: 500,
+      files: [],
+      havePic: [],
+      inputValue: '',
+      canvasWidth: '',
+      canvasHeight: '',
+      homeworkInfo: [
+        {'img': 'https://sanleisen.cn/photo/001.jpg', 'value': 1},
+        {'img': 'https://sanleisen.cn/photo/001.jpg', 'value': 0},
+        {'img': 'https://sanleisen.cn/photo/001.jpg', 'value': 0},
+        {'img': 'https://sanleisen.cn/photo/001.jpg', 'value': 0}
+      ],
+      state: '',
+      value1: 1,
+      value2: 2,
+      value3: 3,
+      value4: 4,
+      value5: 5,
+      desc: [
+        '1分', '2分', '3分', '4分', '5分'
+      ]
+
+    };
+    components = {
+      rate1: Rate,
+      rate2: Rate,
+      rate3: Rate,
+      rate4: Rate
+    }
+
+    // 事件处理函数(集中保存在methods对象中)
+    methods = {
+      Submit(e) {
+        // todo 提交答案到后台 提交files,为图片显示路径，到时候后台返回路径就可以用image组件查看
+        if (this.state === '已结束') {
+          wx.showToast({
+            title: '提交已经截至了哦',
+            icon: 'none'
+          })
+        } else {
+          var that = this
+          let app = that.$parent
+          var delData = {
+            idHomeworkItems: parseInt(this.homeworkInfo[e.currentTarget.id].idHomeworkItems),
+            submitImg1: this.files[e.currentTarget.id],
+            submitImg2: '',
+            submitImg3: ''
+          }
+          app
+            .request('Homework.submitHomework', delData, 'loading')
+            .then(function(e) {
+              console.log(e)
+            })
+            .catch(function(e) {
+              app.modal(
+                e.message,
+                '错误!错误提示是：',
+                '确定'
+              )
+            })
+        }
+      }
+    };
+
+    // 页面的生命周期函数
+    onLoad(e) {
+      // console.log(e)
+      // this.state = e.state
+      // this.idHomework = e.idHomework
+      // var that = this
+      // let app = that.$parent
+      // var delData = {
+      //   idHomework: this.idHomework
+      // }
+      // app
+      //   .request('Homework.getHomeworkQues', delData, 'loading')
+      //   .then(function(e) {
+      //     console.log(e)
+      //     if (e.data.errCode === 0) {
+      //       that.homeworkInfo = e.data.data
+      //       for (let i = 0; i < e.data.count; i++) {
+      //         wx.getImageInfo({
+      //           src: e.data.data[i].img,
+      //           success(e) {
+      //             // console.log(e)
+      //             that.homeworkInfo[i].height = e.height
+      //             that.homeworkInfo[i].width = e.width
+      //           }
+      //         })
+      //       }
+      //       that.$apply()
+      //     } else {
+      //       wx.showToast({
+      //         title: '网络开小差了',
+      //         icon: 'none'
+      //       })
+      //     }
+      //   })
+      //   .catch(function(e) {
+      //     app.modal(
+      //       e.message,
+      //       '错误!错误提示是：',
+      //       '确定'
+      //     )
+      //   })
+      wx.getSystemInfo({
+        success: function (e) {
+          this.system_height = e.windowHeight
+          this.$apply()
+        }
+      })
+      //   fail(e) {
+      //     wx.showmodal({
+      //       title: '注意',
+      //       content: '显示失败请下拉刷新重试'
+      //     })
+      //   }
+      // })
+    }
+  }
+</script>

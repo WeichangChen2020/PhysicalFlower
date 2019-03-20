@@ -75,6 +75,7 @@ s .flex-list:nth-child(4n) {
 }
 </style>
 <template>
+<canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-1000000px;top:-1000000px; "></canvas>
   <view class="kai-content">
   <view slot="title" class="greeting">填写课程名称</view>
   <view class='border'>
@@ -129,7 +130,11 @@ export default class classCreate extends wepy.page {
     uptokenURL: '',
     local: true,
     Description: '',
-    className: ''
+    className: '',
+    imageBase64: '',
+    canvasWidth: '',
+    canvasHeight: '',
+    iamgeType: ''
   }
   computed = {}
   methods = {
@@ -157,7 +162,7 @@ export default class classCreate extends wepy.page {
         var createData = {
           description: that.data.Description,
           courseName: that.data.className,
-          logo: that.data.imgList[0].url
+          logo: 'data:image/' + this.iamgeType + ';base64,' + this.imageBase64
         }
         console.log(createData)
         app.request('Course.createCourse', createData, '请稍等...')
@@ -204,11 +209,72 @@ export default class classCreate extends wepy.page {
   events = {
     // 上传图片成功回调
     'refresh-img-list': (data, test) => {
+      var that = this
       if (test) {
+        console.log('test', data)
+        wx.getImageInfo({
+          src: data,
+          success: function(res) {
+            // console.log('getImageInfo', res)
+            that.iamgeType = res.type
+            var ctx = wx.createCanvasContext('photo_canvas')
+            var ratio = 2
+            that.canvasWidth = res.width
+            that.canvasHeight = res.height
+            // onsole.log(that.data.canvasWidth, that.data.canvasHeight)
+            // 保证宽高均在200以内
+            while (
+              that.data.canvasWidth > 10000 ||
+              that.data.canvasHeight > 10000
+            ) {
+              // 比例取整
+              that.canvasWidth = Math.trunc(res.width / ratio)
+              that.canvasHeight = Math.trunc(res.height / ratio)
+              ratio++
+            }
+            ctx.drawImage(
+              res.path,
+              0,
+              0,
+              that.canvasWidth,
+              that.canvasHeight
+            )
+            ctx.draw()
+            setTimeout(function() {
+              wx.canvasToTempFilePath({
+                fileType: that.type,
+                quality: 0.5,
+                canvasId: 'photo_canvas',
+                success: function(res) {
+                  wx.getFileSystemManager().readFile({
+                    filePath: res.tempFilePath, // 选择图片返回的相对路径
+                    encoding: 'base64', // 编码格式
+                    success: res => {
+                      that.imageBase64 = res.data
+                      that.$apply()
+                    },
+                    fail: function(e) {
+                      console.log(e)
+                      console.log(that.data)
+                    }
+                  })
+                },
+                fail: function(error) {
+                  console.log('下载canvas失败')
+                  console.log(error)
+                }
+              })
+            }, 100)
+          },
+          fail: function(error) {
+            console.log(error)
+          }
+        })
         this.imgList.push({
           url: data
         })
       } else {
+        console.log(data)
         this.imgList.push({
           url: data.imageURL
         })

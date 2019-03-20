@@ -55,6 +55,7 @@ export default class extends wepy.app {
     // 最后需要对这些页面的顺序进行调整
     pages: [
       'pages/course/index',
+      'pages/course/homework/homeworkRecord',
       'pages/teacher/classControl',
       'pages/teacher/teacher',
       'pages/course/join',
