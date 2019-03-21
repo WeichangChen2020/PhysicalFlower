@@ -63,18 +63,18 @@
         .then(function(e) {
           // console.log('e', e)
           if (e.data.errCode === 0) {
-            var len = e.data.homeworkInfo
+            var len = e.data.data
             var timestamp = (new Date()).getTime()
             for (let i = 0, j = len.length - 1; i < len.length; i++, j--) {
-              that.homeworkInfo[i] = e.data.homeworkInfo[j]
-              var endTime = new Date(parseInt(e.data.homeworkInfo[j].gmtEnd) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
+              that.homeworkInfo[i] = e.data.data[j]
+              var endTime = new Date(parseInt(e.data.data[j].gmtEnd) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
               // console.log('end', endTime)
-              if (parseInt(e.data.homeworkInfo[j].gmtEnd) > (timestamp / 1000)) {
+              if (parseInt(e.data.data[j].gmtEnd) > (timestamp / 1000)) {
                 that.homeworkInfo[i].state = '进行中'
               } else {
                 that.homeworkInfo[i].state = '已结束'
               }
-              that.homeworkInfo[i].url = './homeworkSearch?idHomework=' + e.data.homeworkInfo[j].idHomework
+              that.homeworkInfo[i].url = './homeworkSearch?idHomework=' + e.data.data[j].idHomework
               that.homeworkInfo[i].name = endTime
             }
             that.$apply()

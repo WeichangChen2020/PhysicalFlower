@@ -5,13 +5,18 @@
   <!-- 只显示10条数据,下拉加载更多 -->
   <block wx:if="{{tab.selectedId === 2 ? false : true}}" wx:for="{{homeworkInfo}}" wx:item="item" wx:key="*this">
     <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{index}}'>
-      <view class="weui-cell__bd" style="display:flex;justify-content:space-between"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
+      <view class="weui-cell__bd" style="display:flex;justify-content:space-between;font-size:28rpx;"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </view>
   </block>
-  <view wx:if="{{tab.selectedId === 1 ? false : true}}">
-    <view>互评列表</view>
-  </view>
+    <block wx:if="{{tab.selectedId === 1 ? false : true}}">
+      <block  wx:for="{{accessInfo}}" wx:item="item" wx:key="*this">
+    <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{index}}' wx:if="{{item.state == '已结束' ?true:false}}">
+      <view class="weui-cell__bd" style="display:flex;justify-content:space-between;font-size:28rpx;"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </view>
+  </block>
+    </block>
 </template>
 <script>
   import wepy from 'wepy'
@@ -23,12 +28,15 @@
     data = {
       homeworkInfo: [
       ],
+      accessInfo: [
+      ],
       idCourse: '',
       tab: {
         list: [{id: 1, title: '提交作业'}, {id: 2, title: '互评'}],
         selectedId: 1,
         class: 'tab-success'
-      }
+      },
+      page: 1
     };
     components = {
       tab: Tab
@@ -51,13 +59,15 @@
 
     // 页面的生命周期函数
     onLoad(e) {
+      // console.log(e)
       this.$invoke('tab', 'doInitTabData', this.tab)
       var that = this
       // console.log(e)
       this.idCourse = e.idCourse
       let app = that.$parent
       var delData = {
-        idCourse: this.idCourse
+        idCourse: this.idCourse,
+        page: this.page
       }
       app
         .request('Homework.getHomeworkList', delData, 'loading')
@@ -67,15 +77,21 @@
             var timestamp = (new Date()).getTime()
             for (let i = 0, j = len.length - 1; i < len.length; i++, j--) {
               that.homeworkInfo[i] = e.data.data[j]
+              that.accessInfo[i] = e.data.data[j]
               var endTime = new Date(parseInt(e.data.data[j].gmtEnd) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
               // console.log('end', endTime)
               if (parseInt(e.data.data[j].gmtEnd) > (timestamp / 1000)) {
                 that.homeworkInfo[i].state = '进行中'
+                that.accessInfo[i].state = '进行中'
               } else {
                 that.homeworkInfo[i].state = '已结束'
+                that.accessInfo[i].state = '已结束'
               }
-              that.homeworkInfo[i].url = './detail?idCourse=' + that.idCourse + '&idHomework=' + e.data.data[j].idHomework + '&state=' + that.homeworkInfo[i].state
+              // console.log(e.data.data[j])
+              that.homeworkInfo[i].url = './detail?idCourse=' + that.idCourse + '&idHomework=' + e.data.data[j].idHomework + '&state=' + that.homeworkInfo[i].state + '&name=' + endTime
+              that.accessInfo[i].url = './homeworkRecord?idCourse=' + that.idCourse + '&idHomework=' + e.data.data[j].idHomework + '&state=' + that.homeworkInfo[i].state + '&name=' + endTime
               that.homeworkInfo[i].name = endTime
+              that.accessInfo[i].name = endTime
             }
             that.$apply()
           } else {
@@ -110,6 +126,10 @@
       //     '确定'
       //   )
       // })
+    }
+    onReachBottom(e) {
+      this.page = parseInt(this.page) + 1
+      // todo连接数组进行显示
     }
   }
 </script>

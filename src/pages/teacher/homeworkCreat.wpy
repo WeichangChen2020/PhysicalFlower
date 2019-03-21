@@ -115,7 +115,6 @@
       </picker>
     </view>
 
-    <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px' plain form-type='submit'>提交</button>
     <block wx:for="{{questionInfo}}" wx:for-item="page" wx:key="*this">
       <view style="display:flex;margin-left:8px;margin-right:8px;border-bottom:1px solid #ccc;margin-bottom:15px;margin-top:15px;">
       <checkbox class="icont" value="{{page.idQues}}"></checkbox>
@@ -123,6 +122,7 @@
       </view>
     </block>
   </checkbox-group>
+  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px' plain form-type='submit'>提交</button>
   </form>
 </template>
 <script>
@@ -137,7 +137,7 @@
       chooseLength: 0,
       gmtEnd: 0,
       idQues: {},
-      idCourse: 0,
+      idCourse: 1020,
       now_date: '2100-02-25',
       a: '请选择截止日期',
       time: '请选择截止时间',
@@ -213,12 +213,13 @@
       let that = this
       let tmp = {}
       let delData = {
-        idQuestionChapter: 8,
+        idQuestionChapter: this.idQuestionChapter,
         page: that.page
       }
       app.request('Question.getQuestionListByIdChapter', delData, 'loading')
       .then((res) => {
         if (res.data.errCode === 0) {
+          // that.questionInfo = res.data.data
           tmp = res.data.data
           if (res.data.data.length !== 15) {
             that.haveMore = false
@@ -237,6 +238,9 @@
             success(e) {
               tmp[i].height = e.height
               tmp[i].width = e.width
+            },
+            fail(e) {
+              console.log(e)
             }
           })
         }
@@ -246,10 +250,13 @@
         that.$apply()
       })
       .then(() => {
+        console.log(tmp)
         if (that.questionInfo.length === undefined) {
           that.questionInfo = tmp
+          that.$apply()
         } else {
           that.questionInfo = Array.prototype.concat.apply(that.questionInfo, tmp)
+          that.$apply()
         }
       })
       .catch(function(e) {

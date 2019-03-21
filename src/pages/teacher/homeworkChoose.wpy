@@ -135,6 +135,7 @@
       },
       form1(e) {
         // console.log('form', e.detail.value.chapter)
+        console.log(e)
         if (e.detail.value.chapter === '') {
           wx.showModal({
             title: '注意',

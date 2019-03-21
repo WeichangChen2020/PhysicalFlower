@@ -53,13 +53,13 @@
         idHomework: this.idHomework
       }
       app
-        .request('Homework.getHomeworkList', delData, 'loading')
+        .request('Homework.getAssessmentResult', delData, 'loading')
         .then(function(e) {
           console.log(e)
-          that.homeworkInfo = e.data.homeworkInfo
-          for (let i = 0; i < e.data.homeworkInfo.length; i++) {
-            that.homeworkInfo[i].url = './homeworkSearchDetail?stuName=' + e.data.homeworkInfo[i].name + '&idUser=' + e.data.homeworkInfo[i].idUser + '&idHomework=' + that.idHomework
-            if (e.data.homeworkInfo[i].check === 0) {
+          that.homeworkInfo = e.data.data
+          for (let i = 0; i < e.data.data.length; i++) {
+            that.homeworkInfo[i].url = './homeworkSearchDetail?stuName=' + e.data.data[i].name + '&idUser=' + e.data.data[i].idUser + '&idHomework=' + that.idHomework
+            if (e.data.data[i].check === 0) {
               that.homeworkInfo[i].check = '未交'
             } else {
               that.homeworkInfo[i].check = '已交'

@@ -88,7 +88,7 @@
         <!-- <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px' plain @tap="Submit" id="{{index}}">Submit</button> -->
     </swiper-item>
   </swiper>
-  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:200rpx;' plain @tap="Submit" id="{{index}}">Submit</button>
+  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:-400rpx;' plain @tap="Submit" id="{{index}}">Submit</button>
 </template>
 <script>
   import wepy from 'wepy'
@@ -165,51 +165,34 @@
 
     // 页面的生命周期函数
     onLoad(e) {
-      // console.log(e)
-      // this.state = e.state
-      // this.idHomework = e.idHomework
-      // var that = this
-      // let app = that.$parent
-      // var delData = {
-      //   idHomework: this.idHomework
-      // }
-      // app
-      //   .request('Homework.getHomeworkQues', delData, 'loading')
-      //   .then(function(e) {
-      //     console.log(e)
-      //     if (e.data.errCode === 0) {
-      //       that.homeworkInfo = e.data.data
-      //       for (let i = 0; i < e.data.count; i++) {
-      //         wx.getImageInfo({
-      //           src: e.data.data[i].img,
-      //           success(e) {
-      //             // console.log(e)
-      //             that.homeworkInfo[i].height = e.height
-      //             that.homeworkInfo[i].width = e.width
-      //           }
-      //         })
-      //       }
-      //       that.$apply()
-      //     } else {
-      //       wx.showToast({
-      //         title: '网络开小差了',
-      //         icon: 'none'
-      //       })
-      //     }
-      //   })
-      //   .catch(function(e) {
-      //     app.modal(
-      //       e.message,
-      //       '错误!错误提示是：',
-      //       '确定'
-      //     )
-      //   })
+      console.log(e)
+      this.state = e.state
+      this.homeworkName = e.name
+      this.idHomework = e.idHomework
+      var that = this
+      let app = that.$parent
+      var delData = {
+        idHomework: this.idHomework
+      }
+      app
+        .request('Homework.getAssessQuesList', delData, 'loading')
+        .then(function(e) {
+          console.log(e)
+        })
+        .catch(function(e) {
+          app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
       wx.getSystemInfo({
         success: function (e) {
-          this.system_height = e.windowHeight
-          this.$apply()
+          that.system_height = e.windowHeight
+          that.$apply()
         }
       })
+      this.$apply()
       //   fail(e) {
       //     wx.showmodal({
       //       title: '注意',

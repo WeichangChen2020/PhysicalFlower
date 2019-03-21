@@ -2,7 +2,7 @@
 <template>
   <view class="folder-container">
     <view class="folder-header" @tap="collapse">
-      <view class="folder-header__title font-14">{{title}}</view>
+      <view class="folder-header__title font-14" style="{{fontClass}}">{{title}}</view>
       <view class="folder-header__icon {{collapsed?'folder-header__icon--down':''}}">
         <icon type="right" event="collapse"/>
       </view>
@@ -26,6 +26,10 @@
       },
       componentId: {
         type: [String, Number],
+        default: ''
+      },
+      fontClass: {
+        type: [String],
         default: ''
       }
     }
@@ -53,6 +57,7 @@
     onLoad () {
       wx.createSelectorQuery().select('.folder-content__' + this.componentId).boundingClientRect((res) => {
         this.height = res.height
+        this.collapsed = true
         this.$apply()
       }).exec()
     }

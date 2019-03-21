@@ -43,7 +43,8 @@ export default class Index extends wepy.page {
       { id: '5', name: '平台互动', img: 'close' }
       // ,
       // { id: '7', name: '视频', img: 'close' }
-    ]
+    ],
+    idCourse: 1020
   }
   components = {
     dialog: Dialog,
