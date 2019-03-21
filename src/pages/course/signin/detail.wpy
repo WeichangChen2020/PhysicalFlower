@@ -155,6 +155,7 @@ export default class Detail extends wepy.page {
     }, 1000)
     wx.getLocation({
       success: function (res) {
+        console.log(res)
         that.signin_online = res
       },
       fail: function (res) {

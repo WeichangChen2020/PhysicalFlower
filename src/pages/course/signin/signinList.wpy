@@ -28,6 +28,7 @@
 <script>
   import wepy from 'wepy'
   import Tab from '@/components/tab/index'
+  import { formatDateTime } from '@/public/js/formatDateTime.js'
 
   // TODO 下拉刷新
   export default class SigninList extends wepy.page {
@@ -75,12 +76,13 @@
       // TODO 以签到的进行标记，并不可重复签到
       app.request('Signin.getSigningList', UL_DATA, '查询中...')
       .then((res, reject) => {
-        that.doingSigninList = res.data.data
-        for (let i = 0; i < that.doingSigninList.length; i++) {
-          let timestr = new Date(that.doingSigninList[i].gmtEnd * 1000).toString()
-          that.doingSigninList[i].timeEnd = timestr.substring(16, 24)
+        if (res.data.errCode === 0) {
+          that.doingSigninList = res.data.data
+          for (let i = 0; i < that.doingSigninList.length; i++) {
+            that.doingSigninList[i].timeEnd = formatDateTime(that.doingSigninList[i].gmtEnd * 1000).substr(-8)
+          }
+          this.$apply()
         }
-        this.$apply()
       })
       .catch(function(error) {
         console.error(error)
@@ -102,8 +104,7 @@
       .then((res, reject) => {
         that.allSigninList = res.data.data
         for (let i = 0; i < that.allSigninList.length; i++) {
-          let timestr = new Date(that.allSigninList[i].gmtEnd * 1000).toString()
-          that.allSigninList[i].timeEnd = timestr.substring(16, 24)
+          that.allSigninList[i].timeEnd = formatDateTime(that.allSigninList[i].gmtEnd * 1000).substr(-8)
         }
         this.$apply()
       })
