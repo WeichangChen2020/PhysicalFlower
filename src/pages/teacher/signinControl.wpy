@@ -85,12 +85,10 @@
   // 通过继承自wepy.page的类创建页面逻辑
   export default class signinControl extends wepy.page {
     config ={
-      window: {
-        backgroundTextStyle: 'light',
-        navigationBarBackgroundColor: '#fff',
-        navigationBarTitleText: '管理签到',
-        navigationBarTextStyle: 'black'
-      }
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: '管理签到',
+      navigationBarTextStyle: 'black'
     }
     components = {
       actionsheet: actionsheet
