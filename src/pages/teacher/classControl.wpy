@@ -30,6 +30,29 @@ height:50px
 .font-14 {
 font-size:20px;
 }
+.weui-btn{
+  margin-top: 90rpx;
+}
+button {
+position:relative;
+display:block;
+margin-left:auto;
+margin-right:auto;
+padding-left:15px;
+padding-right:14px;
+box-sizing:border-box;
+font-size:18px;
+text-align:center;
+text-decoration:none;
+line-height:2.55555556;
+border-radius:100px;
+-webkit-tap-highlight-color:transparent;
+overflow:hidden;
+color:#000000;
+background-color:#F8F8F8;
+
+}
+
 </style>
 <template>
 <view class="kai-content">
@@ -114,7 +137,7 @@ font-size:20px;
     </button>
         </view>
       </folder4>
-
+    <button class='weui-btn' type='warn' @tap='del'>删除课程</button>
 
     </view>
   </view>
@@ -142,6 +165,15 @@ export default class classControl extends wepy.page {
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
+    del(e) {
+      let that = this
+      let app = this.$parent
+      var courseDate = {
+        idCourse: that.idCourse
+      }
+      console.log(that.idCourse)
+      app.request('Course.delCourse', courseDate, '请稍等...')
+    },
     tap(e) {
       let tid = e.currentTarget.id
       switch (tid) {
