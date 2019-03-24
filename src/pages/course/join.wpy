@@ -69,12 +69,12 @@ export default class Join extends wepy.page {
     inputing(e) {
       let that = this
       let regexp = (/[^0-9]|^0+(?!$)/g)
-      console.log(regexp.test(e.detail.value))
       e.detail.value = e.detail.value.replace(regexp, '').substr(0, 4)
       e.detail.cursor = e.detail.value.length
-      console.log(e.detail)
       that.Value = e.detail.value
-      // console.log(parseInt(that.Value))
+      if (that.Value.submit === 4) {
+        that.submit()
+      }
     },
     Tap() {
       let that = this
@@ -82,52 +82,52 @@ export default class Join extends wepy.page {
         isFocus: true
       })
     },
-    formSubmit(e) {
-      console.log(parseInt(e.detail.value.password))
-      let app = this.$parent
-      let that = this
-      let deldata = {
-        idCourse: parseInt(e.detail.value.password)
-      }
-      if (e.detail.value.password.length < 4) {
-        app.toast('请输入正确课程号!')
-      } else {
-        app.request('Course.courseDetail', deldata, '请稍等...')
-        .then((res) => {
-          console.log(res)
-          // app.globalData.activeCourse = res.data.data.idCourse
-          // console.log(res.data.data.idCourse)
-          var code = res.data.errCode
-          if (code === 0) {
-            app.globalData.logo = res.data.data.logo
-            wx.navigateTo({ url: '../course/courseDetail?idCourse=' + res.data.data.idCourse })
-          } else {
-            const options = {
-              content: '课程未创建',
-              position: 'middle',
-              duration: 2000,
-              type: 'warning'
-            }
-            that.$invoke('toast', 'show', options)
-          }
-        })
-        .catch(function(error) {
-          console.error(error)
-          app.modal(error.message, '错误!错误提示是：', '确定')
-        })
-      }
+    formSubmit() {
+      this.submit()
     }
   }
   // 页面的生命周期函数
   onLoad() {}
   onShow() {
-    // 如果未加入课程,跳转到join页面
-    // console.log(this.$parent.globalData)
   }
   onPullDownRefresh() {
     // 上拉刷新
     this.onShow()
     wx.stopPullDownRefresh()
+  }
+  submit() {
+    let app = this.$parent
+    let that = this
+    let deldata = {
+      idCourse: parseInt(that.Value)
+    }
+    if (that.Value.length < 4) {
+      app.toast('请输入正确课程号!')
+    } else {
+      app.request('Course.courseDetail', deldata, '请稍等...')
+      .then((res) => {
+        app.globalData.activeCourse = res.data.data.idCourse
+        const fs = wx.getFileSystemManager()
+        fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, res.data.data.idCourse, 'utf8')
+        var code = res.data.errCode
+        if (code === 0) {
+          app.globalData.logo = res.data.data.logo
+          wx.navigateTo({ url: '../course/courseDetail?idCourse=' + res.data.data.idCourse })
+        } else {
+          const options = {
+            content: '课程未创建',
+            position: 'middle',
+            duration: 2000,
+            type: 'warning'
+          }
+          that.$invoke('toast', 'show', options)
+        }
+      })
+      .catch(function(error) {
+        console.error(error)
+        app.modal(error.message, '错误!错误提示是：', '确定')
+      })
+    }
   }
 }
 </script>

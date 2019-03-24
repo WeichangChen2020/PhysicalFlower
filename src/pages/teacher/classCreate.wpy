@@ -162,7 +162,8 @@ export default class classCreate extends wepy.page {
         var createData = {
           description: that.data.Description,
           courseName: that.data.className,
-          logo: 'data:image/' + this.iamgeType + ';base64,' + this.imageBase64
+          logo: 'data:image/' + this.iamgeType + ';base64,' + this.imageBase64,
+          idQuestionSet: 1
         }
         console.log(createData)
         app.request('Course.createCourse', createData, '请稍等...')

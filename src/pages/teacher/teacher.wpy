@@ -55,7 +55,11 @@ margin-left:10rpx;
 
 </view>
 
+<<<<<<< HEAD
 <view wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
+=======
+<view wx:if='{{errCode === 0}}' wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
+>>>>>>> a0f98a8ec417fe4158156ef51d28664f54cf4791
   <image src='{{item.logo}}' class='icon' />
   <view class='contain'>
     <view class='title'>课程名称：{{item.courseName}}</view>
