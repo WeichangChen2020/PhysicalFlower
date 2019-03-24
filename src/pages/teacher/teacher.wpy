@@ -56,7 +56,6 @@ margin-left:10rpx;
 </view>
 
 <view wx:if='{{errCode === 0}}' wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
-  {{errCode}}
   <image src='{{item.logo}}' class='icon' />
   <view class='contain'>
     <view class='title'>课程名称：{{item.courseName}}</view>

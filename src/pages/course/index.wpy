@@ -11,6 +11,7 @@
 <template>
   <dialog />
   <view class="page__bd">
+    <view>当前课程:{{idCourse}}</view>
     <view class="weui-grids">
         <block wx:for="{{grids}}" wx:item="item" wx:key="*this">
             <view class="weui-grid" hover-class="weui-grid_active" id="{{item.id}}" @tap="tap">
@@ -44,7 +45,7 @@ export default class Index extends wepy.page {
       // ,
       // { id: '7', name: '视频', img: 'close' }
     ],
-    idCourse: 1020
+    idCourse: 0
   }
   components = {
     dialog: Dialog,
@@ -111,7 +112,7 @@ export default class Index extends wepy.page {
       app.globalData.cookie = 'PHPSESSID=' + res.data.data.session_id
       // 检查信息
       if (app.globalData.loginCode === 0) {
-        app.globalData.userInfo = res.data.userBasicInfo
+        app.globalData.userInfo = res.data.data
       } else if (app.globalData.loginCode === 1) {
         const options = {
           title: '完善信息',

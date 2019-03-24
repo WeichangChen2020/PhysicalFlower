@@ -143,6 +143,21 @@ export default class extends wepy.app {
   }
 
   onLaunch() {
+    // 版本更新
+    if (wx.canIUse('getUpdateManager')) {
+      let update = wx.getUpdateManager()
+      let that = this
+      update.onCheckForUpdate(function (res) {
+        console.log('onCheckForUpdate', res)
+        if (res.hasUpdate) {
+          update.onUpdateReady(function () {
+            that.modal('更新提示', '即将应用小程序的新版本').then(res => {
+              update.applyUpdate()
+            })
+          })
+        }
+      })
+    }
     // 查看是否授权
     wx.getSetting({
       success(res) {
