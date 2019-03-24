@@ -55,17 +55,13 @@ margin-left:10rpx;
 
 </view>
 
-<view wx:if='{{errCode === 0}}' wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
-  {{errCode}}
+<view wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
   <image src='{{item.logo}}' class='icon' />
   <view class='contain'>
     <view class='title'>课程名称：{{item.courseName}}</view>
     <text class='subtitle'>课程号：{{item.idCourse}}</text>
     <text class='subtitle'>加入人数：{{item.count}}</text>
   </view>
-</view>
-<view wx:if='{{errCode === 102}}'>
-  您没有创建任何课程
 </view>
 <image src='../../public/images/joinCourse.png' class='icon2' @tap='test'></image>
 </template> 
@@ -82,8 +78,8 @@ margin-left:10rpx;
       navigationBarTitleText: '教师'
     }
     data = {
-      courseInfo: {},
-      errCode: 0
+      courseInfo: [],
+      page: 1
     }
 
     // 事件处理函数(集中保存在methods对象中)
@@ -92,6 +88,8 @@ margin-left:10rpx;
         this.$navigate('./classCreate')
       },
       tap(e) {
+        console.log(e)
+        console.log(this.data)
         let that = this
         that.$navigate('./classControl?idCourse=' + e.currentTarget.dataset.idcourse + '&courseName=' + e.currentTarget.dataset.coursename + '&count=' + e.currentTarget.dataset.count)
       }
@@ -102,35 +100,16 @@ margin-left:10rpx;
       let app = this.$parent
       var that = this
       var courseDATA = {
+        page: that.page
       }
       app.request('Course.getCreatedCourseList', courseDATA, '请稍等...')
       .then((res) => {
         that.courseInfo = res.data.data
-        that.errCode = res.data.errCode
         that.$apply()
-        if (res.data.errCode === 0) {
-          // app.toast('获取课程列表成功')
-        } else if (res.data.errCode === 102) {
-          wx.showModal({
-            title: '无数据',
-            content: '是否创建课程',
-            showCancel: true,
-            cancelText: '取消',
-            confirmText: '去创建',
-            confirmColor: '#000000',
-            success: function (res) {
-              if (res.confirm) {
-                that.$navigate('./classCreate')
-              }
-            },
-            fail: function (res) {
-              return new Error(res)
-            }
-          })
-        } else if (res.data.errCode === 4003) {
-          return app.toast('请先登录')
+        console.log(that.courseInfo)
+        if (res.data.errCode !== 0) {
+          app.toast(res.data.msg)
         } else {
-          return new Error(res.data.msg)
         }
       })
       .catch(function(error) {
@@ -138,12 +117,34 @@ margin-left:10rpx;
         app.modal(error.message, '错误!错误提示是：', '确定')
       })
     };
-    onShow(e) {
-      // this.onLoad()
+    onShow() {
+      this.page = 1
+      this.onLoad()
     };
     onPullDownRefresh() {
-      this.onLoad()
+      this.onShow()
       wx.stopPullDownRefresh()
+    };
+    onReachBottom(e) {
+      this.page = this.page + 1
+      let app = this.$parent
+      let that = this
+      let postData = {
+        page: that.page
+      }
+      app.request('Course.getCreatedCourseList', postData, '请稍等...')
+      .then(function(res) {
+        console.log(res)
+        if (res.data.errCode === 102) {
+          app.toast('已获取所有课程')
+        } else {
+          for (var i = 0, j = that.courseInfo.length; i < res.data.data.length; i++, j++) {
+            that.courseInfo[j] = res.data.data[i]
+          }
+          that.$apply()
+          console.log(that.courseInfo)
+        }
+      })
     }
   }
 </script>
