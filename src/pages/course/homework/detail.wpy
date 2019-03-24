@@ -64,6 +64,7 @@
 }
 </style>
 <template>
+<canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-1000000px;top:-1000000px; "></canvas>
   <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
   <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
     <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this"> 
@@ -71,25 +72,26 @@
 
       <view class='greeting'>上传截图</view>
         <view class='border'>
-          <view class="weui-uploader">
+           <view class="weui-uploader">
             <view class="img_hd">
               <view class="weui-uploader__title">图片上传</view>
-              <view class="weui-uploader__info">{{havePic[index]==true?'1':'0'}}/1</view>
+              <view class="weui-uploader__info">{{files[index] === undefined ? 0 : 1 }}/1</view>
             </view>
-      <view style="display:flex">
-        <view class="weui-uploader__bd">
-          <view class="weui-uploader__files" id="uploaderFiles">
-              <view class="weui-uploader__file">
-              <block wx:if="{{havePic[index]}}">
-                <image class="weui-uploader__img" src="{{files[index]}}" mode="aspectFill" />
-              </block>
+            <view class="weui-uploader__bd">
+              <view class="weui-uploader__files" id="uploaderFiles">
+                <!-- <block wx:for="{{files}}" wx:key="*this"> -->
+                  <block wx:if="{{files[index] !== undefined}}">
+                  <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
+                    <image class="weui-uploader__img" src="{{files[index]}}" mode="aspectFill" />
+                  </view>
+                  </block>
+                <!-- </block> -->
               </view>
-            </view>
-          </view>
-          <view class="weui-uploader__input-box">
-            <view class="weui-uploader__input" bindtap="chooseImage" id="{{index}}"></view>
-          </view>
-      </view>
+
+              <view class="weui-uploader__input-box">
+                <view class="weui-uploader__input" bindtap="chooseImage" id="{{index}}"></view>
+              </view>
+    </view>
         </view>
           </view>
         <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px' plain @tap="Submit" id="{{index}}">Submit</button>
@@ -114,25 +116,30 @@
       homeworkInfo: [
       ],
       state: '',
-      img_base64: ''
-
+      img_base64: []
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       Submit(e) {
         // todo 提交答案到后台 提交files,为图片显示路径，到时候后台返回路径就可以用image组件查看
+        let imgIdd = e.target.id
+        var that = this
+        var app = that.$parent
         if (this.state === '已结束') {
           wx.showToast({
             title: '提交已经截至了哦',
             icon: 'none'
           })
+        } else if (this.files[imgIdd] === undefined) {
+          wx.showToast({
+            title: '先选好图片哦',
+            icon: 'none'
+          })
         } else {
-          var that = this
-          let app = that.$parent
           var delData = {
             idHomeworkItems: parseInt(this.homeworkInfo[e.currentTarget.id].idHomeworkItems),
-            submitImg1: that.img_base64,
+            submitImg1: that.img_base64[imgIdd],
             submitImg2: '',
             submitImg3: ''
           }
@@ -152,70 +159,161 @@
       },
       roll(e) {
       },
-      chooseImage(e, h) {
+      // chooseImage(e, h) {
+      //   var that = this
+      //   if (h === undefined) {
+      //     h = that
+      //   } else {
+      //     // h = h
+      //   }
+      //   var fakeE = e
+      //   var imgIdd = e.target.id
+      //   // console.log(h.files[imgIdd])
+      //   if (h.files[imgIdd] !== undefined) {
+      //     wx.showModal({
+      //       title: '注意',
+      //       content: '确定要覆盖已有的图片吗？',
+      //       success(e) {
+      //         if (e.confirm === true) {
+      //           h.havePic[imgIdd] = false
+      //           h.files[imgIdd] = ''
+      //           h.$apply()
+      //           h.methods.chooseImage(fakeE, h)
+      //         }
+      //       }
+      //     })
+      //   } else {
+      //     wx.chooseImage({
+      //       count: 3,
+      //       sizeType: ['original', 'compressed'],
+      //       sourceType: ['album', 'camera'],
+      //       success(res) {
+      //         // console.log(res)
+      //         // tempFilePath可以作为img标签的src属性显示图片
+      //         var ratio = 2
+      //         h.files[imgIdd] = res.tempFilePaths[0]
+      //         h.havePic[imgIdd] = true
+      //         h.$apply()
+      //         wx.getImageInfo({
+      //           src: res.tempFilePaths[0],
+      //           success(res) {
+      //             // console.log(res)
+      //             while (
+      //               h.canvasWidth > 10000 ||
+      //               h.canvasHeight > 10000
+      //             ) {
+      //               h.canvasWidth = Math.trunc(res.width / ratio)
+      //               h.canvasHeight = Math.trunc(res.height / ratio)
+      //               ratio++
+      //             }
+      //             wx.getFileSystemManager().readFile({
+      //               filePath: res.path, // 选择图片返回的相对路径
+      //               encoding: 'base64', // 编码格式
+      //               success: res => {
+      //                 that.img_base64 = 'data:image/' + that.data.imageType + ';base64,' + res.data
+      //                 that.$apply()
+      //                 // console.log(that.img_base64)
+      //               },
+      //               fail: function (e) {
+      //                 console.log(e)
+      //                 console.log(that.data)
+      //               }
+      //             })
+      //           },
+      //           fail(e) {
+      //             console.log(e)
+      //           }
+      //         })
+      //       }
+      //     })
+      //   }
+      // }
+      chooseImage: function(e) {
+        console.log(e)
         var that = this
-        if (h === undefined) {
-          h = that
-        } else {
-          // h = h
-        }
-        var fakeE = e
         var imgIdd = e.target.id
-        // console.log(h.files[imgIdd])
-        if (h.files[imgIdd] !== undefined) {
+        // console.log(this.files[imgIdd])
+        if (this.files[imgIdd] !== undefined) {
           wx.showModal({
             title: '注意',
-            content: '确定要覆盖已有的图片吗？',
+            content: '确定要重新提交图片吗？',
             success(e) {
               if (e.confirm === true) {
-                h.havePic[imgIdd] = false
-                h.files[imgIdd] = ''
-                h.$apply()
-                h.methods.chooseImage(fakeE, h)
+                that.files[imgIdd] = undefined
+                that.$apply()
               }
             }
           })
         } else {
           wx.chooseImage({
-            count: 3,
-            sizeType: ['original', 'compressed'],
-            sourceType: ['album', 'camera'],
-            success(res) {
-              // console.log(res)
-              // tempFilePath可以作为img标签的src属性显示图片
-              var ratio = 2
-              h.files[imgIdd] = res.tempFilePaths[0]
-              h.havePic[imgIdd] = true
-              h.$apply()
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function(res) {
+              // // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+              // that.setData({
+              //   files: that.data.files.concat(res.tempFilePaths)
+              // });
+              that.files[imgIdd] = res.tempFilePaths[0]
+              that.$apply()
               wx.getImageInfo({
                 src: res.tempFilePaths[0],
-                success(res) {
-                  // console.log(res)
-                  while (
-                    h.canvasWidth > 10000 ||
-                    h.canvasHeight > 10000
-                  ) {
-                    h.canvasWidth = Math.trunc(res.width / ratio)
-                    h.canvasHeight = Math.trunc(res.height / ratio)
-                    ratio++
-                  }
-                  wx.getFileSystemManager().readFile({
-                    filePath: res.path, // 选择图片返回的相对路径
-                    encoding: 'base64', // 编码格式
-                    success: res => {
-                      that.img_base64 = 'data:image/' + that.data.imageType + ';base64,' + res.data
-                      // console.log(that.img_base64)
-                    },
-                    fail: function (e) {
-                      console.log(e)
-                      console.log(that.data)
-                    }
-                  })
+                success: function(res) {
+                  // console.log(photo)
+                  var ctx = wx.createCanvasContext('photo_canvas')
+                  // var ratio = 2
+                  // // console.log(that)
+                  that.canvasWidth = res.width
+                  that.canvasHeight = res.height
+                  that.$apply()
+                  // // console.log(that.data.canvasWidth, that.data.canvasHeight)
+                  // // 保证宽高均在200以内
+                  // while (that.canvasWidth > 10000 || that.canvasHeight > 10000) {
+                  //   // 比例取整
+                  //   that.canvasWidth = Math.trunc(res.width / ratio)
+                  //   that.canvasHeight = Math.trunc(res.height / ratio)
+                  //   ratio++
+                  // }
+                  // console.log(that.data.canvasWidth, that.data.canvasHeight)
+                  ctx.drawImage(res.path, 0, 0, res.width, res.height)
+                  ctx.draw()
+                  setTimeout(function() {
+                    wx.canvasToTempFilePath({
+                      fileType: 'jpg',
+                      quality: 0.1,
+                      canvasId: 'photo_canvas',
+                      success: function(res) {
+                        console.log('下载canvas成功')
+                        // 转编码base64
+                        wx.getFileSystemManager().readFile({
+                          filePath: res.tempFilePath, // 选择图片返回的相对路径
+                          encoding: 'base64', // 编码格式
+                          success: res => { // 成功的回调
+                            console.log(res.data)
+                            that.img_base64[imgIdd] = res.data
+                            that.$apply()
+                          },
+                          fail: function(e) {
+                            console.log(e)
+                            console.log(that.data)
+                          }
+                        })
+                      },
+                      fail: function(error) {
+                        console.log('下载canvas失败')
+                        console.log(error)
+                      }
+                    })
+                  }, 100)
+                  console.log('that.data.img_path')
+                  // TODO  path赋值
                 },
-                fail(e) {
-                  console.log(e)
+                fail: function(error) {
+                  console.log(error)
                 }
               })
+            },
+            error: function(res) {
+              console.log(res)
             }
           })
         }
@@ -224,7 +322,8 @@
 
     // 页面的生命周期函数
     onLoad(e) {
-      console.log(e)
+      // console.log(e)
+      // console.log(this.files[0])
       this.state = e.state
       this.idHomework = e.idHomework
       this.homeworkName = e.name
@@ -240,6 +339,7 @@
           if (e.data.errCode === 0) {
             that.homeworkInfo = e.data.data
             for (let i = 0; i < e.data.count; i++) {
+              // that.files[i] = []
               wx.getImageInfo({
                 src: e.data.data[i].img,
                 success(e) {

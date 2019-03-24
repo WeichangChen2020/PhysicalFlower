@@ -5,6 +5,13 @@
   margin-top: 10px;
   margin-right: 15px;
 }
+.greetingc {
+  font-size: 11px;
+  color: gray;
+  margin: 20rpx 0 10rpx 20rpx;
+  display: flex;
+  justify-content: center
+}
 .answer{
   /* height: 250px; */
   margin-left: 10px;
@@ -64,6 +71,8 @@
 }
 </style>
 <template>
+
+<block wx:if="{{haveNothing}}">
   <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
   <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
     <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this"> 
@@ -89,6 +98,14 @@
     </swiper-item>
   </swiper>
   <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:-400rpx;' plain @tap="Submit" id="{{index}}">Submit</button>
+  </block>
+
+
+  <block wx:if="{{!haveNothing}}">
+    <view class="greetingc">
+        ----------没有要互评的作业哦----------
+    </view>
+  </block>
 </template>
 <script>
   import wepy from 'wepy'
@@ -100,6 +117,7 @@
       homeworkName: '课后作业名称',
       idHomework: 0,
       system_height: 500,
+      haveNothing: 0,
       files: [],
       havePic: [],
       inputValue: '',
@@ -178,6 +196,11 @@
         .request('Homework.getAssessQuesList', delData, 'loading')
         .then(function(e) {
           console.log(e)
+          if (e.data.msg === '没有待批改作业') {
+          } else {
+            that.haveNothing = 1
+            that.$apply()
+          }
         })
         .catch(function(e) {
           app.modal(

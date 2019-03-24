@@ -11,7 +11,7 @@
   </block>
     <block wx:if="{{tab.selectedId === 1 ? false : true}}">
       <block  wx:for="{{accessInfo}}" wx:item="item" wx:key="*this">
-    <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{index}}' wx:if="{{item.state == '已结束' ?true:false}}">
+    <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tapAccess' id='{{index}}' wx:if="{{item.state == '已结束' ?true:false}}">
       <view class="weui-cell__bd" style="display:flex;justify-content:space-between;font-size:28rpx;"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </view>
@@ -47,13 +47,19 @@
       tap (e) {
         let tid = e.currentTarget.id
         wx.navigateTo({
-          url: this.homeworkInfo[tid].url
+          url: './detail?idCourse=' + this.homeworkInfo[tid].url
         })
       },
       change (res) {
         // TODO 互评tab
         this.tab.selectedId = res
         this.$apply()
+      },
+      tapAccess (e) {
+        let tid = e.currentTarget.id
+        wx.navigateTo({
+          url: './homeworkRecord?idCourse=' + this.accessInfo[tid].url
+        })
       }
     };
 
@@ -88,8 +94,8 @@
                 that.accessInfo[i].state = '已结束'
               }
               // console.log(e.data.data[j])
-              that.homeworkInfo[i].url = './detail?idCourse=' + that.idCourse + '&idHomework=' + e.data.data[j].idHomework + '&state=' + that.homeworkInfo[i].state + '&name=' + endTime
-              that.accessInfo[i].url = './homeworkRecord?idCourse=' + that.idCourse + '&idHomework=' + e.data.data[j].idHomework + '&state=' + that.homeworkInfo[i].state + '&name=' + endTime
+              that.homeworkInfo[i].url = that.idCourse + '&idHomework=' + e.data.data[j].idHomework + '&state=' + that.homeworkInfo[i].state + '&name=' + endTime
+              that.accessInfo[i].url = that.idCourse + '&idHomework=' + e.data.data[j].idHomework + '&state=' + that.homeworkInfo[i].state + '&name=' + endTime
               that.homeworkInfo[i].name = endTime
               that.accessInfo[i].name = endTime
             }
