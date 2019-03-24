@@ -85,8 +85,15 @@ export default class Index extends wepy.page {
 
   // 页面的生命周期函数
   onLoad() {
+  }
+  onShow() {
+    console.log('onshow')
     let app = this.$parent
     var that = this
+    console.log(app.globalData)
+    if (app.globalData.loginCode === 0 || app.globalData.loginCode === 1) {
+      return
+    }
     this.userLogin()
     .then(function(data) {
       // 登录请求
@@ -105,7 +112,7 @@ export default class Index extends wepy.page {
       // 检查信息
       if (app.globalData.loginCode === 0) {
         app.globalData.userInfo = res.data.userBasicInfo
-      } else {
+      } else if (app.globalData.loginCode === 1) {
         const options = {
           title: '完善信息',
           content: '完善信息以便老师区分',
@@ -141,7 +148,26 @@ export default class Index extends wepy.page {
         app.request('Course.getJoinedCourseList', '', '请求中...')
         .then((res) => {
           if (res.data.errCode === 102) {
-            wx.navigateTo({url: './join'})
+            const options = {
+              title: '没有课程学习',
+              content: '点击加入课程',
+              type: 'muti',
+              showVertical: true,
+              buttons: [{
+                text: '稍后'
+              }, {
+                text: '去加入',
+                color: '#C59E6C'
+              }]
+            }
+            that.$invoke('dialog', 'show', options).then((value) => {
+              // 0: 取消，1：确认
+              if (value === 1) {
+                wx.navigateTo({url: './join'})
+              }
+            }, () => {
+              console.log('reject')
+            })
           }
           app.courseList = res.data.data
           app.globalData.activeCourse = app.courseList[0].idCourse
@@ -159,8 +185,6 @@ export default class Index extends wepy.page {
         '确定'
       )
     })
-  }
-  onShow() {
   }
   onPullDownRefresh() {
     // 上拉刷新
@@ -191,6 +215,9 @@ export default class Index extends wepy.page {
         filePath: `${wx.env.USER_DATA_PATH}/courseId`,
         encoding: 'utf8',
         success(res) {
+          if (res.data === '') {
+            resolve('null')
+          }
           app.globalData.activeCourse = res.data
           resolve(res.data)
         },
