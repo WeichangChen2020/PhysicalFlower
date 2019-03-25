@@ -98,8 +98,11 @@ margin-left:10rpx;
 
     // 页面的生命周期函数
     onLoad(e) {
+    }
+    onShow(e) {
       let app = this.$parent
       var that = this
+      that.page = 1
       var courseDATA = {
         page: that.page
       }
@@ -118,10 +121,6 @@ margin-left:10rpx;
         console.error(error)
         app.modal(error.message, '错误!错误提示是：', '确定')
       })
-    };
-    onShow() {
-      this.page = 1
-      this.onLoad()
     };
     onPullDownRefresh() {
       this.onShow()
