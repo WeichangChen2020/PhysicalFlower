@@ -57,6 +57,7 @@ export default class extends wepy.app {
       'pages/course/index',
       'pages/course/homework/homeworkRecord',
       'pages/teacher/classControl',
+      'pages/my/register',
       'pages/teacher/teacher',
       'pages/course/join',
       'pages/my/authorize',
@@ -69,7 +70,6 @@ export default class extends wepy.app {
       'pages/course/exercise/index',
       'pages/course/chat/index',
       'pages/course/test/index',
-      'pages/my/register',
       'pages/my/gradeInfo',
       'pages/my/my',
       'pages/teacher/signinChoose',
@@ -135,7 +135,8 @@ export default class extends wepy.app {
     apiUrl: 'https://testet.sinaapp.com/index.php/Gateway/route',
     grant_type: 'authorization_code', // 获取openid的参数，不用改
     activeCourse: '1', // 主页面的课程id
-    logo: ''
+    logo: '',
+    courseListPage: 1
   }
   constructor() {
     super()
@@ -143,6 +144,21 @@ export default class extends wepy.app {
   }
 
   onLaunch() {
+    // 版本更新
+    if (wx.canIUse('getUpdateManager')) {
+      let update = wx.getUpdateManager()
+      let that = this
+      update.onCheckForUpdate(function (res) {
+        console.log('onCheckForUpdate', res)
+        if (res.hasUpdate) {
+          update.onUpdateReady(function () {
+            that.modal('更新提示', '即将应用小程序的新版本').then(res => {
+              update.applyUpdate()
+            })
+          })
+        }
+      })
+    }
     // 查看是否授权
     wx.getSetting({
       success(res) {

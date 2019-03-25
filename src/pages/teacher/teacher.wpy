@@ -55,7 +55,7 @@ margin-left:10rpx;
 
 </view>
 
-<view wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
+<view wx:if='{{errCode === 0}}' wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
   <image src='{{item.logo}}' class='icon' />
   <view class='contain'>
     <view class='title'>课程名称：{{item.courseName}}</view>
@@ -78,7 +78,9 @@ margin-left:10rpx;
       navigationBarTitleText: '教师'
     }
     data = {
-      courseInfo: []
+      courseInfo: [],
+      page: 1,
+      errCode: 0
     }
 
     // 事件处理函数(集中保存在methods对象中)
@@ -99,16 +101,17 @@ margin-left:10rpx;
       let app = this.$parent
       var that = this
       var courseDATA = {
+        page: that.page
       }
       app.request('Course.getCreatedCourseList', courseDATA, '请稍等...')
       .then((res) => {
         that.courseInfo = res.data.data
+        that.errCode = res.data.errCode
         that.$apply()
         console.log(that.courseInfo)
-        if (res.data.errCode === 0) {
-          // app.toast('获取课程列表成功')
+        if (res.data.errCode !== 0) {
+          app.toast(res.data.msg)
         } else {
-          app.toast('请先登录')
         }
       })
       .catch(function(error) {
@@ -117,11 +120,33 @@ margin-left:10rpx;
       })
     };
     onShow() {
+      this.page = 1
       this.onLoad()
     };
     onPullDownRefresh() {
-      this.onLoad()
+      this.onShow()
       wx.stopPullDownRefresh()
+    };
+    onReachBottom(e) {
+      this.page = this.page + 1
+      let app = this.$parent
+      let that = this
+      let postData = {
+        page: that.page
+      }
+      app.request('Course.getCreatedCourseList', postData, '请稍等...')
+      .then(function(res) {
+        console.log(res)
+        if (res.data.errCode === 102) {
+          app.toast('已获取所有课程')
+        } else {
+          for (var i = 0, j = that.courseInfo.length; i < res.data.data.length; i++, j++) {
+            that.courseInfo[j] = res.data.data[i]
+          }
+          that.$apply()
+          console.log(that.courseInfo)
+        }
+      })
     }
   }
 </script>

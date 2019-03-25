@@ -57,10 +57,10 @@ export default class Register extends wepy.page {
     },
     number: {
       error: false,
-      label: '*学号',
+      label: '学号',
       value: '',
       inputType: 'number',
-      filter: /^\d{5,15}$/,
+      filter: /^\d{0,15}$/,
       placeholder: '请输入学号'
     },
     telphone: {
@@ -113,7 +113,9 @@ export default class Register extends wepy.page {
       app.request('User.updateInfo', UL_DATA, '请稍等...')
       .then(function(res) {
         console.log(res)
-        if (res.data.errCode === 0 || res.data.errCode === 1) {
+        if (res.data.errCode === 0) {
+          app.globalData.loginCode = res.data.errCode
+          app.globalData.userInfo = res.data.data
           return '更新成功'
         } else {
           throw (new Error(res.data.msg))
