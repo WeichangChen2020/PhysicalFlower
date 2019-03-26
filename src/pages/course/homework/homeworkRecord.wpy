@@ -71,7 +71,6 @@
 }
 </style>
 <template>
-
 <block wx:if="{{haveNothing}}">
   <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
   <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
@@ -90,17 +89,11 @@
       <block wx:if="{{index== 3 ? true:false}}">
         <rate4 title="作业打分" :value.sync="value4" :desc="desc" />
       </block>
-
-      </view>
-        </view>
-          </view>
         <!-- <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px' plain @tap="Submit" id="{{index}}">Submit</button> -->
     </swiper-item>
   </swiper>
   <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:-400rpx;' plain @tap="Submit" id="{{index}}">Submit</button>
   </block>
-
-
   <block wx:if="{{!haveNothing}}">
     <view class="greetingc">
         ----------没有要互评的作业哦----------
