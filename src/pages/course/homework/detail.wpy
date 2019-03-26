@@ -64,37 +64,37 @@
 }
 </style>
 <template>
-<canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-1000000px;top:-1000000px; "></canvas>
+  <canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-1000000px;top:-1000000px; "></canvas>
   <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
   <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
     <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this"> 
       <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px;"/>
 
       <view class='greeting'>上传截图</view>
-        <view class='border'>
-           <view class="weui-uploader">
-            <view class="img_hd">
-              <view class="weui-uploader__title">图片上传</view>
-              <view class="weui-uploader__info">{{files[index] === undefined ? 0 : 1 }}/1</view>
-            </view>
-            <view class="weui-uploader__bd">
-              <view class="weui-uploader__files" id="uploaderFiles">
-                <!-- <block wx:for="{{files}}" wx:key="*this"> -->
-                  <block wx:if="{{files[index] !== undefined}}">
-                  <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
-                    <image class="weui-uploader__img" src="{{files[index]}}" mode="aspectFill" />
-                  </view>
-                  </block>
-                <!-- </block> -->
-              </view>
-
-              <view class="weui-uploader__input-box">
-                <view class="weui-uploader__input" bindtap="chooseImage" id="{{index}}"></view>
-              </view>
-    </view>
-        </view>
+      <view class='border'>
+        <view class="weui-uploader">
+          <view class="img_hd">
+            <view class="weui-uploader__title">图片上传</view>
+            <view class="weui-uploader__info">{{files[index] === undefined ? 0 : 1 }}/1</view>
           </view>
-        <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px' plain @tap="Submit" id="{{index}}">Submit</button>
+          <view class="weui-uploader__bd">
+            <view class="weui-uploader__files" id="uploaderFiles">
+              <!-- <block wx:for="{{files}}" wx:key="*this"> -->
+              <block wx:if="{{files[index] !== undefined}}">
+                <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
+                  <image class="weui-uploader__img" src="{{files[index]}}" mode="aspectFill" />
+                </view>
+              </block>
+              <!-- </block> -->
+            </view>
+
+            <view class="weui-uploader__input-box">
+              <view class="weui-uploader__input" bindtap="chooseImage" id="{{index}}"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px' plain @tap="Submit" id="{{index}}">Submit</button>
     </swiper-item>
   </swiper>
 </template>
