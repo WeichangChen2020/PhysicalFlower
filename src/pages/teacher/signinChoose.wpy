@@ -54,7 +54,7 @@ margin-left:10rpx;
   <view class="kai-content">
     <dialog />
     <!-- <view class='head'>签到列表 </view> -->
-    <button wx:for='{{signinList}}' class='border' wx:key='*this' @longtap='showSync' @tap='tap' data-signinName="{{item.signinName}}" data-idSignin="{{item.idSignin}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
+    <button wx:for='{{signinList}}' class='border' wx:key='*this' @touchend='touchend' @longtap='showSync' @tap='tap' data-signinName="{{item.signinName}}" data-idSignin="{{item.idSignin}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
       <view class='contain'>
         <view class='title'>签到名称：{{item.signinName}}</view>
         <text class='subtitle'>创建时间：{{item.gmtCreate}}</text>
@@ -105,17 +105,30 @@ export default class signinChoose extends wepy.page {
     courseName: '',
     lock: false,
     page: 1,
-    lastPage: 0
+    lastPage: 0,
+    check: 0
   }
 
   // 事件处理函数(集中保存在methods对象中)
   methods = {
+    touchend(e) {
+      if (this.data.check === 1) {
+        setTimeout(() => {
+          this.check = 0
+        }, 100)
+      }
+    },
     tap(e) {
-      // let that = this
+      let that = this
+      if (that.check === 1) {
+        return
+      }
       // that.$navigate('./' + e.currentTarget.dataset.idcourse + '&courseName=' + e.currentTarget.dataset.coursename + '&count=' + e.currentTarget.dataset.count)
       console.log(e)
+      that.$navigate('./signinDetail?idsignin=' + e.currentTarget.dataset.idsignin)
     }, // todo:点击进入页面详情，查看签到人数等信息
     showSync (e) {
+      this.check = 1
       var postData = {
         idSignin: e.currentTarget.dataset.idsignin
       }
