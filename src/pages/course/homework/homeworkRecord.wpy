@@ -71,35 +71,29 @@
 }
 </style>
 <template>
-
-<block wx:if="{{haveNothing}}">
-  <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
-  <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
-    <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this"> 
-      <!-- <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px;"/> -->
-      <image src="{{page.img}}" style="width:100%;margin-bottom:100rpx"/>
-      <block wx:if="{{index== 0 ? true:false}}">
-        <rate1 title="作业打分" :value.sync="value1" :desc="desc" />
-      </block>
-      <block wx:if="{{index== 1 ? true:false}}">
-        <rate2 title="作业打分" :value.sync="value2" :desc="desc" />
-      </block>
-      <block wx:if="{{index== 2 ? true:false}}">
-        <rate3 title="作业打分" :value.sync="value3" :desc="desc" />
-      </block>
-      <block wx:if="{{index== 3 ? true:false}}">
-        <rate4 title="作业打分" :value.sync="value4" :desc="desc" />
-      </block>
-
-      </view>
-        </view>
-          </view>
+  <block wx:if="{{haveNothing}}">
+    <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
+    <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
+      <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this"> 
+        <!-- <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px;"/> -->
+        <image src="{{page.img}}" style="width:100%;margin-bottom:100rpx"/>
+        <block wx:if="{{index== 0 ? true:false}}">
+          <rate1 title="作业打分" :value.sync="value1" :desc="desc" />
+        </block>
+        <block wx:if="{{index== 1 ? true:false}}">
+          <rate2 title="作业打分" :value.sync="value2" :desc="desc" />
+        </block>
+        <block wx:if="{{index== 2 ? true:false}}">
+          <rate3 title="作业打分" :value.sync="value3" :desc="desc" />
+        </block>
+        <block wx:if="{{index== 3 ? true:false}}">
+          <rate4 title="作业打分" :value.sync="value4" :desc="desc" />
+        </block>
         <!-- <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px' plain @tap="Submit" id="{{index}}">Submit</button> -->
-    </swiper-item>
-  </swiper>
-  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:-400rpx;' plain @tap="Submit" id="{{index}}">Submit</button>
+      </swiper-item>
+    </swiper>
+    <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:-400rpx;' plain @tap="Submit" id="{{index}}">Submit</button>
   </block>
-
 
   <block wx:if="{{!haveNothing}}">
     <view class="greetingc">
