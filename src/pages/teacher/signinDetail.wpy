@@ -1,0 +1,53 @@
+
+<style type="less">
+
+</style>
+<template>
+<view>hello</view>
+</template>
+<script>
+import wepy from 'wepy'
+
+// import base from '/components/van/base/index'// 文件路径
+// 通过继承自wepy.page的类创建页面逻辑
+export default class classControl extends wepy.page {
+  config = {
+    navigationBarTitleText: '签到详情'
+  }
+  components = {
+  }
+  // 可用于页面模板绑定的数据
+  data = {
+    idSignin: 0
+  }
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+  }
+  // 页面的生命周期函数
+  onLoad(e) {
+    let that = this
+    that.idSignin = e.idSignin
+    // let postData = {
+    //   idsignin: that.idsignin
+    // }
+    // app.request('Signin.getStudentSigninDetails', postData, 'Loading...').then(
+    //   function(res) {
+    //     console.log(res)
+    //   }
+    //   )
+  }
+  onShow() {
+    let that = this
+    let app = this.$parent
+    let postData = {
+      idSignin: that.idSignin
+    }
+    console.log(that.data)
+    app.request('Signin.getStudentSigninDetails', postData, 'Loading...').then(
+      function(res) {
+        console.log(res)
+      }
+      )
+  }
+}
+</script>
