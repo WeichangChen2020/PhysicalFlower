@@ -32,7 +32,7 @@
 }
 .fake{
   width: 100%;
-  display: flex;
+  /* display: flex; */
   padding: 10px 8px 15px;
   box-sizing: border-box;
   line-height: 24px;
@@ -47,7 +47,7 @@
   flex: 1;
   max-width: 90px;
   min-width: 90px;
-  display: flex
+  /* display: flex */
 }
 .fake_input{
   color: #999;
@@ -92,17 +92,32 @@
       <picker
         mode="date"
         value="{{a}}"
-        start="1900-09-01"
+        start="2018-09-01"
         end="{{now_date}}"
         bindchange="bindDateChange"
       >
       <view style='display:flex'>
         <view class="fake_title">
-          <view style='color:red;margin-right:3px;left:0px'></view>截止时间:</view><view class='fake_picker' style="color:{{a === '请选择截止日期'?'gray':'#333'}};font-size:12px">{{a}}</view>
+          <view style='color:red;margin-right:3px;left:0px'></view>作业截止时间:</view><view class='fake_picker' style="color:{{a === '请选择截止日期'?'gray':'#333'}};font-size:12px">{{a}}</view>
           </view>
       </picker>
 
-       <picker
+
+      <picker
+        mode="date"
+        value="{{b}}"
+        start="2018-09-01"
+        end="{{now_date}}"
+        bindchange="bindDateChange2"
+      >
+      <view style='display:flex'>
+        <view class="fake_title">
+          <view style='color:red;margin-right:3px;left:0px'></view>互评截止时间:</view><view class='fake_picker' style="color:{{b === '请选择截止日期'?'gray':'#333'}};font-size:12px">{{b}}</view>
+          </view>
+      </picker>
+
+
+       <!-- <picker
         mode="time"
         value="{{time}}"
         start="06:00"
@@ -112,7 +127,7 @@
         <view class="picker" style="color:{{time === '请选择截止时间'?'gray':'#333'}};margin-left:5px;font-size:12px">
           {{time}}
         </view>
-      </picker>
+      </picker> -->
     </view>
 
     <block wx:for="{{questionInfo}}" wx:for-item="page" wx:key="*this">
@@ -140,6 +155,7 @@
       idCourse: 1020,
       now_date: '2100-02-25',
       a: '请选择截止日期',
+      b: '请选择截止日期',
       time: '请选择截止时间',
       page: 0,
       haveMore: true
@@ -155,10 +171,14 @@
           app.toast('至少选择1题')
           return
         }
-        var vag = this.a + '-' + this.time
+        var vag = this.a + '-23:59'
+        var veg = this.b + '-23:59'
         var gmtTime = new Date(vag.replace(/-/g, '/')).getTime()
+        var assessTime = new Date(veg.replace(/-/g, '/')).getTime()
+        console.log()
         var delData = {
           gmtEnd: gmtTime / 1000,
+          assessmentEnd: assessTime / 1000,
           length: this.chooseLength,
           idQuesList: this.idQues,
           idCourse: parseInt(that.idCourse)
@@ -190,10 +210,16 @@
       },
       bindDateChange(e) {
         this.a = e.detail.value
+        // var vag = this.a + '-23:59'
+        // var gmtTime = new Date(vag.replace(/-/g, '/')).getTime()
+        // console.log(gmtTime)
       },
-      bindTimeChange(e) {
-        this.time = e.detail.value
+      bindDateChange2(e) {
+        this.b = e.detail.value
       }
+      // bindTimeChange(e) {
+      //   this.time = e.detail.value
+      // }
     };
 
     // 页面的生命周期函数
@@ -214,7 +240,8 @@
       let tmp = {}
       let delData = {
         idQuestionChapter: this.idQuestionChapter,
-        page: that.page
+        page: that.page,
+        type: 4
       }
       app.request('Question.getQuestionListByIdChapter', delData, 'loading')
       .then((res) => {

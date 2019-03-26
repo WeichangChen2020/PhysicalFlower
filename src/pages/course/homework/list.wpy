@@ -3,19 +3,22 @@
 <template>
   <tab @bindChange.user="change"/>
   <!-- 只显示10条数据,下拉加载更多 -->
-  <block wx:if="{{tab.selectedId === 2 ? false : true}}" wx:for="{{homeworkInfo}}" wx:item="item" wx:key="*this">
+  <block wx:if="{{tab.selectedId === 2 ? false : true}}">
+    <block wx:for="{{homeworkInfo}}" wx:for-item="item" wx:key="id">
     <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{index}}'>
-      <view class="weui-cell__bd" style="display:flex;justify-content:space-between;font-size:28rpx;"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
+      <view class="weui-cell__bd" style="display:flex;justify-content:space-between;font-size:28rpx;"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.homeState =='进行中' ?'green':'#ccc'}}">{{item.homeState}}</view></view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </view>
+    </block>
   </block>
+
     <block wx:if="{{tab.selectedId === 1 ? false : true}}">
-      <block  wx:for="{{accessInfo}}" wx:item="item" wx:key="*this">
-    <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tapAccess' id='{{index}}' wx:if="{{item.state == '已结束' ?true:false}}">
-      <view class="weui-cell__bd" style="display:flex;justify-content:space-between;font-size:28rpx;"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
+      <block  wx:for="{{homeworkInfo}}" wx:for-item="item2" wx:key="id">
+    <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tapAccess' id='{{index}}' wx:if="{{item2.homeState == '已结束' ?true:false}}">
+      <view class="weui-cell__bd" style="display:flex;justify-content:space-between;font-size:28rpx;"><view>{{item2.name}}</view><view style="font-size:11px;color:{{item2.assessState =='互评中' ?'red':'#ccc'}}">{{item2.assessState}}</view></view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </view>
-  </block>
+      </block>
     </block>
 </template>
 <script>
@@ -28,7 +31,7 @@
     data = {
       homeworkInfo: [
       ],
-      accessInfo: [
+      assessInfo: [
       ],
       idCourse: '',
       tab: {
@@ -58,7 +61,7 @@
       tapAccess (e) {
         let tid = e.currentTarget.id
         wx.navigateTo({
-          url: './homeworkRecord?idCourse=' + this.accessInfo[tid].url
+          url: './homeworkRecord?idCourse=' + this.homeworkInfo[tid].assessUrl
         })
       }
     };
@@ -81,23 +84,27 @@
           if (e.data.errCode === 0) {
             var len = e.data.data
             var timestamp = (new Date()).getTime()
-            for (let i = 0, j = len.length - 1; i < len.length; i++, j--) {
-              that.homeworkInfo[i] = e.data.data[j]
-              that.accessInfo[i] = e.data.data[j]
-              var endTime = new Date(parseInt(e.data.data[j].gmtEnd) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
-              // console.log('end', endTime)
-              if (parseInt(e.data.data[j].gmtEnd) > (timestamp / 1000)) {
-                that.homeworkInfo[i].state = '进行中'
-                that.accessInfo[i].state = '进行中'
+            console.log(e)
+            for (let i = 0; i < len.length; i++) {
+              that.homeworkInfo[i] = e.data.data[i]
+              // that.assessInfo[i] = e.data.data[i]
+              var endTime = new Date(parseInt(e.data.data[i].gmtEnd) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
+              if (parseInt(e.data.data[i].gmtEnd) > (timestamp / 1000)) {
+                that.homeworkInfo[i].homeState = '进行中'
               } else {
-                that.homeworkInfo[i].state = '已结束'
-                that.accessInfo[i].state = '已结束'
+                that.homeworkInfo[i].homeState = '已结束'
               }
-              // console.log(e.data.data[j])
-              that.homeworkInfo[i].url = that.idCourse + '&idHomework=' + e.data.data[j].idHomework + '&state=' + that.homeworkInfo[i].state + '&name=' + endTime
-              that.accessInfo[i].url = that.idCourse + '&idHomework=' + e.data.data[j].idHomework + '&state=' + that.homeworkInfo[i].state + '&name=' + endTime
+              // console.log('assessmentEnd', parseInt(e.data.data[i].assessmentEnd) > (timestamp / 1000), that.homeworkInfo[i].homeState === '已结束')
+              if (parseInt(e.data.data[i].assessmentEnd) > (timestamp / 1000) && that.homeworkInfo[i].homeState === '已结束') {
+                that.homeworkInfo[i].assessState = '互评中'
+              } else {
+                that.homeworkInfo[i].assessState = '已结束'
+              }
+              // console.log(e.data.data[i])
+              that.homeworkInfo[i].url = that.idCourse + '&idHomework=' + e.data.data[i].idHomework + '&state=' + that.homeworkInfo[i].homeState + '&name=' + endTime
+              that.homeworkInfo[i].assessUrl = that.idCourse + '&idHomework=' + e.data.data[i].idHomework + '&state=' + that.homeworkInfo[i].assessState + '&name=' + endTime
               that.homeworkInfo[i].name = endTime
-              that.accessInfo[i].name = endTime
+              // that.assessInfo[i].name = endTime
             }
             that.$apply()
           } else {

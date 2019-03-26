@@ -116,7 +116,8 @@
       homeworkInfo: [
       ],
       state: '',
-      img_base64: []
+      img_base64: [],
+      imageType: ''
     };
 
     // 事件处理函数(集中保存在methods对象中)
@@ -250,9 +251,6 @@
             sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
             success: function(res) {
               // // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-              // that.setData({
-              //   files: that.data.files.concat(res.tempFilePaths)
-              // });
               that.files[imgIdd] = res.tempFilePaths[0]
               that.$apply()
               wx.getImageInfo({
@@ -262,6 +260,7 @@
                   var ctx = wx.createCanvasContext('photo_canvas')
                   // var ratio = 2
                   // // console.log(that)
+                  that.imageType = res.type
                   that.canvasWidth = res.width
                   that.canvasHeight = res.height
                   that.$apply()
@@ -289,7 +288,7 @@
                           encoding: 'base64', // 编码格式
                           success: res => { // 成功的回调
                             console.log(res.data)
-                            that.img_base64[imgIdd] = res.data
+                            that.img_base64[imgIdd] = 'data:image/' + that.imageType + ';base64,' + res.data
                             that.$apply()
                           },
                           fail: function(e) {

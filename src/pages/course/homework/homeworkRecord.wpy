@@ -74,25 +74,16 @@
 <block wx:if="{{haveNothing}}">
   <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
   <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
-    <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this"> 
-      <!-- <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px;"/> -->
+    <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this">
       <image src="{{page.img}}" style="width:100%;margin-bottom:100rpx"/>
-      <block wx:if="{{index== 0 ? true:false}}">
-        <rate1 title="作业打分" :value.sync="value1" :desc="desc" />
-      </block>
-      <block wx:if="{{index== 1 ? true:false}}">
-        <rate2 title="作业打分" :value.sync="value2" :desc="desc" />
-      </block>
-      <block wx:if="{{index== 2 ? true:false}}">
-        <rate3 title="作业打分" :value.sync="value3" :desc="desc" />
-      </block>
-      <block wx:if="{{index== 3 ? true:false}}">
-        <rate4 title="作业打分" :value.sync="value4" :desc="desc" />
-      </block>
-        <!-- <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px' plain @tap="Submit" id="{{index}}">Submit</button> -->
+      <image src="{{page.submitImg1}}" style="width:100%;margin-bottom:100rpx"/>
     </swiper-item>
   </swiper>
-  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:-400rpx;' plain @tap="Submit" id="{{index}}">Submit</button>
+  <!-- <block wx:if="{{index== 0 ? true:false}}"> -->
+    <rate1 title="作业打分" :value.sync="value" :desc="desc" :id="{{current}}"/>
+    <view>{{value[current]}}</view>
+  <!-- </block> -->
+  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;' plain @tap="Submit" id="{{index}}">Submit</button>
   </block>
   <block wx:if="{{!haveNothing}}">
     <view class="greetingc">
@@ -117,21 +108,13 @@
       canvasWidth: '',
       canvasHeight: '',
       homeworkInfo: [
-        {'img': 'https://sanleisen.cn/photo/001.jpg', 'value': 1},
-        {'img': 'https://sanleisen.cn/photo/001.jpg', 'value': 0},
-        {'img': 'https://sanleisen.cn/photo/001.jpg', 'value': 0},
-        {'img': 'https://sanleisen.cn/photo/001.jpg', 'value': 0}
       ],
       state: '',
-      value1: 1,
-      value2: 2,
-      value3: 3,
-      value4: 4,
-      value5: 5,
+      value: [],
+      current: 0,
       desc: [
         '1分', '2分', '3分', '4分', '5分'
       ]
-
     };
     components = {
       rate1: Rate,
@@ -153,13 +136,9 @@
           var that = this
           let app = that.$parent
           var delData = {
-            idHomeworkItems: parseInt(this.homeworkInfo[e.currentTarget.id].idHomeworkItems),
-            submitImg1: this.files[e.currentTarget.id],
-            submitImg2: '',
-            submitImg3: ''
           }
           app
-            .request('Homework.submitHomework', delData, 'loading')
+            .request('Homework.', delData, 'loading')
             .then(function(e) {
               console.log(e)
             })
@@ -170,6 +149,13 @@
                 '确定'
               )
             })
+        }
+      },
+      roll(e) {
+        console.log(e)
+        if (e.detail.source === 'touch') {
+          this.current = e.detail.current
+          this.$apply()
         }
       }
     };
@@ -191,7 +177,12 @@
           console.log(e)
           if (e.data.msg === '没有待批改作业') {
           } else {
+            console.log('huoqu')
             that.haveNothing = 1
+            that.homeworkInfo = e.data.data
+            for (let i = 0; i < that.homeworkInfo.length; i++) {
+              that.value[i] = 0
+            }
             that.$apply()
           }
         })

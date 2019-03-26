@@ -26,8 +26,13 @@
         default: 0,
         twoWay: true,
         coerce (v) {
-          return Number(v)
+          // console.log(v)
+          return Array(v)
         }
+      },
+      id: {
+        type: [Number],
+        default: 0
       },
       desc: {
         type: Array,
@@ -50,6 +55,7 @@
     }
     events = {
       star (e) {
+        console.log(e)
         const index = Number(e.source.$index)
         this.value = index + 1
       }
