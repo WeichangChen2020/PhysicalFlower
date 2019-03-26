@@ -26,7 +26,7 @@ export default class classControl extends wepy.page {
   // 页面的生命周期函数
   onLoad(e) {
     let that = this
-    that.idSignin = e
+    that.idSignin = e.idSignin
     // let postData = {
     //   idsignin: that.idsignin
     // }
@@ -42,12 +42,12 @@ export default class classControl extends wepy.page {
     let postData = {
       idSignin: that.idSignin
     }
-    console.log(postData)
-    // app.request('Signin.getStudentSigninDetails', postData, 'Loading...').then(
-    //   function(res) {
-    //     console.log(res)
-    //   }
-    //   )
+    console.log(that.data)
+    app.request('Signin.getStudentSigninDetails', postData, 'Loading...').then(
+      function(res) {
+        console.log(res)
+      }
+      )
   }
 }
 </script>
