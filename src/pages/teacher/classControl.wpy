@@ -150,7 +150,7 @@ export default class classControl extends wepy.page {
     folder3: Folder,
     folder4: Folder,
     dialog: Dialog
-    }
+  }
   // 可用于页面模板绑定的数据
   data = {
     count: '',
