@@ -1,0 +1,61 @@
+<style type="less">
+
+
+</style>
+<template>
+<view>修改签到</view>
+ <input placeholder='{{signinName}}'></input>
+ <input placeholder="{{gmtStart}}"></input>
+  <input placeholder="{{radius}}"></input>
+  <view>{{gmtStart}}</view>
+  <input placeholder="请重新设定签到持续时间">
+  <button @tap='tap'>上传并提交修改</button>
+</template>
+<script>
+import wepy from 'wepy'
+
+// 通过继承自wepy.page的类创建页面逻辑
+export default class signinCreat extends wepy.page {
+  config ={
+    backgroundTextStyle: 'light',
+    navigationBarBackgroundColor: '#fff',
+    navigationBarTitleText: '修改签到',
+    navigationBarTextStyle: 'black'
+  }
+  // 可用于页面模板绑定的数据
+  data = {
+    radius: 0,
+    gmtStart: 0,
+    signinName: '',
+    idSignin: 0,
+    keepTime: 0
+  }
+
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+    tap(e) {
+      let app = this.$parent
+      let that = this
+      var postData = {
+        idSignin: that.idSignin,
+        signinName: that.signName,
+        radius: that.radius,
+        gmtEnd: that
+      }
+    //   app.request
+    }
+  }
+
+  // 页面的生命周期函数
+  onLoad(e) {
+    console.log(e)
+    let that = this
+    that.radius = e.radius
+    that.gmtStart = e.gmtStart
+    that.signinName = e.signinName
+    that.idSignin = e.idSignin
+    that.$apply()
+    console.log(that.data)
+  }
+}
+</script>
