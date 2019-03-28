@@ -134,7 +134,7 @@ export default class classCreate extends wepy.page {
     imageBase64: '',
     canvasWidth: '',
     canvasHeight: '',
-    iamgeType: ''
+    imageType: ''
   }
   computed = {}
   methods = {
@@ -162,7 +162,7 @@ export default class classCreate extends wepy.page {
         var createData = {
           description: that.data.Description,
           courseName: that.data.className,
-          logo: 'data:image/' + this.iamgeType + ';base64,' + this.imageBase64,
+          logo: 'data:image/' + this.imageType + ';base64,' + this.imageBase64,
           idQuestionSet: 1
         }
         console.log(createData)
@@ -217,7 +217,7 @@ export default class classCreate extends wepy.page {
           src: data,
           success: function(res) {
             // console.log('getImageInfo', res)
-            that.iamgeType = res.type
+            that.imageType = res.type
             var ctx = wx.createCanvasContext('photo_canvas')
             var ratio = 2
             that.canvasWidth = res.width
@@ -225,8 +225,8 @@ export default class classCreate extends wepy.page {
             // onsole.log(that.data.canvasWidth, that.data.canvasHeight)
             // 保证宽高均在200以内
             while (
-              that.data.canvasWidth > 10000 ||
-              that.data.canvasHeight > 10000
+              that.canvasWidth > 200 ||
+              that.canvasHeight > 200
             ) {
               // 比例取整
               that.canvasWidth = Math.trunc(res.width / ratio)
@@ -243,7 +243,7 @@ export default class classCreate extends wepy.page {
             ctx.draw()
             setTimeout(function() {
               wx.canvasToTempFilePath({
-                fileType: that.type,
+                fileType: 'png',
                 quality: 0.5,
                 canvasId: 'photo_canvas',
                 success: function(res) {
@@ -265,7 +265,7 @@ export default class classCreate extends wepy.page {
                   console.log(error)
                 }
               })
-            }, 100)
+            }, 200)
           },
           fail: function(error) {
             console.log(error)

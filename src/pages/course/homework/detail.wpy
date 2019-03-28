@@ -258,26 +258,26 @@
                 success: function(res) {
                   // console.log(photo)
                   var ctx = wx.createCanvasContext('photo_canvas')
-                  // var ratio = 2
+                  var ratio = 2
                   // // console.log(that)
                   that.imageType = res.type
                   that.canvasWidth = res.width
                   that.canvasHeight = res.height
                   that.$apply()
-                  // // console.log(that.data.canvasWidth, that.data.canvasHeight)
-                  // // 保证宽高均在200以内
-                  // while (that.canvasWidth > 10000 || that.canvasHeight > 10000) {
-                  //   // 比例取整
-                  //   that.canvasWidth = Math.trunc(res.width / ratio)
-                  //   that.canvasHeight = Math.trunc(res.height / ratio)
-                  //   ratio++
-                  // }
                   // console.log(that.data.canvasWidth, that.data.canvasHeight)
-                  ctx.drawImage(res.path, 0, 0, res.width, res.height)
+                  // 保证宽高均在200以内
+                  while (that.canvasWidth > 200 || that.canvasHeight > 200) {
+                    // 比例取整
+                    that.canvasWidth = Math.trunc(res.width / ratio)
+                    that.canvasHeight = Math.trunc(res.height / ratio)
+                    ratio++
+                  }
+                  console.log(that.data.canvasWidth, that.data.canvasHeight)
+                  ctx.drawImage(res.path, 0, 0, that.canvasWidth, that.canvasHeight)
                   ctx.draw()
                   setTimeout(function() {
                     wx.canvasToTempFilePath({
-                      fileType: 'jpg',
+                      fileType: 'png',
                       quality: 0.1,
                       canvasId: 'photo_canvas',
                       success: function(res) {
@@ -321,8 +321,6 @@
 
     // 页面的生命周期函数
     onLoad(e) {
-      // console.log(e)
-      // console.log(this.files[0])
       this.state = e.state
       this.idHomework = e.idHomework
       this.homeworkName = e.name
