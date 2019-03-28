@@ -190,7 +190,7 @@ text-align:center;
     <view>签到名称</view>
     <input class='input' placeholder='{{signinName}}' focus='{{focus}}' maxlength="15" @input='inputName'/>
     <view>签到起始时间(无法修改)</view>
-    <input class='input' placeholder='{{time}}' maxlength="0" />
+    <input class='input' placeholder='{{time}}' disabled="disabled"/>
   </view>
 
         <view class='border'>
