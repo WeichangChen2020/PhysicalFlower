@@ -54,7 +54,7 @@ margin-left:10rpx;
   <view class="kai-content">
     <dialog />
     <!-- <view class='head'>签到列表 </view> -->
-    <button wx:for='{{signinList}}' class='border' wx:key='*this' @touchend='touchend' @longpress='showSync' @tap='tap' data-signinName="{{item.signinName}}" data-idSignin="{{item.idSignin}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}" data-gmtStart="{{item.gmtStart}}" data-radius="{{item.radius}}">
+    <button wx:for='{{signinList}}' class='border' wx:key='*this' @touchend='touchend' @longpress='showSync' @tap='tap' data-signinName="{{item.signinName}}" data-idSignin="{{item.idSignin}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}" data-gmtStart="{{item.gmtStart}}" data-radius="{{item.radius}}"data-gmtEnd="{{item.gmtEnd}}">
       <view class='contain'>
         <view class='title'>签到名称：{{item.signinName}}</view>
         <text class='subtitle'>创建时间：{{item.gmtCreate}}</text>
@@ -151,7 +151,7 @@ export default class signinChoose extends wepy.page {
       this.$invoke('dialog', 'show', options).then((value) => {
         console.log(value) // 0: 取消 1：修改信息 2：删除
         if (value === 1) {
-          this.$navigate('./changeSignin?gmtStart=' + e.currentTarget.dataset.gmtstart + '&idSignin=' + e.currentTarget.dataset.idsignin + '&signinName=' + e.currentTarget.dataset.signinname + '&radius=' + e.currentTarget.dataset.radius)
+          this.$navigate('./changeSignin?gmtStart=' + e.currentTarget.dataset.gmtstart + '&idSignin=' + e.currentTarget.dataset.idsignin + '&signinName=' + e.currentTarget.dataset.signinname + '&radius=' + e.currentTarget.dataset.radius + '&gmtEnd=' + e.currentTarget.dataset.gmtend)
         }
         if (value === 2) {
           let app = this.$parent
