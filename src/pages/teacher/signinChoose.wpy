@@ -154,6 +154,46 @@ export default class signinChoose extends wepy.page {
     console.log(e)
     this.idCourse = e.idCourse
     this.courseName = e.courseName
+    // var app = this.$parent
+    // var that = this
+    // let postData = {
+    //   idCourse: that.idCourse,
+    //   page: this.page
+    // }
+    // app.request('Signin.getCreatedSigninList', postData, 'Loading')
+    // .then((res) => {
+    //   that.signinList = res.data.data
+    //   that.$apply()
+    //   if (res.data.errCode === 102) {
+    //     wx.showModal({
+    //       title: '提示',
+    //       content: '请先创建签到！',
+    //       showCancel: false,
+    //       cancelText: '取消',
+    //       cancelColor: '',
+    //       confirmText: '好的',
+    //       confirmColor: '#000000',
+    //       success: function(res) {
+    //         if (res.confirm === true) {
+    //           that.$navigate('./signinCreat?idCourse=' + e.idCourse)
+    //         }
+    //       }
+    //     })
+    //   } else if (res.data.errCode === 0) {
+    //     for (var i = 0; i < res.data.data.length; i++) {
+    //       that.signinList[i].gmtCreate = formatDateTime(that.signinList[i].gmtCreate * 1000).substr(-8)
+    //       that.signinList[i].gmtEnd = formatDateTime(that.signinList[i].gmtEnd * 1000).substr(-8)
+    //     }
+    //     that.$apply()
+    //   }
+    // },
+    // function(e) {
+    //   app.modal(e.message, '错误!错误提示是：', '确定')
+    // })
+    // .then(() => {
+    // })
+  }
+  onShow() {
     var app = this.$parent
     var that = this
     let postData = {
@@ -175,7 +215,7 @@ export default class signinChoose extends wepy.page {
           confirmColor: '#000000',
           success: function(res) {
             if (res.confirm === true) {
-              that.$navigate('./signinCreat?idCourse=' + e.idCourse)
+              that.$navigate('./signinCreat?idCourse=' + that.idCourse)
             }
           }
         })
@@ -192,9 +232,6 @@ export default class signinChoose extends wepy.page {
     })
     .then(() => {
     })
-  }
-  onShow() {
-    this.onLoad({ courseName: this.courseName, idCourse: this.idCourse })
   }
 
   onPullDownRefresh() {
