@@ -53,7 +53,8 @@ export default class Register extends wepy.page {
     name: {
       label: '*姓名',
       value: '',
-      placeholder: '名字'
+      placeholder: '名字',
+      maxlength: 64
     },
     number: {
       error: false,

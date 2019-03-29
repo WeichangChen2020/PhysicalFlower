@@ -1,53 +1,148 @@
-
 <style type="less">
+page{
+  width: 100%;
+}
+.head{
+  padding:55rpx;
+  text-align:center;
+  color:#777;
+  font-size:35rpx;
+
+}
+.border{
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  margin: 40rpx;
+  height: 120rpx;
+}
+.icon{
+  width:120rpx;
+  height:120rpx;
+  margin:0rpx;
+  margin-left:10rpx;
+}
+.contain{
+  padding-left:20rpx;
+  line-height:55rpx;
+  font-size:36rpx;
+  margin-left:35rpx;
+
+}
+.subtitle{
+  color:#aaa;
+  font-size:28rpx;
+  line-height:32rpx;
+  display:block;
+  margin-top:8rpx;
+}
+.icon2{
+position:fixed;
+right:25px;
+bottom:30px;
+width:100rpx;
+height:100rpx;
+margin-left:10rpx;
+}
+.title{
+font-size:31rpx;
+margin-left: 60rpx;
+}
+.icon {
+width:120rpx;
+height:120rpx;
+margin:0rpx;
+margin-left:40rpx;
+}
 
 </style>
 <template>
-<view>hello</view>
+  <tab @bindChange.user="change"/>
+   <view wx:if="{{tab.selectedId === 1}}" wx:for="{{doSigninList}}" wx:item="item" wx:key="*this" class="border"  @tap="tap({{item.idSignin}})">
+        <image src='{{item.avatarUrl}}' class='icon'></image>
+        <view class='contain'>
+        <view class='title'>姓名：{{item.name}}</view>
+        <view class='title'>签到时间：{{item.gmtCreate}}</view>
+      </view>
+      </view>
+      <view wx:if="{{tab.selectedId === 1 ? false : true}}" wx:for="{{notSigninList}}" wx:item="item" wx:key="*this" class="border" hover-class="weui-cell_active" @tap="tap({{item.idSignin}})">
+      <image src='{{item.avatarUrl}}' class='icon'></image>
+        <view class='contain'>
+        <view class='title'>姓名：{{item.name}}</view>
+      </view>
+      </view>
+  <view class="weui-footer">
+      <view class="weui-footer__text">——到底了——</view>
+  </view>
 </template>
 <script>
-import wepy from 'wepy'
+  import wepy from 'wepy'
+  import Tab from '@/components/tab/index'
+  import { formatDateTime } from '@/public/js/formatDateTime.js'
 
-// import base from '/components/van/base/index'// 文件路径
-// 通过继承自wepy.page的类创建页面逻辑
-export default class classControl extends wepy.page {
-  config = {
-    navigationBarTitleText: '签到详情'
-  }
-  components = {
-  }
-  // 可用于页面模板绑定的数据
-  data = {
-    idSignin: 0
-  }
-  // 事件处理函数(集中保存在methods对象中)
-  methods = {
-  }
-  // 页面的生命周期函数
-  onLoad(e) {
-    let that = this
-    that.idSignin = e.idSignin
-    // let postData = {
-    //   idsignin: that.idsignin
-    // }
-    // app.request('Signin.getStudentSigninDetails', postData, 'Loading...').then(
-    //   function(res) {
-    //     console.log(res)
-    //   }
-    //   )
-  }
-  onShow() {
-    let that = this
-    let app = this.$parent
-    let postData = {
-      idSignin: that.idSignin
+  // TODO 下拉刷新
+  export default class SigninList extends wepy.page {
+    // 可用于页面模板绑定的数据
+    data = {
+      notSigninList: [],
+      doSigninList: [],
+      tab: {
+        list: [{id: 1, title: '已签到'}, {id: 2, title: '未签到'}],
+        selectedId: 1,
+        class: 'tab-success'
+      },
+      idSignin: 0
+    };
+
+    components = {
+      tab: Tab
     }
-    console.log(that.data)
-    app.request('Signin.getStudentSigninDetails', postData, 'Loading...').then(
-      function(res) {
-        console.log(res)
+    // 事件处理函数(集中保存在methods对象中)
+    methods = {
+      tap (e) {
+        console.log(e)
+        wx.navigateTo({url: './detail?idSignin=' + e + '&from' + this.tab.selectedId})
+      },
+      change (res) {
+        this.tab.selectedId = res
+        if (JSON.stringify(this.allSigninList) === '{}') {
+          this.getAllList()
+        }
+        this.$apply()
       }
-      )
+    };
+
+    onLoad(e) {
+      console.log(e)
+      this.idSignin = e.idSignin
+      this.$invoke('tab', 'doInitTabData', this.tab)
+      // this.getDoingList()
+      let app = this.$parent
+      let that = this
+      var postData = {
+        idSignin: that.idSignin
+      }
+      app.request('Signin.getStudentSigninDetails', postData, 'loading...')
+      .then(res => {
+        console.log(res)
+        for (var i = 0; i < res.data.data.length; i++) {
+          res.data.data[i].gmtCreate = formatDateTime(res.data.data[i].gmtCreate * 1000).substr(-8)
+          if (res.data.data[i].status === '1') {
+            that.doSigninList.push(res.data.data[i])
+          } else {
+            that.notSigninList.push(res.data.data[i])
+          }
+        }
+        that.$apply()
+      })
+    };
+    onShow() {
+    };
+    onPullDownRefresh() {
+      this.onLoad({idSignin: this.idSignin})
+      wx.stopPullDownRefresh()
+    }
   }
-}
 </script>
