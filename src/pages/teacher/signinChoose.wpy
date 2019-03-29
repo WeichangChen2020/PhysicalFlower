@@ -54,32 +54,14 @@ margin-left:10rpx;
   <view class="kai-content">
     <dialog />
     <!-- <view class='head'>签到列表 </view> -->
-    <button wx:for='{{signinList}}' class='border' wx:key='*this' @touchend='touchend' @longpress='showSync' @tap='tap' data-signinName="{{item.signinName}}" data-idSignin="{{item.idSignin}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}" data-gmtStart="{{item.gmtStart}}" data-radius="{{item.radius}}">
+    <button wx:for='{{signinList}}' class='border' wx:key='*this' @touchend='touchend' @longpress='showSync' @tap='tap' data-signinName="{{item.signinName}}" data-idSignin="{{item.idSignin}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}" data-gmtStart="{{item.gmtStart}}" data-radius="{{item.radius}}"data-gmtEnd="{{item.gmtEnd}}">
       <view class='contain'>
         <view class='title'>签到名称：{{item.signinName}}</view>
         <text class='subtitle'>创建时间：{{item.gmtCreate}}</text>
         <text class='subtitle'>截止时间: {{item.gmtEnd}}</text>
       </view>
     </button>
-    <!-- <view class="padding-10" style="margin-top: 50px;">
-      <button @tap="showSuccess" class="btn btn-kai">纵向对话框</button>
-    </view>
-    <view class="padding-10">
-      <button @tap="showkai" class="btn btn-kai">横向对话框</button>
-    </view>
-    <view class="padding-10">
-      <button @tap="showSync" class="btn btn-kai">异步对话框</button>
-    </view> -->
   </view>
-  <!-- <dialog />
-  <view class='head'>签到列表 </view>
-  <view wx:for='{{signinList}}' class='border' wx:key='*this' @tap='showSync()' data-signinName="{{item.signinName}}" data-idSignin="{{item.idSignin}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
-    <view class='contain'>
-      <view class='title'>签到名称：{{item.signinName}}</view>
-      <text class='subtitle'>创建时间：{{item.gmtCreate}}</text>
-      <text class='subtitle'>截止时间: {{item.gmtEnd}}</text>
-    </view>
-  </view> -->
 </template>
 <script>
 import wepy from 'wepy'
@@ -151,7 +133,7 @@ export default class signinChoose extends wepy.page {
       this.$invoke('dialog', 'show', options).then((value) => {
         console.log(value) // 0: 取消 1：修改信息 2：删除
         if (value === 1) {
-          this.$navigate('./changeSignin?gmtStart=' + e.currentTarget.dataset.gmtstart + '&idSignin=' + e.currentTarget.dataset.idsignin + '&signinName=' + e.currentTarget.dataset.signinname + '&radius=' + e.currentTarget.dataset.radius)
+          this.$navigate('./changeSignin?gmtStart=' + e.currentTarget.dataset.gmtstart + '&idSignin=' + e.currentTarget.dataset.idsignin + '&signinName=' + e.currentTarget.dataset.signinname + '&radius=' + e.currentTarget.dataset.radius + '&gmtEnd=' + e.currentTarget.dataset.gmtend)
         }
         if (value === 2) {
           let app = this.$parent
@@ -172,6 +154,46 @@ export default class signinChoose extends wepy.page {
     console.log(e)
     this.idCourse = e.idCourse
     this.courseName = e.courseName
+    // var app = this.$parent
+    // var that = this
+    // let postData = {
+    //   idCourse: that.idCourse,
+    //   page: this.page
+    // }
+    // app.request('Signin.getCreatedSigninList', postData, 'Loading')
+    // .then((res) => {
+    //   that.signinList = res.data.data
+    //   that.$apply()
+    //   if (res.data.errCode === 102) {
+    //     wx.showModal({
+    //       title: '提示',
+    //       content: '请先创建签到！',
+    //       showCancel: false,
+    //       cancelText: '取消',
+    //       cancelColor: '',
+    //       confirmText: '好的',
+    //       confirmColor: '#000000',
+    //       success: function(res) {
+    //         if (res.confirm === true) {
+    //           that.$navigate('./signinCreat?idCourse=' + e.idCourse)
+    //         }
+    //       }
+    //     })
+    //   } else if (res.data.errCode === 0) {
+    //     for (var i = 0; i < res.data.data.length; i++) {
+    //       that.signinList[i].gmtCreate = formatDateTime(that.signinList[i].gmtCreate * 1000).substr(-8)
+    //       that.signinList[i].gmtEnd = formatDateTime(that.signinList[i].gmtEnd * 1000).substr(-8)
+    //     }
+    //     that.$apply()
+    //   }
+    // },
+    // function(e) {
+    //   app.modal(e.message, '错误!错误提示是：', '确定')
+    // })
+    // .then(() => {
+    // })
+  }
+  onShow() {
     var app = this.$parent
     var that = this
     let postData = {
@@ -182,18 +204,7 @@ export default class signinChoose extends wepy.page {
     .then((res) => {
       that.signinList = res.data.data
       that.$apply()
-      // for (var i = 0; i < res.data.data.length; i++) {
-      //   that.signinList[i].gmtCreate = formatDateTime(that.signinList[i].gmtCreate * 1000).substr(-8)
-      //   that.signinList[i].gmtEnd = formatDateTime(that.signinList[i].gmtEnd * 1000).substr(-8)
-      // }
-      // that.$apply()
-      // console.log(that.signinList)
       if (res.data.errCode === 102) {
-        // for (var i = 0; i < res.data.data.length; i++) {
-        //   that.signinList[i].gmtCreate = formatDateTime(that.signinList[i].gmtCreate * 1000).substr(-8)
-        //   that.signinList[i].gmtEnd = formatDateTime(that.signinList[i].gmtEnd * 1000).substr(-8)
-        // }
-        // that.$apply()
         wx.showModal({
           title: '提示',
           content: '请先创建签到！',
@@ -204,7 +215,7 @@ export default class signinChoose extends wepy.page {
           confirmColor: '#000000',
           success: function(res) {
             if (res.confirm === true) {
-              that.$navigate('./signinCreat?idCourse=' + e.idCourse)
+              that.$navigate('./signinCreat?idCourse=' + that.idCourse)
             }
           }
         })
@@ -221,9 +232,6 @@ export default class signinChoose extends wepy.page {
     })
     .then(() => {
     })
-  }
-  onShow() {
-    this.onLoad({ courseName: this.courseName, idCourse: this.idCourse })
   }
 
   onPullDownRefresh() {
@@ -246,16 +254,13 @@ export default class signinChoose extends wepy.page {
             title: '我是有底线的'
           })
         } else {
-          // console.log(e)
           that.list[0].name = that.courseName
-          // console.log(res.data.data)
           var timestamp = new Date().getTime()
           for (
             var i = that.lastPage, j = 0;
             i < that.lastPage + res.data.data.length;
             i++, j++
           ) {
-            // console.log(i)
             that.list[0].pages[i] = res.data.data[j]
             if (res.data.data[j].gmtEnd > timestamp / 1000) {
               that.list[0].pages[i].state = '进行中'
