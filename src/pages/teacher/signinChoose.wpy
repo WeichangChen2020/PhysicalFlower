@@ -105,7 +105,6 @@ export default class signinChoose extends wepy.page {
       if (that.check === 1) {
         return
       }
-      // that.$navigate('./' + e.currentTarget.dataset.idcourse + '&courseName=' + e.currentTarget.dataset.coursename + '&count=' + e.currentTarget.dataset.count)
       console.log(e)
       that.$navigate('./signinDetail?idSignin=' + e.currentTarget.dataset.idsignin)
     }, // todo:点击进入页面详情，查看签到人数等信息
@@ -141,7 +140,7 @@ export default class signinChoose extends wepy.page {
           setTimeout(() => {
             this.$invoke('dialog', 'reset')
           }, 500)
-          this.onLoad({ courseName: this.courseName, idCourse: this.idCourse })
+          this.onShow({ courseName: this.courseName, idCourse: this.idCourse })
         }
       }, () => {
         console.log('reject')

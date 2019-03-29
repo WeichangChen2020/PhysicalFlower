@@ -159,6 +159,7 @@ export default class Detail extends wepy.page {
         that.signin_online = res
       },
       fail: function (res) {
+        console.log(res)
         wx.showToast({
           title: '获取位置信息失败',
           icon: 'none'
