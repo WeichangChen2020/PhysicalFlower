@@ -9,20 +9,21 @@ page{
   font-size:35rpx;
 
 }
-.border{
-  display: flex;
-  flex-direction: row;
-  background-color: #fff;
-  border-radius: 20rpx;
-  padding: 20rpx;
-  margin: 40rpx;
-  height: 120rpx;
+.border {
+display:flex;
+flex-direction:row;
+background-color:#fff;
+border-radius:20rpx;
+padding:20rpx;
+margin:40rpx;
+height:175rpx;
 }
-.icon{
-  width:120rpx;
-  height:120rpx;
-  margin:0rpx;
-  margin-left:10rpx;
+
+.icon3{
+width:130rpx;
+height:130rpx;
+margin:5rpx;
+margin-left:25rpx;
 }
 .contain{
   padding-left:20rpx;
@@ -49,6 +50,7 @@ margin-left:10rpx;
 .title{
 font-size:31rpx;
 margin-left: 60rpx;
+margin-bottom:-10rpx;
 }
 .icon {
 width:120rpx;
@@ -60,19 +62,14 @@ margin-left:40rpx;
 </style>
 <template>
   <tab @bindChange.user="change"/>
-   <view wx:if="{{tab.selectedId === 1}}" wx:for="{{doSigninList}}" wx:item="item" wx:key="*this" class="border"  @tap="tap({{item.idSignin}})">
-        <image src='{{item.avatarUrl}}' class='icon'></image>
-        <view class='contain'>
-        <view class='title'>姓名：{{item.name}}</view>
-        <view class='title'>签到时间：{{item.gmtCreate}}</view>
-      </view>
-      </view>
-      <view wx:if="{{tab.selectedId === 1 ? false : true}}" wx:for="{{notSigninList}}" wx:item="item" wx:key="*this" class="border" hover-class="weui-cell_active" @tap="tap({{item.idSignin}})">
-      <image src='{{item.avatarUrl}}' class='icon'></image>
-        <view class='contain'>
-        <view class='title'>姓名：{{item.name}}</view>
-      </view>
-      </view>
+  <button wx:if="{{tab.selectedId === item.showId}}" wx:for="{{allSigninList}}" wx:item="item" wx:key="*this" class='border'  @tap='showSheet({{index}})'>
+    <image src='{{item.avatarUrl}}' class='icon3'></image>
+    <view class='contain'>
+      <view class='title'>姓名：{{item.name}}</view>
+      <view class='title'>签到时间：{{item.gmtCreate}}</view>
+      <view class='title'>状态：{{item.desc}}</view>
+    </view>
+  </button>
   <view class="weui-footer">
       <view class="weui-footer__text">——到底了——</view>
   </view>
@@ -86,8 +83,7 @@ margin-left:40rpx;
   export default class SigninList extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
-      notSigninList: [],
-      doSigninList: [],
+      allSigninList: [],
       tab: {
         list: [{id: 1, title: '已签到'}, {id: 2, title: '未签到'}],
         selectedId: 1,
@@ -101,9 +97,37 @@ margin-left:40rpx;
     }
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      tap (e) {
-        console.log(e)
-        wx.navigateTo({url: './detail?idSignin=' + e + '&from' + this.tab.selectedId})
+      showSheet (index) {
+        let userInfo = this.data.allSigninList[index]
+        console.log(this.data.allSigninList[index])
+        let that = this
+        wx.showActionSheet({
+          itemList: ['代签', '请假', '缺席', '取消'],
+          success: function(res) {
+            if (res.tapIndex === 3) {
+              return
+            }
+            if (!res.cancel) {
+              var postData = {
+                idSignin: that.idSignin,
+                idUser: userInfo.idUser,
+                status: res.tapIndex + 2
+              }
+              if (res.tapIndex === 0) {
+                that.allSigninList[index].showId = 1
+                that.allSigninList[index].desc = '代签'
+              } else if (res.tapIndex === 1) {
+                that.allSigninList[index].showId = 1
+                that.allSigninList[index].desc = '请假'
+              } else if (res.tapIndex === 2) {
+                that.allSigninList[index].showId = 2
+                that.allSigninList[index].desc = '缺席'
+              }
+              that.$apply()
+              that.manageSigninRecord(postData)
+            }
+          }
+        })
       },
       change (res) {
         this.tab.selectedId = res
@@ -113,9 +137,8 @@ margin-left:40rpx;
         this.$apply()
       }
     };
-
     onLoad(e) {
-      console.log(e)
+      this.allSigninList = []
       this.idSignin = e.idSignin
       this.$invoke('tab', 'doInitTabData', this.tab)
       // this.getDoingList()
@@ -126,15 +149,29 @@ margin-left:40rpx;
       }
       app.request('Signin.getStudentSigninDetails', postData, 'loading...')
       .then(res => {
-        console.log(res)
-        for (var i = 0; i < res.data.data.length; i++) {
-          res.data.data[i].gmtCreate = formatDateTime(res.data.data[i].gmtCreate * 1000).substr(-8)
-          if (res.data.data[i].status === '1') {
-            that.doSigninList.push(res.data.data[i])
-          } else {
-            that.notSigninList.push(res.data.data[i])
-          }
+        if (res.data.errCode === 0) {
+          res.data.data.forEach(element => {
+            console.log(element)
+            element.gmtCreate = formatDateTime(element.gmtCreate * 1000).substr(-8)
+            if (element.status === '1') {
+              element.desc = '签到'
+              element.showId = 1
+            } else if (element.status === '2') {
+              element.desc = '代签'
+              element.showId = 1
+            } else if (element.status === '3') {
+              element.desc = '请假'
+              element.showId = 1
+            } else {
+              element.desc = '缺席'
+              element.showId = 2
+            }
+            that.allSigninList.push(element)
+          })
+        } else if (res.data.errCode === 102) {
+          app.toast('这个课程还没有人加入！')
         }
+        console.log(this.data)
         that.$apply()
       })
     };
@@ -143,6 +180,18 @@ margin-left:40rpx;
     onPullDownRefresh() {
       this.onLoad({idSignin: this.idSignin})
       wx.stopPullDownRefresh()
+    }
+    manageSigninRecord(e) {
+      let app = this.$parent
+      app.request('teacher.manageSigninRecord', e, 'Loading...')
+       .then((res) => {
+         if (res.errCode === 0) {
+           setTimeout(() => {
+             app.toast('修改成功！')
+           }, 500)
+           this.onLoad({idSignin: this.idSignin})
+         }
+       })
     }
   }
 </script>
