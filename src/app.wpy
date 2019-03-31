@@ -138,7 +138,7 @@ export default class extends wepy.app {
     grant_type: 'authorization_code', // 获取openid的参数，不用改
     activeCourse: '1', // 主页面的课程id
     logo: '',
-    courseListPage: 1
+    courseInfo: []
   }
   constructor() {
     super()

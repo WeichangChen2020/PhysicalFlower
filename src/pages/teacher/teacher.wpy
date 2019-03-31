@@ -98,20 +98,18 @@ margin-left:10rpx;
 
     // 页面的生命周期函数
     onLoad(e) {
-    }
-    onShow(e) {
       let app = this.$parent
-      var that = this
+      let that = this
       that.page = 1
       var courseDATA = {
         page: that.page
       }
       app.request('Course.getCreatedCourseList', courseDATA, '请稍等...')
       .then((res) => {
+        app.globalData.courseInfo = res.data.data
         that.courseInfo = res.data.data
         that.errCode = res.data.errCode
         that.$apply()
-        console.log(that.courseInfo)
         if (res.data.errCode !== 0) {
           app.toast(res.data.msg)
         } else {
@@ -121,9 +119,34 @@ margin-left:10rpx;
         console.error(error)
         app.modal(error.message, '错误!错误提示是：', '确定')
       })
+    }
+    onShow(e) {
+      let app = this.$parent
+      let that = this
+      that.courseInfo = app.globalData.courseInfo
+      that.$apply()
+      // that.page = 1
+      // var courseDATA = {
+      //   page: that.page
+      // }
+      // app.request('Course.getCreatedCourseList', courseDATA, '请稍等...')
+      // .then((res) => {
+      //   that.courseInfo = res.data.data
+      //   that.errCode = res.data.errCode
+      //   that.$apply()
+      //   console.log(that.courseInfo)
+      //   if (res.data.errCode !== 0) {
+      //     app.toast(res.data.msg)
+      //   } else {
+      //   }
+      // })
+      // .catch(function(error) {
+      //   console.error(error)
+      //   app.modal(error.message, '错误!错误提示是：', '确定')
+      // })
     };
     onPullDownRefresh() {
-      this.onShow()
+      this.onLoad()
       wx.stopPullDownRefresh()
     };
     onReachBottom(e) {

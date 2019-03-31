@@ -160,42 +160,9 @@ export default class classControl extends wepy.page {
   // 事件处理函数(集中保存在methods对象中)
   methods = {
     showSuccess () {
-      // const options = {
-      //   title: '提示',
-      //   content: '确定要删除该课程吗？',
-      //   type: 'muti',
-      //   showVertical: true,
-      //   buttons: [{
-      //     text: '取消'
-      //   }, {
-      //     text: '确定',
-      //     color: '#d32f2f'
-      //   }]
-      // }
-      // this.$invoke('dialog', 'show', options).then((value) => {
-      //   console.log(value) // 0: 取消，1：确认
-      //   if (value === 1) {
-      //     let that = this
-      //     let app = this.$parent
-      //     var courseDate = {
-      //       idCourse: that.idCourse
-      //     }
-      //     app.request('Course.delCourse', courseDate, '请稍等...')
-      //     .then((res) => {
-      //       console.log(res.data.errCode)
-      //       if (res.data.errCode === 0) {
-      //         app.toast('删除成功！')
-      //         wx.navigateBack()
-      //       } else {
-      //         app.toast('请稍后重试！')
-      //       }
-      //     })
-      //   }
-      // }, () => {
-      //   console.log('reject')
-      // })
       let that = this
       let app = this.$parent
+      let courseInfo = app.globalData.courseInfo
       wx.showModal({
         title: '提示',
         content: '确定要删除课程吗？',
@@ -211,13 +178,22 @@ export default class classControl extends wepy.page {
             }
           }
           app.request('Course.delCourse', courseDate, '请稍等...')
-           .then((res) => {
-             console.log(res.data.errCode)
-             if (res.data.errCode === 0) {
-               app.toast('删除成功！')
-               wx.navigateBack()
-             }
-           })
+          .then((res) => {
+            console.log(res.data.errCode)
+            if (res.data.errCode === 0) {
+              let tmp = []
+              courseInfo.forEach(element => {
+                if (element.idCourse === that.idCourse) {
+                  // 只会跳出当前循环，不会中断整个函数
+                  return
+                }
+                tmp.push(element)
+              })
+              app.globalData.courseInfo = tmp
+              app.toast('删除成功！')
+              wx.navigateBack()
+            }
+          })
         },
         fail: () => {
           app.toast('请稍后再试')
