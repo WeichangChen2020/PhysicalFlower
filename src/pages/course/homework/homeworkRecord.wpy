@@ -77,13 +77,17 @@
     <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this">
       <image src="{{page.img}}" style="width:100%;margin-bottom:100rpx"/>
       <image src="{{page.submitImg1}}" style="width:100%;margin-bottom:100rpx"/>
+
+      <picker bindchange="bindPickerChange" value="{{pickId}}" range="{{array}}" id="{{index}}" style="margin-top:-100rpx;text-align:center">
+        <view class="picker">
+          作业评分：{{array[pickId[index]]}}
+        </view>
+      </picker>
     </swiper-item>
   </swiper>
-  <!-- <block wx:if="{{index== 0 ? true:false}}"> -->
-    <rate1 title="作业打分" :value.sync="value" :desc="desc" :id="{{current}}"/>
-    <view>{{value[current]}}</view>
-  <!-- </block> -->
-  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;' plain @tap="Submit" id="{{index}}">Submit</button>
+  
+  
+  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:-240rpx;' plain @tap="Submit" id="{{index}}">Submit</button>
   </block>
   <block wx:if="{{!haveNothing}}">
     <view class="greetingc">
@@ -93,7 +97,6 @@
 </template>
 <script>
   import wepy from 'wepy'
-  import Rate from '@/components/rate/index'
   // 通过继承自wepy.page的类创建页面逻辑
   export default class homeworkRecord extends wepy.page {
     // 可用于页面模板绑定的数据
@@ -110,23 +113,14 @@
       homeworkInfo: [
       ],
       state: '',
-      value: [],
       current: 0,
-      desc: [
-        '1分', '2分', '3分', '4分', '5分'
-      ]
+      pickId: [],
+      array: ['0分', '1分', '2分', '3分', '4分', '5分']
     };
-    components = {
-      rate1: Rate,
-      rate2: Rate,
-      rate3: Rate,
-      rate4: Rate
-    }
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       Submit(e) {
-        // todo 提交答案到后台 提交files,为图片显示路径，到时候后台返回路径就可以用image组件查看
         if (this.state === '已结束') {
           wx.showToast({
             title: '提交已经截至了哦',
@@ -136,9 +130,10 @@
           var that = this
           let app = that.$parent
           var delData = {
+            assessmentDetail: this.pickId
           }
           app
-            .request('Homework.', delData, 'loading')
+            .request('Homework.submitAssessment', delData, 'loading')
             .then(function(e) {
               console.log(e)
             })
@@ -157,6 +152,11 @@
           this.current = e.detail.current
           this.$apply()
         }
+      },
+      bindPickerChange(e) {
+        console.log('picker发送选择改变，携带值为', e.detail.value)
+        this.pickId[e.currentTarget.id] = e.detail.value
+        this.$apply()
       }
     };
 
@@ -181,7 +181,7 @@
             that.haveNothing = 1
             that.homeworkInfo = e.data.data
             for (let i = 0; i < that.homeworkInfo.length; i++) {
-              that.value[i] = 0
+              that.pickId[i] = 0
             }
             that.$apply()
           }
