@@ -9,8 +9,8 @@
 }
 </style>
 <template>
-	<view>
-		<text class="greeting">浏览作业</text>
+	<view style="text-align:center">
+		<text class="greeting" style="font-weight: bold;font-size: 40rpx;border-bottom: 1px solid #ccc;">浏览作业</text>
 	</view>
   <view class="padding">
   <view class="page__bd">

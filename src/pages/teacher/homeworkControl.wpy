@@ -78,6 +78,11 @@
               that.homeworkInfo[i].name = endTime
             }
             that.$apply()
+          } else if (e.data.errCode === 102) {
+            wx.showToast({
+              title: '暂时没有作业哦',
+              icon: 'none'
+            })
           } else {
             wx.showToast({
               title: '网络开小差了',
