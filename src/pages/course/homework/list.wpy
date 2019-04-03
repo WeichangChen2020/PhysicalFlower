@@ -6,7 +6,7 @@
   <block wx:if="{{tab.selectedId === 2 ? false : true}}">
     <block wx:for="{{homeworkInfo}}" wx:for-item="item" wx:key="id">
     <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{index}}'>
-      <view class="weui-cell__bd" style="display:flex;justify-content:space-between;font-size:28rpx;"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.homeState =='进行中' ?'green':'#ccc'}}">{{item.homeState}}</view></view>
+      <view class="weui-cell__bd" style="display:flex;justify-content:space-between;font-size:28rpx;"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.homeState =='已结束' ?'#ccc':'green'}}">{{item.homeState}}</view></view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </view>
     </block>
@@ -49,9 +49,31 @@
     methods = {
       tap (e) {
         let tid = e.currentTarget.id
-        wx.navigateTo({
-          url: './detail?idCourse=' + this.homeworkInfo[tid].url
-        })
+        var that = this
+        if (this.homeworkInfo[tid].homeState === '已提交') {
+          wx.showModal({
+            title: '注意',
+            content: '确定覆盖上次提交吗？',
+            success(e) {
+              if (e.cancel === true) {
+                console.log('不覆盖')
+              } else {
+                wx.navigateTo({
+                  url: './detail?idCourse=' + that.homeworkInfo[tid].url
+                })
+              }
+            }
+          })
+        } else if (this.homeworkInfo[tid].homeState === '进行中') {
+          wx.navigateTo({
+            url: './detail?idCourse=' + that.homeworkInfo[tid].url
+          })
+        } else {
+          wx.showToast({
+            title: '已经结束了哦',
+            icon: 'none'
+          })
+        }
       },
       change (res) {
         // TODO 互评tab
@@ -91,6 +113,10 @@
               var endTime = new Date(parseInt(e.data.data[i].gmtEnd) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
               if (parseInt(e.data.data[i].gmtEnd) > (timestamp / 1000)) {
                 that.homeworkInfo[i].homeState = '进行中'
+                if (e.data.data[i].submitCount === 0) {
+                } else {
+                  that.homeworkInfo[i].homeState = '已提交'
+                }
               } else {
                 that.homeworkInfo[i].homeState = '已结束'
               }

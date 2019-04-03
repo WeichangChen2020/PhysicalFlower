@@ -115,8 +115,9 @@
       state: '',
       current: 0,
       pickId: [],
+      pickkId: [],
       array: ['0分', '1分', '2分', '3分', '4分', '5分'],
-      idHomeworkItems: []
+      idHomeSubmit: []
     };
 
     // 事件处理函数(集中保存在methods对象中)
@@ -128,24 +129,46 @@
             icon: 'none'
           })
         } else {
-          var that = this
-          let app = that.$parent
-          var delData = {
-            idHomeworkItems: this.idHomeworkItems,
-            assessmentDetail: this.pickId
+          let allAssess = 0
+          for (let h = 0; h < this.pickkId.length; h++) {
+            if (this.pickkId[h] === -1) {
+              allAssess += 1
+            }
           }
-          app
-            .request('Homework.submitAssessment', delData, 'loading')
-            .then(function(e) {
-              console.log(e)
+          if (allAssess === 0) {
+            var that = this
+            let app = that.$parent
+            var delData = {
+              idHomeSubmit: this.idHomeSubmit,
+              assessmentDetail: this.pickId
+            }
+            app
+              .request('Homework.submitAssessment', delData, 'loading')
+              .then(function(e) {
+                console.log(e)
+                if (e.data.success === true) {
+                  wx.showToast({
+                    title: '提交成功',
+                    icon: 'none',
+                    success(e) {
+                      wx.navigateBack()
+                    }
+                  })
+                }
+              })
+              .catch(function(e) {
+                app.modal(
+                  e.message,
+                  '错误!错误提示是：',
+                  '确定'
+                )
+              })
+          } else {
+            wx.showModal({
+              title: '注意',
+              content: '您还有题目没有批改过哦'
             })
-            .catch(function(e) {
-              app.modal(
-                e.message,
-                '错误!错误提示是：',
-                '确定'
-              )
-            })
+          }
         }
       },
       roll(e) {
@@ -158,6 +181,7 @@
       bindPickerChange(e) {
         console.log('picker发送选择改变，携带值为', e.detail.value)
         this.pickId[e.currentTarget.id] = e.detail.value
+        this.pickkId[e.currentTarget.id] = e.detail.value
         this.$apply()
       }
     };
@@ -184,7 +208,8 @@
             that.homeworkInfo = e.data.data
             for (let i = 0; i < that.homeworkInfo.length; i++) {
               that.pickId[i] = 0
-              that.idHomeworkItems[i] = e.data.data[i].idHomeworkItems
+              that.pickkId[i] = -1
+              that.idHomeSubmit[i] = e.data.data[i].idHomeSubmit
             }
             that.$apply()
           }
