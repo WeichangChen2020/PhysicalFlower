@@ -1,4 +1,7 @@
 <style type="less">
+page {
+  background-color: #ffffff;
+}
 canvas {
   width: 150px;
   height: 150px;
@@ -24,7 +27,7 @@ canvas {
 .btn2{
   width: 60%;
   margin-top: 60rpx;
-  background-color: #f0f0f0;
+  background-color: #d32f2f;
   color:whitesmoke;
   border-radius: 98rpx;
   display: flex;
@@ -32,13 +35,36 @@ canvas {
   align-items: center;
   justify-content: center;
 }
+.con{
+  margin-top: 180rpx
+}
+.con2{
+  margin-top: 150rpx
+}
+.icon{
+margin-left:300rpx;
+display:flex;
+justify-content:center;
+overflow:hidden;
+width:250rpx;
+height:170rpx;
+}
+.title{
+  margin-top: 60rpx
+}
 </style>
 <template>
   <toast />
   <view class="page__bd">
-    <image src="{{course}}"></image>
-    <button class="btn"  @tap="join">加入课程</button>
-    <button class="btn" type="default" @tap="back">重新检索</button>
+    <view class="con2">
+    <image src='{{logo}}' class='icon' />
+    <view class='title'>课程名称：{{courseName}}</view>
+    <view class='title'>创建者：{{creater}}</view>
+    </view>
+    <view class='con'>
+    <button class="button"  @tap="join">加入课程</button>
+    <button class="button" style="background:#d32f2f" @tap="back">重新检索</button>
+    </view>
   </view>
 </template>
 <script>
@@ -50,6 +76,10 @@ export default class CourseDetail extends wepy.page {
     navigationBarTitleText: '课程详情'
   }
   data = {
+    logo: '',
+    idCourse: 0,
+    creater: '',
+    courseName: ''
   }
   components = {
     'toast': Toast
@@ -106,7 +136,11 @@ export default class CourseDetail extends wepy.page {
 
   // 页面的生命周期函数
   onLoad(e) {
+    this.courseName = e.courseName
     this.idCourse = e.idCourse
+    this.logo = this.$parent.globalData.logo
+    this.creater = e.creater
+    console.log(this.data)
   }
   onShow(e) {
     this.courseInfo = this.$parent.globalData.tmp

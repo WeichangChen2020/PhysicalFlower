@@ -111,8 +111,9 @@ export default class Join extends wepy.page {
         fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, res.data.data.idCourse, 'utf8')
         var code = res.data.errCode
         if (code === 0) {
+          console.log(res)
           app.globalData.logo = res.data.data.logo
-          wx.navigateTo({ url: '../course/courseDetail?idCourse=' + res.data.data.idCourse })
+          wx.navigateTo({ url: '../course/courseDetail?idCourse=' + res.data.data.idCourse + '&creater=' + res.data.data.creater + '&courseName=' + res.data.data.courseName })
         } else {
           const options = {
             content: '课程未创建',
