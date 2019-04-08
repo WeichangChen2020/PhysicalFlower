@@ -139,13 +139,15 @@ export default class classCreate extends wepy.page {
     imageBase64: '',
     canvasWidth: '',
     canvasHeight: '',
-    imageType: ''
+    imageType: '',
+    itemList: []
   }
   computed = {}
   methods = {
     open(e) {
+      let that = this
       wx.showActionSheet({
-        itemList: ['A', 'B', 'C'],
+        itemList: that.itemList,
         success: function(res) {
           if (!res.cancel) {
             console.log(res.tapIndex)
@@ -308,7 +310,7 @@ export default class classCreate extends wepy.page {
     }
   }
   onLoad() {
-    // let app = this.$parent
+    let app = this.$parent
     let that = this
     wx.getSystemInfo({
       success: function(res) {
@@ -316,6 +318,13 @@ export default class classCreate extends wepy.page {
         console.log(windowWidth)
         that.imgWidth = (windowWidth - 20 - 30) / 4 // 两个外边距 和三个内边距
         that.$apply()
+      }
+    })
+    var postData = {}
+    app.request('Question.get_questionset', postData, 'Loading...')
+    .then((res) => {
+      for (var i = 0; i < res.data.data.length; i++) {
+        that.itemList.push(res.data.data[i].nameSet)
       }
     })
   }
