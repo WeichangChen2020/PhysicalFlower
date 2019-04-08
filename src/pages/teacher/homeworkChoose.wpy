@@ -104,7 +104,7 @@
       {{item.nameChapter}}
     </view>
   </block>
-  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px' plain form-type='submit'>选择章节</button>
+  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px' plain form-type='submit'>选定章节</button>
   </radio-group>
   </form>
 </template>
@@ -159,16 +159,21 @@
       this.idCourse = e.idCourse
       this.courseName = e.courseName
       let app = that.$parent
-      var delData = {
+      var postData = {
         idCourse: that.idCourse
       }
       app
-        .request('Question.getChapterList', delData, 'loading')
+        .request('Question.getChapterList', postData, 'loading')
         .then(function(e) {
           console.log(e)
           if (e.data.errCode === 0) {
             that.chapterInfo = e.data.data
             that.$apply()
+          } else if (e.data.errCode === 102) {
+            wx.showToast({
+              title: '未找到数据',
+              icon: 'none'
+            })
           } else {
             wx.showToast({
               title: '网络开小差啦',

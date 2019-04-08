@@ -97,6 +97,11 @@ s .flex-list:nth-child(4n) {
     </view>
   </panel>
 
+  <view class="weui-cells__title">设置题目集</view>
+  <view class='border2'>
+    <button type="default" bindtap="open">选择题目集</button>
+  </view>
+
   <view class="weui-cells__title">课程描述</view>
     <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell">
@@ -138,6 +143,16 @@ export default class classCreate extends wepy.page {
   }
   computed = {}
   methods = {
+    open(e) {
+      wx.showActionSheet({
+        itemList: ['A', 'B', 'C'],
+        success: function(res) {
+          if (!res.cancel) {
+            console.log(res.tapIndex)
+          }
+        }
+      })
+    },
     Focus(e) {
       let that = this
       let app = this.$parent
@@ -293,6 +308,7 @@ export default class classCreate extends wepy.page {
     }
   }
   onLoad() {
+    // let app = this.$parent
     let that = this
     wx.getSystemInfo({
       success: function(res) {
