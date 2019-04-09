@@ -27,7 +27,7 @@
         </view>
         <view class="zan-card__detail-row zan-c-gray-darker">
           <view class="zan-card__left-col zan-c-black">
-            <view class="zan-icon zan-icon-contact class-info-icon"></view>{{item.createrName}}
+            <view class="zan-icon zan-icon-contact class-info-icon"></view>{{item.name}}
           </view>
         </view>
         <view class="zan-card__detail-row zan-c-gray-darker">
@@ -56,21 +56,21 @@ export default class CourseList extends wepy.page {
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
-    change(id) {
+    change(idCourse) {
       // 课程id保存到本地文件以供下次打开时默认课程
       const fs = wx.getFileSystemManager()
-      fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, id, 'utf8')
-      this.$parent.globalData.activeCourse = id
+      fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, idCourse, 'utf8')
+      this.$parent.globalData.activeCourse = idCourse
       wx.switchTab({url: './index'})
     }
   };
 
   // 页面的生命周期函数
   onLoad(e) {
-    console.log(this.$parent.courseList)
+    console.log(this.$parent.globalData.courseList)
     if (this.refreshTimes === 0 && this.$parent.courseList !== undefined) {
       // 如果之前已经请求过了，则直接读取（可以少请求一次）
-      this.courseList = this.$parent.courseList
+      this.courseList = this.$parent.globalData.courseList
     } else {
       this.getList()
     }
@@ -79,6 +79,7 @@ export default class CourseList extends wepy.page {
   }
   onPullDownRefresh() {
     this.getList()
+    wx.stopPullDownRefresh()
   }
   getList() {
     let app = this.$parent
