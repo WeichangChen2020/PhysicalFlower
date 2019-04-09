@@ -73,6 +73,12 @@ s .flex-list:nth-child(4n) {
 .warn {
   color: #ef5350;
 }
+.button {
+  margin-top: 20rpx
+}
+.greeting {
+  font-size: 30rpx
+}
 </style>
 <template>
 <canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-1000000px;top:-1000000px; "></canvas>
@@ -97,12 +103,14 @@ s .flex-list:nth-child(4n) {
     </view>
   </panel>
 
-  <view class="weui-cells__title">设置题目集</view>
+  <view  slot="title" class="greeting">设置题目集</view>
   <view class='border2'>
-    <button type="default" bindtap="open">选择题目集</button>
+    <button class='btn2' bindtap="open">
+       <view class="greeting" style="color:#FFE4C4">选择题目集</view>
+      </button>
   </view>
 
-  <view class="weui-cells__title">课程描述</view>
+  <view  slot="title" class="greeting">课程描述</view>
     <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell">
             <view class="weui-cell__bd">
@@ -149,8 +157,10 @@ export default class classCreate extends wepy.page {
       wx.showActionSheet({
         itemList: that.itemList,
         success: function(res) {
-          if (!res.cancel) {
-            console.log(res.tapIndex)
+          if (res.tapIndex === 0) {
+            that.questionSet = 1
+          } else {
+            that.questionSet = 2
           }
         }
       })
@@ -176,14 +186,14 @@ export default class classCreate extends wepy.page {
       if (that.data.className.length <= 0) {
         app.toast('课程名称不能为空！')
       } else {
-        var createData = {
-          description: that.data.Description,
-          courseName: that.data.className,
+        var postData = {
+          description: that.Description,
+          courseName: that.className,
           logo: 'data:image/' + this.imageType + ';base64,' + this.imageBase64,
-          idQuestionSet: 1
+          idQuestionSet: that.questionSet
         }
-        console.log(createData)
-        app.request('Course.createCourse', createData, '请稍等...')
+        console.log(postData)
+        app.request('Course.createCourse', postData, '请稍等...')
         .then((res) => {
           console.log(res.data.errCode)
           if (res.data.errCode === 0) {

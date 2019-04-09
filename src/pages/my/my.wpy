@@ -118,7 +118,7 @@ export default class my extends wepy.page {
           wx.navigateTo({ url: '../my/myInfo' })
           break
         case '2':
-          wx.navigateTo({ url: '../my/myClass' })
+          wx.navigateTo({ url: '../course/courseList' })
           break
         case '3':
           wx.navigateTo({ url: '../my/useHelp' })
