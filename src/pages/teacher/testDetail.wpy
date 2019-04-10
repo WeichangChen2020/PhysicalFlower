@@ -1,0 +1,29 @@
+<style>
+
+</style>
+<template>
+	<view>hello</view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  // 通过继承自wepy.page的类创建页面逻辑
+  export default class testCreat extends wepy.page {
+    config = {
+      navigationBarTitleText: '随堂测试'
+    }
+    // 可用于页面模板绑定的数据
+    data = {
+      form: []
+    };
+
+    // 事件处理函数(集中保存在methods对象中)
+    methods = {
+    };
+
+    // 页面的生命周期函数
+    onLoad(e) {
+      console.log(e)
+    };
+  }
+</script>

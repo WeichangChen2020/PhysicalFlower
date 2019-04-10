@@ -52,7 +52,7 @@ page {
   // 通过继承自wepy.page的类创建页面逻辑
   export default class stuBan extends wepy.page {
     config = {
-      navigationBarTitleText: '已经入学生'
+      navigationBarTitleText: '已加入学生'
     }
 
     data = {

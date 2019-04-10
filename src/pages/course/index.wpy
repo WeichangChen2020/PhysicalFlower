@@ -86,11 +86,11 @@ export default class Index extends wepy.page {
 
   // 页面的生命周期函数
   onLoad() {
-    this.idCourse = this.$parent.globalData.activeCourse
-    this.$apply()
+    
   }
   onShow() {
-    console.log('onshow')
+    this.idCourse = this.$parent.globalData.activeCourse
+    this.$apply()
     let app = this.$parent
     var that = this
     console.log(app.globalData)

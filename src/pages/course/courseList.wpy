@@ -15,7 +15,7 @@
       </view>
   </view> -->
   <view class="zan-panel class-header">
-    <view class="zan-card" wx:for="{{courseList}}" wx:for-index="idx" wx:for-item="item" @tap='change({{item.idCourse}})'>
+    <view class="zan-card" wx:for="{{courseList}}" wx:for-index="idx" wx:for-item="item" @tap='change({{item}})'>
       <view class="zan-card__thumb">
         <image class="zan-card__img" src="{{item.logo}}" mode="aspectFit"></image>
       </view>
@@ -56,11 +56,12 @@ export default class CourseList extends wepy.page {
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
-    change(idCourse) {
+    change(item) {
       // 课程id保存到本地文件以供下次打开时默认课程
+      console.log(item)
       const fs = wx.getFileSystemManager()
-      fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, idCourse, 'utf8')
-      this.$parent.globalData.activeCourse = idCourse
+      fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, item.idCourse, 'utf8')
+      this.$parent.globalData.activeCourse = item.idCourse
       wx.switchTab({url: './index'})
     }
   };
