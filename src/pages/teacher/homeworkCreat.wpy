@@ -195,7 +195,9 @@
                 title: '发布成功',
                 icon: 'none'
               })
-              wx.navigateBack({})
+              wx.navigateBack({
+                delta: 2
+              })
             } else {
               throw (new Error(e.data.msg))
             }
