@@ -1,7 +1,7 @@
 <style>
 .greetingc {
   font-size: 14px;
-  color: white;
+  color: blueviolet;
   margin: 20rpx 0 10rpx 20rpx;
   display: flex;
   justify-content: center;
@@ -11,62 +11,95 @@
   margin-left: 10rpx;
   border-radius: 50%;
 }
-.greetingbtn {
-  font-size: 14px;
-  color: gray;
-  margin: 20rpx 0 10rpx 20rpx;
-  background-color: greenyellow;
+.contain{
+background-color:white;
+border-bottom-left-radius:50rpx;
+border-bottom-right-radius:50rpx;
+border-top-left-radius: 50rpx;
+border-top-right-radius: 50rpx;
+box-shadow:10rpx 10rpx 5px #f2f2f2;
+margin-top:80rpx;
+height:800rpx;
+}
+view{
+  margin:40rpx;
+}
+checkbox-group {
+display:flex;
+flex-direction:column;
 }
 </style>
 <template>
 	<view>
-		<text class="greetingc">试题列表</text>
+		<text class="greetingc">章节列表</text>
 	</view>
-  <form @submit= "form1">
+  <view class='contain'>
+  <form @submit= "form">
   <checkbox-group name="chpter">
   <block wx:for="{{girds}}" wx:item= "item" wx:key="*this">
     <view>
-    <checkbox class="icont" @tap='tap' value="{{item.id}}"></checkbox>
+    <checkbox class="icont" value="{{item.id}}"></checkbox>
     {{item.name}}
-    </view>
+    </view>  
   </block>
-  <button class="greetingbtn" formType="submit">提交</button>
+  <button class="button" formType="submit">提交</button>
   </checkbox-group>
   </form>
+    </view>
 </template>
 <script>
   import wepy from 'wepy'
 
   // 通过继承自wepy.page的类创建页面逻辑
   export default class testCreat extends wepy.page {
+    config = {
+      navigationBarTitleText: '随堂测试'
+    }
     // 可用于页面模板绑定的数据
     data = {
-      girds: [
-        {id: '1', name: '第X章大学物理上1-X学'},
-        {id: '2', name: '第X章大学物理上2-X学'},
-        {id: '3', name: '第X章大学物理上3-X学'},
-        {id: '4', name: '第X章大学物理上4-X学'},
-        {id: '5', name: '第X章大学物理上5-X学'},
-        {id: '6', name: '第X章大学物理上6-X学'}
-      ]
+      idCourse: 0,
+      page: 1,
+      girds: []
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      tap(e) {
-        console.log('g', e)
-      },
-      tap2(e) {
-        console.log('group', e)
-      },
-      form1(e) {
+      form(e) {
+        let app = this.$parent
         console.log('form', e.detail.value)
+        let form = e.detail.value
+        if (form.chpter.length === 0) {
+          app.toast('请重新选择章节！')
+        } else {
+          wx.navigateTo({
+            url: './testDetail?form=' + form.chpter
+          })
+        }
       }
     };
 
     // 页面的生命周期函数
-    onLoad() {
-      console.log('onLoad')
+    onLoad(e) {
+      let app = this.$parent
+      let that = this
+      that.idCourse = e.idCourse
+      var postData = {
+        page: that.page,
+        idCourse: that.idCourse
+      }
+      console.log(postData)
+      app.request('Question.getChapterList', postData, 'Loading...')
+      .then((res) => {
+        console.log(res.data.data)
+        for (var i = 0; i < res.data.data.length; i++) {
+          var info = {}
+          info.id = res.data.data[i].idQuestionChapter
+          info.name = res.data.data[i].nameChapter
+          that.girds.push(info)
+          that.$apply()
+        }
+        console.log(that.girds)
+      })
     };
   }
 </script>
