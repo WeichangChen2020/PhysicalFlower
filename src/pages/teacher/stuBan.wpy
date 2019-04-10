@@ -38,7 +38,7 @@ page {
                     <image class="weui-grid__icon" src="{{item.avatarUrl}}" />
                     <view class="weui-grid__label">{{item.name}}</view>
                      <!-- <view class="weui-grid__label">{{item.stunum}}</view> -->
-                     <view class="weui-grid__label">item.stunum</view>
+                     <view class="weui-grid__label">{{item.stunum}}</view>
                     <button @tap='ban' class='button' data-idUser="{{item.idUser}}">删除</button>
                 </navigator>
             </block>
@@ -97,6 +97,7 @@ page {
       .then((res) => {
         console.log(res)
         if (res.data.errCode === 0) {
+          that.courseStu = res.data.data
           for (var i = 0; i < res.data.data.length; i++) {
             if (res.data.data[i].addStatus === '1') {
               that.courseStu.push(res.data.data[i])

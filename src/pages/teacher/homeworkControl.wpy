@@ -53,6 +53,7 @@
     // 页面的生命周期函数
     onLoad(e) {
       this.idCourse = e.idCourse
+      // console.log(e)
       var that = this
       let app = that.$parent
       var delData = {
@@ -74,7 +75,7 @@
               } else {
                 that.homeworkInfo[i].state = '已结束'
               }
-              that.homeworkInfo[i].url = './homeworkSearch?idHomework=' + e.data.data[j].idHomework
+              that.homeworkInfo[i].url = './homeworkSearch?idHomework=' + e.data.data[j].idHomework + '&idCourse=' + that.idCourse
               that.homeworkInfo[i].name = endTime
             }
             that.$apply()
