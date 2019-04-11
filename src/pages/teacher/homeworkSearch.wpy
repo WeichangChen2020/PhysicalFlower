@@ -66,10 +66,20 @@
                 that.courseStu.push(e.data.data[i])
               }
             }
+            var deData = {
+              idHomework: that.idHomework
+            }
             app
-              .request('Teacher.getStudentListByIdCourse', delData, 'loading')
-              .then(function(e) {
+              .request('Teacher.getStudentHomeworkinfo', deData, 'loading')
+              .then(function(e) { // 暂时就先全部遍历一下，后面再看看可不可以优化时间复杂度
                 console.log(e)
+                for (let i = 0; i < e.data.data.length; i++) {
+                  for (let j = 0; j < that.courseStu.length; j++) {
+                    if (that.courseStu[j].idUser === e.data.data[i].idUser) {
+                      that.courseStu[j].haveSubmit = 1
+                    }
+                  }
+                }
               })
               .catch(function(e) {
                 app.modal(
