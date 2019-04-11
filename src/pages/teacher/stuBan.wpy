@@ -30,6 +30,7 @@ page {
 </style>
 <template>
 <view>
+  <toast />
  <view>课程学生</view>
      <view class="page__bd">
         <view class="weui-grids">
@@ -48,9 +49,13 @@ page {
 </template>
 <script>
   import wepy from 'wepy'
+  import Toast from '@/components/toast/index'
 
   // 通过继承自wepy.page的类创建页面逻辑
   export default class stuBan extends wepy.page {
+    components = {
+    'toast': Toast
+    }
     config = {
       navigationBarTitleText: '已加入学生'
     }
@@ -74,11 +79,29 @@ page {
         .then((res) => {
           console.log(res)
           if (res.data.errCode === 0) {
-            setTimeout(() => {
-              that.courseStu = []
-              that.onLoad({idCourse: that.idCourse}, {courseName: that.courseName})
-            }, 800)
-            app.toast('删除成功！')
+            // setTimeout(() => {
+              // that.courseStu = []
+              // that.onLoad({idCourse: that.idCourse}, {courseName: that.courseName})
+            let tmp = []
+            that.courseStu.forEach(element => {
+              if (element.idUser === idUser) {
+                // 只会跳出当前循环，不会中断整个函数
+                return
+              }
+              tmp.push(element)
+            })
+            that.courseStu = tmp
+            that.$apply()
+            // }, 800)
+            const options = {
+              content: res.data.errCode === 0 ? '删除成功' : '请稍后重试！',
+              position: 'middle',
+              duration: 2000,
+              type: res.data.errCode === 0 ? 'success' : 'warning'
+            }
+            that.$invoke('toast', 'show', options)
+          } else {
+            app.toast('请稍后再试！')
           }
         })
       }
@@ -93,17 +116,22 @@ page {
       var postData = {
         idCourse: that.idCourse
       }
-      app.request('Teacher.getStudentListByIdCourse', postData, 'Loading...')
+      app.request('Teacher.getStudentListByIdCourse', postData, '查询中...')
       .then((res) => {
         console.log(res)
         if (res.data.errCode === 0) {
-          that.courseStu = res.data.data
+        //   that.courseStu = res.data.data
           for (var i = 0; i < res.data.data.length; i++) {
             if (res.data.data[i].addStatus === '1') {
               that.courseStu.push(res.data.data[i])
+              that.$apply()
             }
           }
-          that.$apply()
+          console.log(that.courseStu)
+        } else if (res.data.errCode === 101) {
+          app.toast('没有人加入！')
+        } else {
+          app.toast('请稍后再试！')
         }
       })
     }
@@ -113,6 +141,7 @@ page {
       let that = this
       that.courseStu = []
       that.onLoad({idCourse: that.idCourse}, {courseName: that.courseName})
+      wx.stopPullDownRefresh()
     }
   }
 </script>
