@@ -106,7 +106,9 @@ s .flex-list:nth-child(4n) {
   <view  slot="title" class="greeting">设置题目集</view>
   <view class='border2'>
     <button class='btn2' bindtap="open">
-       <view class="greeting" style="color:#FFE4C4">选择题目集</view>
+       <!-- <view class="greeting" style="color:#FFE4C4">选择题目集</view> -->
+         <view class="greeting" style="color:#FFE4C4">{{questionName}}</view>
+      </button>
       </button>
   </view>
 
@@ -148,7 +150,8 @@ export default class classCreate extends wepy.page {
     canvasWidth: '',
     canvasHeight: '',
     imageType: '',
-    itemList: []
+    itemList: [],
+    questionName: '选择题目集'
   }
   computed = {}
   methods = {
@@ -162,6 +165,8 @@ export default class classCreate extends wepy.page {
           } else {
             that.questionSet = 2
           }
+          that.questionName = that.itemList[that.questionSet - 1]
+          that.$apply()
         }
       })
     },

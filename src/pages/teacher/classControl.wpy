@@ -131,7 +131,7 @@ background-color:#F8F8F8;
         </view>
       </folder4>
     </view>
-    <button class='weui-btn' type='warn' @tap="showSuccess">删除课程</button>
+    <button class='weui-btn' type='warn' @tap="delCourse">删除课程</button>
   </view>
 </template>
 <script>
@@ -159,7 +159,7 @@ export default class classControl extends wepy.page {
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
-    showSuccess () {
+    delCourse () {
       let that = this
       let app = this.$parent
       let courseInfo = app.globalData.courseInfo
