@@ -7,6 +7,32 @@
 .padding{
   margin-top: 10%;
 }
+.havesubmit_tip{
+  width:60rpx;
+  height:60rpx;
+  background-color:green;
+  border-bottom-left-radius:100%;
+  font-size:26rpx;
+  text-align:right;
+  padding:rpx;
+  position:absolute;
+  right:0;
+  margin-top:-40rpx;
+
+}
+.havensubmit_tip{
+  width:60rpx;
+  height:60rpx;
+  background-color:red;
+  border-bottom-left-radius:100%;
+  font-size:26rpx;
+  text-align:right;
+  padding:rpx;
+  position:absolute;
+  right:0;
+  margin-top:-40rpx;
+
+}
 </style>
 <template>
 	<view>
@@ -14,8 +40,11 @@
      <view class="page__bd">
         <view class="weui-grids">
             <block wx:for="{{courseStu}}" wx:key="*this">
-                <navigator url="" class="weui-grid" hover-class="weui-grid_active">
-                    <image class="weui-grid__icon" src="{{item.avatarUrl}}" />
+                <navigator url="./homeworkSearchDetail?idUser={{item.idUser}}&idHomework={{idHomework}}&stuName={{item.name}}" class="weui-grid" hover-class="weui-grid_active" style="padding:40rpx 20rpx">
+                  <view wx:if="{{item.haveSubmit === 1?true:false}}" style="" class="havesubmit_tip">已交</view>
+                  <view wx:if="{{item.haveSubmit === 1?false:true}}" style="" class="havensubmit_tip">未交</view>
+                  <!-- <view wx:if="" style=""></view> -->
+                    <image class="weui-grid__icon" src="{{item.avatarUrl}}"/>
                     <view class="weui-grid__label">{{item.name}}</view>
                      <!-- <view class="weui-grid__label">{{item.stunum}}</view> -->
                      <view class="weui-grid__label">{{item.stunum}}</view>
@@ -60,35 +89,53 @@
         .then(function(e) {
           console.log(e)
           if (e.data.errCode === 0) {
-            that.courseStu = e.data.data
-            for (var i = 0; i < e.data.data.length; i++) {
-              if (e.data.data[i].addStatus === '1') {
-                that.courseStu.push(e.data.data[i])
-              }
-            }
-            var deData = {
-              idHomework: that.idHomework
-            }
-            app
-              .request('Teacher.getStudentHomeworkinfo', deData, 'loading')
-              .then(function(e) { // 暂时就先全部遍历一下，后面再看看可不可以优化时间复杂度
-                console.log(e)
-                for (let i = 0; i < e.data.data.length; i++) {
-                  for (let j = 0; j < that.courseStu.length; j++) {
-                    if (that.courseStu[j].idUser === e.data.data[i].idUser) {
-                      that.courseStu[j].haveSubmit = 1
-                    }
-                  }
+            if (e.data.data !== null) {
+              that.courseStu = e.data.data
+              for (var i = 0; i < e.data.data.length; i++) {
+                if (e.data.data[i].addStatus === '1') {
+                  that.courseStu.push(e.data.data[i])
                 }
-              })
-              .catch(function(e) {
-                app.modal(
-                  e.message,
-                  '错误!错误提示是：',
-                  '确定'
-                )
-              })
-            that.$apply()
+                that.courseStu[i].haveSubmit = 0
+              }
+              var deData = {
+                idHomework: that.idHomework
+              }
+              app
+                .request('Teacher.getStudentHomeworkinfo', deData, 'loading')
+                .then(function(e) { // 暂时就先全部遍历一下，后面再看看可不可以优化时间复杂度
+                  // console.log(e)
+                  if (e.data.data !== null) {
+                    for (let i = 0; i < e.data.data.length; i++) {
+                      for (let j = 0; j < that.courseStu.length; j++) {
+                        // console.log(that.courseStu[j].idUser)
+                        if (that.courseStu[j].idUser === e.data.data[i].idUser) {
+                          that.courseStu[j].haveSubmit = 1
+                          // console.log('1')
+                        }
+                      }
+                    }
+                    that.$apply()
+                  } else {
+                    app.modal(
+                      '学生都还没有交作业哦',
+                      '注意'
+                    )
+                  }
+                })
+                .catch(function(e) {
+                  app.modal(
+                    e.message,
+                    '错误!错误提示是：',
+                    '确定'
+                  )
+                })
+              that.$apply()
+            } else {
+              app.modal(
+                '该课程还没有学生哦',
+                '注意'
+              )
+            }
           }
         })
         .catch(function(e) {
