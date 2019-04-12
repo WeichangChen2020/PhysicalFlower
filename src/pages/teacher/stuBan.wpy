@@ -54,7 +54,7 @@ page {
   // 通过继承自wepy.page的类创建页面逻辑
   export default class stuBan extends wepy.page {
     components = {
-    'toast': Toast
+      'toast': Toast
     }
     config = {
       navigationBarTitleText: '已加入学生'

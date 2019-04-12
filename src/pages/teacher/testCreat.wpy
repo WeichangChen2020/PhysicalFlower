@@ -35,15 +35,15 @@ flex-direction:column;
 	</view>
   <view class='contain'>
   <form @submit= "form">
-  <checkbox-group name="chpter">
+  <radio-group name="chpter">
   <block wx:for="{{girds}}" wx:item= "item" wx:key="*this">
     <view>
-    <checkbox class="icont" value="{{item.id}}"></checkbox>
+    <radio class="icont" value="{{item.id}}"></radio>
     {{item.name}}
     </view>  
   </block>
   <button class="button" formType="submit">提交</button>
-  </checkbox-group>
+  </radio-group>
   </form>
     </view>
 </template>
@@ -59,8 +59,14 @@ flex-direction:column;
     data = {
       idCourse: 0,
       page: 1,
-      girds: []
-    };
+      girds: [
+        {id: '1', name: '大学物理上 - 磁学'},
+        {id: '2', name: '大学物理上 - 电磁感应'},
+        {id: '3', name: '大学物理上 - 电学'},
+        {id: '4', name: '大学物理上 - 力学'}
+      ],
+      length: 4
+    }
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
@@ -91,14 +97,17 @@ flex-direction:column;
       app.request('Question.getChapterList', postData, 'Loading...')
       .then((res) => {
         console.log(res.data.data)
-        for (var i = 0; i < res.data.data.length; i++) {
-          var info = {}
-          info.id = res.data.data[i].idQuestionChapter
-          info.name = res.data.data[i].nameChapter
-          that.girds.push(info)
-          that.$apply()
+        if (res.data.errCode === 0) {
+          that.girds = []
+          that.length = res.data.data.length
+          for (var i = 0; i < that.length; i++) {
+            var info = {}
+            info.id = res.data.data[i].idQuestionChapter
+            info.name = res.data.data[i].nameChapter
+            that.girds.push(info)
+            that.$apply()
+          }
         }
-        console.log(that.girds)
       })
     };
   }

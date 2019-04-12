@@ -37,7 +37,7 @@ page {
   line-height: 60rpx;
   color: #b95;
   padding: 20rpx 20rpx 40rpx 20rpx;
-
+}
 
   .btn {
     background-color: #f7536b;
@@ -49,7 +49,6 @@ page {
     font-size: 30rpx;
     line-height: 70rpx;
   }
-}
 </style>
 <template>
 <view class='greeting'>问题反馈</view></view>

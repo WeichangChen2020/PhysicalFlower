@@ -1,9 +1,32 @@
 <style>
-
+.icont{
+  position: relative;
+  margin-left: 10rpx;
+  border-radius: 50%;
+}
 </style>
+
 <template>
-	<view>hello</view>
+<view>
+<view>测试截止时间</view>
+<picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="bindTimeChange">
+  <button type="default">时间选择器</button>
+</picker>
+ <form @submit= "form">
+   <checkbox-group name="questionId" >
+      <block wx:for="{{questionInfo}}" wx:for-item="item" wx:key="*this">
+      <view style="display:flex;margin-left:8px;margin-right:8px;border-bottom:1px solid #ccc;margin-bottom:15px;margin-top:15px;">
+        <checkbox class="icont" value="{{item.idQues}}"></checkbox>
+        <image src="{{item.img}}"/>
+      </view>
+    </block>
+   </checkbox-group>
+   <button form-type='submit'>发布测试</button>
+ </form>
+</view>
 </template>
+
+
 <script>
   import wepy from 'wepy'
 
@@ -14,16 +37,45 @@
     }
     // 可用于页面模板绑定的数据
     data = {
-      form: []
+      time: 0,
+      page: 0,
+      form: '',
+      idQuestionChapter: '',
+      questionInfo: []
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
+      bindTimeChange(e) {
+        this.time = e.detail.value
+        console.log(this.time)
+      },
+      form(e) {
+        console.log(e)
+      }
     };
 
     // 页面的生命周期函数
     onLoad(e) {
-      console.log(e)
+      this.idQuestionChapter = e.form
+      console.log(this.idQuestionChapter)
+      this.getQuestionList()
     };
+
+    getQuestionList() {
+      let app = this.$parent
+      let that = this
+      that.page = that.page + 1
+      let postData = {
+        idQuestionChapter: that.idQuestionChapter,
+        page: that.page
+      }
+      app.request('Question.getQuestionListByIdChapter', postData, 'loading...')
+      .then((res) => {
+        that.questionInfo = res.data.data
+        console.log(that.questionInfo)
+        that.$apply()
+      })
+    }
   }
 </script>
