@@ -37,21 +37,37 @@
     }
     // 可用于页面模板绑定的数据
     data = {
-      time: 0,
+      gmtEnd: 0,
       page: 0,
       form: '',
       idQuestionChapter: '',
-      questionInfo: []
+      questionInfo: [],
+      reportIdQues: []
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       bindTimeChange(e) {
-        this.time = e.detail.value
-        console.log(this.time)
+        var time = e.detail.value
+        console.log(time)
+        var now = new Date()
+        var yy = now.getFullYear()
+        var mm = now.getMonth() + 1
+        var dd = now.getDate()
+        var date = yy + '-' + mm + '-' + dd + ' ' + time
+        console.log(date)
       },
       form(e) {
-        console.log(e)
+        let app = this.$parent
+        let that = this
+        if (that.time === 0) {
+          app.toast('请注意设置时间！')
+        } else if (that.reportIdQues.length === 0) {
+          app.toast('请选择至少一道题!')
+        } else {
+          that.reportIdQues = e.detail.value.questionId
+          console.log(that.reportIdQues)
+        }
       }
     };
 
@@ -72,10 +88,20 @@
       }
       app.request('Question.getQuestionListByIdChapter', postData, 'loading...')
       .then((res) => {
-        that.questionInfo = res.data.data
-        console.log(that.questionInfo)
-        that.$apply()
+        if (res.data.errCode === 0) {
+          for (var i = 0; i < res.data.data.length; i++) {
+            that.questionInfo.push(res.data.data[i])
+            that.$apply()
+          }
+          console.log(that.questionInfo)
+        } else if (res.data.errCode === 102) {
+          app.toast('已获取所有题目！')
+        }
       })
+    };
+
+    onReachBottom() {
+      this.getQuestionList()
     }
   }
 </script>
