@@ -567,6 +567,8 @@ export default class signinCreat extends wepy.page {
 
   // 页面的生命周期函数
   onLoad(e) {
+    console.log(decodeURI(e))
+    console.log(e)
     wx.getSetting({
       success(e) {
         console.log(e.authSetting)
