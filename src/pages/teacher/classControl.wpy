@@ -108,11 +108,6 @@ background-color:#F8F8F8;
         
         <view>管理课堂测试</view>
     </button>
-    
-    <button class='btn1'  id="9" @tap='tap'>
-        
-        <view>查看测试情况</view>
-    </button>
         </view>
       </folder3>
 

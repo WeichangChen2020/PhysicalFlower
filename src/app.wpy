@@ -85,7 +85,7 @@ export default class extends wepy.app {
       'pages/teacher/stuBan',
       'pages/teacher/testCreat',
       'pages/teacher/testControl',
-      'pages/teacher/testDetail',
+      'pages/teacher/testCreateDetail',
       'pages/teacher/signinControl',
       'pages/teacher/homeworkControl',
       'pages/teacher/homeworkSearch',

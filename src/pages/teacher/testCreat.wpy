@@ -78,7 +78,7 @@ flex-direction:column;
           app.toast('请重新选择章节！')
         } else {
           wx.navigateTo({
-            url: './testDetail?form=' + form.chpter + '&idCourse=' + this.idCourse + '&courseName=' + this.courseName + '&count=' + this.count
+            url: './testCreateDetail?form=' + form.chpter + '&idCourse=' + this.idCourse + '&courseName=' + this.courseName + '&count=' + this.count
           })
         }
       }
