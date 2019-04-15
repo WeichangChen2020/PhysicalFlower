@@ -36,7 +36,6 @@
 </style>
 <template>
 	<view>
- <view>课程学生</view>
      <view class="page__bd">
         <view class="weui-grids">
             <block wx:for="{{courseStu}}" wx:key="*this">
@@ -80,6 +79,9 @@
       this.idHomework = e.idHomework
       this.idCourse = e.idCourse
       var that = this
+      wx.setNavigationBarTitle({
+        title: '课程学生列表'
+      })
       let app = that.$parent
       var delData = {
         idCourse: this.idCourse
