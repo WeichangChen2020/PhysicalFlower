@@ -78,7 +78,7 @@ flex-direction:column;
           app.toast('请重新选择章节！')
         } else {
           wx.navigateTo({
-            url: './testDetail?form=' + form.chpter
+            url: './testDetail?form=' + form.chpter + '&idCourse=' + this.idCourse + '&courseName=' + this.courseName + '&count=' + this.count
           })
         }
       }
@@ -88,6 +88,10 @@ flex-direction:column;
     onLoad(e) {
       let app = this.$parent
       let that = this
+      e = JSON.parse(e.data)
+      console.log(e)
+      that.courseName = e.courseName
+      that.count = e.count
       that.idCourse = e.idCourse
       var postData = {
         page: that.page,

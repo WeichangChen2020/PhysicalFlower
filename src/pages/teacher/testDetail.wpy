@@ -8,9 +8,10 @@
 
 <template>
 <view>
+<toast/>
 <view>测试截止时间</view>
 <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="bindTimeChange">
-  <button type="default">时间选择器</button>
+  <button type="default">{{time}}</button>
 </picker>
  <form @submit= "form">
    <checkbox-group name="questionId" >
@@ -29,7 +30,7 @@
 
 <script>
   import wepy from 'wepy'
-
+  import Toast from '@/components/toast/index'
   // 通过继承自wepy.page的类创建页面逻辑
   export default class testCreat extends wepy.page {
     config = {
@@ -42,39 +43,86 @@
       form: '',
       idQuestionChapter: '',
       questionInfo: [],
-      reportIdQues: []
+      idQuesList: [],
+      time: '请选择时间',
+      idCourse: 0
     };
-
+    components = {
+      'toast': Toast
+    }
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       bindTimeChange(e) {
+        let app = this.$parent
+        let that = this
         var time = e.detail.value
-        console.log(time)
+        that.time = time
+        that.$apply()
         var now = new Date()
         var yy = now.getFullYear()
         var mm = now.getMonth() + 1
         var dd = now.getDate()
-        var date = yy + '-' + mm + '-' + dd + ' ' + time
-        console.log(date)
+        var date = yy + '-' + mm + '-' + dd + ' ' + time + ':' + '00'
+        date = date.substring(0, 19)
+        date = date.replace(/-/g, '/')
+        var timestamp = new Date(date).getTime()
+        that.gmtEnd = timestamp / 1000
+        var timeStamp = (new Date()).getTime() / 1000
+        if (that.gmtEnd < timeStamp) {
+          app.toast('请设定正确的时间！')
+        }
       },
       form(e) {
         let app = this.$parent
         let that = this
-        if (that.time === 0) {
-          app.toast('请注意设置时间！')
-        } else if (that.reportIdQues.length === 0) {
+        var timeStamp = (new Date()).getTime() / 1000
+        that.idQuesList = e.detail.value.questionId
+        if (that.gmtEnd < timeStamp) {
+          app.toast('请注意设置正确时间！')
+        } else if (that.idQuesList.length === 0) {
           app.toast('请选择至少一道题!')
         } else {
-          that.reportIdQues = e.detail.value.questionId
-          console.log(that.reportIdQues)
+          var postData = {
+            gmtEnd: that.gmtEnd,
+            idQuesList: that.idQuesList,
+            idCourse: that.idCourse
+          }
+          app.request('Quiz.createQuiz', postData, 'Loading...')
+          .then((res) => {
+            console.log(res)
+            if (res.data.errCode === 0) {
+              const options = {
+                content: res.data.errCode === 0 ? '创建成功' : '请稍后重试',
+                position: 'middle',
+                duration: 2000,
+                type: res.data.errCode === 0 ? 'success' : 'warning'
+              }
+              that.$invoke('toast', 'show', options)
+            }
+          })
+          .then(() => {
+            wx.navigateTo({
+              url: './classControl?idCourse=' + that.idCourse + '&courseName=' + that.courseName + '&count=' + that.count
+            })
+          })
+          .catch(function(e) {
+            app.modal(
+              e.message,
+              '错误!错误提示是：',
+              '确定'
+          )
+          })
         }
       }
     };
 
     // 页面的生命周期函数
     onLoad(e) {
+      console.log(e)
       this.idQuestionChapter = e.form
-      console.log(this.idQuestionChapter)
+      this.idCourse = e.idCourse
+      this.courseName = e.courseName
+      this.count = e.count
       this.getQuestionList()
     };
 

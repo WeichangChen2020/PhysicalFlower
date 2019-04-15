@@ -217,7 +217,8 @@ export default class classControl extends wepy.page {
           this.$navigate('./homeworkControl?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
           break
         case '7':
-          this.$navigate('./testCreat?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+          // JSON.stringify(that.data)
+          this.$navigate('./testCreat?data=' + JSON.stringify(this.data))
           break
         case '8':
           this.$navigate('./testControl?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
