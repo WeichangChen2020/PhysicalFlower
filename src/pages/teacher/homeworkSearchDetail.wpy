@@ -32,25 +32,33 @@
 </style>
 <template>
 	<!-- <view class="topic_words">{{stuName}}的作业情况</view> -->
-  <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
-    <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this" style="">
-      <view style="font:15px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;" class="topic_two_word">题目:</view>
-      <image src="{{page.img}}" style="width:94%;margin-bottom:100rpx;margin-left:3%"/>
-      <view style="font:15px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;" class="topic_two_word">作答情况:</view>
-      <image src="{{page.submitImg1}}" style="width:94%;margin-bottom:100rpx;margin-left:3%"/>
-      <view style="font:15px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;" class="topic_two_word">得分情况:{{pickId[index] == '-1' ?'本题目暂无得':pickId[index]}}分</view>
+  <block wx:if="{{haveHomework}}">
+    <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
+      <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this" style="">
+        <view style="font:15px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;" class="topic_two_word">题目:</view>
+        <image src="{{page.img}}" style="width:94%;margin-bottom:100rpx;margin-left:3%"/>
+        <view style="font:15px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;" class="topic_two_word">作答情况:</view>
+        <image src="{{page.submitImg1}}" style="width:94%;margin-bottom:100rpx;margin-left:3%"/>
+        <view style="font:15px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;" class="topic_two_word">得分情况:{{pickId[index] == '-1' ?'本题目暂无得':pickId[index]}}分</view>
 
-      <block wx:if="{{page.idCorrector == '-1'?true:false}}">
-      <picker bindchange="bindPickerChange" value="{{pickId}}" range="{{array}}" id="{{index}}" style="margin-top:-170rpx;text-align:center">
-        <view class="" style="font-size:15px">
-          作业评分：{{array[pickId[index]]}}
-        </view>
-      </picker>
-      </block>
-    </swiper-item>
-  </swiper>
-  <block wx:if="{{haveAllAssess === 1?false:true}}">
-    <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;' plain @tap="Submit" id="{{index}}">Submit</button>
+        <block wx:if="{{page.idCorrector == '-1'?true:false}}">
+        <picker bindchange="bindPickerChange" value="{{pickId}}" range="{{array}}" id="{{index}}" style="margin-top:-170rpx;text-align:center">
+          <view class="" style="font-size:15px">
+            作业评分：{{array[pickId[index]]}}
+          </view>
+        </picker>
+        </block>
+      </swiper-item>
+    </swiper>
+    <block wx:if="{{haveAllAssess === 1?false:true}}">
+      <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:20rpx;' plain @tap="Submit" id="{{index}}">Submit</button>
+    </block>
+  </block>
+
+  <block wx:if="{{!haveHomework}}">
+    <view style='text-align:center;font-weight:bold;font-size:12px;margin-top:30rpx;'>
+    ----------该学生没有提交作业哦----------
+    </view>
   </block>
 </template>
 <script>
@@ -70,7 +78,8 @@
       pickkId: [],
       array: ['0分', '1分', '2分', '3分', '4分', '5分'],
       idHomeSubmit: [],
-      haveAllAssess: 1
+      haveAllAssess: 1,
+      haveHomework: true
     };
 
     // 事件处理函数(集中保存在methods对象中)
@@ -136,48 +145,58 @@
       wx.setNavigationBarTitle({
         title: e.stuName + '的作业情况'
       })
-      let app = that.$parent
-      var delData = {
-        idHomework: parseInt(this.idHomework),
-        idUser: this.idUser
-      }
-      app
-        .request('Homework.getHomeworkStuSelf', delData, 'loading')
-        .then(function(e) {
-          console.log(e)
-          that.homeworkInfo = e.data.data
-          for (let i = 0; i < e.data.data.length; i++) {
-            if (e.data.data[i].idCorrector !== -1) {
-              that.pickId[i] = (e.data.data[i].resultTeacher === -1 ? e.data.data[i].resultStudent : e.data.data[i].resultTeacher)
-              that.pickkId[i] = 0
-            } else {
-              that.pickId[i] = 0
-              that.pickkId[i] = -1
-              that.idHomeSubmit[i] = e.data.data[i].idHomeSubmit
-              that.haveAllAssess = 0
-            }
-          }
-          that.$apply()
-        })
-        .catch(function(e) {
-          app.modal(
-            e.message,
-            '错误!错误提示是：',
-            '确定'
-          )
-        })
-      wx.getSystemInfo({
-        success: function (e) {
-          that.system_height = e.windowHeight
-          that.$apply()
-        },
-        fail(e) {
-          wx.showmodal({
-            title: '注意',
-            content: '显示失败请下拉刷新重试'
-          })
+      console.log(e.haveHomework)
+      if (e.haveHomework === '1') {
+        this.haveHomework = true
+        let app = that.$parent
+        var delData = {
+          idHomework: parseInt(this.idHomework),
+          idUser: this.idUser
         }
-      })
+        app
+          .request('Homework.getHomeworkStuSelf', delData, 'loading')
+          .then(function(e) {
+            console.log(e)
+            that.homeworkInfo = e.data.data
+            for (let i = 0; i < e.data.data.length; i++) {
+              // console.log(e.data.data[i].idCorrector !== -1)
+              if (e.data.data[i].idCorrector !== '-1') {
+                that.pickId[i] = (e.data.data[i].resultTeacher === -1 ? e.data.data[i].resultStudent : e.data.data[i].resultTeacher)
+                that.pickkId[i] = 0
+              } else {
+                // console.log('haveAllAssess')
+                that.pickId[i] = 0
+                that.pickkId[i] = -1
+                that.idHomeSubmit[i] = e.data.data[i].idHomeSubmit
+                that.haveAllAssess = 0
+                that.$apply()
+              }
+            }
+            that.$apply()
+          })
+          .catch(function(e) {
+            app.modal(
+              e.message,
+              '错误!错误提示是：',
+              '确定'
+            )
+          })
+        wx.getSystemInfo({
+          success: function (e) {
+            that.system_height = e.windowHeight
+            that.$apply()
+          },
+          fail(e) {
+            wx.showmodal({
+              title: '注意',
+              content: '显示失败请下拉刷新重试'
+            })
+          }
+        })
+      } else {
+        this.haveHomework = false
+        this.$apply()
+      }
     }
   }
 

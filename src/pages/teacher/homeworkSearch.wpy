@@ -10,28 +10,37 @@
 .havesubmit_tip{
   width:60rpx;
   height:60rpx;
-  background-color:green;
+  background-color:#66ff99;
   border-bottom-left-radius:100%;
-  font-size:26rpx;
+  font-size:24rpx;
   text-align:right;
   padding:rpx;
   position:absolute;
   right:0;
+  color: #999;
   margin-top:-40rpx;
 
 }
 .havensubmit_tip{
   width:60rpx;
   height:60rpx;
-  background-color:red;
+  background-color:#ff0033;
   border-bottom-left-radius:100%;
-  font-size:26rpx;
+  font-size:24rpx;
   text-align:right;
   padding:rpx;
   position:absolute;
   right:0;
+  color: #eee;
   margin-top:-40rpx;
-
+}
+.score{
+position:absolute;
+font-size:24rpx;
+margin-left:-20rpx;
+background-color:#eee;
+width:100%;
+bottom:0;
 }
 </style>
 <template>
@@ -39,14 +48,14 @@
      <view class="page__bd">
         <view class="weui-grids">
             <block wx:for="{{courseStu}}" wx:key="*this">
-                <navigator url="./homeworkSearchDetail?idUser={{item.idUser}}&idHomework={{idHomework}}&stuName={{item.name}}" class="weui-grid" hover-class="weui-grid_active" style="padding:40rpx 20rpx">
+                <navigator url="./homeworkSearchDetail?idUser={{item.idUser}}&idHomework={{idHomework}}&stuName={{item.name}}&haveHomework={{item.haveSubmit}}" class="weui-grid" hover-class="weui-grid_active" style="padding:40rpx 20rpx">
                   <view wx:if="{{item.haveSubmit === 1?true:false}}" style="" class="havesubmit_tip">已交</view>
                   <view wx:if="{{item.haveSubmit === 1?false:true}}" style="" class="havensubmit_tip">未交</view>
                   <!-- <view wx:if="" style=""></view> -->
                     <image class="weui-grid__icon" src="{{item.avatarUrl}}"/>
                     <view class="weui-grid__label">{{item.name}}</view>
                      <!-- <view class="weui-grid__label">{{item.stunum}}</view> -->
-                     <view class="weui-grid__label">{{item.stunum}}</view>
+                     <view class="score"><view style="text-align:center">得分:{{item.score}}</view></view>
                 </navigator>
             </block>
         </view>
@@ -106,12 +115,13 @@
                 .request('Teacher.getStudentHomeworkinfo', deData, 'loading')
                 .then(function(e) { // 暂时就先全部遍历一下，后面再看看可不可以优化时间复杂度
                   // console.log(e)
-                  if (e.data.data !== null) {
+                  if (e.data.data !== null && e.data.data.length !== undefined) {
                     for (let i = 0; i < e.data.data.length; i++) {
                       for (let j = 0; j < that.courseStu.length; j++) {
                         // console.log(that.courseStu[j].idUser)
                         if (that.courseStu[j].idUser === e.data.data[i].idUser) {
                           that.courseStu[j].haveSubmit = 1
+                          that.courseStu[j].score = e.data.data[i].score
                           // console.log('1')
                         }
                       }
