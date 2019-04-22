@@ -1,24 +1,29 @@
 <style type="less">
 .swiper image {
   width: 100%;
-  height: 50%;
-}
-.choose {
-  border-width: 5rpx
+  height: 80%;
 }
 </style>
 <template>
   <view style="margin-bottom:30px;text-align:center;">随堂测试</view>
-  <swiper  class='swiper image' style="height:1500rpx" current = "{{current}}">
+  <swiper  class='swiper image' style="height:900rpx" current = "{{current}}" @change = "change">
     <swiper-item wx:for="{{quizQues}}" wx:for-item="page" wx:key="*this"> 
+      <form @submit= "form">
       <image src="{{page.img}}"/>
       <view style="display:flex"> 
-       <button data-idQuizItems ="{{page.idQuizItems}}" data-answer = '16' @tap='tap' disabled="{{disabled}}">A</button>
+        <radio-group name="answer">
+        <block wx:for="{{girds}}" wx:item= "item" wx:key="*this">
+          <radio class="icont" value="{{item.id}}"></radio>
+          {{item.name}}
+        </block>
+      </radio-group>
+       <!-- <button data-idQuizItems ="{{page.idQuizItems}}" data-answer = '16' @tap='tap' disabled="{{disabled}}">A</button>
        <button data-idQuizItems ="{{page.idQuizItems}}" data-answer='32' @tap='tap' disabled="{{disabled}}">B</button>
        <button data-idQuizItems ="{{page.idQuizItems}}" data-answer='64' @tap='tap' disabled="{{disabled}}">C</button>
-       <button data-idQuizItems ="{{page.idQuizItems}}" data-answer='128' @tap='tap' disabled="{{disabled}}">D</button>
+       <button data-idQuizItems ="{{page.idQuizItems}}" data-answer='128' @tap='tap' disabled="{{disabled}}">D</button> -->
       </view>
-      <button>提交本次测试</button>
+      <button formType="submit">下一题</button>
+    </form>
     </swiper-item>
   </swiper>
 </template>
@@ -52,44 +57,62 @@
       // 默认
       current: 0,
       answerInfo: [],
-      disabled: false
+      disabled: false,
+      girds: [
+        {id: '16', name: 'A'},
+        {id: '32', name: 'B'},
+        {id: '64', name: 'C'},
+        {id: '128', name: 'D'}
+      ]
     };
 
     // 事件处理函数(集中保存在methods对象中)
     methods = {
+      form(e) {
+        let that = this
+        var info = {}
+        info.answer = e.detail.value.answer
+        that.answerInfo[that.current] = info
+        console.log(that.answerInfo)
+        if (that.current < that.quizQues.length - 1) {
+          that.current = that.current + 1
+        }
+      },
+      change(e) {
+        let that = this
+        that.current = e.detail.current
+      },
       tap(e) {
         let app = this.$parent
         let that = this
-        var answer = {}
-        answer.idQuizItems = e.currentTarget.dataset.idquizitems
-        answer.answer = e.currentTarget.dataset.answer
-        if (that.current < that.quizQues.length) {
+        if (that.quizQues[that.current].do === 0) {
+          that.quizQues[that.current].d0 = 1
+          console.log(that.quizQues[that.current].do)
+          var answer = {}
+          answer.idQuizItems = e.currentTarget.dataset.idquizitems
+          answer.answer = e.currentTarget.dataset.answer
           if (answer.answer === that.quizQues[that.current].answer) {
             answer.check = 1 // 1表示回答正确
-            that.disabled = true
             if (that.current === that.quizQues.length - 1) {
               app.toast('已完成随堂练习')
             }
             if (that.current < that.quizQues.length - 1) {
               that.current = that.current + 1
-              that.disabled = false
             }
-            console.log(that.current)
           } else {
             answer.check = 0 // 0表示回答错误
-            that.disabled = true
             if (that.current === that.quizQues.length - 1) {
               app.toast('已完成随堂练习')
             }
             if (that.current < that.quizQues.length - 1) {
               that.current = that.current + 1
-              that.disabled = false
             }
-            console.log(that.current)
           }
+          that.answerInfo.push(answer)
+          console.log(that.answerInfo)
+        } else {
+          that.checkAnswer(e.currentTarget.dataset.idquizitems, e.currentTarget.dataset.answer)
         }
-        that.answerInfo.push(answer)
-        console.log(that.answerInfo)
       }
     };
     submit(e) {
@@ -114,8 +137,27 @@
       .then((res) => {
         that.quizQues = res.data.data
         that.$apply()
+        for (var i = 0; i < that.quizQues.length; i++) {
+          that.quizQues[i].do = 0
+        }
         console.log(that.quizQues)
       })
+    }
+
+    checkAnswer(idQuizItems, answer) {
+      let that = this
+      for (var i = 0; i < that.answerInfo.length; i++) {
+        if (that.answerInfo[i].idQuizItems === idQuizItems) {
+          that.answerInfo[i].answer = answer
+          for (var j = 0; j < that.quizQues.length; j++) {
+            if (that.quizQues[j].idQuizItems === idQuizItems) {
+              if (that.quizQues[j].answer === answer) {
+                that.answerInfo[i].check = 1
+              }
+            }
+          }
+        }
+      }
     }
   }
 </script>
