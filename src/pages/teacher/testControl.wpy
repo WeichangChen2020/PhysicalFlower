@@ -95,7 +95,7 @@ export default class signinChoose extends wepy.page {
       }
       console.log(e)
       that.$navigate('./testSearch?idQuiz=' + e.currentTarget.dataset.idquiz)
-    }, // todo:点击进入页面详情，查看签到人数等信息
+    },
     showSync (e) {
       let app = this.$parent
       let that = this
