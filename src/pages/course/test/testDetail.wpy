@@ -19,7 +19,7 @@
       </radio-group>
       </view>
       <button wx:if ="{{show2}}" formType="submit">下一题</button>
-    <button wx:if ="{{show}}" formType="submit">提交本次测试</button>
+    <button wx:if ="{{show}}" formType="submit" @tap="submit">提交本次测试</button>
     </form>
     </swiper-item>
   </swiper>
@@ -95,42 +95,15 @@
           that.show2 = true
         }
         console.log(that.current)
-      },
-      tap(e) {
-        let app = this.$parent
-        let that = this
-        if (that.quizQues[that.current].do === 0) {
-          that.quizQues[that.current].d0 = 1
-          console.log(that.quizQues[that.current].do)
-          var answer = {}
-          answer.idQuizItems = e.currentTarget.dataset.idquizitems
-          answer.answer = e.currentTarget.dataset.answer
-          if (answer.answer === that.quizQues[that.current].answer) {
-            answer.result = 1 // 1表示回答正确
-            if (that.current === that.quizQues.length - 1) {
-              app.toast('已完成随堂练习')
-            }
-            if (that.current < that.quizQues.length - 1) {
-              that.current = that.current + 1
-            }
-          } else {
-            answer.result = 0 // 0表示回答错误
-            if (that.current === that.quizQues.length - 1) {
-              app.toast('已完成随堂练习')
-            }
-            if (that.current < that.quizQues.length - 1) {
-              that.current = that.current + 1
-            }
-          }
-          that.answerInfo.push(answer)
-          console.log(that.answerInfo)
-        } else {
-          that.checkAnswer(e.currentTarget.dataset.idquizitems, e.currentTarget.dataset.answer)
-        }
       }
     };
     submit(e) {
-      console.log('test')
+      let app = this.$parent
+      let that = this
+      var postData = {
+        answerInfo: that.answerInfo,
+        idUser: app.globalData.userInfo.idUserW
+      }
     }
     // 页面的生命周期函数
     onLoad(e) {
@@ -156,22 +129,6 @@
         }
         console.log(that.quizQues)
       })
-    }
-
-    checkAnswer(idQuizItems, answer) {
-      let that = this
-      for (var i = 0; i < that.answerInfo.length; i++) {
-        if (that.answerInfo[i].idQuizItems === idQuizItems) {
-          that.answerInfo[i].answer = answer
-          for (var j = 0; j < that.quizQues.length; j++) {
-            if (that.quizQues[j].idQuizItems === idQuizItems) {
-              if (that.quizQues[j].answer === answer) {
-                that.answerInfo[i].check = 1
-              }
-            }
-          }
-        }
-      }
     }
   }
 </script>
