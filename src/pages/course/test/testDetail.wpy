@@ -102,8 +102,12 @@
       let that = this
       var postData = {
         answerInfo: that.answerInfo,
-        idUser: app.globalData.userInfo.idUserW
+        idUser: app.globalData.userInfo.idUser
       }
+      console.log(postData)
+      wx.navigateBack({
+        delta: 1
+      })
     }
     // 页面的生命周期函数
     onLoad(e) {
