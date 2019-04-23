@@ -17,15 +17,12 @@
           {{item.name}}
         </block>
       </radio-group>
-       <!-- <button data-idQuizItems ="{{page.idQuizItems}}" data-answer = '16' @tap='tap' disabled="{{disabled}}">A</button>
-       <button data-idQuizItems ="{{page.idQuizItems}}" data-answer='32' @tap='tap' disabled="{{disabled}}">B</button>
-       <button data-idQuizItems ="{{page.idQuizItems}}" data-answer='64' @tap='tap' disabled="{{disabled}}">C</button>
-       <button data-idQuizItems ="{{page.idQuizItems}}" data-answer='128' @tap='tap' disabled="{{disabled}}">D</button> -->
       </view>
       <button formType="submit">下一题</button>
     </form>
     </swiper-item>
   </swiper>
+    <button wx:if ="{{show}}">提交本次测试</button>
 </template>
 <script>
   import wepy from 'wepy'
@@ -57,7 +54,7 @@
       // 默认
       current: 0,
       answerInfo: [],
-      disabled: false,
+      show: false,
       girds: [
         {id: '16', name: 'A'},
         {id: '32', name: 'B'},
@@ -71,7 +68,15 @@
       form(e) {
         let that = this
         var info = {}
-        info.answer = e.detail.value.answer
+        info.submit = e.detail.value.answer
+        if (info.submit === that.quizQues[that.current].answer) {
+          info.check = 1 // check为1回答正确，0回答错误
+        } else if (info.submit === '') {
+          info.check = -1
+        } else {
+          info.check = 0
+        }
+        info.idQuizItems = that.quizQues[that.current].idQuizItems
         that.answerInfo[that.current] = info
         console.log(that.answerInfo)
         if (that.current < that.quizQues.length - 1) {
@@ -81,6 +86,12 @@
       change(e) {
         let that = this
         that.current = e.detail.current
+        if (that.current === that.quizQues.length - 1) {
+          that.show = true
+        } else {
+          that.show = false
+        }
+        console.log(that.current)
       },
       tap(e) {
         let app = this.$parent
@@ -92,7 +103,7 @@
           answer.idQuizItems = e.currentTarget.dataset.idquizitems
           answer.answer = e.currentTarget.dataset.answer
           if (answer.answer === that.quizQues[that.current].answer) {
-            answer.check = 1 // 1表示回答正确
+            answer.result = 1 // 1表示回答正确
             if (that.current === that.quizQues.length - 1) {
               app.toast('已完成随堂练习')
             }
@@ -100,7 +111,7 @@
               that.current = that.current + 1
             }
           } else {
-            answer.check = 0 // 0表示回答错误
+            answer.result = 0 // 0表示回答错误
             if (that.current === that.quizQues.length - 1) {
               app.toast('已完成随堂练习')
             }
