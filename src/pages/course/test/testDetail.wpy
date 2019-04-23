@@ -18,11 +18,11 @@
         </block>
       </radio-group>
       </view>
-      <button formType="submit">下一题</button>
+      <button wx:if ="{{show2}}" formType="submit">下一题</button>
+    <button wx:if ="{{show}}" formType="submit">提交本次测试</button>
     </form>
     </swiper-item>
   </swiper>
-    <button wx:if ="{{show}}">提交本次测试</button>
 </template>
 <script>
   import wepy from 'wepy'
@@ -55,6 +55,7 @@
       current: 0,
       answerInfo: [],
       show: false,
+      show2: true,
       girds: [
         {id: '16', name: 'A'},
         {id: '32', name: 'B'},
@@ -70,11 +71,11 @@
         var info = {}
         info.submit = e.detail.value.answer
         if (info.submit === that.quizQues[that.current].answer) {
-          info.check = 1 // check为1回答正确，0回答错误
+          info.result = 1 // check为1回答正确，0回答错误
         } else if (info.submit === '') {
-          info.check = -1
+          info.result = -1
         } else {
-          info.check = 0
+          info.result = 0
         }
         info.idQuizItems = that.quizQues[that.current].idQuizItems
         that.answerInfo[that.current] = info
@@ -88,8 +89,10 @@
         that.current = e.detail.current
         if (that.current === that.quizQues.length - 1) {
           that.show = true
+          that.show2 = false
         } else {
           that.show = false
+          that.show2 = true
         }
         console.log(that.current)
       },
