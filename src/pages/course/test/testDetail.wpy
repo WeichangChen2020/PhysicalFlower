@@ -1,0 +1,138 @@
+<style type="less">
+.swiper image {
+  width: 100%;
+  height: 80%;
+}
+</style>
+<template>
+  <view style="margin-bottom:30px;text-align:center;">随堂测试</view>
+  <swiper  class='swiper image' style="height:900rpx" current = "{{current}}" @change = "change">
+    <swiper-item wx:for="{{quizQues}}" wx:for-item="page" wx:key="*this"> 
+      <form @submit= "form">
+      <image src="{{page.img}}"/>
+      <view style="display:flex"> 
+        <radio-group name="answer">
+        <block wx:for="{{girds}}" wx:item= "item" wx:key="*this">
+          <radio class="icont" value="{{item.id}}"></radio>
+          {{item.name}}
+        </block>
+      </radio-group>
+      </view>
+      <button wx:if ="{{show2}}" formType="submit">下一题</button>
+    <button wx:if ="{{show}}" formType="submit" @tap="submit">提交本次测试</button>
+    </form>
+    </swiper-item>
+  </swiper>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  // 通过继承自wepy.page的类创建页面逻辑
+  export default class testSearch extends wepy.page {
+    config = {
+      navigationBarTitleText: '随堂测试'
+    }
+    // 可用于页面模板绑定的数据
+    data = {
+      quizQues: [],
+      // 是否采用衔接滑动
+      circular: false,
+      // 是否显示画板指示点
+      indicatorDots: false,
+      // 选中点的颜色
+      indicatorcolor: '#000',
+      // 是否竖直
+      vertical: false,
+      // 是否自动切换
+      autoplay: true,
+      // 自动切换的间隔
+      interval: 2500,
+      // 滑动动画时长毫秒
+      duration: 100,
+      // 图片宽度
+      imgwidth: 750,
+      // 默认
+      current: 0,
+      answerInfo: [],
+      show: false,
+      show2: true,
+      girds: [
+        {id: '16', name: 'A'},
+        {id: '32', name: 'B'},
+        {id: '64', name: 'C'},
+        {id: '128', name: 'D'}
+      ]
+    };
+
+    // 事件处理函数(集中保存在methods对象中)
+    methods = {
+      form(e) {
+        let that = this
+        var info = {}
+        info.submit = e.detail.value.answer
+        if (info.submit === that.quizQues[that.current].answer) {
+          info.result = 1 // check为1回答正确，0回答错误
+        } else if (info.submit === '') {
+          info.result = -1
+        } else {
+          info.result = 0
+        }
+        info.idQuizItems = that.quizQues[that.current].idQuizItems
+        that.answerInfo[that.current] = info
+        console.log(that.answerInfo)
+        if (that.current < that.quizQues.length - 1) {
+          that.current = that.current + 1
+        }
+      },
+      change(e) {
+        let that = this
+        that.current = e.detail.current
+        if (that.current === that.quizQues.length - 1) {
+          that.show = true
+          that.show2 = false
+        } else {
+          that.show = false
+          that.show2 = true
+        }
+        console.log(that.current)
+      }
+    };
+    submit(e) {
+      let app = this.$parent
+      let that = this
+      var postData = {
+        answerInfo: that.answerInfo,
+        idUser: app.globalData.userInfo.idUser
+      }
+      console.log(postData)
+      wx.navigateBack({
+        delta: 1
+      })
+    }
+    // 页面的生命周期函数
+    onLoad(e) {
+      console.log(e)
+      this.idQuiz = e.idQuiz
+      console.log(this.idQuiz)
+      this.getQuizQues()
+    };
+
+    getQuizQues() {
+      let app = this.$parent
+      let that = this
+      var postData = {
+        idQuiz: that.idQuiz,
+        page: 1
+      }
+      app.request('Quiz.getQuizQues', postData, 'Loading...')
+      .then((res) => {
+        that.quizQues = res.data.data
+        that.$apply()
+        for (var i = 0; i < that.quizQues.length; i++) {
+          that.quizQues[i].do = 0
+        }
+        console.log(that.quizQues)
+      })
+    }
+  }
+</script>
