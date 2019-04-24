@@ -121,7 +121,7 @@ background-color:#F8F8F8;
       </button>
       <button class='btn1'  id="11" @tap='tap'>
         
-        <view>管理课程学生</view>
+        <view>随机点名</view>
     </button>
         </view>
       </folder4>
@@ -225,7 +225,7 @@ export default class classControl extends wepy.page {
           this.$navigate('./stuBan?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
           break
         case '11':
-          this.$navigate('./signinCreat?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
+          this.$navigate('./randomStudents?idCourse=' + this.idCourse + '&courseName=' + this.courseName)
           break
       }
     }

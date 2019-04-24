@@ -1,0 +1,62 @@
+<style type="less">
+
+</style>
+<template>
+<view display:block>
+    <image src="{{chooseStuInfo.avatarUrl}}"/>
+   <view>{{chooseStuInfo.name}}</view>
+</view>
+   <button @tap="random">生成</button>
+</template>
+<script>
+import wepy from 'wepy'
+
+// 通过继承自wepy.page的类创建页面逻辑
+export default class signinCreat extends wepy.page {
+  config ={
+    backgroundTextStyle: 'light',
+    navigationBarBackgroundColor: '#fff',
+    navigationBarTitleText: '随机点名',
+    navigationBarTextStyle: 'black'
+  }
+  // 可用于页面模板绑定的数据
+  data = {
+    idCourse: 0,
+    classStuInfo: [],
+    count: 0,
+    chooseStuInfo: {}
+  }
+
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+    random(e) {
+      let that = this
+      var num = Math.floor(Math.random() * that.count)
+      that.chooseStuInfo = that.classStuInfo[num]
+      console.log(that.chooseStuInfo)
+    }
+  }
+
+  // 页面的生命周期函数
+  onLoad(e) {
+    let app = this.$parent
+    let that = this
+    that.idCourse = e.idCourse
+    var postData = {
+      idCourse: that.idCourse
+    }
+    app.request('Teacher.getStudentListByIdCourse', postData, 'loading')
+      .then(function(res) {
+        if (res.data.errCode === 0) {
+          that.classStuInfo = res.data.data
+          that.count = res.data.data.length
+          console.log(that.count)
+        } else if (res.data.errCode === 101) {
+          app.modal('还没有学生加入', '注意')
+        } else {
+          app.modal('请稍后重试', '注意')
+        }
+      })
+  }
+}
+</script>
