@@ -59,8 +59,8 @@ background-color:#F8F8F8;
     <view class="padding-10">
       <view class="head" style="font-size:35rpx;font-weight:bold">课程id：{{idCourse}}</view>
       <view class="head" style="font-size:35rpx;font-weight:bold">课程名称：{{courseName}}</view>
-       <view class="head" style="font-size:30rpx;font-weight:bold">加入人数：{{count}}</view>
-
+       <view class="head" style="font-size:35rpx;font-weight:bold">加入人数：{{count}}</view>
+    </view>
       <folder1 title="签到" componentId="0" fontClass="font-size:32rpx;font-weight:bold">
         <view slot="content" class="beauty">
            <button class='btn1'  id="1" @tap='tap'>
@@ -69,9 +69,6 @@ background-color:#F8F8F8;
         <button class='btn1'  id="2" @tap='tap'>
             <view>管理签到</view>
         </button>
-           <!-- <button class='btn1'  id="3" @tap='tap'>
-    <view>签到详情</view>
- </button> -->
         </view>
       </folder1>
 
@@ -79,15 +76,8 @@ background-color:#F8F8F8;
       <folder2 title="作业" componentId="1" fontClass="font-size:32rpx;font-weight:bold">
         <view slot="content">
           <button class='btn1'  id="4" @tap='tap'>
-            
             <view>布置作业</view>
-
         </button>
-                <!-- <button class='btn1'  id="5" @tap='tap'>
-            
-            <view>修改作业信息</view>
-        </button> -->
-
         <button class='btn1'  id="6" @tap='tap'>
             
             <view>查看作业</view>
@@ -120,7 +110,6 @@ background-color:#F8F8F8;
         <view>课程学生</view>
       </button>
       <button class='btn1'  id="11" @tap='tap'>
-        
         <view>随机点名</view>
     </button>
         </view>

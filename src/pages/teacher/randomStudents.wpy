@@ -1,18 +1,51 @@
 <style type="less">
-
+.con2{
+  margin-top: 150rpx;
+  justify-content: center; 
+}
+.title{
+  margin-top: 60rpx
+}
+.container{
+  align-items: center;
+  justify-content: center;  
+  display:flex
+}
+.page__bd {
+  text-align: center;
+}
+.icon{
+margin-left: 250rpx;
+display:flex;
+justify-content:center;
+overflow:hidden;
+width:250rpx;
+height:170rpx;
+}
 </style>
 <template>
-<view display:block>
-    <image src="{{chooseStuInfo.avatarUrl}}"/>
-   <view>{{chooseStuInfo.name}}</view>
+<view class="page__bd">
+    <view class="con2">
+    <image src='{{chooseStuInfo.avatarUrl}}' class='icon' />
+    <view class='title' wx:if="{{show2}}">姓名：{{chooseStuInfo.name}}</view>
+    <view class='title'  wx:if="{{show2}}">学号：{{chooseStuInfo.stunum}}</view>
+    </view>
+  <button @tap="random">
+    <view class = "container">
+     <loading wx:if="{{show}}" type="circle" size="big"/>
+     <text>点名</text>
+    </view>
+  </button>
 </view>
-   <button @tap="random">生成</button>
 </template>
 <script>
 import wepy from 'wepy'
-
+import Loading from '@/components/loading/index'
 // 通过继承自wepy.page的类创建页面逻辑
 export default class signinCreat extends wepy.page {
+  components = {
+    loading: Loading
+  }
   config ={
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
@@ -24,16 +57,24 @@ export default class signinCreat extends wepy.page {
     idCourse: 0,
     classStuInfo: [],
     count: 0,
-    chooseStuInfo: {}
+    chooseStuInfo: {},
+    show: false,
+    show2: false
   }
 
   // 事件处理函数(集中保存在methods对象中)
   methods = {
     random(e) {
       let that = this
-      var num = Math.floor(Math.random() * that.count)
-      that.chooseStuInfo = that.classStuInfo[num]
-      console.log(that.chooseStuInfo)
+      setTimeout(() => {
+        var num = Math.floor(Math.random() * that.count)
+        that.chooseStuInfo = that.classStuInfo[num]
+        that.show = false
+        that.$apply()
+      }, 1000)
+      that.show2 = true
+      that.show = true
+      that.$apply()
     }
   }
 

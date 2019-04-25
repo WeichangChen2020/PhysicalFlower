@@ -69,7 +69,7 @@ export default class extends wepy.app {
       'pages/course/courseDetail',
       'pages/course/courseList',
       'pages/course/signin/detail',
-      'pages/course/exercise/index',
+      'pages/course/download/index',
       'pages/course/chat/index',
       'pages/course/test/index',
       'pages/my/gradeInfo',

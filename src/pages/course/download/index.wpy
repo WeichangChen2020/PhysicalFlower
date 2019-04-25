@@ -1,16 +1,14 @@
 <style type="less">
 </style>
 <template>
-  <view class="page__bd">
-    功能制作中，敬请期待
-  </view>
+ <web-view src="https://www.baidu.com/"></web-view>
 </template>
 <script>
 import wepy from 'wepy'
 
 export default class IndexDetail extends wepy.page {
   config = {
-    navigationBarTitleText: '自由练习',
+    navigationBarTitleText: '资料下载',
     enablePullDownRefresh: false
   }
 }

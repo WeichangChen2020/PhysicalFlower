@@ -144,6 +144,9 @@ export default class queReport extends wepy.page {
           })
         }
       })
+    },
+    bindKeyInput(e) {
+      console.log(e)
     }
   }
 }
