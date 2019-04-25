@@ -109,10 +109,14 @@ margin-left:10rpx;
         app.globalData.courseInfo = res.data.data
         that.courseInfo = res.data.data
         that.errCode = res.data.errCode
+        for (var i = 0; i < that.courseInfo.length; i++) {
+          if (that.courseInfo[i].logo === 'data:image/;base64,') {
+            that.courseInfo[i].logo = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556209601174&di=0e175046fc2b64162adb12b278eb65fb&imgtype=0&src=http%3A%2F%2Fimg3.jarhu.com%2Fthirdimg%2Fbf112211%2F703035534-23392.gif'
+          }
+        }
         that.$apply()
         if (res.data.errCode !== 0) {
           app.toast(res.data.msg)
-        } else {
         }
       })
       .catch(function(error) {

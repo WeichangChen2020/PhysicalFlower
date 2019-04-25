@@ -49,12 +49,18 @@ page {
     font-size: 30rpx;
     line-height: 70rpx;
   }
+  .ran {
+    margin-top: 285rpx;
+    margin-left: 600rpx;
+  }
 </style>
 <template>
 <view class='greeting'>问题反馈</view></view>
 <view class='border'>
   <view>输入问题</view>
-  <textarea class='input' disabled='{{isChecked<1}}' placeholder='请简单描述问题(最多输入200字)' focus='{{focus}}' maxlength="200" bindinput='bindKeyInput' />
+  <textarea class='input' disabled='{{isChecked<1}}' placeholder='请简单描述问题(最多输入200字)' focus='{{focus}}' maxlength="200" bindinput='bindKeyInput' >
+  <view class="ran">{{length}}/200</view>
+  </textarea>
 </view>
 
 <view class='greeting'>上传截图</view>
@@ -78,7 +84,7 @@ page {
       </view>
     </view>
   <view class='border'> 
-    <button class="btn" style='width:300rpx' bindtap=''>提交问题</button>
+    <button class="btn" style='width:300rpx' bindtap='submit'>提交问题</button>
   </view>
   </view>
 </view>
@@ -104,7 +110,8 @@ export default class queReport extends wepy.page {
     address_city: '',
     problem_description: '',
     canvasWidth: '',
-    canvasHeight: ''
+    canvasHeight: '',
+    length: 0
   };
 
   // computed = {
@@ -129,8 +136,6 @@ export default class queReport extends wepy.page {
           wx.getImageInfo({
             src: res.tempFilePaths[0],
             succes(res) {
-              console.log(res.width)
-              console.log(res.height)
               while (
                 that.canvasWidth > 10000 ||
                 that.canvasHeight > 10000
@@ -146,7 +151,24 @@ export default class queReport extends wepy.page {
       })
     },
     bindKeyInput(e) {
-      console.log(e)
+      let that = this
+      that.length = e.detail.value.length
+      that.problem_description = e.detail.value
+      console.log(that.problem_description)
+    },
+    submit(e) {
+      let app = this.$parent
+      let that = this
+      if (that.problem_description !== '') {
+        app.toast('提交成功！')
+        setTimeout(() => {
+          wx.navigateBack({
+            delta: 1
+          })
+        }, 1000)
+      } else {
+        app.toast('请描述你的问题！')
+      }
     }
   }
 }

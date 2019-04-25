@@ -86,10 +86,17 @@ export default class CourseList extends wepy.page {
     let app = this.$parent
     let that = this
     this.refreshTimes++
+    var i = 0
     app.request('Course.getJoinedCourseList', '', '请求中...')
     .then((res) => {
       that.courseList = res.data.data
+      for (i = 0; i < that.courseList.length; i++) {
+        if (that.courseList[i].logo === 'data:image/;base64,') {
+          that.courseList[i].logo = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556209601174&di=0e175046fc2b64162adb12b278eb65fb&imgtype=0&src=http%3A%2F%2Fimg3.jarhu.com%2Fthirdimg%2Fbf112211%2F703035534-23392.gif'
+        }
+      }
       this.$apply()
+      console.log(that.courseList)
     })
   }
 }
