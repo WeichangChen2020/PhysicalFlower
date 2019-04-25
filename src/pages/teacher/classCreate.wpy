@@ -106,10 +106,8 @@ s .flex-list:nth-child(4n) {
   <view  slot="title" class="greeting">设置题目集</view>
   <view class='border2'>
     <button class='btn2' bindtap="open">
-       <!-- <view class="greeting" style="color:#FFE4C4">选择题目集</view> -->
-         <view class="greeting" style="color:#FFE4C4">{{questionName}}</view>
-      </button>
-      </button>
+        <view class="greeting" style="color:#FFE4C4">{{questionName}}</view>
+    </button>
   </view>
 
   <view  slot="title" class="greeting">课程描述</view>
