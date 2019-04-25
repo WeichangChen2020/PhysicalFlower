@@ -36,13 +36,17 @@ canvas {
   justify-content: center;
 }
 .con{
-  margin-top: 180rpx
+  margin-top: 180rpx;
 }
 .con2{
-  margin-top: 150rpx
+  margin-top: 150rpx;
+  justify-content:center;
+}
+.con3{
+  justify-content:center;
+  display:flex;
 }
 .icon{
-margin-left:300rpx;
 display:flex;
 justify-content:center;
 overflow:hidden;
@@ -57,7 +61,9 @@ height:170rpx;
   <toast />
   <view class="page__bd">
     <view class="con2">
+    <view class='con3'>
     <image src='{{logo}}' class='icon' />
+    </view>
     <view class='title'>课程名称：{{courseName}}</view>
     <view class='title'>创建者：{{creater}}</view>
     </view>
@@ -138,7 +144,11 @@ export default class CourseDetail extends wepy.page {
   onLoad(e) {
     this.courseName = e.courseName
     this.idCourse = e.idCourse
-    this.logo = this.$parent.globalData.logo
+    if (this.$parent.globalData.logo === 'data:image/;base64,') {
+      this.logo = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556209601174&di=0e175046fc2b64162adb12b278eb65fb&imgtype=0&src=http%3A%2F%2Fimg3.jarhu.com%2Fthirdimg%2Fbf112211%2F703035534-23392.gif'
+    } else {
+      this.logo = this.$parent.globalData.logo
+    }
     this.creater = e.creater
     console.log(this.data)
   }
