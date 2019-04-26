@@ -104,6 +104,10 @@
         answerInfo: that.answerInfo,
         idUser: app.globalData.userInfo.idUser
       }
+      app.request('Quiz.submitQuiz', postData, '提交中')
+      .then((res) => {
+        console.log(res)
+      })
       console.log(postData)
       wx.navigateBack({
         delta: 1
