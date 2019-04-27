@@ -55,7 +55,7 @@
         idQuiz: that.idQuiz,
         idCourse: that.idCourse
       }
-      app.request('QUIZ.getstulistForIdQuiz', postData, 'Loaing....')
+      app.request('Quiz.getstulistForIdQuiz', postData, 'Loaing....')
       .then((res) => {
       })
     };
