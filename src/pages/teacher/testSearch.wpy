@@ -1,63 +1,119 @@
 <style type="less">
-.list{
-  width: 200rpx;
-  height: 200rpx;
-  border: 1px solid #ccc;
+.title{
+font-size:31rpx;
+margin-left: 60rpx;
+margin-bottom:-10rpx;
 }
-.padding{
-  margin-top: 10%;
+.icon3{
+width:130rpx;
+height:130rpx;
+margin:5rpx;
+margin-left:25rpx;
+}
+.border {
+display:flex;
+flex-direction:row;
+background-color:#fff;
+border-radius:20rpx;
+padding:20rpx;
+margin:40rpx;
+height:175rpx;
+}
+.contain{
+  padding-left:20rpx;
+  line-height:55rpx;
+  font-size:36rpx;
+  margin-left:35rpx;
 }
 </style>
 <template>
-	<view>
-		<text class="greeting">浏览课堂测试</text>
-	</view>
-  <view class="padding">
-  <view class="page__bd">
-        <view class="weui-grids">
-            <block wx:for="{{grids}}" wx:key="*this">
-              <navigator class="weui-grid" hover-class="weui-grid_active">
-                    <image class="weui-grid__icon" src="{{i_url[item]}}" />
-                    <view class="weui-grid__label">{{i_name[item]}}</view>
-                </navigator>
-            </block>
-        </view>
+  <tab @bindChange.user="change"/>
+  <button wx:if="{{tab.selectedId === item.showId}}" wx:for="{{stuQuiuList}}" wx:item="item" wx:key="*this" class='border'  data-idUser="{{item.idUser}}" data-selectedId="{{tab.selectedId}}" @tap='showDetail'>
+    <image src='{{item.avatarUrl}}' class='icon3'></image>
+    <view class='contain'>
+      <view class='title'>姓名：{{item.name}}</view>
+      <view class='title'>学号：{{item.stuNum}}</view>
+      <view wx:if="{{item.showId === 1}}" class='title'>得分：{{item.quiz_result}}</view>
     </view>
-    </view>
+  </button>
+  <view class="weui-footer">
+      <view class="weui-footer__text">——到底了——</view>
+  </view>
 </template>
 <script>
   import wepy from 'wepy'
-
-  // 通过继承自wepy.page的类创建页面逻辑
+  import Tab from '@/components/tab/index'
   export default class testSearch extends wepy.page {
+    config ={
+      navigationBarTitleText: '测试详情'
+    }
     // 可用于页面模板绑定的数据
     data = {
       idCourse: 0,
-      grids: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
-      i_name: ['xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx'],
-      i_url: ['/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png']
+      idQuiz: 0,
+      tab: {
+        list: [{id: 1, title: '已提交'}, {id: 2, title: '未提交'}],
+        selectedId: 1,
+        class: 'tab-success'
+      },
+      stuQuiuList: []
     };
 
+    components = {
+      tab: Tab
+    }
     // 事件处理函数(集中保存在methods对象中)
     methods = {
-      bindViewTap () {
-        console.log('button clicked')
+      change(res) {
+        this.tab.selectedId = res
+        if (JSON.stringify(this.allSigninList) === '{}') {
+          this.getAllList()
+        }
+        this.$apply()
+      },
+      showDetail(e) {
+        let that = this
+        console.log(e)
+        var selectedId = e.currentTarget.dataset.selectedid
+        var idUser = e.currentTarget.dataset.iduser
+        if (selectedId === 1) {
+          that.$navigate('./stuQuizDetail?idQuiz=' + that.idQuiz + '&idUser=' + idUser)
+        }
       }
     };
-
-    // 页面的生命周期函数
     onLoad(e) {
+      this.$invoke('tab', 'doInitTabData', this.tab)
       let app = this.$parent
       let that = this
-      that.idQuiz = e.idQuiz
       that.idCourse = e.idCourse
+      that.idQuiz = e.idQuiz
       var postData = {
         idQuiz: that.idQuiz,
         idCourse: that.idCourse
       }
+<<<<<<< HEAD
       app.request('Quiz.getstulistForIdQuiz', postData, 'Loaing....')
+=======
+      app.request('Quiz.getstulistForIdQuiz', postData, 'Loading...')
+>>>>>>> 8d809db50b27827a311980299fd8acff9cb4ef47
       .then((res) => {
+        that.stuQuiuList = res.data.data
+        for (var i = 0; i < that.stuQuiuList.length; i++) {
+          if (that.stuQuiuList[i].quiz_result === 0) {
+            that.stuQuiuList[i].showId = 2
+          } else {
+            that.stuQuiuList[i].showId = 1
+          }
+        }
+        that.$apply()
+        console.log(that.stuQuiuList)
       })
     };
+    onShow() {
+    };
+    onPullDownRefresh() {
+      // this.onLoad({idSignin: this.idSignin})
+      wx.stopPullDownRefresh()
+    }
   }
 </script>

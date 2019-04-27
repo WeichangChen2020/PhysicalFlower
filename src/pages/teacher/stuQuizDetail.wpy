@@ -1,0 +1,46 @@
+<style type="less">
+</style>
+<template>
+  <view>test</view>
+</template> 
+<script>
+  import wepy from 'wepy'
+  // 通过继承自wepy.page的类创建页面逻辑
+  export default class teacher extends wepy.page {
+    components = {
+    }
+    // 可用于页面模板绑定的数据
+    config = {
+      navigationBarTitleText: '详情'
+    }
+    data = {
+      idQuiz: 0,
+      idUser: 0
+    }
+
+    // 事件处理函数(集中保存在methods对象中)
+    methods = {
+    }
+
+    // 页面的生命周期函数
+    onLoad(e) {
+      console.log(e)
+      let app = this.$parent
+      let that = this
+      that.idQuiz = e.idQuiz
+      that.idUser = e.idUser
+      var postData = {
+        idUser: that.idUser,
+        idQuiz: that.idQuiz
+      }
+      app.request('Quiz.getStuQuizDetail', postData, 'Loading...')
+      .then((res) => {
+        console.log(res)
+      })
+    }
+    onShow(e) {
+    };
+    onReachBottom(e) {
+    }
+  }
+</script>

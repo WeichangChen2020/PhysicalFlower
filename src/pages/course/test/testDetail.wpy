@@ -104,14 +104,16 @@
         answerInfo: that.answerInfo,
         idUser: app.globalData.userInfo.idUser
       }
-      app.request('Quiz.submitQuiz', postData, '提交中')
+      app.request('Quiz.submitQuiz', postData, '提交中...')
       .then((res) => {
         console.log(res)
       })
       console.log(postData)
-      wx.navigateBack({
-        delta: 1
-      })
+      setTimeout(() => {
+        wx.navigateBack({
+          delta: 1
+        })
+      }, 1000)
     }
     // 页面的生命周期函数
     onLoad(e) {

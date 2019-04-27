@@ -58,11 +58,11 @@ export default class Register extends wepy.page {
     },
     number: {
       error: false,
-      label: '学号',
+      label: '*学号',
       value: '',
       inputType: 'number',
       filter: /^\d{0,15}$/,
-      placeholder: '请输入学号'
+      placeholder: '请输入学号(老师输入111111)'
     },
     telphone: {
       error: false,

@@ -30,7 +30,6 @@ margin-left:25rpx;
   line-height:55rpx;
   font-size:36rpx;
   margin-left:35rpx;
-
 }
 .subtitle{
   color:#aaa;

@@ -28,7 +28,7 @@ height:170rpx;
     <view class="con2">
     <image src='{{chooseStuInfo.avatarUrl}}' class='icon' />
     <view class='title' wx:if="{{show2}}">姓名：{{chooseStuInfo.name}}</view>
-    <view class='title'  wx:if="{{show2}}">学号：{{chooseStuInfo.stunum}}</view>
+    <view class='title'  wx:if="{{show2}}">学号：{{chooseStuInfo.stuNum}}</view>
     </view>
   <button @tap="random">
     <view class = "container">
@@ -89,8 +89,14 @@ export default class signinCreat extends wepy.page {
     app.request('Teacher.getStudentListByIdCourse', postData, 'loading')
       .then(function(res) {
         if (res.data.errCode === 0) {
-          that.classStuInfo = res.data.data
-          that.count = res.data.data.length
+          for (var i = 0; i < res.data.data.length; i++) {
+            if (res.data.data[i].addStatus === '1') {
+              that.classStuInfo.push(res.data.data[i])
+            }
+          }
+          that.count = that.classStuInfo.length
+          that.$apply()
+          console.log(that.classStuInfo)
           console.log(that.count)
         } else if (res.data.errCode === 101) {
           app.modal('还没有学生加入', '注意')
