@@ -94,8 +94,6 @@ export default class Register extends wepy.page {
       // 合法性判断
       if (this.userInfo.name === '') {
         options.content = '姓名不能为空'
-      } else if (!(this.number.filter.test(this.userInfo.stunum))) {
-        options.content = '请检查学号'
       } else if (this.userInfo.telphone !== undefined && this.userInfo.telphone !== '') {
         if (!(this.telphone.filter.test(this.userInfo.telphone))) {
           options.content = '请检查手机号'
@@ -150,7 +148,7 @@ export default class Register extends wepy.page {
       this.userInfo.name = e
     },
     _handleInputNumber(e) {
-      this.userInfo.stunum = e
+      this.userInfo.stuNum = e
     },
     _handleInputtelphone(e) {
       this.userInfo.telphone = e
@@ -169,7 +167,7 @@ export default class Register extends wepy.page {
       success(res) {
         that.userInfo = res.userInfo
         that.userInfo.name = ''
-        that.userInfo.stunum = ''
+        that.userInfo.stuNum = ''
         that.userInfo.telphone = ''
         that.userInfo.class = ''
       }
@@ -177,10 +175,6 @@ export default class Register extends wepy.page {
   }
 
   onShow() {
-    this.name.value = this.userInfo.name || ''
-    this.number.value = this.userInfo.stunum || ''
-    this.telphone.value = this.userInfo.telphone || ''
-    console.log(this.data)
   }
 }
 </script>

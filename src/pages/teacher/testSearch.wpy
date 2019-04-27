@@ -32,6 +32,7 @@
   export default class testSearch extends wepy.page {
     // 可用于页面模板绑定的数据
     data = {
+      idCourse: 0,
       grids: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
       i_name: ['xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx', 'xxx'],
       i_url: ['/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png', '/public/images/empty.png']
@@ -49,10 +50,12 @@
       let app = this.$parent
       let that = this
       that.idQuiz = e.idQuiz
+      that.idCourse = e.idCourse
       var postData = {
-        idQuiz: that.idQuiz
+        idQuiz: that.idQuiz,
+        idCourse: that.idCourse
       }
-      app.request('Quiz.getStudentQuizDetails', postData, 'Loaing....')
+      app.request('QUIZ.getstulistForIdQuiz', postData, 'Loaing....')
       .then((res) => {
       })
     };

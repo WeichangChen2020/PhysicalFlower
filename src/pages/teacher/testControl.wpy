@@ -94,7 +94,7 @@ export default class signinChoose extends wepy.page {
         return
       }
       console.log(e)
-      that.$navigate('./testSearch?idQuiz=' + e.currentTarget.dataset.idquiz)
+      that.$navigate('./testSearch?idQuiz=' + e.currentTarget.dataset.idquiz + '&idCourse=' + that.idCourse)
     },
     showSync (e) {
       let app = this.$parent

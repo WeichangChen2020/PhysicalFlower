@@ -97,7 +97,7 @@ export default class myInfo extends wepy.page {
         name: '学号',
         img: 'medal',
         margin: '0',
-        type: 'stunum'
+        type: 'stuNum'
       },
       {
         id: '3',
@@ -143,7 +143,6 @@ export default class myInfo extends wepy.page {
         confirmText: '确定',
         confirmColor: '#f8bbd0',
         success: function (res) {
-          console.log(this)
           if (res.confirm) {
             wx.navigateTo({ url: `./register` })
           } else if (res.cancel) {
@@ -162,13 +161,10 @@ export default class myInfo extends wepy.page {
   }
 
   onLoad() {
-    console.log(this.$parent)
-    // this.data.userInfo = this.$parent.globalData.userInfo
     this.userInfo = this.$parent.globalData.userInfo
-    console.log(this.$parent.globalData.userInfo)
   }
   onShow() {
-    this.userInfo = this.$parent.globalData.userInfo
+    console.log(this.userInfo)
   }
 }
 </script>
