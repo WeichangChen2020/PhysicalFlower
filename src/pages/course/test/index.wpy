@@ -84,6 +84,8 @@ export default class signinChoose extends wepy.page {
       var timestamp = (new Date()).getTime() / 1000
       if (e.currentTarget.dataset.gmtend >= timestamp) {
         that.$navigate('./testDetail?idQuiz=' + e.currentTarget.dataset.idquiz)
+      } else {
+        that.$navigate('./testResult?idQuiz=' + e.currentTarget.dataset.idquiz)
       }
     }
   }

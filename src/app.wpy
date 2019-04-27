@@ -94,7 +94,8 @@ export default class extends wepy.app {
       'pages/teacher/homeworkSearchDetail',
       'pages/teacher/signinDetail',
       'pages/course/test/testDetail',
-      'pages/teacher/randomStudents'
+      'pages/teacher/randomStudents',
+      'pages/course/test/testResult'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
     ],
     'permission': {
       'scope.userLocation': {
