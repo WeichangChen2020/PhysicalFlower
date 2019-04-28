@@ -1,11 +1,20 @@
 <style type="less">
 .swiper image {
   width: 100%;
-  height: 80%;
+  height: 70%;
 }
 </style>
 <template>
-  <view>hello</view>
+  <view style="margin-bottom:30px;text-align:center;">测试结果</view>
+  <swiper  class='swiper image' style="height:900rpx" current = "{{current}}" @change = "change">
+    <swiper-item wx:for="{{quizResultList}}" wx:for-item="page" wx:key="*this">
+      <image src="{{page.img}}"/>
+      <view style="display:block"> 
+       <view>正确答案：{{page.correctAnswer}}</view>
+       <view>你的答案：{{page.submitAnswer}}</view>
+      </view>
+    </swiper-item>
+  </swiper>
 </template>
 <script>
   import wepy from 'wepy'
@@ -13,11 +22,13 @@
   // 通过继承自wepy.page的类创建页面逻辑
   export default class testSearch extends wepy.page {
     config = {
-      navigationBarTitleText: '随堂测试'
+      navigationBarTitleText: '测试详情'
     }
     // 可用于页面模板绑定的数据
     data = {
-      quizQues: [],
+      idQuiz: 0,
+      idUser: 0,
+      quizResultList: [],
       // 是否采用衔接滑动
       circular: false,
       // 是否显示画板指示点
@@ -35,16 +46,7 @@
       // 图片宽度
       imgwidth: 750,
       // 默认
-      current: 0,
-      answerInfo: [],
-      show: false,
-      show2: true,
-      girds: [
-        {id: '16', name: 'A'},
-        {id: '32', name: 'B'},
-        {id: '64', name: 'C'},
-        {id: '128', name: 'D'}
-      ]
+      current: 0
     };
 
     // 事件处理函数(集中保存在methods对象中)
@@ -66,7 +68,35 @@
       }
       app.request('Quiz.getStuQuizDetail', postData, 'Loading...')
       .then((res) => {
-        console.log(res)
+        for (var i = 0; i < res.data.data.length; i++) {
+          that.quizResultList.push(res.data.data[i].quiz_info)
+          that.$apply()
+        }
+        console.log(that.quizResultList)
+        for (i = 0; i < that.quizResultList.length; i++) {
+          if (that.quizResultList[i].answer === '16') {
+            that.quizResultList[i].correctAnswer = 'A'
+          } else if (that.quizResultList[i].answer === '32') {
+            that.quizResultList[i].correctAnswer = 'B'
+          } else if (that.quizResultList[i].answer === '64') {
+            that.quizResultList[i].correctAnswer = 'C'
+          } else if (that.quizResultList[i].answer === '128') {
+            that.quizResultList[i].correctAnswer = 'D'
+          }
+          that.$apply()
+        }
+        for (i = 0; i < that.quizResultList.length; i++) {
+          if (that.quizResultList[i].stu_submit === '16') {
+            that.quizResultList[i].submitAnswer = 'A'
+          } else if (that.quizResultList[i].stu_submit === '32') {
+            that.quizResultList[i].submitAnswer = 'B'
+          } else if (that.quizResultList[i].stu_submit === '64') {
+            that.quizResultList[i].submitAnswer = 'C'
+          } else if (that.quizResultList[i].stu_submit === '128') {
+            that.quizResultList[i].submitAnswer = 'D'
+          }
+          that.$apply()
+        }
       })
     }
   }
