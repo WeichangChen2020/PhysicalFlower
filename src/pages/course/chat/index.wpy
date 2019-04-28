@@ -2,8 +2,7 @@
 </style>
 <template>
   <view class="page__bd">
-    功能制作中，敬请期待换个卡gmmj
-    hahahahhaa
+    功能制作中，敬请期待...
   </view>
 </template>
 <script>

@@ -52,7 +52,22 @@
     }
     // 页面的生命周期函数
     onLoad(e) {
-      console.log(e)
+      let that = this
+      that.idQuiz = e.idQuiz
+      that.idUser = e.idUser
+      that.getQuizresult()
     };
+    getQuizresult() {
+      let app = this.$parent
+      let that = this
+      var postData = {
+        idQuiz: that.idQuiz,
+        idUser: that.idUser
+      }
+      app.request('Quiz.getStuQuizDetail', postData, 'Loading...')
+      .then((res) => {
+        console.log(res)
+      })
+    }
   }
 </script>

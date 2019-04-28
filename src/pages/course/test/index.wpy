@@ -41,10 +41,39 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.havesubmit_tip{
+  width:60rpx;
+  height:60rpx;
+  background-color:#66ff99;
+  border-bottom-left-radius:100%;
+  font-size:24rpx;
+  text-align:right;
+  padding:rpx;
+  position:absolute;
+  right:0;
+  color: #999;
+  margin-top:-40rpx;
+
+}
+.havensubmit_tip{
+  width:60rpx;
+  height:60rpx;
+  background-color:#ff0033;
+  border-bottom-left-radius:100%;
+  font-size:24rpx;
+  text-align:right;
+  padding:rpx;
+  position:absolute;
+  right:0;
+  color: #eee;
+  margin-top:-40rpx;
+}
 </style>
 <template>
   <view class="kai-content">
-    <button wx:for='{{quizList}}' class='border' wx:key='*this' @touchend='touchend' @tap='tap' data-idquiz="{{item.idQuiz}}" data-gmtend='{{item.gmtEnd}}' >
+    <button wx:for='{{quizList}}' class='border' wx:key='*this' @touchend='touchend' @tap='tap' data-idquiz="{{item.idQuiz}}" data-gmtend="{{item.gmtEnd}}" data-havesubmit="{{item.havesubmit}}">
+       <view wx:if="{{item.havesubmit === 1?true:false}}"  class="havesubmit_tip">已交</view>
+       <view wx:if="{{item.havesubmit === 1?false:true}}"  class="havensubmit_tip">未交</view>
       <view class='contain'>
         <view class='title'>{{item.time}}</view>
         <text class='subtitle'>截止时间：{{item.endtime}}</text> 
@@ -81,18 +110,20 @@ export default class signinChoose extends wepy.page {
     },
     tap(e) {
       let that = this
+      var idUser = that.$parent.globalData.userInfo.idUser
+      console.log(idUser)
       var timestamp = (new Date()).getTime() / 1000
-      if (e.currentTarget.dataset.gmtend >= timestamp) {
+      var haveSubmit = e.currentTarget.dataset.havesubmit
+      if (e.currentTarget.dataset.gmtend >= timestamp && haveSubmit === 0) {
         that.$navigate('./testDetail?idQuiz=' + e.currentTarget.dataset.idquiz)
       } else {
-        that.$navigate('./testResult?idQuiz=' + e.currentTarget.dataset.idquiz)
+        that.$navigate('./testResult?idQuiz=' + e.currentTarget.dataset.idquiz + '&idUser=' + idUser)
       }
     }
   }
 
   // 页面的生命周期函数
   onLoad(e) {
-    console.log(e)
     this.idCourse = this.$parent.globalData.activeCourse
     this.getQuizList()
   }
