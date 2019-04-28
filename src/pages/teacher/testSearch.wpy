@@ -91,11 +91,7 @@ height:175rpx;
         idQuiz: that.idQuiz,
         idCourse: that.idCourse
       }
-<<<<<<< HEAD
-      app.request('Quiz.getstulistForIdQuiz', postData, 'Loaing....')
-=======
       app.request('Quiz.getstulistForIdQuiz', postData, 'Loading...')
->>>>>>> 8d809db50b27827a311980299fd8acff9cb4ef47
       .then((res) => {
         that.stuQuiuList = res.data.data
         for (var i = 0; i < that.stuQuiuList.length; i++) {
