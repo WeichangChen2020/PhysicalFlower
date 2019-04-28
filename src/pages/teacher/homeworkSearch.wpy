@@ -103,10 +103,8 @@ bottom:0;
             console.log(e.data.data)
             if (e.data.data !== null && e.data.data.length !== undefined) {
               that.courseStu = e.data.data
+              console.log(e.data.data.length)
               for (var i = 0; i < e.data.data.length; i++) {
-                if (e.data.data[i].addStatus === '1') {
-                  that.courseStu.push(e.data.data[i])
-                }
                 that.courseStu[i].haveSubmit = 0
               }
               var deData = {
@@ -115,7 +113,7 @@ bottom:0;
               app
                 .request('Teacher.getStudentHomeworkinfo', deData, 'loading')
                 .then(function(e) { // 暂时就先全部遍历一下，后面再看看可不可以优化时间复杂度
-                  console.log(e.data.data.length)
+                  // console.log(e.data.data.length)
                   if (e.data.data !== null && e.data.data.length !== undefined) {
                     for (let i = 0; i < e.data.data.length; i++) {
                       for (let j = 0; j < that.courseStu.length; j++) {
