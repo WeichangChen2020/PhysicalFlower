@@ -97,7 +97,9 @@ export default class extends wepy.app {
       'pages/teacher/randomStudents',
       'pages/teacher/stuQuizDetail',
       'pages/course/test/testResult',
-      'pages/course/chat/createComment'
+      'pages/course/chat/createComment',
+      'pages/course/exercise/index',
+      'pages/course/exercise/detail'
     ],
     'permission': {
       'scope.userLocation': {

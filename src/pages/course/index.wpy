@@ -40,10 +40,8 @@ export default class Index extends wepy.page {
       { id: '3', name: '随堂测试', img: 'edit' },
       { id: '4', name: '资料下载', img: 'close' },
       { id: '5', name: '平台互动', img: 'close' },
-      { id: '6', name: '加入课程', img: 'plus' }
-      // { id: '8', name: '切换课程', img: 'info' },
-      // ,
-      // { id: '7', name: '视频', img: 'close' }
+      { id: '6', name: '加入课程', img: 'plus' },
+      { id: '7', name: '自由练习', img: 'close' }
     ],
     idCourse: 0
   }
@@ -74,12 +72,9 @@ export default class Index extends wepy.page {
         case '6':
           wx.navigateTo({url: './join'})
           break
-        // case '7':
-        //   wx.navigateTo({url: './video'})
-        //   break
-        // case '8':
-        //   wx.navigateTo({url: './courseList'})
-        //   break
+        case '7':
+          wx.navigateTo({url: './exercise/index'})
+          break
       }
     }
   };
