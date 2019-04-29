@@ -1,29 +1,101 @@
 <style type="less">
+.contain {
+  display: flex;
+  justify-content: center;
+}
+.border {
+  flex-grow: 1;
+}
+.btn16 {
+  background: red; 
+}
+.btn32 {
+  background: #d188fb; 
+}
+.btn64 {
+  background: #507fd6
+}
+.btn128 {
+  background: #26a867
+}
 </style>
 
 
 <template>
-<view>shuatijiemian</view>
+ <view style="margin-bottom:30px;text-align:center;">随堂测试</view>
+  <swiper current = "{{current}}" @change = "change"  style="height:900rpx">
+    <swiper-item wx:for="{{questionList}}" wx:for-item="page" wx:key="*this"> 
+    <view class="contain">
+      <image src="{{page.img}}" class="img"/>
+     </view>
+     <view wx:for="{{girds}}" wx:for-item="item" wx:key="*this">
+     <button data-submit="{{item.id}}" class=".btn{{item.id}}" @tap="tap" data-idques="{{page.idQues}}">{{item.name}}</button>
+     </view>
+    </swiper-item>
+  </swiper>
 </template>
 
 
 <script>
 import wepy from 'wepy'
-
+import Icon from '@/components/icon/index'
 // 通过继承自wepy.page的类创建页面逻辑
 export default class my extends wepy.page {
   config = {
     navigationBarTitleText: '我的'
   }
+
+  components = {
+    icon: Icon
+  }
   // 可用于页面模板绑定的数据
   data = {
+    chapter: 0,
+    questionList: [],
+    girds: [
+      {id: '16', name: 'A'},
+      {id: '32', name: 'B'},
+      {id: '64', name: 'C'},
+      {id: '128', name: 'D'}
+    ],
+    exerciseList: []
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
+    change(e) {
+      let that = this
+      that.current = e.detail.current
+      console.log(that.current)
+    },
+    tap(e) {
+      console.log(e)
+      var idQues = e.currentTarget.dataset.idques
+      var submit = e.currentTarget.dataset.submit
+      console.log(idQues)
+      console.log(submit)
+    }
   }
 
   onLoad(e) {
-    console.log(e)
+    let that = this
+    that.chapter = e.id
+    that.getQuestionList()
+  }
+
+  getQuestionList() {
+    let app = this.$parent
+    let that = this
+    //   Question.getQuestionListByIdChapter
+    let postData = {
+      idQuestionChapter: that.chapter,
+      page: 1
+    }
+    app.request('Question.getQuestionListByIdChapter', postData, 'Loading...')
+    .then((res) => {
+      that.questionList = res.data.data
+      console.log(that.questionList)
+      that.$apply()
+    })
   }
 }
 </script>

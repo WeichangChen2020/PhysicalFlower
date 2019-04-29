@@ -113,9 +113,8 @@ export default class Index extends wepy.page {
       { id: 11, name: '大学物理下-振动', img: '', margin: '0' }
     ],
     setArr2: [
-      { id: 12, name: '顺序练习', img: '', margin: '0' },
-      { id: 13, name: '错题回顾', img: '', margin: '0' },
-      { id: 14, name: '我的收藏', img: '', margin: '0' }
+      { id: 12, name: '错题回顾', img: '', margin: '0' },
+      { id: 13, name: '我的收藏', img: '', margin: '0' }
     ]
   }
   methods = {
