@@ -1,9 +1,7 @@
 <style type="less">
 </style>
 <template>
-  <view class="page__bd">
-    功能制作中，敬请期待...
-  </view>
+  <button @tap="create">我要发帖</button>
 </template>
 <script>
 import wepy from 'wepy'
@@ -12,6 +10,17 @@ export default class IndexDetail extends wepy.page {
   config = {
     navigationBarTitleText: '平台互动',
     enablePullDownRefresh: false
+  }
+
+  methods = {
+    create() {
+      this.$navigate('./createComment')
+    }
+  }
+  onLoad() {
+  }
+  getCommentList() {
+    // todo 接口：getCommentList()
   }
 }
 </script>

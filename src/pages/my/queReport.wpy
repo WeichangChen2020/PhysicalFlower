@@ -160,9 +160,6 @@ export default class queReport extends wepy.page {
       let app = this.$parent
       let that = this
       console.log(that.data)
-      var postData = {
-        
-      }
       if (that.problem_description !== '') {
         app.toast('提交成功！')
         setTimeout(() => {

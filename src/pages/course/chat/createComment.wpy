@@ -1,0 +1,71 @@
+<style type="less">
+.border {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-width: 4rpx 0 4rpx 0;
+  border-style: solid;
+  border-color: #eee;
+  font-size: 30rpx;
+  line-height: 60rpx;
+  color: #b95;
+  padding: 20rpx 10rpx 40rpx 10rpx;
+}
+.ran {
+  margin-left: 560rpx;
+  margin-top: 280rpx;
+}
+</style>
+<template>
+<view class="border">
+    <veiw>标题</veiw>
+    <input maxlength="15" placeholder="标题2-15字" confirm-type="done" confirm-hold="true" @input="title"/>
+</view>
+<view class="border">
+    <view>详细情况</view>
+    <textarea maxlength="300" placeholder="请输入内容" @input="textarea">
+        <view class="ran">{{count}}/300</view>
+    </textarea>
+</view>
+<button @tap="submit">提交</button>
+</template>
+<script>
+import wepy from 'wepy'
+
+export default class IndexDetail extends wepy.page {
+  config = {
+    navigationBarTitleText: '写帖子',
+    enablePullDownRefresh: false
+  }
+  data = {
+    title: '',
+    description: '',
+    count: 0
+  }
+  methods = {
+    title(e) {
+      let that = this
+      that.title = e.detail.value
+    },
+    textarea(e) {
+      let that = this
+      that.description = e.detail.value
+      that.count = that.description.length
+      that.$apply()
+      console.log(that.description)
+    },
+    submit(e) {
+      let app = this.$parent
+      let that = this
+      var idUser = app.globalData.userInfo.idUser
+      var postData = {
+        idUser: idUser,
+        title: that.title,
+        description: that.description
+      }
+      console.log(postData) // todo 接口：commentCreate()
+    }
+  }
+}
+</script>

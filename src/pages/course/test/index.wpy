@@ -86,7 +86,7 @@
 import wepy from 'wepy'
 import { formatDateTime } from '@/public/js/formatDateTime.js'
 // 通过继承自wepy.page的类创建页面逻辑
-export default class signinChoose extends wepy.page {
+export default class testIndex extends wepy.page {
   config = {
     navigationBarTitleText: '测试选择'
   }
