@@ -49,7 +49,7 @@ page {
 <template>
  <view style='height:20rpx'></view>
 <view wx:for='{{setArr}}' wx:for-item="i" wx:key="name" style="background-color:{{bottonClr[i.id]}};margin-bottom:{{i.margin}}rpx">
-  <botton class='list' id="{{i.id}}"  bindtap="tap" bindtouchstart="CA" bindtouchend="CB">
+  <botton class='list' id="{{i.id}}" bindtouchstart="CA" bindtouchend="CB">
     <view class='listInfo'>{{i.name}}</view>
     <view class='listCont'>{{userInfo[i.type]}}</view>
   </botton>
