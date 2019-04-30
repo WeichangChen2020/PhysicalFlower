@@ -247,7 +247,7 @@ export default class extends wepy.app {
         title: content,
         icon: title || 'none',
         image: '',
-        duration: 1800,
+        duration: 1500,
         mask: mask || false,
         success: function (res) { resolve(res) },
         fail: function (res) { reject(res) }
