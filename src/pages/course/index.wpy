@@ -7,6 +7,14 @@
 .weui-grids {
   text-align: center;
 }
+.icon{
+  display:flex;
+  justify-content:center;
+  overflow:hidden;
+  width:100rpx;
+  height:100rpx;
+}
+
 </style>
 <template>
   <dialog />
@@ -15,8 +23,7 @@
     <view class="weui-grids">
         <block wx:for="{{grids}}" wx:item="item" wx:key="*this">
             <view class="weui-grid" hover-class="weui-grid_active" id="{{item.id}}" @tap="tap">
-              <!-- <icon :type="item"></icon> -->
-              <text class="kai-iconfont kai-icon-{{item.img}}" />
+              <image src="{{item.img}}" class="icon"/>
               <view class="weui-grid__label">{{item.name}}</view>
             </view>
         </block>
@@ -24,10 +31,9 @@
   </view>
 </template>
 <script>
+
 import wepy from 'wepy'
 import Dialog from '@/components/dialog/index'
-import Icon from '@/components/icon/index'
-
 // 通过继承自wepy.page的类创建页面逻辑
 export default class Index extends wepy.page {
   config = {
@@ -35,19 +41,18 @@ export default class Index extends wepy.page {
   }
   data = {
     grids: [ // id顺序是乱的，注意一下
-      { id: '1', name: '签到', img: 'location' },
-      { id: '2', name: '课后作业', img: 'pencil' },
-      { id: '3', name: '随堂测试', img: 'edit' },
-      { id: '4', name: '资料下载', img: 'close' },
-      { id: '5', name: '平台互动', img: 'close' },
-      { id: '6', name: '加入课程', img: 'plus' },
-      { id: '7', name: '自由练习', img: 'close' }
+      { id: '1', name: '签到', img: '.../../../../public/images/签到.png' },
+      { id: '2', name: '课后作业', img: '.../../../../public/images/课后作业.png' },
+      { id: '3', name: '随堂测试', img: '.../../../../public/images/随堂测试.png' },
+      { id: '4', name: '资料下载', img: '.../../../../public/images/资料下载.png' },
+      { id: '5', name: '平台互动', img: '.../../../../public/images/平台互动.png' },
+      { id: '6', name: '加入课程', img: '.../../../../public/images/加入课程.png' },
+      { id: '7', name: '自由练习', img: '.../../../../public/images/课后作业.png' }
     ],
     idCourse: 0
   }
   components = {
-    dialog: Dialog,
-    icon: Icon
+    dialog: Dialog
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
