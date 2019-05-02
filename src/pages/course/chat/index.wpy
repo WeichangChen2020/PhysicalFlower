@@ -8,8 +8,11 @@ import wepy from 'wepy'
 
 export default class IndexDetail extends wepy.page {
   config = {
-    navigationBarTitleText: '平台互动',
-    enablePullDownRefresh: false
+    navigationBarTitleText: '平台互动'
+  }
+
+  data = {
+    page: 1
   }
 
   methods = {
@@ -19,8 +22,32 @@ export default class IndexDetail extends wepy.page {
   }
   onLoad() {
   }
+  onShow() {
+    let that = this
+    that.getCommentList()
+  }
   getCommentList() {
-    // todo 接口：getCommentList()
+    let app = this.$parent
+    let that = this
+    var postData = {
+      page: that.page
+    }
+    app.request('Comment.getCommentList', postData, 'Loading....')
+    .then((res) => {
+      console.log(that.res)
+    })
+  }
+  onReachBottom(e) {
+    let app = this.$parent
+    let that = this
+    that.page = that.page + 1
+    var postData = {
+      page: that.page
+    }
+    app.request('Comment.getCommentList', postData, 'Loading....')
+    .then((res) => {
+      console.log(that.res)
+    })
   }
 }
 </script>

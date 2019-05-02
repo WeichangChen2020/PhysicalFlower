@@ -64,7 +64,18 @@ export default class IndexDetail extends wepy.page {
         title: that.title,
         description: that.description
       }
-      console.log(postData) // todo 接口：commentCreate()
+      console.log(postData)
+      app.request('Comment.commentCreate', postData, 'Loading...')
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          app.toast('发帖成功！')
+          setTimeout(() => {
+            wx.navigateBack({
+              delta: 1
+            })
+          }, 1000)
+        }
+      })
     }
   }
 }
