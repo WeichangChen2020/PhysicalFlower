@@ -6,17 +6,8 @@
 .border {
   flex-grow: 1;
 }
-.btn16 {
-  background: red; 
-}
-.btn32 {
-  background: #d188fb; 
-}
-.btn64 {
-  background: #507fd6
-}
-.btn128 {
-  background: #26a867
+.border {
+  display: flex;
 }
 </style>
 
@@ -24,12 +15,12 @@
 <template>
  <view style="margin-bottom:30px;text-align:center;">随堂测试</view>
   <swiper current = "{{current}}" @change = "change"  style="height:900rpx">
-    <swiper-item wx:for="{{questionList}}" wx:for-item="page" wx:key="*this"> 
+    <swiper-item wx:for="{{questionList}}" wx:for-item="page" wx:key="*this" catchtouchmove="stopTouchMove"> 
     <view class="contain">
       <image src="{{page.img}}" class="img"/>
      </view>
-     <view wx:for="{{girds}}" wx:for-item="item" wx:key="*this">
-     <button data-submit="{{item.id}}" class=".btn{{item.id}}" @tap="tap" data-idques="{{page.idQues}}">{{item.name}}</button>
+     <view wx:for="{{girds}}" wx:for-item="item" wx:key="*this" class="border">
+     <button style="background-color:{{bottonClr[item.color]}}" data-submit="{{item.id}}" class=".btn{{item.id}}" @tap="tap" data-idques="{{page.idQues}}" data-answer="{{page.answer}}">{{item.name}}</button>
      </view>
     </swiper-item>
   </swiper>
@@ -53,26 +44,68 @@ export default class my extends wepy.page {
     chapter: 0,
     questionList: [],
     girds: [
-      {id: '16', name: 'A'},
-      {id: '32', name: 'B'},
-      {id: '64', name: 'C'},
-      {id: '128', name: 'D'}
+      {id: '16', name: 'A', color: 0},
+      {id: '32', name: 'B', color: 1},
+      {id: '64', name: 'C', color: 2},
+      {id: '128', name: 'D', color: 3}
     ],
-    exerciseList: []
+    exerciseList: [],
+    bottonClr: [
+      'white',
+      'white',
+      'white',
+      'white'
+    ],
+    sub: 0
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
+    stopTouchMove() {
+      return false
+    },
     change(e) {
       let that = this
       that.current = e.detail.current
       console.log(that.current)
     },
     tap(e) {
-      console.log(e)
-      var idQues = e.currentTarget.dataset.idques
-      var submit = e.currentTarget.dataset.submit
-      console.log(idQues)
-      console.log(submit)
+      let tmp = {}
+      let that = this
+      if (that.sub === 0) {
+        for (var j = 0; j < that.bottonClr.length; j++) {
+          that.bottonClr[j] = 'white'
+        }
+        tmp.idQues = e.currentTarget.dataset.idques
+        tmp.submit = e.currentTarget.dataset.submit
+        tmp.answer = e.currentTarget.dataset.answer
+        if (tmp.submit === tmp.answer) {
+          tmp.result = 1
+        } else {
+          tmp.result = 0
+        }
+        if (tmp.result === 1) {
+          for (var i = 0; i < that.girds.length; i++) {
+            if (that.girds[i].id === tmp.answer) {
+              that.bottonClr[that.girds[i].color] = 'green'
+            }
+            that.$apply()
+          }
+        } else if (tmp.result === 0) {
+          for (i = 0; i < that.girds.length; i++) {
+            if (that.girds[i].id === tmp.submit) {
+              that.bottonClr[that.girds[i].color] = 'red'
+            } else if (that.girds[i].id === tmp.answer) {
+              that.bottonClr[that.girds[i].color] = 'green'
+            }
+            that.$apply()
+          }
+        }
+        that.exerciseList.push(tmp)
+        that.sub = that.sub + 1
+      } else {
+        return false
+      }
+      console.log(that.exerciseList)
     }
   }
 
@@ -85,16 +118,19 @@ export default class my extends wepy.page {
   getQuestionList() {
     let app = this.$parent
     let that = this
-    //   Question.getQuestionListByIdChapter
     let postData = {
-      idQuestionChapter: that.chapter,
+      idChapter: that.chapter,
       page: 1
     }
-    app.request('Question.getQuestionListByIdChapter', postData, 'Loading...')
+    app.request('Question.getAllSingleFromIdchapter', postData, 'Loading...')
     .then((res) => {
-      that.questionList = res.data.data
-      console.log(that.questionList)
-      that.$apply()
+      if (res.data.errCode === 0) {
+        that.questionList = res.data.data.data
+        console.log(that.questionList)
+        that.$apply()
+      } else {
+        app.toast('请稍后重试！')
+      }
     })
   }
 }
