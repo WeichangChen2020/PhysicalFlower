@@ -7,7 +7,7 @@
   flex-grow: 1;
 }
 .border {
-  display: flex;
+  display: block;
 }
 </style>
 
@@ -24,6 +24,8 @@
      </view>
     </swiper-item>
   </swiper>
+  <button @tap="previous">上一题</button>
+  <button @tap="next">下一题</button>
 </template>
 
 
@@ -56,15 +58,36 @@ export default class my extends wepy.page {
       'white',
       'white'
     ],
-    sub: 0
+    sub: 0,
+    current: 0
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
+    previous() {
+      let that = this
+      if (that.current === 0) {
+        that.current = that.questionList.length - 1
+      } else {
+        that.current = that.current - 1
+      }
+    },
+    next() {
+      let that = this
+      if (that.current === that.questionList.length - 1) {
+        that.current = 0
+      } else {
+        that.current = that.current + 1
+      }
+    },
     stopTouchMove() {
       return false
     },
     change(e) {
       let that = this
+      that.sub = 0
+      for (var j = 0; j < that.bottonClr.length; j++) {
+        that.bottonClr[j] = 'white'
+      }
       that.current = e.detail.current
       console.log(that.current)
     },
@@ -88,7 +111,6 @@ export default class my extends wepy.page {
             if (that.girds[i].id === tmp.answer) {
               that.bottonClr[that.girds[i].color] = 'green'
             }
-            that.$apply()
           }
         } else if (tmp.result === 0) {
           for (i = 0; i < that.girds.length; i++) {
@@ -97,9 +119,9 @@ export default class my extends wepy.page {
             } else if (that.girds[i].id === tmp.answer) {
               that.bottonClr[that.girds[i].color] = 'green'
             }
-            that.$apply()
           }
         }
+        that.$apply()
         that.exerciseList.push(tmp)
         that.sub = that.sub + 1
       } else {
