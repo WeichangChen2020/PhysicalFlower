@@ -20,11 +20,11 @@
   height: 350rpx;
 }
 .weui-grid{
-  background-color: #FFF1BB;
+  background-color: #ffffff;
   width: 23%;
   /* border-width: medium;
   border-color: #FFCC00; */
-  border: #FFCC00 solid 5rpx;
+  border: #f2f2f2 solid 5rpx;
 }
 .border{
   display: flex;
