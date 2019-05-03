@@ -44,7 +44,7 @@
     <image src=".../../../../public/images/物里花之旅.png" class="images"></image>
   </view>
   <view class="page__bd">
-    <view style="margin-top:40rpx;margin-left:20rpx;">当前课程号:{{idCourse}}</view>
+    <view style="margin-top:20rpx;margin-left:20rpx;">当前课程号:{{idCourse}}</view>
     <view style="margin-top:20rpx;margin-left:20rpx;">课堂学习</view>
     <view class="weui-grids">
         <block wx:for="{{grids}}" wx:item="item" wx:key="*this">
