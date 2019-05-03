@@ -1,6 +1,7 @@
 <style type="less">
 page{
   width: 100%;
+  background-color: #f2f2f2;
 }
 .head{
   padding:55rpx;

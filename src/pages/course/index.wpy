@@ -10,23 +10,59 @@
 .icon{
   justify-content:center;
   overflow:hidden;
-  width:100rpx;
-  height:100rpx;
+  width:50rpx;
+  height:50rpx;
 }
-
+.images{
+  display: flex;
+  justify-items: center;
+  width: 700rpx;
+  height: 350rpx;
+}
+.weui-grid{
+  background-color: #FFF1BB;
+  width: 23%;
+  /* border-width: medium;
+  border-color: #FFCC00; */
+  border: #FFCC00 solid 5rpx;
+}
+.border{
+  display: flex;
+  justify-content: center;
+}
+.weui-grid__label{
+  font-size: 30rpx;
+}
+.weui-grids{
+  display:flex;
+  justify-content:space-around;
+}
 </style>
 <template>
   <dialog />
+  <view class="border">
+    <image src=".../../../../public/images/物里花之旅.png" class="images"></image>
+  </view>
   <view class="page__bd">
-    <view>当前课程:{{idCourse}}</view>
+    <view style="margin-top:40rpx;margin-left:20rpx;">当前课程号:{{idCourse}}</view>
+    <view style="margin-top:20rpx;margin-left:20rpx;">课堂学习</view>
     <view class="weui-grids">
         <block wx:for="{{grids}}" wx:item="item" wx:key="*this">
-            <view class="weui-grid" hover-class="weui-grid_active" id="{{item.id}}" @tap="tap">
+            <view class="weui-grid" hover-class="weui-grid_active" id="{{item.id}}" @tap="tap" style="width:30%">
               <image src="{{item.img}}" class="icon"/>
               <view class="weui-grid__label">{{item.name}}</view>
             </view>
         </block>
     </view>
+    <view style="margin-top:20rpx;margin-left:20rpx;">课后学习</view>
+     <view class="weui-grids">
+        <block wx:for="{{grids2}}" wx:item="item" wx:key="*this">
+            <view class="weui-grid" hover-class="weui-grid_active" id="{{item.id}}" @tap="tap">
+              <image src="{{item.img}}" class="icon"/>
+              <view class="weui-grid__label">{{item.name}}</view>
+            </view>
+        </block>
+     </view>
   </view>
 </template>
 <script>
@@ -42,11 +78,17 @@ export default class Index extends wepy.page {
     grids: [ // id顺序是乱的，注意一下
       { id: '1', name: '签到', img: '.../../../../public/images/签到.png' },
       { id: '2', name: '课后作业', img: '.../../../../public/images/课后作业.png' },
-      { id: '3', name: '随堂测试', img: '.../../../../public/images/随堂测试.png' },
+      { id: '3', name: '随堂测试', img: '.../../../../public/images/随堂测试.png' }
+      // { id: '4', name: '资料下载', img: '.../../../../public/images/资料下载.png' },
+      // { id: '5', name: '平台互动', img: '.../../../../public/images/平台互动.png' },
+      // { id: '6', name: '加入课程', img: '.../../../../public/images/加入课程.png' },
+      // { id: '7', name: '自由练习', img: '.../../../../public/images/自由练习2.png' }
+    ],
+    grids2: [
       { id: '4', name: '资料下载', img: '.../../../../public/images/资料下载.png' },
       { id: '5', name: '平台互动', img: '.../../../../public/images/平台互动.png' },
       { id: '6', name: '加入课程', img: '.../../../../public/images/加入课程.png' },
-      { id: '7', name: '自由练习', img: '.../../../../public/images/课后作业.png' }
+      { id: '7', name: '自由练习', img: '.../../../../public/images/自由练习2.png' }
     ],
     idCourse: 0
   }

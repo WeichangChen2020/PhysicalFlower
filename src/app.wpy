@@ -22,7 +22,7 @@
   justify-content: center;
 }
 page {
-  background-color: #f6f6f6;
+  background-color: #ffffff;
   height: 100%;
 }
 .longBtn {
@@ -108,7 +108,7 @@ export default class extends wepy.app {
     },
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#90caf9',
+      navigationBarBackgroundColor: 'white',
       backgroundColor: '#90caf9',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black',
