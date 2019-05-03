@@ -41,7 +41,7 @@
 <template>
   <dialog />
   <view class="border">
-    <image src=".../../../../public/images/物里花之旅.png" class="images"></image>
+    <image src="//src/public/images/物里花之旅.png" class="images"></image>
   </view>
   <view class="page__bd">
     <view style="margin-top:20rpx;margin-left:20rpx;">当前课程号:{{idCourse}}</view>
@@ -76,19 +76,19 @@ export default class Index extends wepy.page {
   }
   data = {
     grids: [ // id顺序是乱的，注意一下
-      { id: '1', name: '签到', img: '.../../../../public/images/签到.png' },
-      { id: '2', name: '课后作业', img: '.../../../../public/images/课后作业.png' },
-      { id: '3', name: '随堂测试', img: '.../../../../public/images/随堂测试.png' }
+      { id: '1', name: '签到', img: '//src/public/images/签到.png' },
+      { id: '2', name: '课后作业', img: '//src/public/images/课后作业.png' },
+      { id: '3', name: '随堂测试', img: '//src/public/images/随堂测试.png' }
       // { id: '4', name: '资料下载', img: '.../../../../public/images/资料下载.png' },
       // { id: '5', name: '平台互动', img: '.../../../../public/images/平台互动.png' },
       // { id: '6', name: '加入课程', img: '.../../../../public/images/加入课程.png' },
       // { id: '7', name: '自由练习', img: '.../../../../public/images/自由练习2.png' }
     ],
     grids2: [
-      { id: '4', name: '资料下载', img: '.../../../../public/images/资料下载.png' },
-      { id: '5', name: '平台互动', img: '.../../../../public/images/平台互动.png' },
-      { id: '6', name: '加入课程', img: '.../../../../public/images/加入课程.png' },
-      { id: '7', name: '自由练习', img: '.../../../../public/images/自由练习2.png' }
+      { id: '4', name: '资料下载', img: '//src/public/images/资料下载.png' },
+      { id: '5', name: '平台互动', img: '//src/public/images/平台互动.png' },
+      { id: '6', name: '加入课程', img: '//src/public/images/加入课程.png' },
+      { id: '7', name: '自由练习', img: '//src/public/images/自由练习2.png' }
     ],
     idCourse: 0
   }
