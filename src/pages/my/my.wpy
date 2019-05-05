@@ -80,7 +80,7 @@ page {
     style="background-color:{{bottonClr[i.id]}};margin-bottom:{{i.margin}}rpx"
   >
     <botton class="list" id="{{i.id}}"   bindtap="tap">
-      <image class="listImg" mode="aspectFit" src="" />
+      <image class="listImg" mode="aspectFit" src="{{i.img}}" />
       <view class="listInfo">{{i.name}}</view>
     </botton>
   </view>
@@ -102,11 +102,11 @@ export default class my extends wepy.page {
   data = {
     bottonClr: ['white', 'white', 'white', 'white', 'white', 'white', 'white'],
     setArr: [
-      { id: '1', name: '我的信息', img: '', margin: '0' },
-      { id: '2', name: '我的课程', img: '', margin: '20' },
-      { id: '3', name: '使用帮助', img: '', margin: '0' },
-      { id: '4', name: '联系我们', img: '', margin: '20' },
-      { id: '5', name: '问题反馈', img: '', margin: '0' }
+      { id: '1', name: '我的信息', img: './../../public/images/myinfo.png', margin: '0' },
+      { id: '2', name: '我的课程', img: './../../public/images/myclass.png', margin: '20' },
+      { id: '3', name: '使用帮助', img: './../../public/images/help.png', margin: '0' },
+      { id: '4', name: '联系我们', img: './../../public/images/connect.png', margin: '20' },
+      { id: '5', name: '问题反馈', img: './../../public/images/quereport.png', margin: '0' }
     ]
   }
   // 事件处理函数(集中保存在methods对象中)
