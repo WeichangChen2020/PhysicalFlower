@@ -61,7 +61,7 @@ page {
 .listImg {
   height: 60rpx;
   width: 60rpx;
-  margin: 15rpx 50rpx 0rpx 0rpx;
+  margin: 22rpx 50rpx 0rpx 0rpx;
 }
 </style>
 
