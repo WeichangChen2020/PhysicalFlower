@@ -177,7 +177,7 @@ export default class signinChoose extends wepy.page {
         var timestamp = (new Date()).getTime() / 1000
         for (var i = 0; i < res.data.data.length; i++) {
           that.quizList[i].endtime = formatDateTime(that.quizList[i].gmtEnd * 1000).substr(-8)
-          that.quizList[i].time = new Date(parseInt(that.quizList[i].gmtCreate) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
+          that.quizList[i].time = formatDateTime(that.quizList[i].gmtCreate * 1000)
           if (that.quizList[i].gmtEnd <= timestamp) {
             that.quizList[i].status = '已结束'
           } else {

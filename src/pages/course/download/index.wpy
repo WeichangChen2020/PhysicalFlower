@@ -1,7 +1,7 @@
 <style type="less">
 </style>
 <template>
- <web-view src="https://pan.baidu.com/s/18XioDjsQ1wi-ttoKs6FqOw#list/path=%2Fsharelink2118831252-857724018777733%2F%E5%A4%A7%E5%AD%A6%E7%89%A9%E7%90%86%E8%B5%84%E6%96%99&parentPath=%2Fsharelink2118831252-857724018777733"></web-view>
+ <button @tap="download">下载</button>
 </template>
 <script>
 import wepy from 'wepy'
@@ -10,6 +10,25 @@ export default class IndexDetail extends wepy.page {
   config = {
     navigationBarTitleText: '资料下载',
     enablePullDownRefresh: false
+  }
+
+  methods = {
+    download(e) {
+      const downloadTask = wx.downloadFile({
+        url: 'http://example.com/audio/123', // 仅为示例，并非真实的资源
+        success(res) {
+          wx.playVoice({
+            filePath: res.tempFilePath
+          })
+        }
+      })
+
+      downloadTask.onProgressUpdate((res) => {
+        console.log('下载进度', res.progress)
+        console.log('已经下载的数据长度', res.totalBytesWritten)
+        console.log('预期需要下载的数据总长度', res.totalBytesExpectedToWrite)
+      })
+    }
   }
 }
 </script>

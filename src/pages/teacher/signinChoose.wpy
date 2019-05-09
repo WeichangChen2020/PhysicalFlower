@@ -14,6 +14,7 @@
   padding: 20rpx;
   margin: 40rpx;
   height: 160rpx;
+  justify-content: center;
 }
 .icon{
   width:120rpx;
@@ -22,12 +23,11 @@
   margin-left:10rpx;
 }
 .contain{
-  padding-left:20rpx;
   line-height:55rpx;
   font-size:36rpx;
-  margin-left:20%;
-  margin-right:20%;
-
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 .subtitle{
   color:#aaa;
@@ -56,7 +56,7 @@ margin-left:10rpx;
     <!-- <view class='head'>签到列表 </view> -->
     <button wx:for='{{signinList}}' class='border' wx:key='*this' @touchend='touchend' @longpress='showSync' @tap='tap' data-signinName="{{item.signinName}}" data-idSignin="{{item.idSignin}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}" data-gmtStart="{{item.gmtStart}}" data-radius="{{item.radius}}" data-gmtEnd="{{item.gmtEnd}}">
       <view class='contain'>
-        <view class='title'>签到名称：{{item.signinName}}</view>
+        <text class='title'>{{item.signinName}}</text>
         <text class='subtitle'>创建时间：{{item.gmtCreate}}</text>
         <text class='subtitle'>截止时间: {{item.gmtEnd}}</text>
       </view>

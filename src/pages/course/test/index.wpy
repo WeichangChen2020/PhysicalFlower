@@ -14,6 +14,7 @@
   padding: 20rpx;
   margin: 40rpx;
   height: 160rpx;
+  justify-content: center;
 }
 .icon{
   width:120rpx;
@@ -22,11 +23,10 @@
   margin-left:10rpx;
 }
 .contain{
-  padding-left:20rpx;
+  display: flex;
+  flex-direction: column;
   line-height:55rpx;
   font-size:36rpx;
-  margin-left:20%;
-  margin-right:20%;
 }
 .subtitle{
   color:#aaa;
@@ -42,31 +42,31 @@
   white-space: nowrap;
 }
 .havesubmit_tip{
-  width:60rpx;
-  height:60rpx;
+  width:100rpx;
+  height:100rpx;
   background-color:#66ff99;
   border-bottom-left-radius:100%;
-  font-size:24rpx;
+  font-size:30rpx;
   text-align:right;
   padding:rpx;
   position:absolute;
   right:0;
   color: #999;
-  margin-top:-40rpx;
+  margin-top:-25rpx;
 
 }
 .havensubmit_tip{
-  width:60rpx;
-  height:60rpx;
+  width:100rpx;
+  height:100rpx;
   background-color:#ff0033;
   border-bottom-left-radius:100%;
-  font-size:24rpx;
+  font-size:30rpx;
   text-align:right;
   padding:rpx;
   position:absolute;
   right:0;
   color: #eee;
-  margin-top:-40rpx;
+  margin-top:-25rpx;
 }
 </style>
 <template>
@@ -75,7 +75,7 @@
        <view wx:if="{{item.havesubmit === 1?true:false}}"  class="havesubmit_tip">已交</view>
        <view wx:if="{{item.havesubmit === 1?false:true}}"  class="havensubmit_tip">未交</view>
       <view class='contain'>
-        <view class='title'>{{item.time}}</view>
+        <text class='title'>{{item.time}}</text>
         <text class='subtitle'>截止时间：{{item.endtime}}</text> 
         <text class='subtitle'>状态：{{item.status}}</text> 
       </view>
@@ -157,7 +157,7 @@ export default class testIndex extends wepy.page {
         var timestamp = (new Date()).getTime() / 1000
         for (var i = 0; i < res.data.data.length; i++) {
           that.quizList[i].endtime = formatDateTime(that.quizList[i].gmtEnd * 1000).substr(-8)
-          that.quizList[i].time = new Date(parseInt(that.quizList[i].gmtCreate) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
+          that.quizList[i].time = formatDateTime(that.quizList[i].gmtCreate * 1000)
           if (that.quizList[i].gmtEnd <= timestamp) {
             that.quizList[i].status = '已结束'
           } else {

@@ -20,7 +20,7 @@
 
 
     <block wx:for="{{homeworkInfo}}" wx:item="item" wx:key="*this">
-        <view id="{{index}}"  class="weui-cell weui-cell_access" @tap='tap' id='{{index}}'>
+        <view class="weui-cell weui-cell_access" @tap='tap' id='{{index}}'>
             <view class="weui-cell__bd" style="display:flex;justify-content:space-between"><view>{{item.name}}</view><view style="font-size:11px;color:{{item.state =='进行中' ?'green':'#ccc'}}">{{item.state}}</view></view>
             <view class="weui-cell__ft weui-cell__ft_in-access"></view>
         </view>
