@@ -4,16 +4,6 @@
 .zan-card::after{content:'';position:absolute;top:0;left:0;width:200%;height:200%;transform:scale(.5);transform-origin:0 0;pointer-events:none;box-sizing:border-box;border:0 solid #e5e5e5;border-top-width:1px;border-bottom-width:1px}
 </style>
 <template>
-
-  <!-- <view class="weui-cells weui-cells_after-title">
-      <view class="weui-cell" wx:for="{{courseList}}" wx:for-index="idx" wx:for-item="item" @tap='change({{item.idCourse}})'>
-          <view class="weui-cell__hd">
-              <image src="{{item.logo}}"></image>
-          </view>
-          <view class="weui-cell__bd">标题文字</view>
-          <view class="weui-cell__ft">说明文字</view>
-      </view>
-  </view> -->
   <view class="zan-panel class-header">
     <view class="zan-card" wx:for="{{courseList}}" wx:for-index="idx" wx:for-item="item" @tap='change({{item}})'>
       <view class="zan-card__thumb">
@@ -89,13 +79,22 @@ export default class CourseList extends wepy.page {
     var i = 0
     app.request('Course.getJoinedCourseList', '', '请求中...')
     .then((res) => {
-      that.courseList = res.data.data
-      for (i = 0; i < that.courseList.length; i++) {
-        if (that.courseList[i].logo === 'data:image/;base64,') {
-          that.courseList[i].logo = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556209601174&di=0e175046fc2b64162adb12b278eb65fb&imgtype=0&src=http%3A%2F%2Fimg3.jarhu.com%2Fthirdimg%2Fbf112211%2F703035534-23392.gif'
+      if (res.data.errCode === 0) {
+        that.courseList = res.data.data
+        for (i = 0; i < that.courseList.length; i++) {
+          if (that.courseList[i].logo === 'data:image/;base64,') {
+            that.courseList[i].logo = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556209601174&di=0e175046fc2b64162adb12b278eb65fb&imgtype=0&src=http%3A%2F%2Fimg3.jarhu.com%2Fthirdimg%2Fbf112211%2F703035534-23392.gif'
+          }
         }
+        this.$apply()
+      } else if (res.data.errCode === 102) {
+        app.toast('你还未加入课程!')
+        that.setTimeout(() => {
+          wx.navigateTo({
+            url: '/src/pages/course/join'
+          })
+        }, 1000)
       }
-      this.$apply()
       console.log(that.courseList)
     })
   }
