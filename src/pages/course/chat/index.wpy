@@ -18,7 +18,7 @@
 </style>
 <template>
  <block wx:for="{{commentList}}" wx:for-item="item" wx:key="*this">
-    <view class="weui-cell weui-cell_access" @tap="tap" id="{{item.idComment}}">
+    <view class="weui-cell weui-cell_access" @tap="tap" id="{{item.idComment}}" data-title="{{item.title}}">
       <view class="weui-cell__bd" style="display:block;justify-content:space-between;">
         <view class="container">
           <view style="display:flex; margin-left:30rpx;">
@@ -54,7 +54,7 @@ export default class IndexDetail extends wepy.page {
       this.$navigate('./createComment')
     },
     tap(e) {
-      this.$navigate('./detail?idComment=' + e.currentTarget.id)
+      this.$navigate('./detail?idComment=' + e.currentTarget.id + '&title=' + e.currentTarget.dataset.title)
     }
   }
   onLoad() {

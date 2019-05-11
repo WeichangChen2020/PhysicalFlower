@@ -19,6 +19,7 @@
   display: flex;
   position: fixed;
   bottom: 0rpx;
+  width: 100%;
   border: #f2f2f2 solid 5rpx;
   justify-content: center;
 }
@@ -36,11 +37,19 @@
     <view>2019-05-01</view>
     </view>
   </view>
-  <view>ashgdkajkdashjhdasjkashdasdassadasd</view>
+  <view>{{title}}</view>
 </view>
+
+<view class="container">
+
+</view>
+
+
+
+
 <view wx:if="{{show}}" class="pos">
     <textarea placeholder="欢迎评论" auto-height="true" fixed="true" @input="input"></textarea>
-    <button style="height:60rpx;" disabled="{{disabled}}" class="btn">
+    <button style="height:60rpx;" disabled="{{disabled}}" class="btn" @tap="submit">
       <view style="margin-top:-16rpx;">提交</view>  
     </button>
 </view>
@@ -57,7 +66,8 @@ export default class ChatDetail extends wepy.page {
     idComment: 0,
     show: true,
     reply: '',
-    disabled: true
+    disabled: true,
+    title: ''
   }
 
   methods = {
@@ -69,10 +79,16 @@ export default class ChatDetail extends wepy.page {
       } else {
         that.disabled = true
       }
+    },
+    submit(e) {
+      console.log('submit')
     }
   }
   onLoad(e) {
-    console.log(e)
+    let that = this
+    that.title = e.title
+    that.idComment = e.idComment
+    console.log(that.data)
   }
   onShow() {
   }
