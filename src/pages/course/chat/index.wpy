@@ -1,7 +1,40 @@
 <style type="less">
+.write {
+  position: fixed;
+  background-color: cornflowerblue;
+  bottom: 0rpx;
+  width: 100%;
+  color: aliceblue;
+}
+.des {
+  font-size: 25rpx;
+  color: #bebebe;
+}
+.icon{
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 30rpx;
+}
 </style>
 <template>
-  <button @tap="create">我要发帖</button>
+ <block wx:for="{{commentList}}" wx:for-item="item" wx:key="*this">
+    <view class="weui-cell weui-cell_access" @tap="tap" id="{{item.idComment}}">
+      <view class="weui-cell__bd" style="display:block;justify-content:space-between;">
+        <view class="container">
+          <view style="display:flex; margin-left:30rpx;">
+            <image src="{{item.stu_info.avatarUrl}}" class="icon"></image>
+            <view style="dsiplay:block;margin-left:20rpx;">
+              <view class="des">{{item.stu_info.name}}</view>
+              <view class="des" style="margin-top:3rpx;">2019-05-01</view>
+            </view>
+          </view>
+        <view class="title" style="margin-left:20rpx;">{{item.title}}</view>
+    </view>
+      </view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </view>
+  </block>
+ <button class="write" @tap="create">写帖子</button>
 </template>
 <script>
 import wepy from 'wepy'
@@ -12,12 +45,16 @@ export default class IndexDetail extends wepy.page {
   }
 
   data = {
-    page: 1
+    page: 1,
+    commentList: []
   }
 
   methods = {
     create() {
       this.$navigate('./createComment')
+    },
+    tap(e) {
+      this.$navigate('./detail?idComment=' + e.currentTarget.id)
     }
   }
   onLoad() {
@@ -34,19 +71,11 @@ export default class IndexDetail extends wepy.page {
     }
     app.request('Comment.getCommentList', postData, 'Loading....')
     .then((res) => {
-      console.log(that.res)
-    })
-  }
-  onReachBottom(e) {
-    let app = this.$parent
-    let that = this
-    that.page = that.page + 1
-    var postData = {
-      page: that.page
-    }
-    app.request('Comment.getCommentList', postData, 'Loading....')
-    .then((res) => {
-      console.log(that.res)
+      if (res.data.errCode === 0) {
+        that.commentList = res.data.data
+        that.$apply()
+        console.log(that.commentList[1].stu_info.stuNum)
+      }
     })
   }
 }

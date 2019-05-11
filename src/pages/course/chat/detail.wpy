@@ -1,0 +1,80 @@
+<style type="less">
+.icon{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50rpx;
+}
+.write {
+  position: fixed;
+  background-color: cornflowerblue;
+  bottom: 0rpx;
+  width: 100%;
+  color: aliceblue;
+}
+.container {
+  display: block;
+  border: #f2f2f2 solid 5rpx;
+}
+.pos {
+  display: flex;
+  position: fixed;
+  bottom: 0rpx;
+  border: #f2f2f2 solid 5rpx;
+  justify-content: center;
+}
+.btn {
+  background-color: cornflowerblue;
+  color: floralwhite;
+}
+</style>
+<template>
+<view class="container">
+  <view style="display:flex;">
+    <image src="./../../../public/images/download.png" class="icon"></image>
+    <view style="dsiplay:block;">
+    <view>Miuzki</view>
+    <view>2019-05-01</view>
+    </view>
+  </view>
+  <view>ashgdkajkdashjhdasjkashdasdassadasd</view>
+</view>
+<view wx:if="{{show}}" class="pos">
+    <textarea placeholder="欢迎评论" auto-height="true" fixed="true" @input="input"></textarea>
+    <button style="height:60rpx;" disabled="{{disabled}}" class="btn">
+      <view style="margin-top:-16rpx;">提交</view>  
+    </button>
+</view>
+</template>
+<script>
+import wepy from 'wepy'
+
+export default class ChatDetail extends wepy.page {
+  config = {
+    navigationBarTitleText: '平台互动'
+  }
+
+  data = {
+    idComment: 0,
+    show: true,
+    reply: '',
+    disabled: true
+  }
+
+  methods = {
+    input(e) {
+      let that = this
+      that.reply = e.detail.value
+      if (that.reply.length > 0) {
+        that.disabled = false
+      } else {
+        that.disabled = true
+      }
+    }
+  }
+  onLoad(e) {
+    console.log(e)
+  }
+  onShow() {
+  }
+}
+</script>

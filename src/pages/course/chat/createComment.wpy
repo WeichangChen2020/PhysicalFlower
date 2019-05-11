@@ -59,23 +59,29 @@ export default class IndexDetail extends wepy.page {
       let app = this.$parent
       let that = this
       var idUser = app.globalData.userInfo.idUser
-      var postData = {
-        idUser: idUser,
-        title: that.title,
-        description: that.description
-      }
-      console.log(postData)
-      app.request('Comment.commentCreate', postData, 'Loading...')
-      .then((res) => {
-        if (res.data.errCode === 0) {
-          app.toast('发帖成功！')
-          setTimeout(() => {
-            wx.navigateBack({
-              delta: 1
-            })
-          }, 1000)
+      if (that.title === '') {
+        app.toast('标题不能为空！')
+      } else if (that.description === '') {
+        app.toast('描述不能为空！')
+      } else {
+        var postData = {
+          idUser: idUser,
+          title: that.title,
+          description: that.description
         }
-      })
+        console.log(postData)
+        app.request('Comment.commentCreate', postData, 'Loading...')
+        .then((res) => {
+          if (res.data.errCode === 0) {
+            app.toast('发帖成功！')
+            setTimeout(() => {
+              wx.navigateBack({
+                delta: 1
+              })
+            }, 1000)
+          }
+        })
+      }
     }
   }
 }
