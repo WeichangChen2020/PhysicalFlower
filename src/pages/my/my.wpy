@@ -6,12 +6,14 @@ page {
 .userinfo {
   position: relative;
   width: 100%;
-  height: 380rpx;
+  height: 350rpx;
   display: flex;
   flex-direction: column;
   background-repeat: no-repeat;
   background-size: 100% 100%;
   align-items: center;
+  margin-bottom: 30rpx;
+  margin-top: -30rpx;
 }
 
 .userAvatar {
@@ -131,7 +133,8 @@ export default class my extends wepy.page {
           wx.navigateTo({ url: '../my/queReport' })
           break
         case '6':
-          wx.navigateTo({ url: '../my/teacherIndex'})
+          wx.navigateTo({ url: '../my/teacherIndex' })
+          break
       }
     }
   }
