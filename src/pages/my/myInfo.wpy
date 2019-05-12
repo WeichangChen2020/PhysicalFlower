@@ -89,43 +89,29 @@ export default class myInfo extends wepy.page {
         id: '1',
         name: '姓名',
         img: 'option',
-        margin: '0',
+        margin: '20',
         type: 'name'
       },
       {
         id: '2',
         name: '学号',
         img: 'medal',
-        margin: '0',
+        margin: '20',
         type: 'stuNum'
       },
       {
         id: '3',
         name: '班级',
         img: 'medal',
-        margin: '0',
+        margin: '20',
         type: 'class'
       },
       {
         id: '4',
         name: '手机号',
         img: 'ticket',
-        margin: '0',
+        margin: '20',
         type: 'telphone'
-      },
-      {
-        id: '5',
-        name: '省份',
-        img: '',
-        margin: '0',
-        type: 'province'
-      },
-      {
-        id: '6',
-        name: '城市',
-        img: '',
-        margin: '0',
-        type: 'city'
       }
     ]
   }
