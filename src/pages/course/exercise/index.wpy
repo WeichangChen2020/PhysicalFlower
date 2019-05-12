@@ -94,7 +94,7 @@ page {
 import wepy from 'wepy'
 export default class Index extends wepy.page {
   config = {
-    navigationBarTitleText: '自由练习列表',
+    navigationBarTitleText: '自由练习',
     enablePullDownRefresh: false
   }
   data = {

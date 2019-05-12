@@ -43,6 +43,10 @@
       }
     };
 
+    config = {
+      navigationBarTitleText: '签到'
+    };
+
     components = {
       tab: Tab
     }
