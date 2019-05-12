@@ -1,0 +1,86 @@
+<style type="less">
+page {
+  background-color: #f6f6f6;
+  height: 100%;
+}
+.greeting {
+  padding: 20rpx 40rpx 20rpx 40rpx;
+  color: #555;
+  font-size: 30rpx;
+  display: flex;
+  flex-direction: row;
+}
+.input{
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+}
+.inputCont{
+  width: 750rpx;
+  background-color: white;
+  padding: 20rpx 40rpx 20rpx 40rpx;
+}
+.sexCont{
+  margin-left: 100rpx;
+}
+.btn{
+  margin-top: 40rpx;
+  border-radius: 100rpx;
+  font-size: 33rpx;
+  width: 450rpx;
+  color: #fff;
+  background-size:100% 100%;
+  background-repeat: no-repeat;
+  background: linear-gradient(150deg, #d188fb, #9587f8, #558bf7); 
+}
+</style>
+
+
+<template>
+ <view class='greeting'>姓名</view>
+<view class='input'>
+  <input class='inputCont' bindinput='inp' placeholder='请输入教师姓名' placeholder-class='placeholder'  id='name'>
+  </input>
+</view>
+
+<view class='greeting'>密码</view>
+<view class='input'>
+  <input class='inputCont' bindinput='inp' password type='number' placeholder='请输入密码' placeholder-class='placeholder'  id='pasw'>
+  </input>
+</view>
+
+<button class='btn' bindtap='reg'>登录</button>
+</template>
+
+
+<script>
+import wepy from 'wepy'
+
+// 通过继承自wepy.page的类创建页面逻辑
+export default class my extends wepy.page {
+  config = {
+    navigationBarTitleText: '教师登陆'
+  }
+  // 可用于页面模板绑定的数据
+  data = {
+  }
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+    inp(e) {
+      if (e.currentTarget.id === 'pasw' && e.detail.value === '8888') {
+        wx.redirectTo({
+          url: '../teacher/teacher'
+        })
+      }
+    },
+    reg(e) {
+      wx.showModal({
+        title: '密码错误',
+        content: '请重新输入密码！',
+        showCancel: false,
+        confirmColor: '#f00'
+      })
+    }
+  }
+}
+</script>
