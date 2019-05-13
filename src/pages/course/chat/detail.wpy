@@ -1,15 +1,12 @@
 <style type="less">
-.icon{
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50rpx;
+.des {
+  font-size: 30rpx;
+  color: #bebebe;
 }
-.write {
-  position: fixed;
-  background-color: cornflowerblue;
-  bottom: 0rpx;
-  width: 100%;
-  color: aliceblue;
+.icon{
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
 }
 .container {
   display: block;
@@ -27,23 +24,25 @@
   background-color: cornflowerblue;
   color: floralwhite;
 }
+.text{
+  margin-left: 25rpx;
+  margin-top: 20rpx;
+  font-size: 30rpx;
+  color: darkgrey;  
+}
 </style>
 <template>
-<view class="container">
-  <view style="display:flex;">
-    <image src="./../../../public/images/download.png" class="icon"></image>
-    <view style="dsiplay:block;">
-    <view>Miuzki</view>
-    <view>2019-05-01</view>
+    <view class="container">
+          <view style="display:flex; margin-left:40rpx;">
+            <image src="{{avatar}}" class="icon"></image>
+            <view style="dsiplay:block;margin-left:20rpx;">
+              <view class="des">{{name}}</view>
+              <view class="des" style="margin-top:3rpx;">{{time}}</view>
+            </view>
+          </view>
+        <view class="title" style="margin-left:25rpx;font-size:3orpx;">{{title}}</view>
+        <view class="text">{{description}}</view>
     </view>
-  </view>
-  <view>{{title}}</view>
-</view>
-
-<view class="container">
-
-</view>
-
 
 
 
@@ -63,11 +62,15 @@ export default class ChatDetail extends wepy.page {
   }
 
   data = {
+    description: '',
     idComment: 0,
     show: true,
     reply: '',
     disabled: true,
-    title: ''
+    title: '',
+    avatar: '',
+    time: '',
+    name: ''
   }
 
   methods = {
@@ -81,16 +84,37 @@ export default class ChatDetail extends wepy.page {
       }
     },
     submit(e) {
-      console.log('submit')
+      let app = this.$parent
+      let that = this
+      var postData = {
+        
+      }
     }
   }
   onLoad(e) {
     let that = this
     that.title = e.title
     that.idComment = e.idComment
-    console.log(that.data)
+    that.time = e.time
+    that.name = e.name
+    that.avatar = e.avatar
+    that.description = e.description
   }
   onShow() {
+    let that = this
+    that.getReplyList()
+  }
+  getReplyList() {
+    let app = this.$parent
+    let that = this
+    var postData = {
+      idComment: that.idComment,
+      page: 1
+    }
+    app.request('Comment.getReplyList', postData, 'Loading...')
+    .then((res) => {
+      console.log(res)
+    })
   }
 }
 </script>

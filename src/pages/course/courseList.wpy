@@ -91,7 +91,7 @@ export default class CourseList extends wepy.page {
         app.toast('你还未加入课程!')
         that.setTimeout(() => {
           wx.navigateTo({
-            url: '/src/pages/course/join'
+            url: '../course/join'
           })
         }, 1000)
       }
