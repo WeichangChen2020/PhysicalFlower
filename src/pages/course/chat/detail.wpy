@@ -47,7 +47,7 @@
 
 
 <view wx:if="{{show}}" class="pos">
-    <textarea placeholder="欢迎评论" auto-height="true" fixed="true" @input="input"></textarea>
+    <textarea placeholder="欢迎评论" auto-height="true" fixed="true" @input="input" value="{{reply}}"></textarea>
     <button style="height:60rpx;" disabled="{{disabled}}" class="btn" @tap="submit">
       <view style="margin-top:-16rpx;">提交</view>  
     </button>
@@ -87,8 +87,16 @@ export default class ChatDetail extends wepy.page {
       let app = this.$parent
       let that = this
       var postData = {
-        
+        idComment: that.idComment,
+        reply: that.reply,
+        idUser: app.globalData.userInfo.idUser
       }
+      app.request('Comment.replyCreat', postData, 'Loading...')
+      .then((res) => {
+        that.reply = ''
+        that.getReplyList()
+        that.$apply()
+      })
     }
   }
   onLoad(e) {
@@ -113,7 +121,6 @@ export default class ChatDetail extends wepy.page {
     }
     app.request('Comment.getReplyList', postData, 'Loading...')
     .then((res) => {
-      console.log(res)
     })
   }
 }
