@@ -1,7 +1,11 @@
 <style type="less">
+page{
+  background-color: #f1f1f1;
+}
 .des {
   font-size: 30rpx;
-  color: #bebebe;
+  color: black;
+  font-weight: 600;
 }
 .icon{
   width: 80rpx;
@@ -16,9 +20,9 @@
   display: flex;
   position: fixed;
   bottom: 0rpx;
-  width: 100%;
   border: #f2f2f2 solid 5rpx;
   justify-content: center;
+  background-color: #ffffff;
 }
 .btn {
   background-color: cornflowerblue;
@@ -30,21 +34,46 @@
   font-size: 30rpx;
   color: darkgrey;  
 }
+.icon2{
+  width: 50rpx;
+  height: 50rpx;
+}
+.name{
+  color:black;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+.border{
+
+}
 </style>
 <template>
-    <view class="container">
-          <view style="display:flex; margin-left:40rpx;">
-            <image src="{{avatar}}" class="icon"></image>
-            <view style="dsiplay:block;margin-left:20rpx;">
-              <view class="des">{{name}}</view>
-              <view class="des" style="margin-top:3rpx;">{{time}}</view>
-            </view>
+  <view class="container" style="background-color:#ffffff;height:35%;">
+        <view style="display:flex; margin-left:40rpx;">
+          <image src="{{avatar}}" class="icon"></image>
+          <view style="dsiplay:block;margin-left:20rpx;">
+            <view class="des">{{name}}</view>
+            <view class="des" style="margin-top:3rpx;">{{time}}</view>
           </view>
-        <view class="title" style="margin-left:25rpx;font-size:3orpx;">{{title}}</view>
-        <view class="text">{{description}}</view>
+        </view>
+      <view class="title" style="margin-left:25rpx;font-size:3orpx;margin-top:40rpx;">{{title}}</view>
+      <view class="text" style="margin-top:20rpx;">{{description}}</view>
+      <view style="display:flex;margin-left:620rpx;margin-top:75rpx;">
+      <image src="../../../public/images/chat.png" class="icon2" @tap='show'></image>
+      <view style="color:darkgrey;margin-top:-7rpx;">{{commentList.length}}</view>
+      </view>
+  </view>
+
+  <view class="container">
+     <block wx:for="{{commentList}}" wx:for-item="item" wx:key="id">
+      <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd" style="display:flex;font-size:28rpx;">
+        <view class="name">{{item.stu_info.name}}:\t</view>
+        <view >{{item.reply}}</view>
+      </view>
     </view>
-
-
+    </block>
+  </view>
 
 <view wx:if="{{show}}" class="pos">
     <textarea placeholder="欢迎评论" auto-height="true" fixed="true" @input="input" value="{{reply}}"></textarea>
@@ -64,16 +93,22 @@ export default class ChatDetail extends wepy.page {
   data = {
     description: '',
     idComment: 0,
-    show: true,
+    show: false,
     reply: '',
     disabled: true,
     title: '',
     avatar: '',
     time: '',
-    name: ''
+    name: '',
+    commentList: [],
+    replyList: []
   }
 
   methods = {
+    show(e) {
+      let that = this
+      that.show = true
+    },
     input(e) {
       let that = this
       that.reply = e.detail.value
@@ -115,12 +150,22 @@ export default class ChatDetail extends wepy.page {
   getReplyList() {
     let app = this.$parent
     let that = this
+    that.commentList = []
+    that.replyList = []
     var postData = {
       idComment: that.idComment,
       page: 1
     }
     app.request('Comment.getReplyList', postData, 'Loading...')
     .then((res) => {
+      for (var i = 0; i < res.data.data.length; i++) {
+        if (res.data.data[i].idParentReply === '0') {
+          that.commentList.push(res.data.data[i])
+        } else {
+          that.replyList.push(res.data.data[i])
+        }
+      }
+      that.$apply()
     })
   }
 }
