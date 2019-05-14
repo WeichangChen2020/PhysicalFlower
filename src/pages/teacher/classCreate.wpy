@@ -206,10 +206,11 @@ export default class classCreate extends wepy.page {
               count: 0
             }
             app.globalData.courseInfo.unshift(course)
-            that.setTimeout(() => {
+            setTimeout(() => {
               wx.navigateBack({})
-            }, 1000)
-            wx.navigateBack({})
+              console.log('back')
+            }, 700)
+            // wx.navigateBack({})
           } else {
             app.toast('请重新创建课程！')
           }

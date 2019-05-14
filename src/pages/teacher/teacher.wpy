@@ -49,6 +49,7 @@ margin-left:10rpx;
 .con {
 justify-content:center;
 display:flex;
+width: 120rpx;
 }
 </style>
 <template>
@@ -60,7 +61,7 @@ display:flex;
 
 <view wx:if='{{errCode === 0}}' wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
   <view class='con'>
-  <image src='{{item.logo}}' class='icon' />
+  <image src='{{item.logo}}' class='icon'/>
   </view>
   <view class='contain'>
     <view class='title'>课程名称：{{item.courseName}}</view>
