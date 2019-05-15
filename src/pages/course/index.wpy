@@ -148,7 +148,6 @@ export default class Index extends wepy.page {
     })
     .then(function(res) {
       // 完善信息
-      console.log(res)
       app.globalData.loginCode = res.data.errCode
       app.globalData.cookie = 'PHPSESSID=' + res.data.data.session_id
       // 检查信息

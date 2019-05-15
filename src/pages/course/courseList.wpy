@@ -5,7 +5,7 @@
 </style>
 <template>
   <view class="zan-panel class-header">
-    <view class="zan-card" wx:for="{{courseList}}" wx:for-index="idx" wx:for-item="item" @tap='change({{item}})'>
+    <view class="zan-card" wx:for="{{courseList}}" wx:key="*this" wx:for-item="item" @tap='change({{item}})'>
       <view class="zan-card__thumb">
         <image class="zan-card__img" src="{{item.logo}}" mode="aspectFit"></image>
       </view>
@@ -58,7 +58,7 @@ export default class CourseList extends wepy.page {
 
   // 页面的生命周期函数
   onLoad(e) {
-    console.log(this.$parent.globalData.courseList)
+    console.log(this.$parent.globalData.courseInfo)
     if (this.refreshTimes === 0 && this.$parent.courseList !== undefined) {
       // 如果之前已经请求过了，则直接读取（可以少请求一次）
       this.courseList = this.$parent.globalData.courseList
@@ -79,6 +79,7 @@ export default class CourseList extends wepy.page {
     var i = 0
     app.request('Course.getJoinedCourseList', '', '请求中...')
     .then((res) => {
+      console.log(res.data.errCode)
       if (res.data.errCode === 0) {
         that.courseList = res.data.data
         for (i = 0; i < that.courseList.length; i++) {
@@ -93,9 +94,8 @@ export default class CourseList extends wepy.page {
           wx.navigateTo({
             url: '../course/join'
           })
-        }, 1000)
+        }, 700)
       }
-      console.log(that.courseList)
     })
   }
 }
