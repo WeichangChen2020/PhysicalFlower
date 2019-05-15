@@ -54,7 +54,7 @@ export default class IndexDetail extends wepy.page {
   }
 
   data = {
-    page: 1,
+    page: 0,
     commentList: []
   }
 
@@ -76,20 +76,29 @@ export default class IndexDetail extends wepy.page {
   getCommentList() {
     let app = this.$parent
     let that = this
+    that.page = that.page + 1
     var postData = {
       page: that.page
     }
     app.request('Comment.getCommentList', postData, 'Loading....')
     .then((res) => {
       if (res.data.errCode === 0) {
-        that.commentList = res.data.data
-        for (var i = 0; i < that.commentList.length; i++) {
-          that.commentList[i].time = formatDateTime(that.commentList[i].gmtCreate * 1000)
-          console.log(that.commentList[i].time)
+        for (var i = 0; i < res.data.data.length; i++) {
+          res.data.data[i].time = formatDateTime(res.data.data[i].gmtCreate * 1000)
+          that.commentList.push(res.data.data[i])
         }
+        app.globalData.commentList = that.commentList
         that.$apply()
       }
     })
+  }
+  onReachBottom(e) {
+    let that = this
+    that.getCommentList()
+  }
+  onPullDownRefresh() {
+    this.getCommentList()
+    wx.stopPullDownRefresh()
   }
 }
 </script>
