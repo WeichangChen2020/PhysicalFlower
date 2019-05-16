@@ -1,4 +1,7 @@
 <style type="less">
+page {
+  background-color: #f2f2f2;
+}
 .contain {
   display: flex;
   justify-content: center;
@@ -22,13 +25,18 @@
 .list.error .number,.list.success .number{
   display: none;
 }
-
+.img {
+  margin-top: 10rpx;
+  width:640rpx;
+  height:550rpx;
+}
 </style>
 
 
 <template>
- <view style="margin-bottom:30px;text-align:center;">随堂测试</view>
-  <swiper current = "{{current}}" @change = "change"  style="height:900rpx">
+ <view style="margin-bottom:15rpx;margin-left:20rpx;">题目：{{current + 1}}/{{questionList.length}}</view>
+ <view style="display:flex;justify-content:center;">
+  <swiper current = "{{current}}" @change = "change"  style="height:900rpx;width:90%;overflow:hidden;border-radius:20rpx;background-color:white;border: #C0C0C0 solid 5rpx;box-shadow:0px 2px 4px 2px #DDDDDD;">
     <swiper-item wx:for="{{questionList}}" wx:for-item="page" wx:key="*this" catchtouchmove="stopTouchMove"> 
     <view class="contain">
       <image src="{{page.img}}" class="img"/>
@@ -38,11 +46,10 @@
      </view>
     </swiper-item>
   </swiper>
-  <view style="display:flex;position:fixed;bottom:0rpx;">
-    <view @tap="previous" wx:if="{{first}}">上一题</view>
-    <view style="text-align:right;">
-    <view @tap="next" wx:if="{{end}}">下一题</view>
-    </view>
+  </view>
+  <view style="display:inline;position:fixed;bottom:0rpx;background-color:white;width:100%;height:100rpx;">
+    <view @tap="previous" wx:if="{{first}}" style="float:left;margin-left:30rpx;line-height:100rpx;">上一题</view>
+    <view @tap="next" wx:if="{{end}}" style="float:right;margin-right:30rpx;line-height:100rpx;">下一题</view>
   </view>
 </template>
 
@@ -53,7 +60,7 @@ import Icon from '@/components/icon/index'
 // 通过继承自wepy.page的类创建页面逻辑
 export default class my extends wepy.page {
   config = {
-    navigationBarTitleText: '我的'
+    navigationBarTitleText: '自由练习'
   }
 
   components = {
