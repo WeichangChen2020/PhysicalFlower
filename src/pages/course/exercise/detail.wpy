@@ -11,7 +11,7 @@
 }
 .list.error{
   padding-left: 30rpx;
-  background:#fbfbfb url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAADzUlEQVRYw8WYXWhcRRTHf7kgYhkQxIeKEfOiRkOL1NJEjba1VvygaTFN8ZPADKUi6kMR1BcF8T1Kix/gzIMEQa1QW1/KpjVSPxDcxioiiNG0NKLdgEYnNZU28WHu3UyuN9m5d3ez/6fdc+fc89uZ2TNnThsFZKXqArYAm4HrgOuBS1LD/gF+BH4ARoGSMPrnvLHacoLtAJ6K4fJqHvgI2C+MPtpQQCvVZuAV4LYCYFkqAS8Io8t1A1qp9uFmrRl6WRj9UiFAK9Vq4DCwvklwiUpAnzB6NhjQStUBfAFc1WS4RN8Bdwijp2sCWqmuAL4HVq8QnA95szB6zjdGGQNLLYADWAN8nDYuArRSvQasawFcovusVHt9Q3WJrVS3AF+3EM7XNcLoM7B4Bk2g82zguCxdCBz3VvIhArBS3QusDXB8H7gW2Ar8mwOsgktXHcBIwPj7rVQ3VgGB5wMDPSKMPiuMHgFuJWw2zwLdwuiyMHoSkIGxngOI4py3MdCpL/kgjD4B9AAzy4z/LYb7xbNtD4y1y0olIuCBQAeAA1aqaqEgjD6JO5/PZYytAD3C6InEYKXaCewLjHUZcFeEK5lCFQEjVqpNHuS3QC+L9+QUsEEYfcqDexD4IEcsgC0RLkHm1SdWquq2EEaPsVDpzOOW1Z+5fuDDAnHWRsDVBRwBRlPLXcatRrdfmFqpBoADBWO0t1mp5gs6J9oa/6v/JyvVLuC9Ot49HdXhnKhkpdqWATdYJxzAqkYAzgJ/Ztj/aMC75+oFrAA3CaOPpx8Iow/hTo96jsaZCJgu6Pw7qSRspdpjpXrYgyzjTpyZAu8HqETA6QbBDQBvAu9aqe72IL/BpaAikKci4GTeX4U7Ifwk3I8rJBKV4ptgApkk8/M5Y41FQPAdlYWzdSIFl5Xnjlmp7kzN5O3A3zniHYlwZfbFQIftqWXdyfJJ+NPUTJaBwcBYU8DxSBg9BRwKdBr34AYIO1uP+XsSCG1/vCOMvtAWB1sH1LzlA58BLwKdwOuBgRINAr8CrwJdAePbhdGT/p3kCHBPzqDNkhFGK1h8J3mi1VSxZoFnki9VwHjzP9tqOuBxYXQ1Z2Z1Fg4SXpY3Wm8Io5/0DUv1Zr4CNqww3GFhdF/auFSx0ItrHq2UDmbBQY3+oJVqGHi0yXBDwui9Sz1cttwSRj8GPE19JdNSqgAPLQdXEzCG3A/cAAw3COwiMAR0CqNrVtx5m+hdwG6gH2jPCfYT7tx+Wxg9HuqUC9ADvRTX6e8BunE3wyuBy4E54C9cy2MS+BL4HBhNNydD9B9GSDnjSVkY2QAAAABJRU5ErkJggg==") no-repeat 30rpx center/40rpx 40rpx;
+  background:#fff url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAADzUlEQVRYw8WYXWhcRRTHf7kgYhkQxIeKEfOiRkOL1NJEjba1VvygaTFN8ZPADKUi6kMR1BcF8T1Kix/gzIMEQa1QW1/KpjVSPxDcxioiiNG0NKLdgEYnNZU28WHu3UyuN9m5d3ez/6fdc+fc89uZ2TNnThsFZKXqArYAm4HrgOuBS1LD/gF+BH4ARoGSMPrnvLHacoLtAJ6K4fJqHvgI2C+MPtpQQCvVZuAV4LYCYFkqAS8Io8t1A1qp9uFmrRl6WRj9UiFAK9Vq4DCwvklwiUpAnzB6NhjQStUBfAFc1WS4RN8Bdwijp2sCWqmuAL4HVq8QnA95szB6zjdGGQNLLYADWAN8nDYuArRSvQasawFcovusVHt9Q3WJrVS3AF+3EM7XNcLoM7B4Bk2g82zguCxdCBz3VvIhArBS3QusDXB8H7gW2Ar8mwOsgktXHcBIwPj7rVQ3VgGB5wMDPSKMPiuMHgFuJWw2zwLdwuiyMHoSkIGxngOI4py3MdCpL/kgjD4B9AAzy4z/LYb7xbNtD4y1y0olIuCBQAeAA1aqaqEgjD6JO5/PZYytAD3C6InEYKXaCewLjHUZcFeEK5lCFQEjVqpNHuS3QC+L9+QUsEEYfcqDexD4IEcsgC0RLkHm1SdWquq2EEaPsVDpzOOW1Z+5fuDDAnHWRsDVBRwBRlPLXcatRrdfmFqpBoADBWO0t1mp5gs6J9oa/6v/JyvVLuC9Ot49HdXhnKhkpdqWATdYJxzAqkYAzgJ/Ztj/aMC75+oFrAA3CaOPpx8Iow/hTo96jsaZCJgu6Pw7qSRspdpjpXrYgyzjTpyZAu8HqETA6QbBDQBvAu9aqe72IL/BpaAikKci4GTeX4U7Ifwk3I8rJBKV4ptgApkk8/M5Y41FQPAdlYWzdSIFl5Xnjlmp7kzN5O3A3zniHYlwZfbFQIftqWXdyfJJ+NPUTJaBwcBYU8DxSBg9BRwKdBr34AYIO1uP+XsSCG1/vCOMvtAWB1sH1LzlA58BLwKdwOuBgRINAr8CrwJdAePbhdGT/p3kCHBPzqDNkhFGK1h8J3mi1VSxZoFnki9VwHjzP9tqOuBxYXQ1Z2Z1Fg4SXpY3Wm8Io5/0DUv1Zr4CNqww3GFhdF/auFSx0ItrHq2UDmbBQY3+oJVqGHi0yXBDwui9Sz1cttwSRj8GPE19JdNSqgAPLQdXEzCG3A/cAAw3COwiMAR0CqNrVtx5m+hdwG6gH2jPCfYT7tx+Wxg9HuqUC9ADvRTX6e8BunE3wyuBy4E54C9cy2MS+BL4HBhNNydD9B9GSDnjSVkY2QAAAABJRU5ErkJggg==") no-repeat 30rpx center/40rpx 40rpx;
   color: #f46263;
 }
 .list.success{
@@ -22,9 +22,7 @@
 .list.error .number,.list.success .number{
   display: none;
 }
-.img{
 
-}
 </style>
 
 
@@ -40,8 +38,12 @@
      </view>
     </swiper-item>
   </swiper>
-  <button @tap="previous">上一题</button>
-  <button @tap="next">下一题</button>
+  <view style="display:flex;position:fixed;bottom:0rpx;">
+    <view @tap="previous" wx:if="{{first}}">上一题</view>
+    <view style="text-align:right;">
+    <view @tap="next" wx:if="{{end}}">下一题</view>
+    </view>
+  </view>
 </template>
 
 
@@ -69,25 +71,19 @@ export default class my extends wepy.page {
     ],
     exerciseList: [],
     sub: 0,
-    current: 0
+    current: 0,
+    first: false,
+    end: true
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
     previous() {
       let that = this
-      if (that.current === 0) {
-        that.current = that.questionList.length - 1
-      } else {
-        that.current = that.current - 1
-      }
+      that.current = that.current - 1
     },
     next() {
       let that = this
-      if (that.current === that.questionList.length - 1) {
-        that.current = 0
-      } else {
-        that.current = that.current + 1
-      }
+      that.current = that.current + 1
     },
     stopTouchMove() {
       return false
@@ -98,6 +94,16 @@ export default class my extends wepy.page {
       that.current = e.detail.current
       for (var i = 0; i < that.girds.length; i++) {
         that.girds[i].class = ''
+      }
+      if (that.current === 0) {
+        that.first = false
+      } else {
+        that.first = true
+      }
+      if (that.current === that.questionList.length - 1) {
+        that.end = false
+      } else {
+        that.end = true
       }
       console.log(that.current)
     },

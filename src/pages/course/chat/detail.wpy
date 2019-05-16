@@ -60,12 +60,12 @@ page{
       <view class="text" style="margin-top:20rpx;">{{description}}</view>
       <view style="display:flex;margin-left:620rpx;margin-top:75rpx;">
       <image src="../../../public/images/chat.png" class="icon2" @tap='show'></image>
-      <view style="color:darkgrey;margin-top:-7rpx;">{{commentList.length}}</view>
+      <view style="color:darkgrey;margin-top:-7rpx;">{{replyList.length}}</view>
       </view>
   </view>
 
   <view class="container">
-     <block wx:for="{{commentList}}" wx:for-item="item" wx:key="id">
+     <block wx:for="{{replyList}}" wx:for-item="item" wx:key="id">
       <view class="weui-cell weui-cell_access">
       <view class="weui-cell__bd" style="display:flex;font-size:28rpx;">
         <view class="name">{{item.stu_info.name}}:\t</view>
@@ -100,7 +100,6 @@ export default class ChatDetail extends wepy.page {
     avatar: '',
     time: '',
     name: '',
-    commentList: [],
     replyList: []
   }
 
@@ -126,11 +125,12 @@ export default class ChatDetail extends wepy.page {
         reply: that.reply,
         idUser: app.globalData.userInfo.idUser
       }
+      console.log(postData)
       app.request('Comment.replyCreat', postData, 'Loading...')
       .then((res) => {
         that.reply = ''
+        that.show = false
         that.getReplyList()
-        that.$apply()
       })
     }
   }
@@ -138,7 +138,7 @@ export default class ChatDetail extends wepy.page {
     let that = this
     that.title = e.title
     that.idComment = e.idComment
-    that.time = e.time
+    that.time = e.timed
     that.name = e.name
     that.avatar = e.avatar
     that.description = e.description
@@ -158,13 +158,7 @@ export default class ChatDetail extends wepy.page {
     }
     app.request('Comment.getReplyList', postData, 'Loading...')
     .then((res) => {
-      for (var i = 0; i < res.data.data.length; i++) {
-        if (res.data.data[i].idParentReply === '0') {
-          that.commentList.push(res.data.data[i])
-        } else {
-          that.replyList.push(res.data.data[i])
-        }
-      }
+      that.replyList = res.data.data
       that.$apply()
     })
   }

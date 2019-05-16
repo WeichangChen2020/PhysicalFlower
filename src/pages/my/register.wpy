@@ -110,8 +110,7 @@ export default class Register extends wepy.page {
       }
       console.log(UL_DATA)
       app.request('User.updateInfo', UL_DATA, '请稍等...')
-      .then(function(res) {
-        console.log(res)
+      .then((res) => {
         if (res.data.errCode === 0) {
           app.globalData.loginCode = res.data.errCode
           app.globalData.userInfo = res.data.data
@@ -120,7 +119,7 @@ export default class Register extends wepy.page {
           throw (new Error(res.data.msg))
         }
       })
-      .then(function(msg) {
+      .then((msg) => {
         const options = {
           content: msg,
           position: 'middle',
@@ -129,8 +128,8 @@ export default class Register extends wepy.page {
         }
         that.$invoke('toast', 'show', options)
       })
-      .then(function(data) {
-        app.globalData.userInfo = that.userInfo
+      .then((data) => {
+        // app.globalData.userInfo = that.userInfo
         setTimeout(function() {
           wx.navigateBack({})
         }, 1000)
@@ -165,7 +164,7 @@ export default class Register extends wepy.page {
     let that = this
     wx.getUserInfo({
       success(res) {
-        that.userInfo = res.userInfo
+        // that.userInfo = res.userInfo
         that.userInfo.name = ''
         that.userInfo.stuNum = ''
         that.userInfo.telphone = ''
