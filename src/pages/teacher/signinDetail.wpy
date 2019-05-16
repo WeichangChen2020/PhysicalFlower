@@ -80,6 +80,12 @@ margin-left:40rpx;
 
   // TODO 下拉刷新
   export default class SigninList extends wepy.page {
+    config ={
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: '签到详情',
+      navigationBarTextStyle: 'black'
+    }
     // 可用于页面模板绑定的数据
     data = {
       allSigninList: [],
