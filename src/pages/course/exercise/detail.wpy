@@ -7,58 +7,66 @@ page {
   justify-content: center;
 }
 .border {
-  flex-grow: 1;
-}
-.border {
-  display: block;
+  display: flex;
+  flex-grow: 6;
 }
 .list.error{
-  padding-left: 30rpx;
-  background:#fff url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAADzUlEQVRYw8WYXWhcRRTHf7kgYhkQxIeKEfOiRkOL1NJEjba1VvygaTFN8ZPADKUi6kMR1BcF8T1Kix/gzIMEQa1QW1/KpjVSPxDcxioiiNG0NKLdgEYnNZU28WHu3UyuN9m5d3ez/6fdc+fc89uZ2TNnThsFZKXqArYAm4HrgOuBS1LD/gF+BH4ARoGSMPrnvLHacoLtAJ6K4fJqHvgI2C+MPtpQQCvVZuAV4LYCYFkqAS8Io8t1A1qp9uFmrRl6WRj9UiFAK9Vq4DCwvklwiUpAnzB6NhjQStUBfAFc1WS4RN8Bdwijp2sCWqmuAL4HVq8QnA95szB6zjdGGQNLLYADWAN8nDYuArRSvQasawFcovusVHt9Q3WJrVS3AF+3EM7XNcLoM7B4Bk2g82zguCxdCBz3VvIhArBS3QusDXB8H7gW2Ar8mwOsgktXHcBIwPj7rVQ3VgGB5wMDPSKMPiuMHgFuJWw2zwLdwuiyMHoSkIGxngOI4py3MdCpL/kgjD4B9AAzy4z/LYb7xbNtD4y1y0olIuCBQAeAA1aqaqEgjD6JO5/PZYytAD3C6InEYKXaCewLjHUZcFeEK5lCFQEjVqpNHuS3QC+L9+QUsEEYfcqDexD4IEcsgC0RLkHm1SdWquq2EEaPsVDpzOOW1Z+5fuDDAnHWRsDVBRwBRlPLXcatRrdfmFqpBoADBWO0t1mp5gs6J9oa/6v/JyvVLuC9Ot49HdXhnKhkpdqWATdYJxzAqkYAzgJ/Ztj/aMC75+oFrAA3CaOPpx8Iow/hTo96jsaZCJgu6Pw7qSRspdpjpXrYgyzjTpyZAu8HqETA6QbBDQBvAu9aqe72IL/BpaAikKci4GTeX4U7Ifwk3I8rJBKV4ptgApkk8/M5Y41FQPAdlYWzdSIFl5Xnjlmp7kzN5O3A3zniHYlwZfbFQIftqWXdyfJJ+NPUTJaBwcBYU8DxSBg9BRwKdBr34AYIO1uP+XsSCG1/vCOMvtAWB1sH1LzlA58BLwKdwOuBgRINAr8CrwJdAePbhdGT/p3kCHBPzqDNkhFGK1h8J3mi1VSxZoFnki9VwHjzP9tqOuBxYXQ1Z2Z1Fg4SXpY3Wm8Io5/0DUv1Zr4CNqww3GFhdF/auFSx0ItrHq2UDmbBQY3+oJVqGHi0yXBDwui9Sz1cttwSRj8GPE19JdNSqgAPLQdXEzCG3A/cAAw3COwiMAR0CqNrVtx5m+hdwG6gH2jPCfYT7tx+Wxg9HuqUC9ADvRTX6e8BunE3wyuBy4E54C9cy2MS+BL4HBhNNydD9B9GSDnjSVkY2QAAAABJRU5ErkJggg==") no-repeat 30rpx center/40rpx 40rpx;
+  border-radius: 10rpx;
+  height: 80rpx;
+  /* padding-left: 30rpx; */
+  /* background:#fff url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAADzUlEQVRYw8WYXWhcRRTHf7kgYhkQxIeKEfOiRkOL1NJEjba1VvygaTFN8ZPADKUi6kMR1BcF8T1Kix/gzIMEQa1QW1/KpjVSPxDcxioiiNG0NKLdgEYnNZU28WHu3UyuN9m5d3ez/6fdc+fc89uZ2TNnThsFZKXqArYAm4HrgOuBS1LD/gF+BH4ARoGSMPrnvLHacoLtAJ6K4fJqHvgI2C+MPtpQQCvVZuAV4LYCYFkqAS8Io8t1A1qp9uFmrRl6WRj9UiFAK9Vq4DCwvklwiUpAnzB6NhjQStUBfAFc1WS4RN8Bdwijp2sCWqmuAL4HVq8QnA95szB6zjdGGQNLLYADWAN8nDYuArRSvQasawFcovusVHt9Q3WJrVS3AF+3EM7XNcLoM7B4Bk2g82zguCxdCBz3VvIhArBS3QusDXB8H7gW2Ar8mwOsgktXHcBIwPj7rVQ3VgGB5wMDPSKMPiuMHgFuJWw2zwLdwuiyMHoSkIGxngOI4py3MdCpL/kgjD4B9AAzy4z/LYb7xbNtD4y1y0olIuCBQAeAA1aqaqEgjD6JO5/PZYytAD3C6InEYKXaCewLjHUZcFeEK5lCFQEjVqpNHuS3QC+L9+QUsEEYfcqDexD4IEcsgC0RLkHm1SdWquq2EEaPsVDpzOOW1Z+5fuDDAnHWRsDVBRwBRlPLXcatRrdfmFqpBoADBWO0t1mp5gs6J9oa/6v/JyvVLuC9Ot49HdXhnKhkpdqWATdYJxzAqkYAzgJ/Ztj/aMC75+oFrAA3CaOPpx8Iow/hTo96jsaZCJgu6Pw7qSRspdpjpXrYgyzjTpyZAu8HqETA6QbBDQBvAu9aqe72IL/BpaAikKci4GTeX4U7Ifwk3I8rJBKV4ptgApkk8/M5Y41FQPAdlYWzdSIFl5Xnjlmp7kzN5O3A3zniHYlwZfbFQIftqWXdyfJJ+NPUTJaBwcBYU8DxSBg9BRwKdBr34AYIO1uP+XsSCG1/vCOMvtAWB1sH1LzlA58BLwKdwOuBgRINAr8CrwJdAePbhdGT/p3kCHBPzqDNkhFGK1h8J3mi1VSxZoFnki9VwHjzP9tqOuBxYXQ1Z2Z1Fg4SXpY3Wm8Io5/0DUv1Zr4CNqww3GFhdF/auFSx0ItrHq2UDmbBQY3+oJVqGHi0yXBDwui9Sz1cttwSRj8GPE19JdNSqgAPLQdXEzCG3A/cAAw3COwiMAR0CqNrVtx5m+hdwG6gH2jPCfYT7tx+Wxg9HuqUC9ADvRTX6e8BunE3wyuBy4E54C9cy2MS+BL4HBhNNydD9B9GSDnjSVkY2QAAAABJRU5ErkJggg==") no-repeat 30rpx center/40rpx 40rpx; */
   color: #f46263;
-  margin: 20rpx auto;
 }
 .list.success{
-  padding-left: 30rpx;
-  background:#fff url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAADNklEQVRYw82Zz0sWQRjHP272FwQdyi6RlkIOUVFpaUXqRSprkK5BRGkx1wg6Rl2nsoKkLl2KSZPwYoK/EzwkU1Codco6CHkvCzrsrr27777vu7u+vq/f07L7zM5nZp9n5plnK0ghaVU90AI0A7uAaqAyZPYHWAC+AGPAWyP0h6R9VSQE6wSuACfSDAwYAR4boV8WFVBa1QrcBg6kBAtrBrhlhB5aM6C06iFwtUhgYT0yQnelApRW7QAGgH3rBOdrFjhjhP4WG1BaVQNMAFvXGc7XEnDMCD1fEFBatR2wwJYSwfn6CdQboX9k3nQiDIfLAIfX53D4ZgBQWvUE2FMGOF+1HsOqVj+xtOoort9tBDUaod9BcAaflpsqQ8/8CwdAWnUad7sqld4DL4DfOZ7XSKvaVwGBGyWE6zNC7zdCXwCOA79y2N0EqJBWVQPzMV9eDLjzmTekVV+BnTnsqx2go0Rw/RFwLUBVnjYdlUBTCeAGjNDnQnCHgUFgc552zQ5Qt85w/UbosyG4Q8B4ATiAOof8UwzQBzQAl1PAvYqYuQZgKgYcQFVlAcPFDL+ZllbNAaPEyyP7jNAyBNeIuxnETZQ3OwUMAs+N0OPE89nXEQFxJCFcNkCEtoX3RiP0JPlT/gEjdGBlyPC5RHBxAAEuSavuhyBHgZMRtn05AmKC7ENVbMCVGHbXpFU9IcgR3J0gEy78WRuJHxBRWnGAxZjGXd75JBNyDOgEnueAmwQ2pYQDWKyQVr0B2hM06jFCX8tn4C3CU8RzoXwadLxRJlG3tOpeHjg/INYKBzDm4C7ESXVdWvUgAu6IN+C0PhdWv2OEXgCmUzTuzgwcaVWTB5cqWiM0bYT+4r/sLu4ZOKm6pFUC+I4bLMXUHQieSeaAmiJ3klbzRujdEHTki+WmimJZBfROUb3lJgN6/RMdRFcWPgG1ZYL7bIQO5KdRa9UpYLkMcMte3wFlAXq1kQbcgk6ptAQ0hOsykYAe5BxwELc0tt6aBQ56fWZpwxcwC+6X3gvacMu2xdIM0FYIDtIV0a8SzAOTaBQ3GzJxGyROwT3QvUAr/39D1JCd9/3FrVj4vyGGjNAfk/b1Dw7sAipN98OLAAAAAElFTkSuQmCC") no-repeat 30rpx center/40rpx 40rpx;
+  border-radius: 10rpx;
+  height: 80rpx;
   color: #6c0;
-  line-height: 80rpx;
-  margin: 20rpx auto;
+  /* background:#fff url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAADNklEQVRYw82Zz0sWQRjHP272FwQdyi6RlkIOUVFpaUXqRSprkK5BRGkx1wg6Rl2nsoKkLl2KSZPwYoK/EzwkU1Codco6CHkvCzrsrr27777vu7u+vq/f07L7zM5nZp9n5plnK0ghaVU90AI0A7uAaqAyZPYHWAC+AGPAWyP0h6R9VSQE6wSuACfSDAwYAR4boV8WFVBa1QrcBg6kBAtrBrhlhB5aM6C06iFwtUhgYT0yQnelApRW7QAGgH3rBOdrFjhjhP4WG1BaVQNMAFvXGc7XEnDMCD1fEFBatR2wwJYSwfn6CdQboX9k3nQiDIfLAIfX53D4ZgBQWvUE2FMGOF+1HsOqVj+xtOoort9tBDUaod9BcAaflpsqQ8/8CwdAWnUad7sqld4DL4DfOZ7XSKvaVwGBGyWE6zNC7zdCXwCOA79y2N0EqJBWVQPzMV9eDLjzmTekVV+BnTnsqx2go0Rw/RFwLUBVnjYdlUBTCeAGjNDnQnCHgUFgc552zQ5Qt85w/UbosyG4Q8B4ATiAOof8UwzQBzQAl1PAvYqYuQZgKgYcQFVlAcPFDL+ZllbNAaPEyyP7jNAyBNeIuxnETZQ3OwUMAs+N0OPE89nXEQFxJCFcNkCEtoX3RiP0JPlT/gEjdGBlyPC5RHBxAAEuSavuhyBHgZMRtn05AmKC7ENVbMCVGHbXpFU9IcgR3J0gEy78WRuJHxBRWnGAxZjGXd75JBNyDOgEnueAmwQ2pYQDWKyQVr0B2hM06jFCX8tn4C3CU8RzoXwadLxRJlG3tOpeHjg/INYKBzDm4C7ESXVdWvUgAu6IN+C0PhdWv2OEXgCmUzTuzgwcaVWTB5cqWiM0bYT+4r/sLu4ZOKm6pFUC+I4bLMXUHQieSeaAmiJ3klbzRujdEHTki+WmimJZBfROUb3lJgN6/RMdRFcWPgG1ZYL7bIQO5KdRa9UpYLkMcMte3wFlAXq1kQbcgk6ptAQ0hOsykYAe5BxwELc0tt6aBQ56fWZpwxcwC+6X3gvacMu2xdIM0FYIDtIV0a8SzAOTaBQ3GzJxGyROwT3QvUAr/39D1JCd9/3FrVj4vyGGjNAfk/b1Dw7sAipN98OLAAAAAElFTkSuQmCC") no-repeat -25rpx center/40rpx 40rpx; */
 }
 .list.error .number,.list.success .number{
   display: none;
 }
 .img {
+  font-size: 40rpx;
   margin-top: 10rpx;
   width:640rpx;
   height:550rpx;
   line-height: 80rpx;
 }
 .btn{
-   display: block;
-    width: 690rpx;
+    display: block;
+    /* width: 23.3%; */
     height: 80rpx;
-    margin: 20rpx auto;
+    /* margin:  auto; */
     background: #fed835;
     border-radius: 10rpx;
     text-align: center;
     font-size: 40rpx;
     color: #3d3d3c;
-    line-height: 80rpx;
+}
+.icon{
+  width:60rpx;
+  height:60rpx;
+  margin-left: 445rpx;
 }
 </style>
 
 
 <template>
- <view style="margin-bottom:15rpx;margin-left:20rpx;">题目：{{current + 1}}/{{questionList.length}}</view>
+<view style="display:flex;">
+   <view style="margin-bottom:15rpx;margin-left:25rpx;">题目：{{current + 1}}/{{questionList.length}}</view>
+   <image src="{{src}}" @tap="image" class="icon"></image>
+ </view>
  <view style="display:flex;justify-content:center;">
   <swiper current = "{{current}}" @change = "change"  style="height:1000rpx;width:90%;overflow:hidden;border-radius:20rpx;background-color:white;border: #C0C0C0 solid 5rpx;box-shadow:0px 2px 4px 2px #DDDDDD;">
     <swiper-item wx:for="{{questionList}}" wx:for-item="page" wx:key="*this" catchtouchmove="stopTouchMove"> 
     <view class="contain">
-      <image src="{{page.img}}" class="img"/>
+      <image src="{{page.img}}" class="img" mode="widthFix" style="width:85%"/>
      </view>
-     <view wx:for="{{girds}}" wx:for-item="item" wx:key="*this" class="border">
-     <button  class="{{item.class}}" data-submit="{{item.id}}"  @tap="tap" data-idques="{{page.idQues}}" data-answer="{{page.answer}}">{{item.name}}</button>
+     <view style="display:flex;margin-top:50rpx;">
+      <view wx:for="{{girds}}" wx:for-item="item" wx:key="*this" class="border">
+        <button  class="{{item.class}}" data-submit="{{item.id}}"  @tap="tap" data-idques="{{page.idQues}}" data-answer="{{page.answer}}">{{item.name}}</button>
+      </view>
      </view>
     </swiper-item>
   </swiper>
@@ -96,10 +104,20 @@ export default class my extends wepy.page {
     sub: 0,
     current: 0,
     first: false,
-    end: true
+    end: true,
+    src: '../../../public/images/unlock.png',
+    collectionList: []
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
+    image(e) {
+      let that = this
+      if (that.src === '../../../public/images/unlock.png') {
+        that.src = '../../../public/images/lock.png'
+      } else if (that.src === '../../../public/images/lock.png') {
+        that.src = '../../../public/images/unlock.png'
+      }
+    },
     previous() {
       let that = this
       that.current = that.current - 1
@@ -115,6 +133,7 @@ export default class my extends wepy.page {
       let that = this
       that.sub = 0
       that.current = e.detail.current
+      that.src = '../../../public/images/unlock.png'
       for (var i = 0; i < that.girds.length; i++) {
         that.girds[i].class = 'btn'
       }

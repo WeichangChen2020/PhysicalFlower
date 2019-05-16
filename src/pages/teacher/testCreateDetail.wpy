@@ -18,7 +18,7 @@
       <block wx:for="{{questionInfo}}" wx:for-item="item" wx:key="*this">
       <view style="display:flex;margin-left:8px;margin-right:8px;border-bottom:1px solid #ccc;margin-bottom:15px;margin-top:15px;">
         <checkbox class="icont" value="{{item.idQues}}"></checkbox>
-        <image src="{{item.img}}"/>
+        <image src="{{item.img}}" mode="widthFix" style="width:90%"/>
       </view>
     </block>
    </checkbox-group>

@@ -133,7 +133,7 @@
     <block wx:for="{{questionInfo}}" wx:for-item="page" wx:key="*this">
       <view style="display:flex;margin-left:8px;margin-right:8px;border-bottom:1px solid #ccc;margin-bottom:15px;margin-top:15px;">
       <checkbox class="icont" value="{{page.idQues}}"></checkbox>
-      <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px"/>
+      <image src="{{page.img}}"  mode="widthFix" style="width:90%"/>
       </view>
     </block>
   </checkbox-group>
@@ -145,6 +145,9 @@
 
   // 通过继承自wepy.page的类创建页面逻辑
   export default class homeworkCreat extends wepy.page {
+    config = {
+      navigationBarTitleText: '布置作业'
+    }
     // 可用于页面模板绑定的数据
     data = {
       questionInfo: {},
