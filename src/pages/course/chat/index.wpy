@@ -12,8 +12,6 @@
   position:fixed;
   right:25px;
   bottom:30px;
-  width:100rpx;
-  height:100rpx;
   margin-left:10rpx;
 }
 .text{
@@ -42,7 +40,7 @@
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </view>
   </block>
-  <image src='../../../public/images/joinCourse.png' class='icon2' @tap='create'></image>
+  <image src='../../../public/images/comment2.png' class='icon2' @tap='create'  mode="widthFix" style="width:80rpx;"></image>
 </template>
 <script>
 import wepy from 'wepy'

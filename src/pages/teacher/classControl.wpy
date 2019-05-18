@@ -25,32 +25,31 @@
   border: 0;
 }
 .folder-container .folder-header {
-height:50px
+  height:50px
 }
 .font-14 {
-font-size:20px;
+  font-size:20px;
 }
 .weui-btn{
   margin-top: 90rpx;
 }
 button {
-position:relative;
-display:block;
-margin-left:auto;
-margin-right:auto;
-padding-left:15px;
-padding-right:14px;
-box-sizing:border-box;
-font-size:18px;
-text-align:center;
-text-decoration:none;
-line-height:2.55555556;
-border-radius:100px;
--webkit-tap-highlight-color:transparent;
-overflow:hidden;
-color:#000000;
-background-color:#F8F8F8;
-
+  position:relative;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:15px;
+  padding-right:14px;
+  box-sizing:border-box;
+  font-size:18px;
+  text-align:center;
+  text-decoration:none;
+  line-height:2.55555556;
+  border-radius:100px;
+  -webkit-tap-highlight-color:transparent;
+  overflow:hidden;
+  color:#000000;
+  background-color:#F8F8F8;
 }
 
 </style>
