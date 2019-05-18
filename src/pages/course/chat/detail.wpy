@@ -43,9 +43,6 @@ page{
   font-size: 30rpx;
   font-weight: 600;
 }
-.border{
-
-}
 </style>
 <template>
   <view class="container" style="background-color:#ffffff;height:35%;">
@@ -53,17 +50,17 @@ page{
           <image src="{{avatar}}" class="icon"></image>
           <view style="dsiplay:block;margin-left:20rpx;">
             <view class="des">{{name}}</view>
-            <view class="des" style="margin-top:3rpx;">{{time}}</view>
+            <view class="text" style="margin-top:3rpx;margin-left:0rpx;">{{time}}</view>
           </view>
         </view>
       <view class="title" style="margin-left:25rpx;font-size:3orpx;margin-top:40rpx;">{{title}}</view>
       <view class="text" style="margin-top:20rpx;">{{description}}</view>
       <view style="display:flex;margin-left:620rpx;margin-top:75rpx;">
       <image src="../../../public/images/chat.png" class="icon2" @tap='show'></image>
-      <view style="color:darkgrey;margin-top:-7rpx;">{{replyList.length}}</view>
+      <view style="color:darkgrey;margin-top:-7rpx;">{{length}}</view>
       </view>
   </view>
-
+<view  wx:if="{{length===0}}" class="text" style="margin-left:237rpx;margin-top:130rpx;">还没有人发起评论！</view>
   <view class="container">
      <block wx:for="{{replyList}}" wx:for-item="item" wx:key="id">
       <view class="weui-cell weui-cell_access">
@@ -100,7 +97,8 @@ export default class ChatDetail extends wepy.page {
     avatar: '',
     time: '',
     name: '',
-    replyList: []
+    replyList: [],
+    length: 0
   }
 
   methods = {
@@ -138,10 +136,11 @@ export default class ChatDetail extends wepy.page {
     let that = this
     that.title = e.title
     that.idComment = e.idComment
-    that.time = e.timed
+    that.time = e.time
     that.name = e.name
     that.avatar = e.avatar
     that.description = e.description
+    that.$apply()
   }
   onShow() {
     let that = this
@@ -159,7 +158,9 @@ export default class ChatDetail extends wepy.page {
     app.request('Comment.getReplyList', postData, 'Loading...')
     .then((res) => {
       that.replyList = res.data.data
+      that.length = that.replyList.length
       that.$apply()
+      console.log(that.length)
     })
   }
 }
