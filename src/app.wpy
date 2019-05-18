@@ -101,7 +101,8 @@ export default class extends wepy.app {
       'pages/course/exercise/index',
       'pages/course/exercise/detail',
       'pages/course/chat/detail',
-      'pages/my/teacherIndex'
+      'pages/my/teacherIndex',
+      'pages/course/test/testResult2'
     ],
     'permission': {
       'scope.userLocation': {

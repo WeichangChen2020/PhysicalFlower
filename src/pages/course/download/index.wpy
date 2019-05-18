@@ -15,15 +15,17 @@ export default class IndexDetail extends wepy.page {
   methods = {
     download(e) {
       const downloadTask = wx.downloadFile({
-        url: 'http://example.com/audio/123', // 仅为示例，并非真实的资源
+        url: 'http://18.dataplatform.applinzi.com/EntranceEducation/Application/Student/View/Index/download_list.php', // 仅为示例，并非真实的资源
         success(res) {
           wx.playVoice({
             filePath: res.tempFilePath
           })
+          console.log(res.tempFilePath)
         }
       })
 
       downloadTask.onProgressUpdate((res) => {
+        console.log(res)
         console.log('下载进度', res.progress)
         console.log('已经下载的数据长度', res.totalBytesWritten)
         console.log('预期需要下载的数据总长度', res.totalBytesExpectedToWrite)

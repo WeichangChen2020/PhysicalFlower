@@ -13,20 +13,18 @@
 
 .text {
   margin-left: 340rpx;
-  padding-top: 60rpx;
 }
 </style>
 <template>
 <view style="display:flex;justify-content:center;">
-  <swiper style="height:100%" current = "{{current}}" style="height:1150rpx;width:90%;overflow:hidden;border-radius:20rpx;background-color:white;border: #C0C0C0 solid 5rpx;box-shadow:0px 2px 4px 2px #DDDDDD;">
-    <swiper-item wx:for="{{quizResultList}}" wx:for-item="page" wx:key="*this">
+  <swiper style="height:100%" current = "{{current}}" @change = "change" style="height:1150rpx;width:90%;overflow:hidden;border-radius:20rpx;background-color:white;border: #C0C0C0 solid 5rpx;box-shadow:0px 2px 4px 2px #DDDDDD;">
+    <swiper-item wx:for="{{quizList}}" wx:for-item="item" wx:key="this">
       <view class="contain">
-      <image src="{{page.img}}" mode="widthFix" style="width:80%"/>
+      <image src="{{item.img}}" mode="widthFix" style="width:90%"/>
       </view>
       <view class="border"> 
-        <view class="text">
-         <view style="color:#ffffff">正确答案：{{page.correctAnswer}}</view>
-         <view style="margin-top:30rpx;color:#ffffff">你的答案：{{page.submitAnswer}}</view>
+        <view class="text" style="line-height:323rpx;">
+         <view style="color:#ffffff;">正确答案：{{item.correctAnswer}}</view>
         </view>
       </view>
     </swiper-item>
@@ -45,7 +43,7 @@
     data = {
       idQuiz: 0,
       idUser: 0,
-      quizResultList: [],
+      quizList: [],
       // 是否采用衔接滑动
       circular: false,
       // 是否显示画板指示点
@@ -73,44 +71,27 @@
     onLoad(e) {
       let that = this
       that.idQuiz = e.idQuiz
-      that.idUser = e.idUser
-      that.getQuizresult()
+      that.getQuizList()
     };
-    getQuizresult() {
+    getQuizList() {
       let app = this.$parent
       let that = this
       var postData = {
         idQuiz: that.idQuiz,
-        idUser: that.idUser
+        page: 1
       }
-      app.request('Quiz.getStuQuizDetail', postData, 'Loading...')
+      app.request('Quiz.getQuizQues', postData, 'Loading...')
       .then((res) => {
-        for (var i = 0; i < res.data.data.length; i++) {
-          that.quizResultList.push(res.data.data[i].quiz_info)
-        }
-        that.$apply()
-        console.log(that.quizResultList)
-        for (i = 0; i < that.quizResultList.length; i++) {
-          if (that.quizResultList[i].answer === '16') {
-            that.quizResultList[i].correctAnswer = 'A'
-          } else if (that.quizResultList[i].answer === '32') {
-            that.quizResultList[i].correctAnswer = 'B'
-          } else if (that.quizResultList[i].answer === '64') {
-            that.quizResultList[i].correctAnswer = 'C'
-          } else if (that.quizResultList[i].answer === '128') {
-            that.quizResultList[i].correctAnswer = 'D'
-          }
-        }
-        that.$apply()
-        for (i = 0; i < that.quizResultList.length; i++) {
-          if (that.quizResultList[i].stu_submit === '16') {
-            that.quizResultList[i].submitAnswer = 'A'
-          } else if (that.quizResultList[i].stu_submit === '32') {
-            that.quizResultList[i].submitAnswer = 'B'
-          } else if (that.quizResultList[i].stu_submit === '64') {
-            that.quizResultList[i].submitAnswer = 'C'
-          } else if (that.quizResultList[i].stu_submit === '128') {
-            that.quizResultList[i].submitAnswer = 'D'
+        that.quizList = res.data.data
+        for (var i = 0; i < that.quizList.length; i++) {
+          if (that.quizList[i].answer === '16') {
+            that.quizList[i].correctAnswer = 'A'
+          } else if (that.quizList[i].answer === '32') {
+            that.quizList[i].correctAnswer = 'B'
+          } else if (that.quizList[i].answer === '64') {
+            that.quizList[i].correctAnswer = 'C'
+          } else if (that.quizList[i].answer === '128') {
+            that.quizList[i].correctAnswer = 'D'
           }
         }
         that.$apply()

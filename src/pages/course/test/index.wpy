@@ -116,8 +116,10 @@ export default class testIndex extends wepy.page {
       var haveSubmit = e.currentTarget.dataset.havesubmit
       if (e.currentTarget.dataset.gmtend >= timestamp && haveSubmit === 0) {
         that.$navigate('./testDetail?idQuiz=' + e.currentTarget.dataset.idquiz)
-      } else {
+      } else if (haveSubmit === 1) {
         that.$navigate('./testResult?idQuiz=' + e.currentTarget.dataset.idquiz + '&idUser=' + idUser)
+      } else {
+        that.$navigate('./testResult2?idQuiz=' + e.currentTarget.dataset.idquiz)
       }
     }
   }

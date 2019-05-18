@@ -34,20 +34,23 @@ page {
   line-height: 80rpx;
 }
 .btn{
-    display: block;
-    /* width: 23.3%; */
-    height: 80rpx;
-    /* margin:  auto; */
-    background: #fed835;
-    border-radius: 10rpx;
-    text-align: center;
-    font-size: 40rpx;
-    color: #3d3d3c;
+  display: block;
+  /* width: 23.3%; */
+  height: 80rpx;
+  /* margin:  auto; */
+  background: #fed835;
+  border-radius: 10rpx;
+  text-align: center;
+  font-size: 40rpx;
+  color: #3d3d3c;
 }
 .icon{
   width:60rpx;
   height:60rpx;
   margin-left: 445rpx;
+}
+.text{
+  color: cornflowerblue;
 }
 </style>
 
@@ -72,8 +75,8 @@ page {
   </swiper>
   </view>
   <view style="display:inline;position:fixed;bottom:0rpx;background-color:white;width:100%;height:100rpx;">
-    <view @tap="previous" wx:if="{{first}}" style="float:left;margin-left:30rpx;line-height:100rpx;">上一题</view>
-    <view @tap="next" wx:if="{{end}}" style="float:right;margin-right:30rpx;line-height:100rpx;">下一题</view>
+    <view @tap="previous" wx:if="{{first}}" style="float:left;margin-left:30rpx;line-height:100rpx;" class="text">上一题</view>
+    <view @tap="next" wx:if="{{end}}" style="float:right;margin-right:30rpx;line-height:100rpx;" class='text'>下一题</view>
   </view>
 </template>
 
