@@ -41,7 +41,7 @@
 <template>
   <dialog />
   <view class="border">
-    <image src="./../../public/images/trip.png" class="images"></image>
+    <image src="http://dataplatform-physicalflower.stor.sinaapp.com/trip.png" class="images"></image>
   </view>
   <view class="page__bd">
     <view style="margin-top:20rpx;margin-left:20rpx;">当前课程号:{{idCourse}}</view>
@@ -76,15 +76,15 @@ export default class Index extends wepy.page {
   }
   data = {
     grids: [ // id顺序是乱的，注意一下
-      { id: '1', name: '签到', img: './../../public/images/signin.png' },
-      { id: '2', name: '课后作业', img: './../../public/images/homework.png' },
-      { id: '3', name: '随堂测试', img: './../../public/images/quiz.png' }
+      { id: '1', name: '签到', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/signin.png' },
+      { id: '2', name: '课后作业', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/homework.png' },
+      { id: '3', name: '随堂测试', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/quiz.png' }
     ],
     grids2: [
-      { id: '4', name: '资料下载', img: './../../public/images/download.png' },
-      { id: '5', name: '平台互动', img: './../../public/images/comment.png' },
-      { id: '6', name: '加入课程', img: './../../public/images/join.png' },
-      { id: '7', name: '自由练习', img: './../../public/images/exercise.png' }
+      { id: '4', name: '资料下载', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/download.png' },
+      { id: '5', name: '平台互动', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/comment.png' },
+      { id: '6', name: '加入课程', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/join.png' },
+      { id: '7', name: '自由练习', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/exercise.png' }
     ],
     idCourse: 0
   }

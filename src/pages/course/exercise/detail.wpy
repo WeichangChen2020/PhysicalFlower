@@ -115,10 +115,10 @@ export default class my extends wepy.page {
   methods = {
     image(e) {
       let that = this
-      if (that.src === '../../../public/images/unlock.png') {
-        that.src = '../../../public/images/lock.png'
-      } else if (that.src === '../../../public/images/lock.png') {
-        that.src = '../../../public/images/unlock.png'
+      if (that.src === 'http://dataplatform-physicalflower.stor.sinaapp.com/unlock.png') {
+        that.src = 'http://dataplatform-physicalflower.stor.sinaapp.com/lock.png'
+      } else if (that.src === 'http://dataplatform-physicalflower.stor.sinaapp.com/lock.png') {
+        that.src = 'http://dataplatform-physicalflower.stor.sinaapp.com/unlock.png'
       }
     },
     previous() {

@@ -21,7 +21,7 @@
 }
 .btn-area {
   width: 80%;
-  background-color: #b39ddb;
+  background: linear-gradient(150deg, #d188fb, #9587f8, #558bf7); 
   color: white;
 }
 </style>

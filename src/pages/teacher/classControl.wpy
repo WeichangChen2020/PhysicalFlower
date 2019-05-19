@@ -51,12 +51,23 @@ button {
   color:#000000;
   background-color:#F8F8F8;
 }
-
+.bg {
+  background-repeat: no-repeat;
+  height:250rpx;
+  background-size: contain;
+  background-image: url("http://dataplatform-physicalflower.stor.sinaapp.com/bg2.png");
+  display: flex;
+  flex-direction: column
+}
+.head {
+  color:white;
+  margin-left:30rpx;
+}
 </style>
 <template>
 <view class="kai-content">
-    <view class="padding-10">
-      <view class="head" style="font-size:35rpx;font-weight:bold">课程id：{{idCourse}}</view>
+    <view class="bg">
+      <view class="head" style="font-size:35rpx;font-weight:bold;padding-top:20rpx;">课程id：{{idCourse}}</view>
       <view class="head" style="font-size:35rpx;font-weight:bold">课程名称：{{courseName}}</view>
        <view class="head" style="font-size:35rpx;font-weight:bold">加入人数：{{count}}</view>
     </view>
@@ -114,7 +125,7 @@ button {
         </view>
       </folder4>
     </view>
-    <button class='weui-btn' type='warn' @tap="delCourse">删除课程</button>
+    <button class='weui-btn' type='warn' @tap="delCourse" style="width:69%;">删除课程</button>
   </view>
 </template>
 <script>

@@ -33,14 +33,14 @@ page {
   <toast />
  <view>课程学生</view>
      <view class="page__bd">
-        <view class="weui-grids">
+        <view class="weui-grids" @longpress='ban'>
             <block wx:for="{{courseStu}}" wx:key="*this">
                 <navigator url="" class="weui-grid" hover-class="weui-grid_active">
-                    <image class="weui-grid__icon" src="{{item.avatarUrl}}" />
+                    <image class="weui-grid__icon" src="{{item.avatarUrl}}" mode="widthFix"/>
                     <view class="weui-grid__label">{{item.name}}</view>
-                     <!-- <view class="weui-grid__label">{{item.stunum}}</view> -->
+                     <view class="weui-grid__label">{{item.stuNum}}</view>
                      <view class="weui-grid__label">{{item.stunum}}</view>
-                    <button @tap='ban' class='button' data-idUser="{{item.idUser}}">删除</button>
+                    <!-- <button @tap='ban' class='button' data-idUser="{{item.idUser}}">删除</button> -->
                 </navigator>
             </block>
         </view>
@@ -57,7 +57,7 @@ page {
       'toast': Toast
     }
     config = {
-      navigationBarTitleText: '已加入学生'
+      navigationBarTitleText: '课程学生'
     }
 
     data = {
@@ -70,40 +70,81 @@ page {
       ban(e) {
         let app = this.$parent
         let that = this
-        let idUser = e.currentTarget.dataset.iduser
-        let postData = {
-          idUser: idUser,
-          idCourse: that.idCourse
-        }
-        app.request('Course.delStuInCourse', postData, 'Loading...')
-        .then((res) => {
-          console.log(res)
-          if (res.data.errCode === 0) {
-            // setTimeout(() => {
-              // that.courseStu = []
-              // that.onLoad({idCourse: that.idCourse}, {courseName: that.courseName})
-            let tmp = []
-            that.courseStu.forEach(element => {
-              if (element.idUser === idUser) {
-                // 只会跳出当前循环，不会中断整个函数
-                return
+        wx.showModal({
+          title: '删除学生',
+          content: '您确定要删除学生吗？',
+          showCancel: true,
+          cancelText: '取消',
+          cancelColor: '#000000',
+          confirmText: '确定',
+          confirmColor: '#d32f2f',
+          success: (result) => {
+            if (result.confirm) {
+              let idUser = e.currentTarget.dataset.iduser
+              let postData = {
+                idUser: idUser,
+                idCourse: that.idCourse
               }
-              tmp.push(element)
-            })
-            that.courseStu = tmp
-            that.$apply()
-            // }, 800)
-            const options = {
-              content: res.data.errCode === 0 ? '删除成功' : '请稍后重试！',
-              position: 'middle',
-              duration: 2000,
-              type: res.data.errCode === 0 ? 'success' : 'warning'
+              app.request('Course.delStuInCourse', postData, 'Loading...')
+              .then((res) => {
+                if (res.data.errCode === 0) {
+                  let tmp = []
+                  that.courseStu.forEach(element => {
+                    if (element.idUser === idUser) {
+                      // 只会跳出当前循环，不会中断整个函数
+                      return
+                    }
+                    tmp.push(element)
+                  })
+                  that.courseStu = tmp
+                  const options = {
+                    content: res.data.errCode === 0 ? '删除成功' : '请稍后重试！',
+                    position: 'middle',
+                    duration: 2000,
+                    type: res.data.errCode === 0 ? 'success' : 'warning'
+                  }
+                  that.$invoke('toast', 'show', options)
+                  that.$apply()
+                } else {
+                  app.toast('请稍后再试！')
+                }
+              })
             }
-            that.$invoke('toast', 'show', options)
-          } else {
-            app.toast('请稍后再试！')
           }
         })
+        // let idUser = e.currentTarget.dataset.iduser
+        // let postData = {
+        //   idUser: idUser,
+        //   idCourse: that.idCourse
+        // }
+        // app.request('Course.delStuInCourse', postData, 'Loading...')
+        // .then((res) => {
+        //   console.log(res)
+        //   if (res.data.errCode === 0) {
+        //     // setTimeout(() => {
+        //       // that.courseStu = []
+        //       // that.onLoad({idCourse: that.idCourse}, {courseName: that.courseName})
+        //     let tmp = []
+        //     that.courseStu.forEach(element => {
+        //       if (element.idUser === idUser) {
+        //         // 只会跳出当前循环，不会中断整个函数
+        //         return
+        //       }
+        //       tmp.push(element)
+        //     })
+        //     that.courseStu = tmp
+        //     that.$apply()
+        //     const options = {
+        //       content: res.data.errCode === 0 ? '删除成功' : '请稍后重试！',
+        //       position: 'middle',
+        //       duration: 2000,
+        //       type: res.data.errCode === 0 ? 'success' : 'warning'
+        //     }
+        //     that.$invoke('toast', 'show', options)
+        //   } else {
+        //     app.toast('请稍后再试！')
+        //   }
+        // })
       }
     }
 

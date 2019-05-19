@@ -82,7 +82,7 @@
                 <!-- <block wx:for="{{files}}" wx:key="*this"> -->
                   <block wx:if="{{files[index] !== undefined}}">
                   <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
-                    <image class="weui-uploader__img" src="{{files[index]}}" mode="aspectFill" />
+                    <image class="weui-uploader__img" src="{{files[index]}}" mode="widthFix" style="width:90%" />
                   </view>
                   </block>
                 <!-- </block> -->

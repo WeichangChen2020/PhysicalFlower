@@ -127,7 +127,7 @@ export default class myInfo extends wepy.page {
         cancelText: '取消',
         cancelColor: '',
         confirmText: '确定',
-        confirmColor: '#f8bbd0',
+        confirmColor: '#d32f2f',
         success: function (res) {
           if (res.confirm) {
             wx.navigateTo({ url: `./register` })

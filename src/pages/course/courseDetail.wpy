@@ -36,10 +36,10 @@ canvas {
   justify-content: center;
 }
 .con{
-  margin-top: 180rpx;
+  margin-top: 150rpx;
 }
 .con2{
-  margin-top: 150rpx;
+  margin-top: 100rpx;
   justify-content:center;
 }
 .con3{
@@ -54,7 +54,7 @@ width:250rpx;
 height:170rpx;
 }
 .title{
-  margin-top: 60rpx
+  margin-top: 50rpx
 }
 </style>
 <template>
@@ -62,7 +62,7 @@ height:170rpx;
   <view class="page__bd">
     <view class="con2">
     <view class='con3'>
-    <image src='{{logo}}' class='icon' />
+    <image src='{{logo}}' class='icon' mode="widthFix" />
     </view>
     <view class='title'>课程名称：{{courseName}}</view>
     <view class='title'>创建者：{{creater}}</view>
