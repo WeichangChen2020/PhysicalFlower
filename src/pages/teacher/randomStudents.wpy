@@ -1,11 +1,4 @@
 <style type="less">
-.con2{
-  margin-top: 150rpx;
-  justify-content: center; 
-}
-.title{
-  margin-top: 60rpx
-}
 .container{
   align-items: center;
   justify-content: center;  
@@ -15,22 +8,28 @@
   text-align: center;
 }
 .icon{
-margin-left: 250rpx;
+margin-left: 225rpx;
 display:flex;
 justify-content:center;
 overflow:hidden;
 width:250rpx;
-height:170rpx;
 }
 </style>
 <template>
 <view class="page__bd">
-    <view class="con2">
-    <image src='{{chooseStuInfo.avatarUrl}}' class='icon' mode="widthFix" />
-    <view class='title' wx:if="{{show2}}">姓名：{{chooseStuInfo.name}}</view>
-    <view class='title'  wx:if="{{show2}}">学号：{{chooseStuInfo.stuNum}}</view>
+  <view style="display:flex;justify-content:center;">
+    <view style="height:850rpx;width:90%;overflow:hidden;border-radius:20rpx;background-color:white;border: #C0C0C0 solid 5rpx;box-shadow:0px 2px 4px 2px #DDDDDD;display:flex;flex-direction:column;justify-content:center;margin-top:30rpx;">
+      <view style="position:fixed;top:25px;left:205rpx;" class="bg">
+        <view>课程号：{{idCourse}}</view>
+        <view>课程名称：{{courseName}}</view>
+        <view>加入人数：{{count}}</view>
+      </view>
+      <image src='{{avatarUrl}}' class='icon' mode="widthFix" style="margin-top:80rpx;"/>
+      <view style="margin-top:60rpx;">姓名：{{name}}</view>
+      <view style="margin-top:60rpx;">学号：{{stuNum}}</view>
     </view>
-  <button @tap="random">
+  </view>
+  <button @tap="random" class="button">
     <view class = "container">
      <loading wx:if="{{show}}" type="circle" size="big"/>
      <text>点名</text>
@@ -47,19 +46,18 @@ export default class signinCreat extends wepy.page {
     loading: Loading
   }
   config ={
-    backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: '随机点名',
-    navigationBarTextStyle: 'black'
+    navigationBarTitleText: '随机点名'
   }
   // 可用于页面模板绑定的数据
   data = {
     idCourse: 0,
     classStuInfo: [],
     count: 0,
-    chooseStuInfo: {},
     show: false,
-    show2: false
+    name: '???',
+    stuNum: '???',
+    courseName: '',
+    avatarUrl: ''
   }
 
   // 事件处理函数(集中保存在methods对象中)
@@ -68,7 +66,9 @@ export default class signinCreat extends wepy.page {
       let that = this
       setTimeout(() => {
         var num = Math.floor(Math.random() * that.count)
-        that.chooseStuInfo = that.classStuInfo[num]
+        that.name = that.classStuInfo[num].name
+        that.stuNum = that.classStuInfo[num].stuNum
+        that.avatarUrl = that.classStuInfo[num].avatarUrl
         that.show = false
         that.$apply()
       }, 1000)
@@ -83,6 +83,7 @@ export default class signinCreat extends wepy.page {
     let app = this.$parent
     let that = this
     that.idCourse = e.idCourse
+    that.courseName = e.courseName
     var postData = {
       idCourse: that.idCourse
     }
@@ -96,8 +97,6 @@ export default class signinCreat extends wepy.page {
           }
           that.count = that.classStuInfo.length
           that.$apply()
-          console.log(that.classStuInfo)
-          console.log(that.count)
         } else if (res.data.errCode === 101) {
           app.modal('还没有学生加入', '注意')
         } else {

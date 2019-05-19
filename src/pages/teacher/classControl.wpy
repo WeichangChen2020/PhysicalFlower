@@ -67,7 +67,7 @@ button {
 <template>
 <view class="kai-content">
     <view class="bg">
-      <view class="head" style="font-size:35rpx;font-weight:bold;padding-top:20rpx;">课程id：{{idCourse}}</view>
+      <view class="head" style="font-size:35rpx;font-weight:bold;padding-top:20rpx;">课程号：{{idCourse}}</view>
       <view class="head" style="font-size:35rpx;font-weight:bold">课程名称：{{courseName}}</view>
        <view class="head" style="font-size:35rpx;font-weight:bold">加入人数：{{count}}</view>
     </view>
