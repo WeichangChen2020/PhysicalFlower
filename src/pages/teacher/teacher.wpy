@@ -1,35 +1,42 @@
 <style type="less">
 page{
-  width: 100%;
-  background-color: #f2f2f2;
+  /* width: 100%; */
+  height: 100%;
+  /* background-color: #f2f2f2; */
+  background-image: url("http://dataplatform-physicalflower.stor.sinaapp.com/bg3.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .head{
-  padding:45rpx;
-  text-align:center;
-  color:#777;
+  height: 100rpx;
+  color:white;
   font-size:35rpx;
-
+  display:flex;
+  justify-content:center;
+  margin-top:45rpx;
 }
 .border{
   display: flex;
   flex-direction: row;
-  background-color: #fff;
+  /* background-color: #fff; */
   border-radius: 20rpx;
   padding: 20rpx;
   margin: 40rpx;
-  height: 120rpx;
+  background-image: url("http://dataplatform-physicalflower.stor.sinaapp.com/bg4.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 .icon{
   width:120rpx;
   height:120rpx;
-  margin:0rpx;
+  margin-left:25rpx;
+  margin-top:32rpx;
 }
 .contain{
   padding-left:20rpx;
   line-height:55rpx;
   font-size:36rpx;
   margin-left:35rpx;
-
 }
 .subtitle{
   color:#aaa;
@@ -46,22 +53,17 @@ width:100rpx;
 height:100rpx;
 margin-left:10rpx;
 }
-.con {
-justify-content:center;
-display:flex;
-width: 120rpx;
+.title{
+  margin-top: 25rpx;
 }
 </style>
 <template>
 <view class='head'>
-  创建者：
-  <open-data class='userNickname' type="userNickName"></open-data>
+  创建者：<open-data class='userNickname' type="userNickName"></open-data>
 </view>
 
 <view wx:if='{{errCode === 0}}' wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">
-  <view class='con'>
   <image src='{{item.logo}}' class='icon'/>
-  </view>
   <view class='contain'>
     <view class='title'>课程名称：{{item.courseName}}</view>
     <text class='subtitle'>课程号：{{item.idCourse}}</text>

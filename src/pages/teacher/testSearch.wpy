@@ -1,4 +1,8 @@
 <style type="less">
+page{
+  background-color: #f6f6f6;
+  height: 100%;
+}
 .title{
 font-size:31rpx;
 margin-left: 60rpx;
