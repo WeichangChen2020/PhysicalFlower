@@ -4,7 +4,7 @@ page{
   background-color: #f2f2f2;
 }
 .head{
-  padding:55rpx;
+  padding:45rpx;
   text-align:center;
   color:#777;
   font-size:35rpx;
@@ -53,10 +53,9 @@ width: 120rpx;
 }
 </style>
 <template>
-  <view class='head'>
+<view class='head'>
   创建者：
   <open-data class='userNickname' type="userNickName"></open-data>
-
 </view>
 
 <view wx:if='{{errCode === 0}}' wx:for='{{courseInfo}}' class='border' wx:key='*this' @tap='tap' data-courseName="{{item.courseName}}" data-idCourse="{{item.idCourse}}" data-questionSet="{{item.questionSet}}" data-count="{{item.count}}">

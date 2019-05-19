@@ -26,7 +26,7 @@ height:170rpx;
 <template>
 <view class="page__bd">
     <view class="con2">
-    <image src='{{chooseStuInfo.avatarUrl}}' class='icon' />
+    <image src='{{chooseStuInfo.avatarUrl}}' class='icon' mode="widthFix" />
     <view class='title' wx:if="{{show2}}">姓名：{{chooseStuInfo.name}}</view>
     <view class='title'  wx:if="{{show2}}">学号：{{chooseStuInfo.stuNum}}</view>
     </view>
