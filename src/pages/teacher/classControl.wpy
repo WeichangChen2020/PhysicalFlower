@@ -1,5 +1,12 @@
-// 按钮的小图标，界面颜色的调整
 <style type="less">
+page{
+  width: 100%;
+  /* height: 100%; */
+  background-color: #f6f6f6;
+  background-image: url("http://dataplatform-physicalflower.stor.sinaapp.com/bg6.jpg");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
 .btn1 {
   width: 75%;
   margin-top: 20rpx;
@@ -63,9 +70,19 @@ button {
   color:white;
   margin-left:30rpx;
 }
+.end {
+  margin-top: 40rpx;
+}
+.icon2{
+  position:fixed;
+  right:25px;
+  bottom:30px;
+  margin-left:10rpx;
+}
 </style>
 <template>
-<view class="kai-content">
+<view>
+<!-- <view class="kai-content"> -->
     <view class="bg">
       <view class="head" style="font-size:35rpx;font-weight:bold;padding-top:20rpx;">课程号：{{idCourse}}</view>
       <view class="head" style="font-size:35rpx;font-weight:bold">课程名称：{{courseName}}</view>
@@ -125,7 +142,8 @@ button {
         </view>
       </folder4>
     </view>
-    <button class='weui-btn' type='warn' @tap="delCourse" style="width:69%;">删除课程</button>
+  
+  <image src="http://dataplatform-physicalflower.stor.sinaapp.com/warning.png"  class='icon2' @tap="delCourse"  mode="widthFix" style="width:80rpx;"></image>
   </view>
 </template>
 <script>
