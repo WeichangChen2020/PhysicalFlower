@@ -66,10 +66,10 @@ export default class IndexDetail extends wepy.page {
     }
   }
   onLoad() {
-  }
-  onShow() {
     let that = this
     that.getCommentList()
+  }
+  onShow() {
   }
   getCommentList() {
     let app = this.$parent

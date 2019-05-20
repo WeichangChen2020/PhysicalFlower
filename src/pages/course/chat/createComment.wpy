@@ -18,7 +18,7 @@
 }
 </style>
 <template>
-<view class="border">
+<view class="border" style="text-align:center;">
     <veiw>标题</veiw>
     <input maxlength="15" placeholder="标题2-15字" confirm-type="done" confirm-hold="true" @input="title"/>
 </view>
@@ -28,7 +28,7 @@
         <view class="ran">{{count}}/300</view>
     </textarea>
 </view>
-<button @tap="submit">提交</button>
+<button @tap="submit" class="button">提交</button>
 </template>
 <script>
 import wepy from 'wepy'
@@ -76,7 +76,7 @@ export default class IndexDetail extends wepy.page {
             app.toast('发帖成功！')
             setTimeout(() => {
               wx.navigateBack({
-                delta: 1
+                delta: 2
               })
             }, 1000)
           }
