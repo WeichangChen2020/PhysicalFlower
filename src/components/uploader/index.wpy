@@ -76,11 +76,13 @@ export default class Uploader extends wepy.component {
           })
           if (that.local) {
             wx.hideLoading()
+            console.log('local')
             that.$emit('refresh-img-list', filePath)
           } else {
             qiniuUploader.upload(filePath, (res) => {
               wx.hideLoading()
               // 上传成功回调
+              // console.log(res.imageURL)
               that.$emit('refresh-img-list', res.imageURL)
             }, (error) => {
               wx.hideLoading()

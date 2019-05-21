@@ -195,6 +195,10 @@ export default class my extends wepy.page {
     that.getQuestionList()
   }
 
+  onHide() {
+    console.log('quit')
+  }
+
   getQuestionList() {
     let app = this.$parent
     let that = this
