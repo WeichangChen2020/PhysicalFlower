@@ -118,18 +118,18 @@ export default class extends wepy.app {
       enablePullDownRefresh: true
     },
     tabBar: {
-      selectedColor: '#90caf9',
+      selectedColor: '#7996FF',
       list: [
         {
           pagePath: 'pages/course/index',
-          selectedIconPath: 'public/images/icon_帮助文档 (1).png',
-          iconPath: 'public/images/icon_帮助文档.png',
+          selectedIconPath: 'public/images/course-s.png',
+          iconPath: 'public/images/course.png',
           text: '课程'
         },
         {
           pagePath: 'pages/my/my',
-          selectedIconPath: 'public/images/icon_账号 (1).png',
-          iconPath: 'public/images/icon_账号.png',
+          selectedIconPath: 'public/images/my-s.png',
+          iconPath: 'public/images/my.png',
           text: '我的'
         }
       ]

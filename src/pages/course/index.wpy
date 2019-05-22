@@ -41,7 +41,7 @@
 <template>
   <dialog />
   <view class="border">
-    <image src="http://dataplatform-physicalflower.stor.sinaapp.com/trip.png" class="images"></image>
+    <image src="http://dataplatform-physicalflower.stor.sinaapp.com/trip.png" class="images" mode="widthFix"></image>
   </view>
   <view class="page__bd">
     <view style="margin-top:20rpx;margin-left:20rpx;">当前课程号:{{idCourse}}</view>
