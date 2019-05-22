@@ -26,6 +26,8 @@
   line-height: 60rpx;
   color: #b95;
   padding: 20rpx 20rpx 40rpx 20rpx;
+  box-shadow: 3px 3px 3px gainsboro; 
+
 }
 .border2 {
   display: flex;
@@ -39,6 +41,7 @@
   line-height: 60rpx;
   color: #b95;
   padding: 20rpx 20rpx 40rpx 20rpx;
+  box-shadow: 3px 3px 3px gainsboro; 
 }
 .input {
   margin-top: 30rpx;
@@ -79,6 +82,7 @@ s .flex-list:nth-child(4n) {
 .greeting {
   font-size: 30rpx;
   color: black;
+  font-weight: bold;
 }
 .btn2 {
   border-radious: 40rpx;

@@ -126,12 +126,6 @@ export default class extends wepy.app {
           iconPath: 'public/images/icon_帮助文档.png',
           text: '课程'
         },
-        // {
-        //   pagePath: 'pages/teacher/teacher',
-        //   selectedIconPath: 'public/images/老师 (1).png',
-        //   iconPath: 'public/images/老师.png',
-        //   text: '教师'
-        // },
         {
           pagePath: 'pages/my/my',
           selectedIconPath: 'public/images/icon_账号 (1).png',

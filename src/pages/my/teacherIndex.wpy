@@ -45,7 +45,7 @@ page {
 
 <view class='greeting'>密码</view>
 <view class='input'>
-  <input class='inputCont' bindinput='inp' password type='number' placeholder='请输入密码' placeholder-class='placeholder'  id='pasw'>
+  <input class='inputCont' bindinput='inp' password type='number' placeholder='请输入密码(测试密码8888)' placeholder-class='placeholder'  id='pasw'>
   </input>
 </view>
 
