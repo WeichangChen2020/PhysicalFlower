@@ -47,11 +47,11 @@ page {
     width: 295rpx;
     margin: 20rpx 20rpx 0 20rpx;
     font-size: 30rpx;
-    line-height: 70rpx;
+    line-height: 82rpx;
   }
   .ran {
-    margin-top: 285rpx;
-    margin-left: 600rpx;
+    margin-top: 250rpx;
+    margin-left: 565rpx;
   }
 </style>
 <template>

@@ -133,6 +133,7 @@ export default class my extends wepy.page {
       return false
     },
     change(e) {
+      let app = this.$parent
       let that = this
       that.sub = 0
       that.current = e.detail.current
@@ -151,6 +152,7 @@ export default class my extends wepy.page {
         that.end = true
       }
       console.log(that.current)
+      app.request()
     },
     tap(e) {
       let tmp = {}
