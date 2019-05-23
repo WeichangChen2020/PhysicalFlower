@@ -1,7 +1,7 @@
 <style lang="less">
 </style>
 <template>
- <text>物里看花是一款辅助大物教学的小程序......</text>
+ <image src='http://dataplatform-physicalflower.stor.sinaapp.com/int.png' mode="widthFix" style="width:100%"></image>
 </template>
 
 <script>
@@ -9,17 +9,10 @@ import wepy from 'wepy'
 
 export default class Index extends wepy.page {
   config = {
-    navigationBarTitleText: '使用帮助'
+    navigationBarTitleText: '使用帮助',
+    navigationBarBackgroundColor: '#935887',
+    navigationBarTextStyle: 'white'
   }
-  components = {};
-
-  data = {};
-
-  computed = {};
-
-  methods = {};
-
-  events = {};
 
   onLoad() {}
 }
