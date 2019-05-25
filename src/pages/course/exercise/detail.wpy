@@ -103,13 +103,12 @@ export default class my extends wepy.page {
       {id: '64', name: 'C', color: 2, class: 'btn'},
       {id: '128', name: 'D', color: 3, class: 'btn'}
     ],
-    exerciseList: [],
     sub: 0,
     current: 0,
     first: false,
     end: true,
-    src: '../../../public/images/unlock.png',
-    collectionList: []
+    src: 'http://dataplatform-physicalflower.stor.sinaapp.com/unlock.png',
+    post: {}
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
@@ -126,8 +125,19 @@ export default class my extends wepy.page {
       that.current = that.current - 1
     },
     next() {
+      let app = this.$parent
       let that = this
+      let collection = 0
       that.current = that.current + 1
+      if (that.src === 'http://dataplatform-physicalflower.stor.sinaapp.com/unlock.png') {
+        collection = 0
+      } else if (that.src === 'http://dataplatform-physicalflower.stor.sinaapp.com/lock.png') {
+        collection = 1
+      }
+      that.post.collection = collection
+      if (that.post.submit !== undefined) {
+        app.request('Exercise.submitExercise', that.post, 'Loading...')
+      }
     },
     stopTouchMove() {
       return false
@@ -135,9 +145,8 @@ export default class my extends wepy.page {
     change(e) {
       let app = this.$parent
       let that = this
-      that.sub = 0
       that.current = e.detail.current
-      that.src = '../../../public/images/unlock.png'
+      that.src = 'http://dataplatform-physicalflower.stor.sinaapp.com/unlock.png'
       for (var i = 0; i < that.girds.length; i++) {
         that.girds[i].class = 'btn'
       }
@@ -151,43 +160,77 @@ export default class my extends wepy.page {
       } else {
         that.end = true
       }
-      console.log(that.current)
-      app.request()
+      that.post = []
+      var postData = {
+        idUser: app.globalData.userInfo.idUser,
+        idQues: that.questionList[that.current].idQues
+      }
+      app.request('Exercise.getExerciseRecord', postData, 'Loading...')
+      .then((res) => {
+        if (res.data.errCode === 0) {
+          var len = res.data.data.data.length - 1
+          var info = res.data.data.data[len]
+          console.log(info)
+          if (info.collection === '1') {
+            that.src = 'http://dataplatform-physicalflower.stor.sinaapp.com/lock.png'
+          } else {
+            that.src = 'http://dataplatform-physicalflower.stor.sinaapp.com/unlock.png'
+          }
+          if (info.result === '1') {
+            for (var i = 0; i < 4; i++) {
+              if (that.girds[i].id === info.submit) {
+                that.girds[i].class = 'list.success'
+              }
+            }
+          } else if (info.result === '0') {
+            for (i = 0; i < 4; i++) {
+              if (that.girds[i].id === info.submit) {
+                that.girds[i].class = 'list.error'
+              } else if (that.girds[i].id === info.answer) {
+                that.girds[i].class = 'list.success'
+              }
+            }
+            that.$apply()
+          }
+        } else if (res.data.errCode === 1) {
+          console.log('meiyoujilu')
+        }
+      })
+      that.$apply()
     },
     tap(e) {
-      let tmp = {}
+      let app = this.$parent
       let that = this
-      if (that.sub === 0) {
-        tmp.idQues = e.currentTarget.dataset.idques
-        tmp.submit = e.currentTarget.dataset.submit
-        tmp.answer = e.currentTarget.dataset.answer
-        if (tmp.submit === tmp.answer) {
-          tmp.result = 1
-        } else {
-          tmp.result = 0
-        }
-        if (tmp.result === 1) {
-          for (var i = 0; i < that.girds.length; i++) {
-            if (that.girds[i].id === tmp.answer) {
-              that.girds[i].class = 'list.success'
-            }
-          }
-        } else if (tmp.result === 0) {
-          for (i = 0; i < that.girds.length; i++) {
-            if (that.girds[i].id === tmp.submit) {
-              that.girds[i].class = 'list.error'
-            } else if (that.girds[i].id === tmp.answer) {
-              that.girds[i].class = 'list.success'
-            }
-          }
-        }
-        that.$apply()
-        that.exerciseList.push(tmp)
-        that.sub = that.sub + 1
+      let answer = e.currentTarget.dataset.answer
+      let submit = e.currentTarget.dataset.submit
+      let idQues = e.currentTarget.dataset.idques
+      let result = 0
+      if (answer === submit) {
+        result = 1
       } else {
-        return false
+        result = 0
       }
-      console.log(that.exerciseList)
+      if (result === 1) {
+        for (var i = 0; i < 4; i++) {
+          if (that.girds[i].id === submit) {
+            that.girds[i].class = 'list.success'
+          }
+        }
+      } else if (result === 0) {
+        for (i = 0; i < 4; i++) {
+          if (that.girds[i].id === submit) {
+            that.girds[i].class = 'list.error'
+          } else if (that.girds[i].id === answer) {
+            that.girds[i].class = 'list.success'
+          }
+        }
+      }
+      that.post = {
+        idUser: app.globalData.userInfo.idUser,
+        idQues: idQues,
+        submit: submit,
+        result: result
+      }
     }
   }
 
@@ -195,10 +238,6 @@ export default class my extends wepy.page {
     let that = this
     that.chapter = e.id
     that.getQuestionList()
-  }
-
-  onHide() {
-    console.log('quit')
   }
 
   getQuestionList() {
@@ -212,7 +251,6 @@ export default class my extends wepy.page {
     .then((res) => {
       if (res.data.errCode === 0) {
         that.questionList = res.data.data.data
-        console.log(that.questionList)
         that.$apply()
       } else {
         app.toast('请稍后重试！')
