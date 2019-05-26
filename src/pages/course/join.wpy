@@ -40,7 +40,7 @@
   <input name="password" password="{{true}}" class='ipt' focus="{{isFocus}}" bindinput="inputing" type="number" value="{{Value}}"></input>
  
   <view>
-    <button class="btn-area" formType="submit">Submit</button>
+    <button class="btn-area" formType="submit">查找课程</button>
   </view>
  
 </form>

@@ -40,7 +40,7 @@ page {
 }
 
   .btn {
-    background-color: #f7536b;
+    background-color: #D32F2F;
     border: #eee solid 2rpx;
     border-radius: 100rpx;
     color: white;
