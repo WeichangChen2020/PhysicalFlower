@@ -123,6 +123,7 @@ export default class my extends wepy.page {
     previous() {
       let that = this
       that.current = that.current - 1
+      that.$apply()
     },
     next() {
       let app = this.$parent
@@ -138,6 +139,7 @@ export default class my extends wepy.page {
       if (that.post.submit !== undefined) {
         app.request('Exercise.submitExercise', that.post, 'Loading...')
       }
+      that.$apply()
     },
     stopTouchMove() {
       return false
@@ -190,13 +192,12 @@ export default class my extends wepy.page {
                 that.girds[i].class = 'list.success'
               }
             }
-            that.$apply()
           }
+          that.$apply()
         } else if (res.data.errCode === 1) {
           console.log('meiyoujilu')
         }
       })
-      that.$apply()
     },
     tap(e) {
       let app = this.$parent
@@ -233,11 +234,47 @@ export default class my extends wepy.page {
       }
     }
   }
-
   onLoad(e) {
     let that = this
     that.chapter = e.id
     that.getQuestionList()
+  }
+
+  onShow() {
+    let that = this
+    wx.getStorage({
+      key: that.chapter,
+      success(res) {
+        that.current = res.data
+        if (that.current === 0) {
+          that.first = false
+        } else {
+          that.first = true
+        }
+        if (that.current === that.questionList.length - 1) {
+          that.end = false
+        } else {
+          that.end = true
+        }
+      }
+    })
+  }
+
+  onUnload(e) {
+    let that = this
+    let ch = ''
+    ch = that.chapter.toString()
+    if (that.current === that.questionList.length - 1) {
+      wx.setStorage({
+        key: ch,
+        data: that.current
+      })
+    } else {
+      wx.setStorage({
+        key: ch,
+        data: that.current + 1
+      })
+    }
   }
 
   getQuestionList() {
