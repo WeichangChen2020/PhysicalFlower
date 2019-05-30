@@ -57,7 +57,7 @@
     <view style="margin-top:20rpx;margin-left:20rpx;">课后学习</view>
      <view class="weui-grids">
         <block wx:for="{{grids2}}" wx:item="item" wx:key="*this">
-            <view class="weui-grid" hover-class="weui-grid_active" id="{{item.id}}" @tap="tap">
+            <view class="weui-grid" hover-class="weui-grid_active" id="{{item.id}}" @tap="tap"  style="width:30%">
               <image src="{{item.img}}" class="icon"/>
               <view class="weui-grid__label">{{item.name}}</view>
             </view>
@@ -81,7 +81,7 @@ export default class Index extends wepy.page {
       { id: '3', name: '随堂测试', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/quiz.png' }
     ],
     grids2: [
-      { id: '4', name: '资料下载', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/download.png' },
+      // { id: '4', name: '资料下载', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/download.png' },
       { id: '5', name: '平台互动', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/comment.png' },
       { id: '6', name: '加入课程', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/join.png' },
       { id: '7', name: '自由练习', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/exercise.png' }

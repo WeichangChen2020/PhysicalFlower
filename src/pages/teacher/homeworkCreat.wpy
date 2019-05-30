@@ -178,7 +178,6 @@
         var veg = this.b + '-23:59'
         var gmtTime = new Date(vag.replace(/-/g, '/')).getTime()
         var assessTime = new Date(veg.replace(/-/g, '/')).getTime()
-        console.log()
         var delData = {
           gmtEnd: gmtTime / 1000,
           assessmentEnd: assessTime / 1000,
@@ -186,6 +185,7 @@
           idQuesList: this.idQues,
           idCourse: parseInt(that.idCourse)
         }
+        console.log(delData.g)
         if (isNaN(delData.gmtEnd)) {
           app.toast('检查截止时间')
           return
