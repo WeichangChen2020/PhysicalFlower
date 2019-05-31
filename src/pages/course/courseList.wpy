@@ -29,7 +29,9 @@
       </view>
     </view>
   </view>
-
+ <view class="weui-footer">
+      <view class="weui-footer__text">——我是有底线的——</view>
+  </view>
 </template>
 <script>
 import wepy from 'wepy'
