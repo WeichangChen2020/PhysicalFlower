@@ -81,7 +81,6 @@ export default class Index extends wepy.page {
       { id: '3', name: '随堂测试', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/quiz.png' }
     ],
     grids2: [
-      // { id: '4', name: '资料下载', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/download.png' },
       { id: '5', name: '平台互动', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/comment.png' },
       { id: '6', name: '加入课程', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/join.png' },
       { id: '7', name: '自由练习', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/exercise.png' }
@@ -128,6 +127,7 @@ export default class Index extends wepy.page {
     console.log(JSON.stringify(globalData))
   }
   onShow() {
+    console.log(this.$parent.globalData.activeCourse)
     this.idCourse = this.$parent.globalData.activeCourse
     this.$apply()
     let app = this.$parent

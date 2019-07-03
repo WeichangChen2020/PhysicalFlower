@@ -141,7 +141,7 @@ export default class extends wepy.app {
     loginCode: '', // 判断用户信息是否已完善
     apiUrl: 'https://testet.sinaapp.com/index.php/Gateway/route',
     grant_type: 'authorization_code', // 获取openid的参数，不用改
-    activeCourse: '1', // 主页面的课程id
+    activeCourse: '1091', // 主页面的课程id
     logo: '',
     courseInfo: []
   }

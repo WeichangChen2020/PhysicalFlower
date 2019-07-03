@@ -60,16 +60,15 @@ export default class CourseList extends wepy.page {
 
   // 页面的生命周期函数
   onLoad(e) {
-    console.log(this.$parent.globalData.courseInfo)
-    if (this.refreshTimes === 0 && this.$parent.courseList !== undefined) {
-      // 如果之前已经请求过了，则直接读取（可以少请求一次）
-      this.courseList = this.$parent.globalData.courseList
-    } else {
-      this.getList()
-    }
+    // console.log(this.$parent.globalData.courseInfo)
+    // if (this.refreshTimes === 0 && this.$parent.courseList !== undefined) {
+    //   // 如果之前已经请求过了，则直接读取（可以少请求一次）
+    //   this.courseList = this.$parent.globalData.courseList
+    // } else {
+    this.getList()
+    // }
   }
-  onShow(e) {
-  }
+
   onPullDownRefresh() {
     this.getList()
     wx.stopPullDownRefresh()
