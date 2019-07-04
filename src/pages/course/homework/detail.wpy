@@ -82,7 +82,7 @@
                 <!-- <block wx:for="{{files}}" wx:key="*this"> -->
                   <block wx:if="{{files[index] !== undefined}}">
                   <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
-                    <image class="weui-uploader__img" src="{{files[index]}}" mode="widthFix" style="width:90%" />
+                    <image class="weui-uploader__img" src="{{files[index]}}" mode="widthFix" style="" />
                   </view>
                   </block>
                 <!-- </block> -->
@@ -108,6 +108,7 @@
       homeworkName: '课后作业名称',
       idHomework: 0,
       system_height: 100,
+      ques_count: 0,
       files: [],
       havePic: [],
       inputValue: '',
@@ -117,7 +118,8 @@
       ],
       state: '',
       img_base64: [],
-      imageType: ''
+      imageType: '',
+      submit_count: 0
     };
 
     config = {
@@ -152,6 +154,18 @@
             .request('Homework.submitHomework', delData, 'loading')
             .then(function(e) {
               console.log(e)
+              that.submit_count++
+              if (that.submit_count === that.homeworkInfo.length) {
+                wx.showToast({
+                  title: '全部提交成功'
+                })
+                wx.navigateBack({})
+              } else {
+                wx.showToast({
+                  title: '还未全部提交完全哦，请继续提交剩余题目',
+                  icon: 'none'
+                })
+              }
             })
             .catch(function(e) {
               app.modal(
@@ -276,7 +290,7 @@
                     that.canvasHeight = Math.trunc(res.height / ratio)
                     ratio++
                   }
-                  console.log(that.data.canvasWidth, that.data.canvasHeight)
+                  // console.log(that.data.canvasWidth, that.data.canvasHeight)
                   ctx.drawImage(res.path, 0, 0, that.canvasWidth, that.canvasHeight)
                   ctx.draw()
                   setTimeout(function() {
@@ -291,7 +305,8 @@
                           filePath: res.tempFilePath, // 选择图片返回的相对路径
                           encoding: 'base64', // 编码格式
                           success: res => { // 成功的回调
-                            console.log(res.data)
+                            // console.log(res.data)
+                            console.log('imgiddddd', imgIdd)
                             that.img_base64[imgIdd] = 'data:image/' + that.imageType + ';base64,' + res.data
                             that.$apply()
                           },
@@ -339,6 +354,7 @@
           console.log(e)
           if (e.data.errCode === 0) {
             that.homeworkInfo = e.data.data
+            console.log(that.homeworkInfo)
             for (let i = 0; i < e.data.count; i++) {
               // that.files[i] = []
               wx.getImageInfo({

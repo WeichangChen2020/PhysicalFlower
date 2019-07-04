@@ -121,6 +121,9 @@ bottom:0;
                         if (that.courseStu[j].idUser === e.data.data[i].idUser) {
                           that.courseStu[j].haveSubmit = 1
                           that.courseStu[j].score = e.data.data[i].score
+                          if (e.data.data[i].score < 0) {
+                            that.courseStu[j].score = '未评分'
+                          }
                           // console.log('1')
                         }
                       }

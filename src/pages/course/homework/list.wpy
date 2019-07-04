@@ -117,7 +117,7 @@
               var endTime = new Date(parseInt(e.data.data[i].gmtEnd) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')
               if (parseInt(e.data.data[i].gmtEnd) > (timestamp / 1000)) {
                 that.homeworkInfo[i].homeState = '进行中'
-                if (e.data.data[i].submitCount === 0) {
+                if (e.data.data[i].submitCount === '0') {
                 } else {
                   that.homeworkInfo[i].homeState = '已提交'
                 }
