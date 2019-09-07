@@ -42,7 +42,7 @@ flex-direction:column;
     {{item.name}}
     </view>  
   </block>
-  <button class="button" formType="submit">提交</button>
+  <button class="button" formType="submit">选定章节</button>
   </radio-group>
   </form>
     </view>
@@ -60,10 +60,10 @@ flex-direction:column;
       idCourse: 0,
       page: 1,
       girds: [
-        {id: '1', name: '大学物理上 - 磁学'},
-        {id: '2', name: '大学物理上 - 电磁感应'},
-        {id: '3', name: '大学物理上 - 电学'},
-        {id: '4', name: '大学物理上 - 力学'}
+        // {id: '1', name: '大学物理上 - 磁学'},
+        // {id: '2', name: '大学物理上 - 电磁感应'},
+        // {id: '3', name: '大学物理上 - 电学'},
+        // {id: '4', name: '大学物理上 - 力学'}
       ],
       length: 4
     }
@@ -89,7 +89,6 @@ flex-direction:column;
       let app = this.$parent
       let that = this
       e = JSON.parse(e.data)
-      console.log(e)
       that.courseName = e.courseName
       that.count = e.count
       that.idCourse = e.idCourse
@@ -97,10 +96,8 @@ flex-direction:column;
         page: that.page,
         idCourse: that.idCourse
       }
-      console.log(postData)
       app.request('Question.getChapterList', postData, 'Loading...')
       .then((res) => {
-        console.log(res.data.data)
         if (res.data.errCode === 0) {
           that.girds = []
           that.length = res.data.data.length

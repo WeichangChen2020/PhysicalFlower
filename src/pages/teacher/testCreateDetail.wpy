@@ -11,6 +11,19 @@
   margin-left: 10rpx;
   border-radius: 50%;
 }
+.subBtn {
+  border-radius: 60rpx;
+  font-size: 33rpx;
+  width: 490rpx;
+  height: 80rpx;
+}
+.subBtn:hover{
+  border-radius: 60rpx;
+  font-size: 33rpx;
+  width: 490rpx;
+  height: 80rpx;
+  background-color: rgb(243, 240, 240)
+}
 </style>
 
 <template>
@@ -19,9 +32,9 @@
 	<view>
 		<text class="greetingc">测试截止时间</text>
 	</view>
-<picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="bindTimeChange">
-  <button type="default" class="button" style="margin-top:30rpx;color:white">{{time}}</button>
-</picker>
+  <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="bindTimeChange">
+    <button type="default" class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px'>{{time}}</button>
+  </picker>
  <form @submit= "form">
    <checkbox-group name="questionId" >
       <block wx:for="{{questionInfo}}" wx:for-item="item" wx:key="*this">
@@ -31,7 +44,7 @@
       </view>
     </block>
    </checkbox-group>
-   <button form-type='submit' class="button" style="margin-top:30rpx">发布测试</button>
+  <button form-type='submit' class="button" style="margin-top:30rpx">发布测试</button>
  </form>
 </view>
 </template>

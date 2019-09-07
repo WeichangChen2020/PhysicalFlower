@@ -100,7 +100,7 @@ button {
       </folder1>
 
       <view class="padding-10"></view>
-      <folder2 title="作业" componentId="1" fontClass="font-size:32rpx;font-weight:bold">
+      <folder2 title="课后作业" componentId="1" fontClass="font-size:32rpx;font-weight:bold">
         <view slot="content">
           <button class='btn1'  id="4" @tap='tap'>
             <view>布置作业</view>

@@ -83,7 +83,6 @@ bottom:0;
     methods = {
       showDetail(e) {
         let that = this
-        console.log(e)
         var selectedId = e.currentTarget.dataset.selectedid
         var idUser = e.currentTarget.dataset.iduser
         if (selectedId === 1) {

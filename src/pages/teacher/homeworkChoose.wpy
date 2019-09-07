@@ -1,101 +1,39 @@
 <style>
 .greetingc {
   font-size: 14px;
-  color: gray;
+  color: blueviolet;
   margin: 20rpx 0 10rpx 20rpx;
   display: flex;
   justify-content: center;
+}
+.contain{
+background-color:white;
+border-bottom-left-radius:50rpx;
+border-bottom-right-radius:50rpx;
+border-top-left-radius: 50rpx;
+border-top-right-radius: 50rpx;
+box-shadow:10rpx 10rpx 5px #f2f2f2;
+margin-top:80rpx;
+height:800rpx;
 }
 .icont{
   position: relative;
   margin-left: 10rpx;
   border-radius: 50%;
 }
-.greetingbtn {
-  font-size: 14px;
-  color: gray;
-  margin: 20rpx 0 10rpx 20rpx;
-  background-color: gold;
+view{
+  margin:40rpx;
 }
-.subBtn {
-  border-radius: 60rpx;
-  font-size: 33rpx;
-  width: 490rpx;
-  height: 80rpx;
-}
-.subBtn:hover{
-  border-radius: 60rpx;
-  font-size: 33rpx;
-  width: 490rpx;
-  height: 80rpx;
-  background-color: rgb(243, 240, 240)
-}
-.fake{
-  width: 100%;
-  display: flex;
-  padding: 10px 8px 15px;
-  box-sizing: border-box;
-  line-height: 24px;
-  position: relative;
-  background-color: #fff;
-  color: #333;
-  font-size: 14px;
-  overflow: visible;
-
-}
-.fake_title{
-  flex: 1;
-  max-width: 90px;
-  min-width: 90px;
-  display: flex
-}
-.fake_input{
-  color: #999;
-  overflow: hidden;
-  text-align: right;
-  vertical-align: middle;
-}
-.fake_picker{
-  width: 100%;
-  height: 24px;
-  text-align: left;
-  min-height: 24px;
-  color: #333;
-  line-height: inherit;
-  display: flex;
-  padding-left: 8px;
-}
-
-.fake_botton{
-  color: #fff;
-  background-color: #07c160;
-  border: 1px solid #07c160;
-  position: relative;
-  display: inline-block;
-  box-sizing: border-box;
-  text-align: center;
-  vertical-align: middle;
-  height: 30px;
-  padding: 0 8px;
-  font-size: 12px;
-  line-height: 28px;
+checkbox-group {
+display:flex;
+flex-direction:column;
 }
 </style>
 <template>
 	<view>
 		<text class="greetingc">章节列表</text>
 	</view>
-
-  <view class='fake'>
-    <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
-    <view style='display:flex'>
-        <view class="fake_title">
-          <view style='color:red;margin-right:3px;left:0px'>*</view>当前学期:</view><view class='fake_picker' >{{array[index]}}</view>
-          </view>
-    </picker>
-  </view>
-<!-- 
-  <button class="btn" @tap="tap" style="text-align:left">当前学期：{{idQuestionSet}}</button> -->
+  <view class="contain">
   <form @submit= "form1">
   <radio-group name="chapter">
   <block wx:for="{{chapterInfo}}" wx:item= "item" wx:key="*this">
@@ -104,15 +42,19 @@
       {{item.nameChapter}}
     </view>
   </block>
-  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:10px' plain form-type='submit'>选定章节</button>
+  <button class='button'  form-type='submit'>选定章节</button>
   </radio-group>
   </form>
+  </view>
 </template>
 <script>
   import wepy from 'wepy'
 
   // 通过继承自wepy.page的类创建页面逻辑
   export default class homeworkChoose extends wepy.page {
+    config = {
+      navigationBarTitleText: '课后作业'
+    }
     // 可用于页面模板绑定的数据
     data = {
       array: ['大物上', '大物下'],
@@ -131,11 +73,8 @@
         // console.log('1')
       },
       tap(e) {
-        console.log(e)
       },
       form1(e) {
-        // console.log('form', e.detail.value.chapter)
-        console.log(e)
         if (e.detail.value.chapter === '') {
           wx.showModal({
             title: '注意',
