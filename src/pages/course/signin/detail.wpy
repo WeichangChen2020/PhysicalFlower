@@ -21,7 +21,7 @@
 <template>
   <toast />
   <view class="map_box">
-    <map id="mymap" show-location="true" latitude="{{latitude}}" longitude="{{longitude}}" scale="{{scale}}" circles="{{circles}}"></map>
+    <map id="mymap" show-location="true" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" scale="{{scale}}" circles="{{circles}}" show-location enable-3D ></map>
   </view>
   <view>
     <button @tap="doSignin" class="button">签到</button>
@@ -46,16 +46,20 @@ export default class Detail extends wepy.page {
     latitude: 0,
     longitude: 0,
     mapId: 'mymap',
-    scale: 18,
+    scale: 17,
     circles: [{
       latitude: 0,
       longitude: 0,
       color: '#FF0000DD',
       fillColor: '#7cb5ec88',
       radius: 1000,
-      strokeWidth: 2
+      strokeWidth: 1
     }],
-    horizontalAccuracy: 0
+    horizontalAccuracy: 0,
+    markers: [{
+      latitude: 0,
+      longitude: 0
+    }]
   };
 
   // 事件处理函数(集中保存在methods对象中)
@@ -69,7 +73,6 @@ export default class Detail extends wepy.page {
         longitude: that.longitude,
         horizontalAccuracy: that.horizontalAccuracy
       }
-      console.log(UL_DATA)
       app.request('Signin.doSignin', UL_DATA, '签到...')
       .then((res) => {
         if (res.data.errCode === 0) {
@@ -95,7 +98,6 @@ export default class Detail extends wepy.page {
         }, 1000)
       })
       .catch(function(error) {
-        console.error(error)
         app.modal(
           error.message,
           '错误!',
@@ -111,7 +113,7 @@ export default class Detail extends wepy.page {
     let app = this.$parent
     this.getLocation()
     var postData = {
-      'idSignin': this.data.idSignin
+      'idSignin': this.idSignin
     }
     app.request('Signin.getSigninInfo', postData)
     .then((res) => {
@@ -119,6 +121,8 @@ export default class Detail extends wepy.page {
         this.signInfo = res.data.data
         this.circles[0].latitude = parseFloat(this.signInfo.latitude)
         this.circles[0].longitude = parseFloat(this.signInfo.longitude)
+        this.circles[0].radius = parseFloat(this.signInfo.radius)
+        this.$apply()
       }
     })
   };
@@ -127,12 +131,16 @@ export default class Detail extends wepy.page {
   getLocation() {
     let that = this
     wx.getLocation({
-      type: 'gcj02',
+      type: 'wgs84',
       success: function (res) {
         that.latitude = res.latitude
         that.longitude = res.longitude
+        that.markers[0].latitude = res.latitude
+        that.markers[0].longitude = res.longitude
+        console.log(that.markers)
         that.horizontalAccuracy = res.horizontalAccuracy
         that.moveTolocation()
+        that.$apply()
       }
     })
   }
