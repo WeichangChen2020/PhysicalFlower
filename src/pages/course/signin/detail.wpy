@@ -1,80 +1,30 @@
 <style type="less">
-.zan-btn {
-  background-color:rgb(0, 214, 0);
-  color: #fff;
+.map_box{
+  margin: 0 30rpx 0 30rpx;
+  height: 75%;
+  z-index: 999;
+  overflow: hidden;
+  display: flex;
+  border-radius: 50rpx;
+  border: 2px solid #fff;
+  align-items: center;
 }
-.zan-tab__item--selected .zan-tab__title {
-  color:#4bbc93;
-  border-bottom: 2px solid #4bbc93;
-}
-.container{
-  padding: 0;
-}
-.zan-panel{
-  margin-top: 0;
-}
-.sigin_icon_msg{
-  color: #4bbc93;
-  font-size: 90px;
-}
-.signin_head_img{
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
-  margin-left: 10rpx;
-}
-.signin_student_name{
-  margin-left: 20rpx;
-}
-
-.signin_online_nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%
-}
-.zan-col {
-  line-height: 44px;
-  text-align: center;
-  background-color: #4bbc93;
-  font-size: 14px;
-  color: #fff;
-}
-
-.zan-col:nth-child(even) {
-  background-color: #66c6f2;
-}
-
-.signin_manage_title{
-  height: 44rpx;
-}
-.signin_tag {
-  flex: 2;
-  margin-left:-10px;
+#mymap{
+  overflow: hidden;
+  display: flex;
+  border-radius: 50rpx;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
 }
 </style>
 <template>
   <toast />
-  <view class="page">
-    <view class="weui-msg">
-      <view class="weui-msg__icon-area">
-        <!-- <view class="zan-icon zan-icon-checked sigin_icon_msg"></view> -->
-        <icon type="waiting" size="93"></icon>
-      </view>
-      <view class="weui-msg__title">{{now}}</view>
-      <view class="weui-msg__title" style='font-size:16px;'>
-        <view class="zan-icon zan-icon-location change_icon"></view>
-        {{signin_online.location}}
-        <text>E: {{signin_online.longitude}}°</text>
-        <text>N: {{signin_online.latitude}}°</text>
-      </view>
-      <view class="weui-msg__opr-area">
-        <view class="weui-btn-area">
-          <button class="zan-btn zan-btn--primary" bindtap="doSignin">在线签到</button>
-          <!--已签到后的样式  -->
-          <!-- <button class="weui-btn" type="default">辅助操作</button> -->
-        </view>
-      </view>
-    </view>
+  <view class="map_box">
+    <map id="mymap" show-location="true" latitude="{{latitude}}" longitude="{{longitude}}" scale="{{scale}}" circles="{{circles}}"></map>
+  </view>
+  <view>
+    <button @tap="doSignin" class="button">签到</button>
   </view>
 </template>
 <script>
@@ -83,19 +33,30 @@ import Toast from '@/components/toast/index'
 
 // 通过继承自wepy.page的类创建页面逻辑
 export default class Detail extends wepy.page {
-  // 可用于页面模板绑定的数据
-  data = {
-    now: '',
-    signin_online: {
-      location: '',
-      latitude: '',
-      longitude: ''
-    },
-    idSignin: 0
-  };
+  config = {
+    navigationBarTitleText: '在线签到'
+  }
   components = {
     'toast': Toast
   }
+  // 可用于页面模板绑定的数据
+  data = {
+    idSignin: 0,
+    signInfo: {},
+    latitude: 0,
+    longitude: 0,
+    mapId: 'mymap',
+    scale: 18,
+    circles: [{
+      latitude: 0,
+      longitude: 0,
+      color: '#FF0000DD',
+      fillColor: '#7cb5ec88',
+      radius: 1000,
+      strokeWidth: 2
+    }],
+    horizontalAccuracy: 0
+  };
 
   // 事件处理函数(集中保存在methods对象中)
   methods = {
@@ -104,10 +65,11 @@ export default class Detail extends wepy.page {
       let that = this
       var UL_DATA = {
         idSignin: that.idSignin,
-        latitude: that.signin_online.latitude,
-        longitude: that.signin_online.longitude,
-        horizontalAccuracy: that.signin_online.horizontalAccuracy
+        latitude: that.latitude,
+        longitude: that.longitude,
+        horizontalAccuracy: that.horizontalAccuracy
       }
+      console.log(UL_DATA)
       app.request('Signin.doSignin', UL_DATA, '签到...')
       .then((res) => {
         if (res.data.errCode === 0) {
@@ -145,29 +107,41 @@ export default class Detail extends wepy.page {
 
   // 页面的生命周期函数
   onLoad(e) {
-    let that = this
-    let now = new Date().getTime()
     this.idSignin = e.idSignin
-    setInterval(function () {
-      now += 1000
-      that.now = new Date(now).toString().substring(16, 24)
-      that.$apply()
-    }, 1000)
-    wx.getLocation({
-      success: function (res) {
-        // console.log(res)
-        that.signin_online = res
-      },
-      fail: function (res) {
-        // console.log(res)
-        wx.showToast({
-          title: '获取位置信息失败',
-          icon: 'none'
-        })
+    let app = this.$parent
+    this.getLocation()
+    var postData = {
+      'idSignin': this.data.idSignin
+    }
+    app.request('Signin.getSigninInfo', postData)
+    .then((res) => {
+      if (res.data.errCode === 0) {
+        this.signInfo = res.data.data
+        this.circles[0].latitude = parseFloat(this.signInfo.latitude)
+        this.circles[0].longitude = parseFloat(this.signInfo.longitude)
       }
     })
-    // e.from == 1代表签到，2代表详情
-    // console.log(e)
   };
+
+/** 获取当前地址的经纬度 */
+  getLocation() {
+    let that = this
+    wx.getLocation({
+      type: 'gcj02',
+      success: function (res) {
+        that.latitude = res.latitude
+        that.longitude = res.longitude
+        that.horizontalAccuracy = res.horizontalAccuracy
+        that.moveTolocation()
+      }
+    })
+  }
+
+/** 移动到中心点 */
+  moveTolocation() {
+    // mapId 就是你在 map 标签中定义的 id
+    var mapCtx = wx.createMapContext(this.data.mapId)
+    mapCtx.moveToLocation()
+  }
 }
 </script>
