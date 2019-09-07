@@ -12,7 +12,7 @@
     <view class="padding-10">
       <view class="text">允许微信授权后，可体验更多功能</view>
       <button class="btn btn-success" open-type='getUserInfo' bindgetuserinfo="bindGetUserInfo" >授权登录</button>
-      <button class="btn " @tap="cancel" >返回首页</button>
+      <button class="btn " @tap="cancel" >返回上一页</button>
     </view>
   </view> 
 </template>

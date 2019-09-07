@@ -167,15 +167,15 @@ export default class extends wepy.app {
       })
     }
     // 查看是否授权
-    wx.getSetting({
-      success(res) {
-        if (!res.authSetting['scope.userInfo']) {
-          wx.navigateTo({
-            url: '/pages/my/authorize'
-          })
-        }
-      }
-    })
+    // wx.getSetting({
+    //   success(res) {
+    //     if (!res.authSetting['scope.userInfo']) {
+    //       wx.navigateTo({
+    //         url: '/pages/my/authorize'
+    //       })
+    //     }
+    //   }
+    // })
   }
 
   request(tag, data, loading) {

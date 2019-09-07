@@ -58,7 +58,16 @@ export default class Detail extends wepy.page {
     horizontalAccuracy: 0,
     markers: [{
       latitude: 0,
-      longitude: 0
+      longitude: 0,
+      callout: {
+        // content: location.name,
+        borderRadius: 10,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#66d1ff',
+        display: 'BYCLICK',
+        textAlign: 'center'
+      }
     }]
   };
 

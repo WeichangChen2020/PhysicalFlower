@@ -137,6 +137,11 @@
               // that.assessInfo[i].name = endTime
             }
             that.$apply()
+          } else if (e.data.errCode === 102) {
+            wx.showToast({
+              title: '暂无记录',
+              icon: 'none'
+            })
           } else {
             wx.showToast({
               title: '网络开小差了',

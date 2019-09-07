@@ -27,6 +27,9 @@
     <textarea maxlength="300" placeholder="请输入内容" @input="textarea">
         <view class="ran">{{count}}/300</view>
     </textarea>
+</view>
+<button @tap="submit" class="button">提交</button>
+</template>
 <script>
 import wepy from 'wepy'
 
