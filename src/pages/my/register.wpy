@@ -108,7 +108,6 @@ export default class Register extends wepy.page {
       var UL_DATA = {
         userBasicInfo: this.userInfo
       }
-      console.log(UL_DATA)
       app.request('User.updateInfo', UL_DATA, '请稍等...')
       .then((res) => {
         if (res.data.errCode === 0) {
@@ -164,11 +163,7 @@ export default class Register extends wepy.page {
     let that = this
     wx.getUserInfo({
       success(res) {
-        // that.userInfo = res.userInfo
-        that.userInfo.name = ''
-        that.userInfo.stuNum = ''
-        that.userInfo.telphone = ''
-        that.userInfo.class = ''
+        that.userInfo = res.userInfo
       }
     })
   }

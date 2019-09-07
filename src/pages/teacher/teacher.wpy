@@ -118,21 +118,32 @@ margin-left:10rpx;
       }
       app.request('Course.getCreatedCourseList', courseDATA, '请稍等...')
       .then((res) => {
-        app.globalData.courseInfo = res.data.data
-        that.courseInfo = res.data.data
-        that.errCode = res.data.errCode
-        for (var i = 0; i < that.courseInfo.length; i++) {
-          if (that.courseInfo[i].logo === 'data:image/;base64,') {
-            that.courseInfo[i].logo = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556209601174&di=0e175046fc2b64162adb12b278eb65fb&imgtype=0&src=http%3A%2F%2Fimg3.jarhu.com%2Fthirdimg%2Fbf112211%2F703035534-23392.gif'
+        // app.globalData.courseInfo = res.data.data
+        // that.courseInfo = res.data.data
+        // that.errCode = res.data.errCode
+        // for (var i = 0; i < that.courseInfo.length; i++) {
+        //   if (that.courseInfo[i].logo === 'data:image/;base64,') {
+        //     that.courseInfo[i].logo = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556209601174&di=0e175046fc2b64162adb12b278eb65fb&imgtype=0&src=http%3A%2F%2Fimg3.jarhu.com%2Fthirdimg%2Fbf112211%2F703035534-23392.gif'
+        //   }
+        // }
+        // that.$apply()
+        if (res.data.errCode === 102) {
+          app.toast('请创建班级！')
+          app.globalData.courseInfo = []
+          that.$apply()
+        } else if (res.data.errCode === 0) {
+          app.globalData.courseInfo = res.data.data
+          that.courseInfo = res.data.data
+          that.errCode = res.data.errCode
+          for (var i = 0; i < that.courseInfo.length; i++) {
+            if (that.courseInfo[i].logo === 'data:image/;base64,') {
+              that.courseInfo[i].logo = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556209601174&di=0e175046fc2b64162adb12b278eb65fb&imgtype=0&src=http%3A%2F%2Fimg3.jarhu.com%2Fthirdimg%2Fbf112211%2F703035534-23392.gif'
+            }
           }
-        }
-        that.$apply()
-        if (res.data.errCode !== 0) {
-          app.toast(res.data.msg)
+          that.$apply()
         }
       })
       .catch(function(error) {
-        console.error(error)
         app.modal(error.message, '错误!错误提示是：', '确定')
       })
     }
@@ -174,7 +185,6 @@ margin-left:10rpx;
       }
       app.request('Course.getCreatedCourseList', postData, '请稍等...')
       .then(function(res) {
-        console.log(res)
         if (res.data.errCode === 102) {
           app.toast('已获取所有课程')
         } else {

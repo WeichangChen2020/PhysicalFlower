@@ -1,4 +1,11 @@
 <style>
+.greetingc {
+  font-size: 14px;
+  color: #000000;
+  margin: 20rpx 0 10rpx;
+  display: flex;
+  justify-content: center;
+}
 .icont{
   position: relative;
   margin-left: 10rpx;
@@ -9,9 +16,11 @@
 <template>
 <view>
 <toast/>
-<view>测试截止时间</view>
+	<view>
+		<text class="greetingc">测试截止时间</text>
+	</view>
 <picker mode="time" value="{{time}}" start="00:00" end="23:59" bindchange="bindTimeChange">
-  <button type="default">{{time}}</button>
+  <button type="default" class="button" style="margin-top:30rpx;color:white">{{time}}</button>
 </picker>
  <form @submit= "form">
    <checkbox-group name="questionId" >
@@ -22,7 +31,7 @@
       </view>
     </block>
    </checkbox-group>
-   <button form-type='submit'>发布测试</button>
+   <button form-type='submit' class="button" style="margin-top:30rpx">发布测试</button>
  </form>
 </view>
 </template>

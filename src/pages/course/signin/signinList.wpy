@@ -89,7 +89,6 @@
         }
       })
       .catch(function(error) {
-        console.error(error)
         app.modal(
           error.message,
           '错误!',
@@ -106,11 +105,13 @@
       }
       app.request('Signin.getAllSigninList', UL_DATA, '查询中...')
       .then((res, reject) => {
-        that.allSigninList = res.data.data
-        for (let i = 0; i < that.allSigninList.length; i++) {
-          that.allSigninList[i].timeEnd = formatDateTime(that.allSigninList[i].gmtEnd * 1000).substr(-8)
+        if (res.data.errCode === 0) {
+          that.allSigninList = res.data.data
+          for (let i = 0; i < that.allSigninList.length; i++) {
+            that.allSigninList[i].timeEnd = formatDateTime(that.allSigninList[i].gmtEnd * 1000).substr(-8)
+          }
+          this.$apply()
         }
-        this.$apply()
       })
       .catch(function(error) {
         console.error(error)

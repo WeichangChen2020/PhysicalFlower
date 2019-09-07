@@ -98,13 +98,14 @@ bottom:0;
       app
         .request('Teacher.getStudentListByIdCourse', delData, 'loading')
         .then(function(e) {
-          console.log(e)
           if (e.data.errCode === 0) {
-            console.log(e.data.data)
             if (e.data.data !== null && e.data.data.length !== undefined) {
               that.courseStu = e.data.data
-              console.log(e.data.data.length)
               for (var i = 0; i < e.data.data.length; i++) {
+                if (that.courseStu[i].name === '') {
+                  that.courseStu[i].name = '???'
+                  that.courseStu[i].avatarUrl = 'https://wx.qlogo.cn/mmopen/vi_32/xlklsYQfNOaiaianvIH3YjzyvggDmKkxj74fQO4Ulh6guMEDYNGXnle9ApvfMV3UicRB1waFa2mv0UrrGyhTI94FQ/132'
+                }
                 that.courseStu[i].haveSubmit = 0
               }
               var deData = {
@@ -113,11 +114,9 @@ bottom:0;
               app
                 .request('Teacher.getStudentHomeworkinfo', deData, 'loading')
                 .then(function(e) { // 暂时就先全部遍历一下，后面再看看可不可以优化时间复杂度
-                  // console.log(e.data.data.length)
                   if (e.data.data !== null && e.data.data.length !== undefined) {
                     for (let i = 0; i < e.data.data.length; i++) {
                       for (let j = 0; j < that.courseStu.length; j++) {
-                        // console.log(that.courseStu[j].idUser)
                         if (that.courseStu[j].idUser === e.data.data[i].idUser) {
                           that.courseStu[j].haveSubmit = 1
                           that.courseStu[j].score = e.data.data[i].score

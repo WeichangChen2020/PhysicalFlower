@@ -3,12 +3,15 @@
   display: flex;
   justify-content: center;
 }
+.text{
+  color: cornflowerblue;
+}
 </style>
 <template>
    <toast/>
-  <view style="font-size:30rpx;text-align:center;">随堂测试</view>
-
-
+<view style="display:flex;">
+   <view style="margin-bottom:15rpx;margin-left:25rpx;">题目：{{current + 1}}/{{quizQues.length}}</view>
+ </view>
   <view style="display:flex;justify-content:center;">
   <swiper style="height:1100rpx;width:90%;overflow:hidden;border-radius:20rpx;background-color:white;border: #C0C0C0 solid 5rpx;box-shadow:0px 2px 4px 2px #DDDDDD;" current = "{{current}}" @change = "change">
     <swiper-item wx:for="{{quizQues}}" wx:for-item="page" wx:key="*this" catchtouchmove="stopTouchMove"> 
@@ -23,10 +26,10 @@
       </radio-group>
 
 
-      <view style="display:inline;position:fixed;bottom:0rpx;background-color:white;width:100%;height:100rpx;">
-        <button @tap="tap" wx:if ="{{current > 0}}" style="float:left;line-height:100rpx;">上一题</button>
-        <button wx:if ="{{show2}}" formType="submit" style="float:right;line-height:100rpx;">下一题</button>
-        <button wx:if ="{{show}}" formType="submit" @tap="submit" style="float:right;line-height:100rpx;">提交测试</button>
+   <view style="display:inline;position:fixed;bottom:0rpx;background-color:white;width:100%;height:100rpx;">
+        <button @tap="tap" wx:if ="{{current > 0}}" style="float:left;line-height:100rpx;" class="text">上一题</button>
+        <button wx:if ="{{show2}}" formType="submit" style="float:right;line-height:100rpx;" class="text">下一题</button>
+        <button wx:if ="{{show}}" formType="submit" @tap="submit" style="float:right;line-height:100rpx;" class="text">提交测试</button>
        </view>
     </form>
     </swiper-item>

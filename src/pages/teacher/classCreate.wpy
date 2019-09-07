@@ -108,7 +108,7 @@ s .flex-list:nth-child(4n) {
     <view>输入名称</view>
     <input class='input' disabled='{{isChecked<1}}' placeholder='输入课程名称' focus='{{focus}}' maxlength="20" bindinput='bindKeyInput' style="text-align:center;"/>
   </view>
-  <panel>
+  <!-- <panel>
     <view slot="title" class="greeting">上传图片</view>
     <view class='border2' style="line-height:40rpx;">
       <view>上传logo</view>
@@ -119,7 +119,7 @@ s .flex-list:nth-child(4n) {
       <uploader :imgWidth.sync="imgWidth" :total="imgTotal" region="ECN" :imgList.sync="imgList" :domain="domain" :uptokenURL="uptokenURL" :test="test"></uploader>
     </view>
     </view>
-  </panel>
+  </panel> -->
 
   <view  slot="title" class="greeting">设置题目集</view>
   <view class='border2'>
@@ -221,15 +221,15 @@ export default class classCreate extends wepy.page {
             var course = {
               idCourse: res.data.data.idCourse,
               courseName: that.data.className,
-              logo: 'data:image/' + this.imageType + ';base64,' + this.imageBase64,
+              logo: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1556209601174&di=0e175046fc2b64162adb12b278eb65fb&imgtype=0&src=http%3A%2F%2Fimg3.jarhu.com%2Fthirdimg%2Fbf112211%2F703035534-23392.gif',
+              // logo: 'data:image/' + this.imageType + ';base64,' + this.imageBase64,
               count: 0
             }
+            console.log(app.globalData.courseInfo)
             app.globalData.courseInfo.unshift(course)
             setTimeout(() => {
               wx.navigateBack({})
-              console.log('back')
             }, 700)
-            // wx.navigateBack({})
           } else {
             app.toast('请重新创建课程！')
           }
@@ -345,7 +345,7 @@ export default class classCreate extends wepy.page {
     let that = this
     wx.getSystemInfo({
       success: function(res) {
-        const windowWidth = ~~res.windowWidth
+        const windowWidth = res.windowWidth
         console.log(windowWidth)
         that.imgWidth = (windowWidth - 20 - 30) / 4 // 两个外边距 和三个内边距
         that.$apply()

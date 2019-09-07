@@ -133,7 +133,21 @@ export default class my extends wepy.page {
           wx.navigateTo({ url: '../my/queReport' })
           break
         case '6':
-          wx.navigateTo({ url: '../my/teacherIndex' })
+          let app = this.$parent
+          var postData = {
+            'openid': app.globalData.userInfo.openid
+          }
+          app.request('Teacher.isTeacher', postData)
+          .then((res) => {
+            console.log(res.data)
+            if (res.data.errCode === 0) {
+              wx.navigateTo({
+                url: '../teacher/teacher'
+              })
+            } else {
+              wx.navigateTo({ url: '../my/teacherIndex' })
+            }
+          })
           break
       }
     }

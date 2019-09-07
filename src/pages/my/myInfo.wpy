@@ -118,8 +118,6 @@ export default class myInfo extends wepy.page {
 
   methods = {
     openConfirm: function() {
-      let app = this.$parent.globalData
-      console.log(app)
       wx.showModal({
         title: '提示',
         content: '确定要修改个人信息吗？',
@@ -148,8 +146,6 @@ export default class myInfo extends wepy.page {
 
   onLoad() {
     this.userInfo = this.$parent.globalData.userInfo
-  }
-  onShow() {
     console.log(this.userInfo)
   }
 }

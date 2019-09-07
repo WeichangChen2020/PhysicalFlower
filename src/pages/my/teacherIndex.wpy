@@ -82,5 +82,20 @@ export default class my extends wepy.page {
       })
     }
   }
+  onLoad() {
+    // let app = this.$parent
+    // var postData = {
+    //   'openid': app.globalData.userInfo.openid
+    // }
+    // app.request('Teacher.isTeacher', postData)
+    // .then((res) => {
+    //   console.log(res.data)
+    //   if (res.data.errCode === 0) {
+    //     wx.redirectTo({
+    //       url: '../teacher/teacher'
+    //     })
+    //   }
+    // })
+  }
 }
 </script>

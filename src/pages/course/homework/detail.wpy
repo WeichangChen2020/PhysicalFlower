@@ -68,7 +68,7 @@
   <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
   <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
     <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this"> 
-      <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px;"/>
+      <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px;" mode="widthFix"/>
 
       <view class='greeting'>上传截图</view>
         <view class='border'>

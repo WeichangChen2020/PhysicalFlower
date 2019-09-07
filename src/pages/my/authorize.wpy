@@ -37,12 +37,15 @@ export default class Authorize extends wepy.page {
         wx.navigateBack({})
       } else {
         const options = {
-          content: '很遗憾，您拒绝了微信授权',
+          content: '您拒绝了进行微信授权',
           duration: 2000,
           afterClose: 'afterClose',
           className: 'mytest'
         }
         this.$invoke('toptips', 'show', options)
+        setTimeout(() => {
+          wx.navigateBack({})
+        }, 1000)
       }
     },
     cancel(e) {

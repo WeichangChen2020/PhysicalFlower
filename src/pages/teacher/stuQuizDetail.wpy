@@ -73,6 +73,7 @@
     }
     // 页面的生命周期函数
     onLoad(e) {
+      console.log(e)
       let that = this
       that.idQuiz = e.idQuiz
       that.idUser = e.idUser
@@ -85,7 +86,7 @@
         idQuiz: that.idQuiz,
         idUser: that.idUser
       }
-      app.request('Quiz.getStuQuizDetail', postData, 'Loading...')
+      app.request('Quiz.getStuTeaDetail', postData, 'Loading...')
       .then((res) => {
         for (var i = 0; i < res.data.data.length; i++) {
           that.quizResultList.push(res.data.data[i].quiz_info)
