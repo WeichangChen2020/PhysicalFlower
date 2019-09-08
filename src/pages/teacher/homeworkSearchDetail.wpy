@@ -36,9 +36,9 @@
     <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
       <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this" style="">
         <view style="font:15px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;" class="topic_two_word">题目:</view>
-        <image src="{{page.img}}" style="width:94%;margin-bottom:100rpx;margin-left:3%" mode=""/>
+        <image src="{{page.img}}" style="width:90%;margin-bottom:50rpx;margin-left:3%" mode="widthFix"/>
         <view style="font:15px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;" class="topic_two_word">作答情况:</view>
-        <image src="{{page.submitImg1}}" style="width:94%;margin-bottom:100rpx;margin-left:3%"/>
+        <image src="{{page.submitImg1}}" style="width:50%;margin-bottom:100rpx;margin-left:3%" mode="widthFix"/>
         <view style="font:15px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;" class="topic_two_word">得分情况:{{pickId[index] == '-1' ?'本题目暂无得':pickId[index]}}分</view>
 
         <block wx:if="{{page.idCorrector == '-1'?true:false}}">

@@ -50,7 +50,6 @@ export default class Register extends wepy.page {
     'toast': Toast
   }
 
-  // TODO 其中的value值从globalData读取
   data = {
     disabled: true,
     userInfo: {},
@@ -88,9 +87,9 @@ export default class Register extends wepy.page {
 
   methods = {
     go(e) {
-      this.$parent.globalData.RegisterInfo = this.userInfo
+      this.$parent.globalData.user = this.userInfo
       wx.navigateTo({
-        url: '/pages/my/authorize?name=' + this.userInfo.name + '&stuNum=' + this.userInfo.stuNum + '&telphone=' + this.userInfo.telphone + '&class=' + this.userInfo.class
+        url: '/pages/my/authorize'
       })
     },
     submit(e) {
@@ -117,6 +116,7 @@ export default class Register extends wepy.page {
       var UL_DATA = {
         userBasicInfo: this.userInfo
       }
+      this.$parent.globalData.userInfo = this.userInfo
       app.request('User.updateInfo', UL_DATA, '请稍等...')
       .then((res) => {
         if (res.data.errCode === 0) {
@@ -143,7 +143,6 @@ export default class Register extends wepy.page {
         }, 1000)
       })
       .catch(function(error) {
-        console.error(error)
         app.modal(
           error.message,
           '错误!错误提示是：',
@@ -169,37 +168,19 @@ export default class Register extends wepy.page {
 
   onLoad(e) {
     this.userInfo = this.$parent.globalData.userInfo
-    let that = this
-    // if (this.$parent.globalData.RegisterInfo) {
-    //   this.name.value = this.$parent.globalData.RegisterInfo.name
-    //   this.number.value = this.$parent.globalData.RegisterInfo.stuNum
-    //   this.name.telphone = this.$parent.globalData.RegisterInfo.telphone
-    //   this.name.class = this.$parent.globalData.RegisterInfo.class
-    // }
-    wx.getUserInfo({
-      success(res) {
-        that.userInfo = res.userInfo
-      }
-    })
-    // wx.getSetting({
-    //   success: (res) => {
-    //     if (res.authSetting['scope.userInfo'] === true) {
-    //       that.disabled = false
-    //     } else {
-    //       that.disabled = true
-    //     }
-    //   }
-    // })
   }
 
   onShow() {
     let that = this
-    if (this.$parent.globalData.RegisterInfo) {
-      this.name.value = this.$parent.globalData.RegisterInfo.name
-      this.number.value = this.$parent.globalData.RegisterInfo.stuNum
-      this.name.telphone = this.$parent.globalData.RegisterInfo.telphone
-      this.name.class = this.$parent.globalData.RegisterInfo.class
-    }
+    wx.getUserInfo({
+      success(res) {
+        that.userInfo = res.userInfo// 获取nickname等信息
+        that.userInfo.name = that.$parent.globalData.user.name
+        that.userInfo.stuNum = that.$parent.globalData.user.stuNum
+        that.userInfo.telphone = that.$parent.globalData.user.telphone
+        that.userInfo.class = that.$parent.globalData.user.class
+      }
+    })
     wx.getSetting({
       success: (res) => {
         if (res.authSetting['scope.userInfo'] === true) {

@@ -183,7 +183,7 @@ export default class Index extends wepy.page {
         }, () => {
         })
       }
-      // return that.getCourseId()
+      return that.getCourseId()
     })
     .then(function(res) {
       // 如果本地没有存储则去请求

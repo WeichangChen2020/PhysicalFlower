@@ -83,7 +83,7 @@ bottom:0;
     };
 
     // 页面的生命周期函数
-    onLoad(e) {
+    onShow(e) {
       // console.log(e)
       this.idHomework = e.idHomework
       this.idCourse = e.idCourse
