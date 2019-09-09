@@ -11,7 +11,7 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '使用帮助',
     navigationBarBackgroundColovr: '#935887',
-    navigationBarTextStyle: 'white'
+    navigationBarTextStyle: 'black'
   }
 
   onLoad() {}

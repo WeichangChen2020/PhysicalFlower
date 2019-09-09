@@ -34,6 +34,10 @@ export default class Authorize extends wepy.page {
     bindGetUserInfo(e) {
       if (e.detail.userInfo) {
         this.$parent.globalData.userInfo = e.detail.userInfo
+        var postdata = {
+          userBasicInfo: e.detail.userInfo
+        }
+        this.$parent.request('User.updateInfo', postdata, '请稍等...')
         wx.navigateBack({})
       } else {
         const options = {

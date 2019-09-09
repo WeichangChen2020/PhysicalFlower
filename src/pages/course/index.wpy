@@ -111,15 +111,15 @@ export default class Index extends wepy.page {
           wx.navigateTo({url: './chat/index'})
           break
         case '6':
-          wx.getSetting({
-            success: (res) => {
-              if (res.authSetting['scope.userInfo'] === true) {
-                wx.navigateTo({url: './join'})
-              } else {
-                wx.navigateTo({url: '../my/authorize'})
-              }
-            }
-          })
+          // wx.getSetting({
+          //   success: (res) => {
+          //     if (res.authSetting['scope.userInfo'] === true) {
+          wx.navigateTo({url: './join'})
+          //     } else {
+          //       wx.navigateTo({url: '../my/authorize'})
+          //     }
+          //   }
+          // })
           break
         case '7':
           wx.navigateTo({url: './exercise/index'})
@@ -191,39 +191,40 @@ export default class Index extends wepy.page {
         // 啥都不干
         that.idCourse = res
         that.$apply()
-      } else {
-        // 等请求以加入课程的后台接口
-        app.request('Course.getJoinedCourseList', '', '请求中...')
-        .then((res) => {
-          if (res.data.errCode === 102) {
-            const options = {
-              title: '没有课程学习',
-              content: '点击加入课程',
-              type: 'muti',
-              showVertical: true,
-              buttons: [{
-                text: '稍后'
-              }, {
-                text: '去加入',
-                color: '#C59E6C'
-              }]
-            }
-            that.$invoke('dialog', 'show', options).then((value) => {
-              // 0: 取消，1：确认
-              if (value === 1) {
-                wx.navigateTo({url: './join'})
-              }
-            }, () => {
-              console.log('reject')
-            })
-          }
-          app.courseList = res.data.data
-          app.globalData.activeCourse = app.courseList[0].idCourse
-          const fs = wx.getFileSystemManager()
-          fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, app.courseList[0].idCourse, 'utf8')
-          console.log('request', app.courseList[0].idCourse)
-        })
       }
+      // } else {
+      //   // 等请求以加入课程的后台接口
+      //   app.request('Course.getJoinedCourseList', '', '请求中...')
+      //   .then((res) => {
+      //     if (res.data.errCode === 102) {
+      //       const options = {
+      //         title: '没有课程学习',
+      //         content: '点击加入课程',
+      //         type: 'muti',
+      //         showVertical: true,
+      //         buttons: [{
+      //           text: '稍后'
+      //         }, {
+      //           text: '去加入',
+      //           color: '#C59E6C'
+      //         }]
+      //       }
+      //       that.$invoke('dialog', 'show', options).then((value) => {
+      //         // 0: 取消，1：确认
+      //         if (value === 1) {
+      //           wx.navigateTo({url: './join'})
+      //         }
+      //       }, () => {
+      //         console.log('reject')
+      //       })
+      //     }
+      //     app.courseList = res.data.data
+      //     app.globalData.activeCourse = app.courseList[0].idCourse
+      //     const fs = wx.getFileSystemManager()
+      //     fs.writeFileSync(`${wx.env.USER_DATA_PATH}/courseId`, app.courseList[0].idCourse, 'utf8')
+      //     console.log('request', app.courseList[0].idCourse)
+      //   })
+      // }
     })
     .catch(function(error) {
       // 错误处理

@@ -80,7 +80,6 @@ export default class CourseList extends wepy.page {
     var i = 0
     app.request('Course.getJoinedCourseList', '', '请求中...')
     .then((res) => {
-      console.log(res.data.errCode)
       if (res.data.errCode === 0) {
         that.courseList = res.data.data
         for (i = 0; i < that.courseList.length; i++) {
@@ -91,7 +90,7 @@ export default class CourseList extends wepy.page {
         this.$apply()
       } else if (res.data.errCode === 102) {
         app.toast('你还未加入课程!')
-        that.setTimeout(() => {
+        setTimeout(() => {
           wx.navigateTo({
             url: '../course/join'
           })
