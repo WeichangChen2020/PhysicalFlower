@@ -69,10 +69,17 @@ page {
 
 
 <template>
-  <view class="userinfo" id="0">
+ <dialog />
+  <view class="userinfo" id="0" wx:if="{{authorize}}">
     <open-data class="userAvatar" type="userAvatarUrl"></open-data>
     <view class="userText">
       <open-data class="userNickname" type="userNickName"></open-data>
+    </view>
+  </view>
+   <view class="userinfo" id="0" wx:if="{{!authorize}}">
+      <image src="" class="userAvatar" @tap="authorize"></image>
+    <view class="userText">
+      <view @tap="authorize">点击注册并授权</view>
     </view>
   </view>
   <view
@@ -94,7 +101,7 @@ page {
 
 <script>
 import wepy from 'wepy'
-
+import Dialog from '@/components/dialog/index'
 // 通过继承自wepy.page的类创建页面逻辑
 export default class my extends wepy.page {
   config = {
@@ -102,6 +109,7 @@ export default class my extends wepy.page {
   }
   // 可用于页面模板绑定的数据
   data = {
+    authorize: false,
     bottonClr: ['white', 'white', 'white', 'white', 'white', 'white', 'white'],
     setArr: [
       { id: '1', name: '我的信息', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/myinfo.png', margin: '0' },
@@ -111,6 +119,9 @@ export default class my extends wepy.page {
       { id: '5', name: '问题反馈', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/quereport.png', margin: '0' },
       { id: '6', name: '教师登陆', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/teacherLogin.png', margin: '0' }
     ]
+  }
+  components = {
+    dialog: Dialog
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
@@ -150,7 +161,24 @@ export default class my extends wepy.page {
           })
           break
       }
+    },
+    authorize() {
+      console.log(this.authorize)
     }
+  }
+
+  onShow() {
+    let that = this
+    wx.getSetting({
+      success: (res) => {
+        if (res.authSetting['scope.userInfo'] === true) {
+          that.authorize = true
+        } else {
+          that.authorize = false
+        }
+        that.$apply()
+      }
+    })
   }
 }
 </script>

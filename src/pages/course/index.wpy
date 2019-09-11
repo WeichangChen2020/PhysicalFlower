@@ -173,12 +173,15 @@ export default class Index extends wepy.page {
           buttons: [{
             text: '去完善',
             color: '#C59E6C'
+          }, {
+            text: '稍后注册'
           }]
         }
         that.$invoke('dialog', 'show', options).then((value) => {
           // 0: 取消，1：确认
           if (value === 0) {
             wx.navigateTo({url: '../my/register'})
+          } else if (value === 1) {
           }
         }, () => {
         })
