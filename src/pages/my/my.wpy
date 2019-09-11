@@ -79,7 +79,7 @@ page {
    <view class="userinfo" id="0" wx:if="{{!authorize}}">
       <image src="" class="userAvatar" @tap="authorize"></image>
     <view class="userText">
-      <view @tap="authorize">点击注册并授权</view>
+      <view @tap="authorize">点击授权</view>
     </view>
   </view>
   <view
@@ -150,7 +150,6 @@ export default class my extends wepy.page {
           }
           app.request('Teacher.isTeacher', postData)
           .then((res) => {
-            console.log(res.data)
             if (res.data.errCode === 0) {
               wx.navigateTo({
                 url: '../teacher/teacher'
@@ -163,7 +162,28 @@ export default class my extends wepy.page {
       }
     },
     authorize() {
-      console.log(this.authorize)
+      let that = this
+      const options = {
+        title: '您还未授权',
+        content: '请先授权再进行操作',
+        type: 'muti',
+        showVertical: false,
+        buttons: [{
+          text: '立即授权',
+          color: '#C59E6C'
+        }, {
+          text: '稍后授权'
+        }]
+      }
+      that.$invoke('dialog', 'show', options).then((value) => {
+        if (value === 0) {
+          wx.navigateTo({
+            url: '/pages/my/authorize'
+          })
+        }
+      }, () => {
+        console.log('reject')
+      })
     }
   }
 
