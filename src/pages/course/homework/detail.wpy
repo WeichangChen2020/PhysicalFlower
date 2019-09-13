@@ -64,8 +64,10 @@
 }
 </style>
 <template>
-<canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-1000000px;top:-1000000px; "></canvas>
+<view>
+  <canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-1000000px;top:-1000000px; "></canvas>
   <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
+  <!-- <swiper  class='answer' bindchange='roll' style="height:auto"> -->
   <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
     <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this"> 
       <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px;" mode="widthFix"/>
@@ -80,7 +82,7 @@
             <view class="weui-uploader__bd">
               <view class="weui-uploader__files" id="uploaderFiles">
                 <!-- <block wx:for="{{files}}" wx:key="*this"> -->
-                  <block wx:if="{{files[index] !== undefined}}">
+                  <block wx:if="{{files[index] !== ''}}">
                   <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
                     <image class="weui-uploader__img" src="{{files[index]}}" mode="widthFix" style="" />
                   </view>
@@ -94,9 +96,11 @@
     </view>
         </view>
           </view>
-        <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px' plain @tap="Submit" id="{{index}}">Submit</button>
     </swiper-item>
   </swiper>
+
+  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px' plain @tap="Submit">Submit</button>
+</view>
 </template>
 <script>
   import wepy from 'wepy'
@@ -129,136 +133,92 @@
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       Submit(e) {
-        // todo 提交答案到后台 提交files,为图片显示路径，到时候后台返回路径就可以用image组件查看
-        let imgIdd = e.target.id
-        var that = this
-        var app = that.$parent
+        console.log(this)
+        // console.log(e)
+        var allSubmit = 0
+        var whichNone = [0, 0, 0, 0]
+        for (let i = 0; i < this.files.length; i++) {
+          if (this.files[i] === '') {
+            allSubmit++
+            whichNone[i]++
+          }
+        }
         if (this.state === '已结束') {
           wx.showToast({
-            title: '提交已经截至了哦',
+            title: '已经结束提交了哦',
             icon: 'none'
           })
-        } else if (this.files[imgIdd] === undefined) {
-          wx.showToast({
-            title: '先选好图片哦',
-            icon: 'none'
-          })
-        } else {
-          var delData = {
-            idHomeworkItems: parseInt(this.homeworkInfo[e.currentTarget.id].idHomeworkItems),
-            submitImg1: that.img_base64[imgIdd],
-            submitImg2: '',
-            submitImg3: ''
-          }
-          app
-            .request('Homework.submitHomework', delData, 'loading')
-            .then(function(e) {
+        }
+        if (allSubmit !== 0) {
+          var that = this
+          wx.showModal({
+            title: '提示',
+            content: '还未做完全部课程确定要提交了嘛？',
+            success(e) {
               console.log(e)
-              that.submit_count++
-              if (that.submit_count === that.homeworkInfo.length) {
+              if (e.confirm === true) {
+                console.log(that.files)
+                for (let j = 0; j < that.files.length; j++) {
+                  that.methods.sub_to_back(j, that)
+                }
                 wx.showToast({
                   title: '全部提交成功'
                 })
                 wx.navigateBack({})
+                return 0
+                // console.log(1)
               } else {
-                wx.showToast({
-                  title: '还未全部提交完全哦，请继续提交剩余题目',
-                  icon: 'none'
-                })
+                console.log(2)
+                return 0
               }
-            })
-            .catch(function(e) {
-              app.modal(
-                e.message,
-                '错误!错误提示是：',
-                '确定'
-              )
-            })
+            }
+          })
+        } else {
+          for (let j = 0; j < this.files.length; j++) {
+            this.methods.sub_to_back(j, this)
+          }
+          wx.showToast({
+            title: '全部提交成功'
+          })
+          wx.navigateBack({})
         }
+      },
+      sub_to_back(id, this_) {
+        var that = this_
+        var app = that.$parent
+        var delData = {
+          idHomeworkItems: parseInt(that.homeworkInfo[id].idHomeworkItems),
+          submitImg1: that.img_base64[id],
+          submitImg2: '',
+          submitImg3: ''
+        }
+        app
+        .request('Homework.submitHomework', delData, 'loading')
+        .then(function(e) {
+          // console.length(e)
+        })
+        .catch(function(e) {
+          app.modal(
+            e.message,
+            '错误!错误提示是：',
+            '确定'
+          )
+        })
       },
       roll(e) {
       },
-      // chooseImage(e, h) {
-      //   var that = this
-      //   if (h === undefined) {
-      //     h = that
-      //   } else {
-      //     // h = h
-      //   }
-      //   var fakeE = e
-      //   var imgIdd = e.target.id
-      //   // console.log(h.files[imgIdd])
-      //   if (h.files[imgIdd] !== undefined) {
-      //     wx.showModal({
-      //       title: '注意',
-      //       content: '确定要覆盖已有的图片吗？',
-      //       success(e) {
-      //         if (e.confirm === true) {
-      //           h.havePic[imgIdd] = false
-      //           h.files[imgIdd] = ''
-      //           h.$apply()
-      //           h.methods.chooseImage(fakeE, h)
-      //         }
-      //       }
-      //     })
-      //   } else {
-      //     wx.chooseImage({
-      //       count: 3,
-      //       sizeType: ['original', 'compressed'],
-      //       sourceType: ['album', 'camera'],
-      //       success(res) {
-      //         // console.log(res)
-      //         // tempFilePath可以作为img标签的src属性显示图片
-      //         var ratio = 2
-      //         h.files[imgIdd] = res.tempFilePaths[0]
-      //         h.havePic[imgIdd] = true
-      //         h.$apply()
-      //         wx.getImageInfo({
-      //           src: res.tempFilePaths[0],
-      //           success(res) {
-      //             // console.log(res)
-      //             while (
-      //               h.canvasWidth > 10000 ||
-      //               h.canvasHeight > 10000
-      //             ) {
-      //               h.canvasWidth = Math.trunc(res.width / ratio)
-      //               h.canvasHeight = Math.trunc(res.height / ratio)
-      //               ratio++
-      //             }
-      //             wx.getFileSystemManager().readFile({
-      //               filePath: res.path, // 选择图片返回的相对路径
-      //               encoding: 'base64', // 编码格式
-      //               success: res => {
-      //                 that.img_base64 = 'data:image/' + that.data.imageType + ';base64,' + res.data
-      //                 that.$apply()
-      //                 // console.log(that.img_base64)
-      //               },
-      //               fail: function (e) {
-      //                 console.log(e)
-      //                 console.log(that.data)
-      //               }
-      //             })
-      //           },
-      //           fail(e) {
-      //             console.log(e)
-      //           }
-      //         })
-      //       }
-      //     })
-      //   }
-      // }
       chooseImage: function(e) {
         console.log(e)
         var that = this
         var imgIdd = e.target.id
         // console.log(this.files[imgIdd])
-        if (this.files[imgIdd] !== undefined) {
+        if (this.files[imgIdd] !== '') {
           wx.showModal({
             title: '注意',
             content: '确定要重新提交图片吗？',
             success(e) {
               if (e.confirm === true) {
-                that.files[imgIdd] = undefined
+                that.files[imgIdd] = ''
                 that.$apply()
               }
             }
@@ -355,8 +315,8 @@
           if (e.data.errCode === 0) {
             that.homeworkInfo = e.data.data
             console.log(that.homeworkInfo)
-            for (let i = 0; i < e.data.count; i++) {
-              // that.files[i] = []
+            for (let i = 0; i < e.data.data.length; i++) {
+              that.files[i] = ''
               wx.getImageInfo({
                 src: e.data.data[i].img,
                 success(e) {
@@ -383,6 +343,7 @@
         })
       wx.getSystemInfo({
         success: function (e) {
+          console.log(e)
           that.system_height = e.windowHeight
           that.$apply()
         },

@@ -69,7 +69,6 @@ page {
 
 
 <template>
- <dialog />
   <view class="userinfo" id="0" wx:if="{{authorize}}">
     <open-data class="userAvatar" type="userAvatarUrl"></open-data>
     <view class="userText">
@@ -101,7 +100,7 @@ page {
 
 <script>
 import wepy from 'wepy'
-import Dialog from '@/components/dialog/index'
+// import Dialog from '@/components/dialog/index'
 // 通过继承自wepy.page的类创建页面逻辑
 export default class my extends wepy.page {
   config = {
@@ -120,12 +119,10 @@ export default class my extends wepy.page {
       { id: '6', name: '教师登陆', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/teacherLogin.png', margin: '0' }
     ]
   }
-  components = {
-    dialog: Dialog
-  }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
-    tap: function(e) {
+    tap(e) {
+      console.log(e)
       var btnID = e.currentTarget.id
       switch (btnID) {
         case '1':
@@ -162,28 +159,45 @@ export default class my extends wepy.page {
       }
     },
     authorize() {
-      let that = this
-      const options = {
+      wx.showModal({
         title: '您还未授权',
         content: '请先授权再进行操作',
-        type: 'muti',
-        showVertical: false,
-        buttons: [{
-          text: '立即授权',
-          color: '#C59E6C'
-        }, {
-          text: '稍后授权'
-        }]
-      }
-      that.$invoke('dialog', 'show', options).then((value) => {
-        if (value === 0) {
-          wx.navigateTo({
-            url: '/pages/my/authorize'
-          })
-        }
-      }, () => {
-        console.log('reject')
+        showCancel: true,
+        cancelText: '稍后授权',
+        cancelColor: '#000000',
+        confirmText: '立即授权',
+        confirmColor: '#C59E6C',
+        success: (result) => {
+          if (result.confirm) {
+            wx.navigateTo({
+              url: '/pages/my/authorize'
+            })
+          }
+        },
+        fail: () => {},
+        complete: () => {}
       })
+      // const options = {
+      //   title: '您还未授权',
+      //   content: '请先授权再进行操作',
+      //   type: 'muti',
+      //   showVertical: false,
+      //   buttons: [{
+      //     text: '立即授权',
+      //     color: '#C59E6C'
+      //   }, {
+      //     text: '稍后授权'
+      //   }]
+      // }
+      // that.$invoke('dialog', 'show', options).then((value) => {
+      //   if (value === 0) {
+      //     wx.navigateTo({
+      //       url: '/pages/my/authorize'
+      //     })
+      //   }
+      // }, () => {
+      //   console.log('reject')
+      // })
     }
   }
 
