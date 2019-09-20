@@ -143,7 +143,7 @@ button {
       </folder4>
     </view>
   
-  <image src="http://dataplatform-physicalflower.stor.sinaapp.com/warning.png"  class='icon2' @tap="delCourse"  mode="widthFix" style="width:80rpx;"></image>
+  <image src="./../../public/images/warning.png"  class='icon2' @tap="delCourse"  mode="widthFix" style="width:80rpx;"></image>
   </view>
 </template>
 <script>

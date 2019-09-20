@@ -111,18 +111,17 @@ export default class my extends wepy.page {
     authorize: false,
     bottonClr: ['white', 'white', 'white', 'white', 'white', 'white', 'white'],
     setArr: [
-      { id: '1', name: '我的信息', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/myinfo.png', margin: '0' },
-      { id: '2', name: '我的课程', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/myclass.png', margin: '20' },
-      { id: '3', name: '使用帮助', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/help.png', margin: '0' },
-      { id: '4', name: '联系我们', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/connect.png', margin: '20' },
-      { id: '5', name: '问题反馈', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/quereport.png', margin: '0' },
-      { id: '6', name: '教师登陆', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/teacherLogin.png', margin: '0' }
+      { id: '1', name: '我的信息', img: './../../public/images/myinfo.png', margin: '0' },
+      { id: '2', name: '我的课程', img: './../../public/images/myclass.png', margin: '20' },
+      { id: '3', name: '使用帮助', img: './../../public/images/help.png', margin: '0' },
+      { id: '4', name: '联系我们', img: './../../public/images/connect.png', margin: '20' },
+      { id: '5', name: '问题反馈', img: './../../public/images/quereport.png', margin: '0' },
+      { id: '6', name: '教师登陆', img: './../../public/images/teacherLogin.png', margin: '0' }
     ]
   }
   // 事件处理函数(集中保存在methods对象中)
   methods = {
     tap(e) {
-      console.log(e)
       var btnID = e.currentTarget.id
       switch (btnID) {
         case '1':

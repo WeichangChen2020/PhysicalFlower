@@ -107,7 +107,7 @@ export default class my extends wepy.page {
     current: 0,
     first: false,
     end: true,
-    src: 'http://dataplatform-physicalflower.stor.sinaapp.com/unlock.png',
+    src: './../../../public/images/unlock.png',
     post: {}
   }
   // 事件处理函数(集中保存在methods对象中)
@@ -130,9 +130,9 @@ export default class my extends wepy.page {
       let that = this
       let collection = 0
       that.current = that.current + 1
-      if (that.src === 'http://dataplatform-physicalflower.stor.sinaapp.com/unlock.png') {
+      if (that.src === './../../../public/images/unlock.png') {
         collection = 0
-      } else if (that.src === 'http://dataplatform-physicalflower.stor.sinaapp.com/lock.png') {
+      } else if (that.src === './../../../public/images/lock.png') {
         collection = 1
       }
       that.post.collection = collection

@@ -100,17 +100,17 @@ export default class Index extends wepy.page {
   data = {
     bottonClr: ['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white'],
     setArr: [
-      { id: 1, name: '大学物理上-磁学', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/1.png', margin: '0' },
-      { id: 2, name: '大学物理上-电磁感应', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/2.png', margin: '0' },
-      { id: 3, name: '大学物理上-电学', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/3.png', margin: '0' },
-      { id: 4, name: '大学物理上-力学', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/4.png', margin: '0' },
-      { id: 5, name: '大学物理下-波动', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/5.png', margin: '20' },
-      { id: 6, name: '大学物理下-光的干涉', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/6.png', margin: '0' },
-      { id: 7, name: '大学物理下-光的偏振', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/7.png', margin: '0' },
-      { id: 8, name: '大学物理下-光的衍射', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/8.png', margin: '0' },
-      { id: 9, name: '大学物理下-量子物理', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/9.png', margin: '0' },
-      { id: 10, name: '大学物理下-相对论', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/10.png', margin: '0' },
-      { id: 11, name: '大学物理下-振动', img: 'http://dataplatform-physicalflower.stor.sinaapp.com/11.png', margin: '0' }
+      { id: 1, name: '大学物理上-磁学', img: './../../../public/images/1.png', margin: '0' },
+      { id: 2, name: '大学物理上-电磁感应', img: './../../../public/images/2.png', margin: '0' },
+      { id: 3, name: '大学物理上-电学', img: './../../../public/images/3.png', margin: '0' },
+      { id: 4, name: '大学物理上-力学', img: './../../../public/images/4.png', margin: '0' },
+      { id: 5, name: '大学物理下-波动', img: './../../../public/images/5.png', margin: '20' },
+      { id: 6, name: '大学物理下-光的干涉', img: './../../../public/images/6.png', margin: '0' },
+      { id: 7, name: '大学物理下-光的偏振', img: './../../../public/images/7.png', margin: '0' },
+      { id: 8, name: '大学物理下-光的衍射', img: './../../../public/images/8.png', margin: '0' },
+      { id: 9, name: '大学物理下-量子物理', img: './../../../public/images/9.png', margin: '0' },
+      { id: 10, name: '大学物理下-相对论', img: './../../../public/images/10.png', margin: '0' },
+      { id: 11, name: '大学物理下-振动', img: './../../../public/images/11.png', margin: '0' }
     ],
     setArr2: [
       { id: 12, name: '错题回顾', img: '', margin: '0' },

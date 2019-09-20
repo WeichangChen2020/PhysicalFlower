@@ -75,7 +75,7 @@ margin-left:10rpx;
       <view class="weui-footer__text">——我是有底线的——</view>
   </view>
 
-<image src='http://dataplatform-physicalflower.stor.sinaapp.com/joinCourse.png' class='icon2' @tap='test' mode="widthFix"></image>
+<image src='./../../public/images/joinCourse.png' class='icon2' @tap='test' mode="widthFix"></image>
 </template> 
 <script>
   import wepy from 'wepy'

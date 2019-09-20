@@ -21,7 +21,7 @@ page {
 <view style="height:900rpx;width:95%;overflow:hidden;border-radius:20rpx;background-color:white;border: white solid 5rpx;box-shadow:0px 2px 4px 2px #DDDDDD;">
 <text class="description" space="nbsp">    信电学院435实验室致力于培养信电学生的专业技能，主攻小程序前端后端的教学与开发，这里有专业的教学流程，有耐心指导的导师们和学长学姐，有丰富的项目资源供你实践操作，欢迎大家加入，并成功成为435的一员！给你带来不一样的大学体验。</text>
 <view class="contain" > 
-  <image src="http://dataplatform-physicalflower.stor.sinaapp.com/communication.JPG" mode="widthFix" style="width:50%"></image>
+  <image src="./../../public/images/communication.jpg" mode="widthFix" style="width:50%"></image>
 </view>
 </view>
 </view>
