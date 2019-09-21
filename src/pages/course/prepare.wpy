@@ -1,0 +1,28 @@
+<style type="less">
+
+</style>
+<template>
+    <view>
+        <progress percent="{{percent}}" show-info />
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class Prepare extends wepy.page {
+  config = {
+    navigationBarTitleText: '物里看花'
+  };
+  data = {
+    percent: 0
+  };
+  // 事件处理函数(集中保存在methods对象中)
+  methods = {
+
+  }
+  // 页面的生命周期函数
+  onLoad() {}
+  onShow() {
+  }
+}
+</script>

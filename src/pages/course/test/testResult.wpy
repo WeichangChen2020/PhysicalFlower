@@ -9,7 +9,7 @@
   height: 323rpx;
   background-repeat: no-repeat;
   background-size: contain;
-  background-image: url("http://dataplatform-physicalflower.stor.sinaapp.com/backGround.png");
+  background-image: url("http://py619mxsq.bkt.clouddn.com/backGround.png");
   margin-left: 37rpx;
   margin-top: 25px;
 }
