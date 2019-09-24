@@ -31,14 +31,15 @@
 }
 </style>
 <template>
+<view>
 	<!-- <view class="topic_words">{{stuName}}的作业情况</view> -->
   <block wx:if="{{haveHomework}}">
     <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
       <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this" style="">
         <view style="font:15px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;" class="topic_two_word">题目:</view>
-        <image src="{{page.img}}" style="width:90%;margin-bottom:50rpx;margin-left:3%" mode="widthFix"/>
+        <image src="{{page.img}}" style="width:90%;margin-bottom:50rpx;margin-left:3%" mode="widthFix" bindload="load_end"/>
         <view style="font:15px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;" class="topic_two_word">作答情况:</view>
-        <image src="{{page.submitImg1}}" style="width:50%;margin-bottom:100rpx;margin-left:3%" mode="widthFix"/>
+        <image src="{{page.submitImg1}}" style="width:50%;margin-bottom:100rpx;margin-left:3%;" mode="scaleToFill"/>
         <view style="font:15px/1.5 'Microsoft YaHei',arial,tahoma,\5b8b\4f53,sans-serif;" class="topic_two_word">得分情况:{{pickId[index] == '-1' ?'本题目暂无得':pickId[index]}}分</view>
 
         <block wx:if="{{page.idCorrector == '-1'?true:false}}">
@@ -60,6 +61,7 @@
     ----------该学生没有提交作业哦----------
     </view>
   </block>
+</view>
 </template>
 <script>
   import wepy from 'wepy'
@@ -88,6 +90,13 @@
         console.log('picker发送选择改变，携带值为', e.detail.value)
         this.pickId[e.currentTarget.id] = e.detail.value
         this.pickkId[e.currentTarget.id] = e.detail.value
+        this.$apply()
+      },
+      load_end(e) {
+        console.log(e)
+        if (this.system_height < e.detail.height + 200) {
+          this.system_height = e.detail.height + 200
+        }
         this.$apply()
       },
       Submit(e) {

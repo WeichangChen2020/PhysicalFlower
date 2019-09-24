@@ -65,12 +65,12 @@
 </style>
 <template>
 <view>
-  <canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;left:-1000000px;top:-1000000px; "></canvas>
+  <canvas canvas-id="photo_canvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;position: absolute;z-index:-100000;opacity:0"></canvas>
   <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
   <!-- <swiper  class='answer' bindchange='roll' style="height:auto"> -->
   <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
     <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this"> 
-      <image src="{{page.img}}" style="height:{{page.height}}px;width:{{page.width}}px;" mode="widthFix"/>
+      <image src="{{page.img}}" id="{{page.idHomeworkItems}}" style="height:{{page.height}}px;width:{{page.width}}px;" mode="widthFix" bindload="load_end"/>
 
       <view class='greeting'>上传截图</view>
         <view class='border'>
@@ -84,7 +84,7 @@
                 <!-- <block wx:for="{{files}}" wx:key="*this"> -->
                   <block wx:if="{{files[index] !== ''}}">
                   <view class="weui-uploader__file" bindtap="previewImage" id="{{item}}">
-                    <image class="weui-uploader__img" src="{{files[index]}}" mode="widthFix" style="" />
+                    <image id="" class="weui-uploader__img" src="{{files[index]}}" mode="widthFix" style="" />
                   </view>
                   </block>
                 <!-- </block> -->
@@ -111,7 +111,7 @@
     data = {
       homeworkName: '课后作业名称',
       idHomework: 0,
-      system_height: 100,
+      system_height: 0,
       ques_count: 0,
       files: [],
       havePic: [],
@@ -133,8 +133,6 @@
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       Submit(e) {
-        console.log(this)
-        // console.log(e)
         var allSubmit = 0
         var whichNone = [0, 0, 0, 0]
         for (let i = 0; i < this.files.length; i++) {
@@ -155,20 +153,20 @@
             title: '提示',
             content: '还未做完全部课程确定要提交了嘛？',
             success(e) {
-              console.log(e)
               if (e.confirm === true) {
-                console.log(that.files)
                 for (let j = 0; j < that.files.length; j++) {
                   that.methods.sub_to_back(j, that)
                 }
                 wx.showToast({
                   title: '全部提交成功'
                 })
-                wx.navigateBack({})
+                setTimeout(() => {
+                  wx.navigateBack({
+                    delta: 3
+                  })
+                }, 1000)
                 return 0
-                // console.log(1)
               } else {
-                console.log(2)
                 return 0
               }
             }
@@ -180,7 +178,11 @@
           wx.showToast({
             title: '全部提交成功'
           })
-          wx.navigateBack({})
+          setTimeout(() => {
+            wx.navigateBack({
+              delta: 3
+            })
+          }, 1000)
         }
       },
       sub_to_back(id, this_) {
@@ -206,6 +208,13 @@
         })
       },
       roll(e) {
+      },
+      load_end(e) {
+        console.log(e)
+        if (this.system_height < e.detail.height + 300) {
+          this.system_height = e.detail.height + 300
+        }
+        this.$apply()
       },
       chooseImage: function(e) {
         console.log(e)
@@ -242,13 +251,14 @@
                   that.canvasWidth = res.width
                   that.canvasHeight = res.height
                   that.$apply()
-                  // console.log(that.data.canvasWidth, that.data.canvasHeight)
+                  console.log(that.data.canvasWidth, that.data.canvasHeight)
                   // 保证宽高均在200以内
-                  while (that.canvasWidth > 200 || that.canvasHeight > 200) {
+                  while (that.canvasWidth > 300 && that.canvasHeight > 300) {
                     // 比例取整
-                    that.canvasWidth = Math.trunc(res.width / ratio)
-                    that.canvasHeight = Math.trunc(res.height / ratio)
-                    ratio++
+                    console.log(that.canvasWidth)
+                    console.log(that.canvasHeight)
+                    that.canvasWidth = Math.trunc(that.canvasWidth / ratio)
+                    that.canvasHeight = Math.trunc(that.canvasHeight / ratio)
                   }
                   // console.log(that.data.canvasWidth, that.data.canvasHeight)
                   ctx.drawImage(res.path, 0, 0, that.canvasWidth, that.canvasHeight)
@@ -311,21 +321,26 @@
       app
         .request('Homework.getHomeworkQues', delData, 'loading')
         .then(function(e) {
-          console.log(e)
+          // console.log(e)
           if (e.data.errCode === 0) {
             that.homeworkInfo = e.data.data
-            console.log(that.homeworkInfo)
+            // console.log(that.homeworkInfo)
+            var largestHeight = 0
             for (let i = 0; i < e.data.data.length; i++) {
+              // console.log(2)
               that.files[i] = ''
               wx.getImageInfo({
                 src: e.data.data[i].img,
                 success(e) {
-                  // console.log(e)
+                  if (e.height > largestHeight) {
+                    largestHeight = e.height
+                  }
                   that.homeworkInfo[i].height = e.height
                   that.homeworkInfo[i].width = e.width
                 }
               })
             }
+            that.system_height = parseInt(largestHeight) + 300
             that.$apply()
           } else {
             wx.showToast({
@@ -341,19 +356,20 @@
             '确定'
           )
         })
-      wx.getSystemInfo({
-        success: function (e) {
-          console.log(e)
-          that.system_height = e.windowHeight
-          that.$apply()
-        },
-        fail(e) {
-          wx.showmodal({
-            title: '注意',
-            content: '显示失败请下拉刷新重试'
-          })
-        }
-      })
+      // wx.getSystemInfo({
+      //   success: function (e) {
+      //     console.log(e)
+      //     that.system_height = e.windowHeight
+      //     // that.system_height = 500
+      //     that.$apply()
+      //   },
+      //   fail(e) {
+      //     wx.showmodal({
+      //       title: '注意',
+      //       content: '显示失败请下拉刷新重试'
+      //     })
+      //   }
+      // })
     };
   }
 </script>

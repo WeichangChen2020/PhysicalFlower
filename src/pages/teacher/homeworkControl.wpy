@@ -36,7 +36,7 @@
   // 通过继承自wepy.page的类创建页面逻辑
   export default class homeworkControl extends wepy.page {
     config = {
-      navigationBarTitleText: '作业'
+      navigationBarTitleText: '课后作业'
     }
     // 可用于页面模板绑定的数据
     data = {

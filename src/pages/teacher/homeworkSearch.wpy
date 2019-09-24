@@ -67,6 +67,9 @@ bottom:0;
 
   // 通过继承自wepy.page的类创建页面逻辑
   export default class homeworkSearch extends wepy.page {
+    config = {
+      navigationBarTitleText: '作业详情'
+    }
     // 可用于页面模板绑定的数据
     data = {
       idHomework: 0,
@@ -78,15 +81,11 @@ bottom:0;
     // 事件处理函数(集中保存在methods对象中)
     methods = {
       bindViewTap () {
-        console.log('button clicked')
       }
     };
-
-    // 页面的生命周期函数
-    onShow(e) {
-      // console.log(e)
-      this.idHomework = e.idHomework
-      this.idCourse = e.idCourse
+    onShow() {
+      // this.idHomework = e.idHomework
+      // this.idCourse = e.idCourse
       var that = this
       wx.setNavigationBarTitle({
         title: '课程学生列表'
@@ -158,6 +157,83 @@ bottom:0;
             '确定'
           )
         })
+    }
+
+    // 页面的生命周期函数
+    onLoad(e) {
+      this.idHomework = e.idHomework
+      this.idCourse = e.idCourse
+      // var that = this
+      // wx.setNavigationBarTitle({
+      //   title: '课程学生列表'
+      // })
+      // let app = that.$parent
+      // var delData = {
+      //   idCourse: this.idCourse
+      // }
+      // app
+      //   .request('Teacher.getStudentListByIdCourse', delData, 'loading')
+      //   .then(function(e) {
+      //     if (e.data.errCode === 0) {
+      //       if (e.data.data !== null && e.data.data.length !== undefined) {
+      //         that.courseStu = e.data.data
+      //         for (var i = 0; i < e.data.data.length; i++) {
+      //           if (that.courseStu[i].name === '') {
+      //             that.courseStu[i].name = '???'
+      //             that.courseStu[i].avatarUrl = 'https://wx.qlogo.cn/mmopen/vi_32/xlklsYQfNOaiaianvIH3YjzyvggDmKkxj74fQO4Ulh6guMEDYNGXnle9ApvfMV3UicRB1waFa2mv0UrrGyhTI94FQ/132'
+      //           }
+      //           that.courseStu[i].haveSubmit = 0
+      //         }
+      //         var deData = {
+      //           idHomework: that.idHomework
+      //         }
+      //         app
+      //           .request('Teacher.getStudentHomeworkinfo', deData, 'loading')
+      //           .then(function(e) { // 暂时就先全部遍历一下，后面再看看可不可以优化时间复杂度
+      //             if (e.data.data !== null && e.data.data.length !== undefined) {
+      //               for (let i = 0; i < e.data.data.length; i++) {
+      //                 for (let j = 0; j < that.courseStu.length; j++) {
+      //                   if (that.courseStu[j].idUser === e.data.data[i].idUser) {
+      //                     that.courseStu[j].haveSubmit = 1
+      //                     that.courseStu[j].score = e.data.data[i].score
+      //                     if (e.data.data[i].score < 0) {
+      //                       that.courseStu[j].score = '未评分'
+      //                     }
+      //                     // console.log('1')
+      //                   }
+      //                 }
+      //               }
+      //               that.$apply()
+      //             } else {
+      //               app.modal(
+      //                 '学生都还没有交作业哦',
+      //                 '注意'
+      //               )
+      //             }
+      //           })
+      //           .catch(function(e) {
+      //             app.modal(
+      //               e.message,
+      //               '错误!错误提示是：',
+      //               '确定'
+      //             )
+      //           })
+      //         that.$apply()
+      //       } else {
+      //         app.modal(
+      //           '该课程还没有学生哦',
+      //           '注意'
+      //         )
+      //       }
+      //     }
+      //   })
+      //   .catch(function(e) {
+      //     app.modal(
+      //       e.message,
+      //       '错误!错误提示是：',
+      //       '确定'
+      //     )
+      //   })
     };
   }
 </script>

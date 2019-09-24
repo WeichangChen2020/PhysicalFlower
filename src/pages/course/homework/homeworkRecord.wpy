@@ -69,31 +69,42 @@
   height: 80rpx;
   background-color: rgb(243, 240, 240)
 }
+swiper{
+  display: flex;
+ height: 100%;
+}
+swiper-item{
+  height: 100%;
+ overflow:scroll;
+ overflow-x:hidden;
+}
 </style>
 <template>
-<block wx:if="{{haveNothing}}">
-  <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
-  <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
-    <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this">
-      <image src="{{page.img}}" style="width:100%;margin-bottom:100rpx"/>
-      <image src="{{page.submitImg1}}" style="width:100%;margin-bottom:100rpx"/>
+  <view>
+    <block wx:if="{{haveNothing}}">
+    <view style="margin-bottom:30px;text-align:center;">{{homeworkName}}</view>
+    <swiper  class='answer' bindchange='roll' style="height:{{system_height}}px">
+      <swiper-item wx:for="{{homeworkInfo}}" wx:for-item="page" wx:key="*this">
+        <image src="{{page.img}}" style="width:100%;margin-bottom:100rpx" bindload="load_end"/>
+        <image src="{{page.submitImg1}}" style="width:100%;margin-bottom:100rpx"/>
 
-      <picker bindchange="bindPickerChange" value="{{pickId}}" range="{{array}}" id="{{index}}" style="margin-top:-100rpx;text-align:center">
-        <view class="picker">
-          作业评分：{{array[pickId[index]]}}
-        </view>
-      </picker>
-    </swiper-item>
-  </swiper>
-  
-  
-  <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:-240rpx;' plain @tap="Submit" id="{{index}}">Submit</button>
-  </block>
-  <block wx:if="{{!haveNothing}}">
-    <view class="greetingc">
-        ----------没有要互评的作业哦----------
-    </view>
-  </block>
+        <picker bindchange="bindPickerChange" value="{{pickId}}" range="{{array}}" id="{{index}}" style="margin-top:-100rpx;text-align:center">
+          <view class="picker">
+            作业评分：{{array[pickId[index]]}}
+          </view>
+        </picker>
+      </swiper-item>
+    </swiper>
+    
+    
+    <button class='subBtn' style='border-color:#355bc7;color:#a158cb;margin-bottom:30px;margin-top:-240rpx;' plain @tap="Submit" id="{{index}}">Submit</button>
+    </block>
+    <block wx:if="{{!haveNothing}}">
+      <view class="greetingc">
+          ----------没有要互评的作业哦----------
+      </view>
+    </block>
+  </view>
 </template>
 <script>
   import wepy from 'wepy'
@@ -103,7 +114,7 @@
     data = {
       homeworkName: '课后作业名称',
       idHomework: 0,
-      system_height: 500,
+      system_height: 0,
       haveNothing: 0,
       files: [],
       havePic: [],
@@ -182,6 +193,13 @@
           this.$apply()
         }
       },
+      load_end(e) {
+        console.log(e)
+        if (this.system_height < e.detail.height + 200) {
+          this.system_height = e.detail.height + 200
+        }
+        this.$apply()
+      },
       bindPickerChange(e) {
         console.log('picker发送选择改变，携带值为', e.detail.value)
         this.pickId[e.currentTarget.id] = e.detail.value
@@ -225,12 +243,12 @@
             '确定'
           )
         })
-      wx.getSystemInfo({
-        success: function (e) {
-          that.system_height = e.windowHeight
-          that.$apply()
-        }
-      })
+      // wx.getSystemInfo({
+      //   success: function (e) {
+      //     that.system_height = 500
+      //     that.$apply()
+      //   }
+      // })
       this.$apply()
       //   fail(e) {
       //     wx.showmodal({
